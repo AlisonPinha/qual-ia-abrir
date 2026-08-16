@@ -1,0 +1,853 @@
+<title>Qual IA abrir</title>
+
+<style>
+  :root {
+    --bg: #F1F2F5;
+    --surface: #FFFFFF;
+    --surface-2: #F7F8FA;
+    --text: #14161C;
+    --muted: #62666F;
+    --faint: #8B8F99;
+    --border: #E0E2E8;
+    --border-strong: #CACDD6;
+    --accent: #1223E5;
+    --accent-ink: #FFFFFF;
+    --lime: #CCF912;
+    --lime-ink: #14161C;
+    --red: #C4402B;
+    --shadow: 0 1px 2px rgba(20,22,28,.05), 0 8px 24px -16px rgba(20,22,28,.25);
+
+    --serif: "Iowan Old Style", Charter, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "Cascadia Mono", "Roboto Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131417;
+      --surface: #191B20;
+      --surface-2: #1E2027;
+      --text: #ECEDF1;
+      --muted: #969AA4;
+      --faint: #6E727C;
+      --border: #262931;
+      --border-strong: #363A44;
+      --accent: #7C88FF;
+      --accent-ink: #0B0C0F;
+      --lime: #CCF912;
+      --lime-ink: #14161C;
+      --red: #E8735C;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #131417;
+    --surface: #191B20;
+    --surface-2: #1E2027;
+    --text: #ECEDF1;
+    --muted: #969AA4;
+    --faint: #6E727C;
+    --border: #262931;
+    --border-strong: #363A44;
+    --accent: #7C88FF;
+    --accent-ink: #0B0C0F;
+    --lime: #CCF912;
+    --lime-ink: #14161C;
+    --red: #E8735C;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 72px;
+  }
+
+  /* ---------- cabeçalho ---------- */
+
+  .top {
+    padding: 44px 0 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .eyebrow b {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(38px, 11vw, 60px);
+    line-height: .98;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .tese {
+    font-family: var(--serif);
+    font-size: clamp(17px, 4.4vw, 20px);
+    line-height: 1.45;
+    color: var(--muted);
+    margin: 0;
+    max-width: 30em;
+  }
+
+  .tese mark {
+    background: var(--lime);
+    color: var(--lime-ink);
+    padding: .06em .22em;
+    border-radius: 2px;
+    font-weight: 600;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* ---------- busca ---------- */
+
+  .console {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg);
+    padding: 10px 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease;
+  }
+
+  .console.stuck { border-bottom-color: var(--border); }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 0 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .field:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .field svg { flex: none; color: var(--faint); }
+
+  #q {
+    flex: 1;
+    border: 0;
+    background: none;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 16px;
+    padding: 13px 0;
+    outline: none;
+    min-width: 0;
+  }
+
+  #q::placeholder { color: var(--faint); }
+
+  #clear {
+    flex: none;
+    border: 0;
+    background: none;
+    color: var(--faint);
+    font-family: var(--mono);
+    font-size: 18px;
+    line-height: 1;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    display: none;
+  }
+
+  #clear:hover { color: var(--text); }
+  #clear:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .filtering #clear { display: block; }
+
+  .chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .chips::-webkit-scrollbar { display: none; }
+
+  @media (max-width: 619px) {
+    .chips {
+      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 26px), transparent);
+      mask-image: linear-gradient(to right, #000 calc(100% - 26px), transparent);
+    }
+  }
+
+  @media (min-width: 620px) {
+    .chips {
+      flex-wrap: wrap;
+      overflow: visible;
+      margin: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .chip {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .12s, border-color .12s, background .12s;
+  }
+
+  .chip:hover { color: var(--text); border-color: var(--faint); }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .chip[aria-pressed="true"] {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c, var(--faint));
+    flex: none;
+  }
+
+  .count {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    padding-left: 2px;
+  }
+
+  /* ---------- lista ---------- */
+
+  .grupo { margin-top: 26px; }
+  .grupo[hidden] { display: none; }
+
+  .grupo h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .linhas {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .linha {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 14px;
+    align-items: baseline;
+    padding: 13px 12px;
+    border-radius: 8px;
+    background: transparent;
+    transition: background .12s ease;
+  }
+
+  .linha:hover { background: var(--surface); }
+  .linha[hidden] { display: none; }
+
+
+  .tarefa {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -.005em;
+  }
+
+  .selo {
+    display: inline-block;
+    vertical-align: 2px;
+    margin-left: 7px;
+    background: var(--lime);
+    color: var(--lime-ink);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+
+  .ferramenta {
+    grid-column: 2;
+    grid-row: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .porque {
+    grid-column: 1 / -1;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--muted);
+    margin-top: 3px;
+    max-width: 46em;
+  }
+
+  /* ---------- vazio ---------- */
+
+  #vazio {
+    display: none;
+    margin-top: 26px;
+    padding: 28px 22px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .vazio-on #vazio { display: block; }
+
+  #vazio p {
+    margin: 0 0 6px;
+    font-family: var(--serif);
+    font-size: 19px;
+  }
+
+  #vazio span {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* ---------- seções de leitura ---------- */
+
+  .bloco {
+    margin-top: 52px;
+    padding-top: 30px;
+    border-top: 2px solid var(--text);
+  }
+
+  .filtering .bloco { display: none; }
+
+  .bloco > h2 {
+    font-family: var(--serif);
+    font-size: clamp(24px, 6.5vw, 30px);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    margin: 0 0 6px;
+  }
+
+  .bloco > .sub {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0 0 20px;
+    max-width: 34em;
+  }
+
+  .desempates {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .desempate {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .desempate h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 0 0 12px;
+  }
+
+  .versus {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lado { display: block; }
+
+  .lado .nome {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    margin-right: 7px;
+  }
+
+  .lado .quando {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .lado .quando b { color: var(--text); }
+
+  .lado .quando b { font-weight: 600; }
+
+  .cinco {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .cinco li {
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 400px) {
+    .cinco li { grid-template-columns: 1fr; gap: 3px; }
+  }
+
+  .cinco li:last-child { border-bottom: 0; }
+
+  .cinco .nome {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .cinco .papel {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  /* ---------- fecho ---------- */
+
+  .fecho {
+    margin-top: 52px;
+    padding: 30px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .filtering .fecho { display: none; }
+
+  .fecho h2 {
+    font-family: var(--serif);
+    font-size: clamp(22px, 6vw, 27px);
+    line-height: 1.15;
+    margin: 0 0 10px;
+    letter-spacing: -.015em;
+  }
+
+  .fecho p {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  .fecho p:last-child { margin-bottom: 0; }
+
+  .fecho strong { color: var(--text); font-weight: 600; }
+
+  .assina {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--faint);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .assina b { color: var(--text); font-weight: 500; }
+
+  @media (max-width: 519px) {
+    .linhas { gap: 6px; }
+
+    .linha {
+      grid-template-columns: 1fr;
+      padding: 12px 10px;
+    }
+
+    .tarefa { grid-column: 1; }
+
+    .ferramenta {
+      grid-column: 1;
+      grid-row: auto;
+      justify-self: start;
+      margin-top: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px 4px 9px;
+    }
+
+    .porque { margin-top: 5px; }
+  }
+
+  @media (min-width: 620px) {
+    .linha { padding: 14px 14px; }
+    .desempates { display: grid; grid-template-columns: 1fr 1fr; }
+    .desempate:first-child { grid-column: 1 / -1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">
+      <span>A lista completa</span>
+      <span aria-hidden="true">·</span>
+      <b>@aalisonaraujo</b>
+    </div>
+    <h1>Qual IA abrir</h1>
+    <p class="tese">
+      Não existe a melhor IA. <mark>Existe a certa pra tarefa.</mark>
+      Ter todas instaladas não muda nada se você abre sempre a mesma.
+    </p>
+  </header>
+
+  <div class="console" id="console">
+    <div class="field">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false"
+             placeholder="o que você precisa fazer?" aria-label="Buscar uma tarefa">
+      <button id="clear" type="button" aria-label="Limpar busca">×</button>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por ferramenta"></div>
+  </div>
+
+  <p class="count" id="count"></p>
+
+  <main id="lista"></main>
+
+  <div id="vazio">
+    <p>Essa eu não mapeei ainda.</p>
+    <span>Me manda no direct qual é a tarefa. Eu respondo e ela entra na próxima versão desta lista.</span>
+  </div>
+
+  <section class="bloco">
+    <h2>Onde a resposta muda</h2>
+    <p class="sub">
+      Três casos em que eu troco de ferramenta no meio do caminho. É aqui que a maioria erra,
+      e é o que separa quem tem as ferramentas de quem sabe usar.
+    </p>
+
+    <div class="desempates">
+      <div class="desempate">
+        <h3>Imagem</h3>
+        <div class="versus">
+          <div class="lado">
+            <span class="nome"><span class="dot" style="--c:#4285F4"></span>Gemini</span>
+            <span class="quando">Quando a imagem é <b>meio</b>: ilustrar um post, testar uma ideia, resolver e seguir.</span>
+          </div>
+          <div class="lado">
+            <span class="nome"><span class="dot" style="--c:#8B5CF6"></span>Higgsfield</span>
+            <span class="quando">Quando a imagem <b>é o produto</b>: foto de produto, cena de anúncio, algo que vai ser julgado por si só.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="desempate">
+        <h3>Pesquisa</h3>
+        <div class="versus">
+          <div class="lado">
+            <span class="nome"><span class="dot" style="--c:#20808D"></span>Perplexity</span>
+            <span class="quando">Quando você quer <b>profundidade e a fonte junto</b>, pra poder conferir.</span>
+          </div>
+          <div class="lado">
+            <span class="nome"><span class="dot" style="--c:#8B8F99"></span>Grok</span>
+            <span class="quando">Quando você quer <b>o que está acontecendo agora</b>, nesta hora.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="desempate">
+        <h3>Conteúdo</h3>
+        <div class="versus">
+          <div class="lado">
+            <span class="nome"><span class="dot" style="--c:#F59E0B"></span>Poppy AI</span>
+            <span class="quando">Roteiro e estrutura, em cima das <b>suas referências</b>.</span>
+          </div>
+          <div class="lado">
+            <span class="nome"><span class="dot" style="--c:#8B5CF6"></span>Higgsfield</span>
+            <span class="quando">A parte visual depois que o roteiro existe. Não competem, são <b>etapas</b>.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco">
+    <h2>Se você só lembrar de cinco</h2>
+    <p class="sub">Fecha esta página sabendo isto e você já está à frente de quase todo mundo.</p>
+    <ul class="cinco">
+      <li><span class="nome"><span class="dot" style="--c:#D4845A"></span>Claude</span><span class="papel">Escrever bem, decidir e construir.</span></li>
+      <li><span class="nome"><span class="dot" style="--c:#4285F4"></span>Gemini</span><span class="papel">Engolir material longo e resolver rápido.</span></li>
+      <li><span class="nome"><span class="dot" style="--c:#10A37F"></span>ChatGPT</span><span class="papel">Começar do zero e conversar.</span></li>
+      <li><span class="nome"><span class="dot" style="--c:#20808D"></span>Perplexity</span><span class="papel">Pesquisar com fonte na mão.</span></li>
+      <li><span class="nome"><span class="dot" style="--c:#8B5CF6"></span>Higgsfield</span><span class="papel">Imagem e vídeo que precisam ser bons de verdade.</span></li>
+    </ul>
+  </section>
+
+  <section class="fecho">
+    <h2>O que fazer com isso hoje</h2>
+    <p>
+      Escolhe <strong>uma tarefa que você faz toda semana</strong> e que está na lista com uma
+      ferramenta que você nunca abriu. Faz essa uma vez pelo caminho novo. É assim que entra no
+      automático, não lendo a lista inteira.
+    </p>
+    <p>
+      A lista é a que eu uso de verdade, não um ranking das 50 melhores que ninguém abre.
+      Ferramenta de IA muda rápido: quando eu trocar alguma, esta página troca junto.
+    </p>
+    <div class="assina">
+      <span>Alison Araújo · <b>@aalisonaraujo</b></span>
+      <span id="stamp"></span>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const FERRAMENTAS = {
+    "Claude":       "#D4845A",
+    "Claude Code":  "#D4845A",
+    "ChatGPT":      "#10A37F",
+    "Gemini":       "#4285F4",
+    "Perplexity":   "#20808D",
+    "Grok":         "#8B8F99",
+    "Higgsfield":   "#8B5CF6",
+    "Poppy AI":     "#F59E0B",
+    "Lovable":      "#F472B6"
+  };
+
+  const DADOS = [
+    ["Escrever e comunicar", [
+      ["Escrever um e-mail", "Claude", "Sai no tom certo e pronto pra enviar, sem aquele entusiasmo de robô.", true],
+      ["Escrever página de vendas", "Claude", "Segura argumento longo sem virar enrolação.", true],
+      ["Texto criativo", "Gemini", "Arrisca mais na imagem e na frase do que os outros.", false],
+      ["Revisar e encurtar um texto", "Claude", "Corta o excesso sem apagar quem escreveu.", false],
+      ["Falar por voz, sem digitar", "ChatGPT", "O modo de voz ainda é o mais natural de conversar.", false]
+    ]],
+    ["Pensar e decidir", [
+      ["Brainstorm do zero", "ChatGPT", "Cospe volume rápido, e no começo volume é o que serve.", true],
+      ["Planejar o dia", "ChatGPT", "Transforma bagunça mental em lista em segundos.", true],
+      ["Tomar uma decisão difícil", "Claude", "Aguenta contraponto em vez de concordar com tudo que você diz.", false],
+      ["Deixar rodando enquanto você faz outra coisa", "Claude", "Tarefa longa que você entrega e volta pronta depois.", false]
+    ]],
+    ["Pesquisar e entender", [
+      ["Pesquisa profunda, com fonte", "Perplexity", "Entrega o link junto, então dá pra conferir antes de repetir por aí.", true],
+      ["Notícia de agora, trend em tempo real", "Grok", "Está dentro do X, vê o que está sendo dito nesta hora.", true],
+      ["Entender um podcast inteiro", "Gemini", "Joga o link e pergunta o que quiser sobre o que foi dito.", true],
+      ["Resumir um PDF de 40 páginas", "Gemini", "Engole arquivo grande sem reclamar do tamanho.", false],
+      ["Aprender um assunto novo", "Gemini", "Explica em camadas, do raso ao fundo, no seu ritmo.", false]
+    ]],
+    ["Criar imagem e vídeo", [
+      ["Gerar imagem", "Higgsfield", "Quando a imagem é o produto e não só um enfeite do post.", true],
+      ["Conteúdo cinematográfico", "Higgsfield", "Controle de luz, lente e cena, que é o que falta nas outras.", true],
+      ["Foto de produto", "Higgsfield", "O nível que anúncio exige, sem estúdio.", true],
+      ["Criar vídeo", "Higgsfield", "O que mais entrega movimento crível hoje.", true],
+      ["Imagem rápida do dia a dia", "Gemini", "Quando a imagem é meio, não fim. Resolve e segue.", false],
+      ["Montar uma apresentação", "Gemini", "Monta o deck inteiro a partir de um tema.", false],
+      ["Roteiro e estrutura de conteúdo", "Poppy AI", "Trabalha em cima das suas referências, não do nada.", false]
+    ]],
+    ["Construir", [
+      ["Fazer um site ou app", "Claude Code", "Constrói e ainda arruma o que ele mesmo quebrou.", false],
+      ["Programar de verdade", "Claude Code", "Trabalha dentro do seu projeto, não num chat solto.", false],
+      ["Protótipo rápido pra mostrar", "Lovable", "Do zero ao link no ar em minutos.", false]
+    ]]
+  ];
+
+  const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  const listaEl = document.getElementById("lista");
+  const chipsEl = document.getElementById("chips");
+  const countEl = document.getElementById("count");
+  const qEl = document.getElementById("q");
+  const clearEl = document.getElementById("clear");
+  const consoleEl = document.getElementById("console");
+
+  let total = 0;
+  const itens = [];
+
+  DADOS.forEach(([grupo, linhas]) => {
+    const sec = document.createElement("section");
+    sec.className = "grupo";
+    const h = document.createElement("h2");
+    h.textContent = grupo;
+    const ul = document.createElement("ul");
+    ul.className = "linhas";
+
+    linhas.forEach(([tarefa, ferr, porque, noReel]) => {
+      total++;
+      const li = document.createElement("li");
+      li.className = "linha";
+      li.innerHTML =
+        '<span class="tarefa">' + tarefa +
+          (noReel ? '<span class="selo">no reel</span>' : '') + '</span>' +
+        '<span class="ferramenta"><span class="dot" style="--c:' + FERRAMENTAS[ferr] + '"></span>' + ferr + '</span>' +
+        '<span class="porque">' + porque + '</span>';
+      ul.appendChild(li);
+      itens.push({ el: li, sec, busca: norm(tarefa + " " + ferr + " " + porque + " " + grupo), ferr });
+    });
+
+    sec.append(h, ul);
+    listaEl.appendChild(sec);
+  });
+
+  let ativo = null;
+
+  Object.keys(FERRAMENTAS).filter(f => f !== "Claude Code").forEach(nome => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.setAttribute("aria-pressed", "false");
+    b.innerHTML = '<span class="dot" style="--c:' + FERRAMENTAS[nome] + '"></span>' + nome;
+    b.addEventListener("click", () => {
+      ativo = ativo === nome ? null : nome;
+      [...chipsEl.children].forEach(c =>
+        c.setAttribute("aria-pressed", String(c.textContent === ativo)));
+      aplicar();
+    });
+    chipsEl.appendChild(b);
+  });
+
+  function aplicar() {
+    const termo = norm(qEl.value.trim());
+    let vis = 0;
+
+    itens.forEach(it => {
+      const passaTexto = !termo || it.busca.includes(termo);
+      const passaChip = !ativo || it.ferr === ativo || (ativo === "Claude" && it.ferr === "Claude Code");
+      const ok = passaTexto && passaChip;
+      it.el.hidden = !ok;
+      if (ok) vis++;
+    });
+
+    [...listaEl.children].forEach(sec =>
+      sec.hidden = ![...sec.querySelectorAll(".linha")].some(l => !l.hidden));
+
+    const filtrando = !!termo || !!ativo;
+    document.body.classList.toggle("filtering", filtrando);
+    document.body.classList.toggle("vazio-on", vis === 0);
+
+    countEl.textContent = filtrando
+      ? vis + (vis === 1 ? " tarefa encontrada" : " tarefas encontradas")
+      : total + " tarefas mapeadas";
+  }
+
+  qEl.addEventListener("input", aplicar);
+
+  clearEl.addEventListener("click", () => {
+    qEl.value = "";
+    ativo = null;
+    [...chipsEl.children].forEach(c => c.setAttribute("aria-pressed", "false"));
+    aplicar();
+    qEl.focus();
+  });
+
+  const sentinela = document.createElement("div");
+  sentinela.style.height = "1px";
+  consoleEl.parentNode.insertBefore(sentinela, consoleEl);
+  new IntersectionObserver(
+    ([e]) => consoleEl.classList.toggle("stuck", !e.isIntersecting)
+  ).observe(sentinela);
+
+  document.getElementById("stamp").textContent =
+    "Atualizada em " + new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+
+  aplicar();
+</script>

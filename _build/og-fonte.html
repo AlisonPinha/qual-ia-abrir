@@ -1,0 +1,44 @@
+<!doctype html><meta charset="utf-8">
+<style>
+  @media (prefers-color-scheme: dark) { }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    width: 1200px; height: 630px; background: #131417; color: #ECEDF1;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 66px 70px; display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  body::after {
+    content: ""; position: absolute; right: -180px; top: -180px; width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(204,249,18,.10), transparent 68%);
+  }
+  .logos { display: flex; gap: 14px; }
+  .logos img { width: 62px; height: 62px; border-radius: 24%; }
+  h1 {
+    font-family: "Iowan Old Style", Charter, Georgia, serif; font-size: 116px;
+    line-height: .94; letter-spacing: -.025em; font-weight: 700;
+  }
+  .sub { font-size: 31px; color: #969AA4; margin-top: 22px; line-height: 1.5; }
+  .sub span { display: block; }
+  .sub mark { background: #CCF912; color: #14161C; padding: 2px 9px; border-radius: 4px; font-weight: 600; }
+  .rodape {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-family: ui-monospace, Menlo, monospace; font-size: 23px; color: #6E727C;
+  }
+  .rodape b { color: #ECEDF1; font-weight: 500; }
+  .pill {
+    background: #1E2027; border: 1px solid #363A44; border-radius: 999px;
+    padding: 10px 20px; color: #ECEDF1; font-size: 21px;
+  }
+</style>
+<div class="logos">
+  <img src="logos/claude.svg"><img src="logos/chatgpt.svg"><img src="logos/gemini.svg"><img src="logos/perplexity.svg"><img src="logos/grok.png"><img src="logos/higgsfield.svg"><img src="logos/poppy.png"><img src="logos/lovable.png">
+</div>
+<div>
+  <h1>Qual IA abrir</h1>
+  <p class="sub"><span>Não existe a melhor IA.</span><span><mark>Existe a certa pra tarefa.</mark></span></p>
+</div>
+<div class="rodape">
+  <span>Alison Araújo · <b>@aalisonaraujo</b></span>
+  <span class="pill">24 tarefas mapeadas</span>
+</div>
