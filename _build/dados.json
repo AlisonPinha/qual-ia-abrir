@@ -1,0 +1,73 @@
+{
+  "ferramentas": {
+    "Claude":      { "logo": "claude.svg",     "url": "https://claude.ai",                      "oq": "Escrever, decidir e construir. O que menos estraga o seu texto." },
+    "Claude Code": { "logo": "claudecode.svg", "url": "https://claude.com/product/claude-code", "oq": "O Claude trabalhando dentro do seu projeto, não num chat solto." },
+    "ChatGPT":     { "logo": "chatgpt.svg",    "url": "https://chatgpt.com",                    "oq": "O mais versátil pra começar do zero e pra conversar por voz." },
+    "Gemini":      { "logo": "gemini.svg",     "url": "https://gemini.google.com",              "oq": "Engole PDF, vídeo e podcast inteiro sem reclamar do tamanho." },
+    "Perplexity":  { "logo": "perplexity.svg", "url": "https://www.perplexity.ai",              "oq": "Pesquisa com a fonte do lado, pra você poder conferir." },
+    "Grok":        { "logo": "grok.png",       "url": "https://grok.com",                       "oq": "Dentro do X, vê o que está sendo dito nesta hora." },
+    "Higgsfield":  { "logo": "higgsfield.svg", "url": "https://higgsfield.ai",                  "oq": "Imagem e vídeo no nível que anúncio exige." },
+    "Poppy AI":    { "logo": "poppy.png",      "url": "https://poppyai.com",                    "oq": "Roteiro e estrutura em cima das suas próprias referências." },
+    "Lovable":     { "logo": "lovable.png",    "url": "https://lovable.dev",                    "oq": "Do zero a um link no ar em minutos." }
+  },
+
+  "grupos": [
+    ["Escrever e comunicar", [
+      ["Escrever um e-mail", "Claude", "Sai no tom certo e pronto pra enviar, sem aquele entusiasmo de robô.", true],
+      ["Escrever página de vendas", "Claude", "Segura argumento longo sem virar enrolação.", true],
+      ["Texto criativo", "Gemini", "Arrisca mais na imagem e na frase do que os outros.", false],
+      ["Revisar e encurtar um texto", "Claude", "Corta o excesso sem apagar quem escreveu.", false],
+      ["Falar por voz, sem digitar", "ChatGPT", "O modo de voz ainda é o mais natural de conversar.", false]
+    ]],
+    ["Pensar e decidir", [
+      ["Brainstorm do zero", "ChatGPT", "Cospe volume rápido, e no começo volume é o que serve.", true],
+      ["Planejar o dia", "ChatGPT", "Transforma bagunça mental em lista em segundos.", true],
+      ["Tomar uma decisão difícil", "Claude", "Aguenta contraponto em vez de concordar com tudo que você diz.", false],
+      ["Deixar rodando enquanto você faz outra coisa", "Claude", "Tarefa longa que você entrega e volta pronta depois.", false]
+    ]],
+    ["Pesquisar e entender", [
+      ["Pesquisa profunda, com fonte", "Perplexity", "Entrega o link junto, então dá pra conferir antes de repetir por aí.", true],
+      ["Notícia de agora, trend em tempo real", "Grok", "Está dentro do X, vê o que está sendo dito nesta hora.", true],
+      ["Entender um podcast inteiro", "Gemini", "Joga o link e pergunta o que quiser sobre o que foi dito.", true],
+      ["Resumir um PDF de 40 páginas", "Gemini", "Engole arquivo grande sem reclamar do tamanho.", false],
+      ["Aprender um assunto novo", "Gemini", "Explica em camadas, do raso ao fundo, no seu ritmo.", false]
+    ]],
+    ["Criar imagem e vídeo", [
+      ["Gerar imagem", "Higgsfield", "Quando a imagem é o produto e não só um enfeite do post.", true],
+      ["Conteúdo cinematográfico", "Higgsfield", "Controle de luz, lente e cena, que é o que falta nas outras.", true],
+      ["Foto de produto", "Higgsfield", "O nível que anúncio exige, sem estúdio.", true],
+      ["Criar vídeo", "Higgsfield", "O que mais entrega movimento crível hoje.", true],
+      ["Imagem rápida do dia a dia", "Gemini", "Quando a imagem é meio, não fim. Resolve e segue.", false],
+      ["Montar uma apresentação", "Gemini", "Monta o deck inteiro a partir de um tema.", false],
+      ["Roteiro e estrutura de conteúdo", "Poppy AI", "Trabalha em cima das suas referências, não do nada.", false]
+    ]],
+    ["Construir", [
+      ["Fazer um site ou app", "Claude Code", "Constrói e ainda arruma o que ele mesmo quebrou.", false],
+      ["Programar de verdade", "Claude Code", "Trabalha dentro do seu projeto, não num chat solto.", false],
+      ["Protótipo rápido pra mostrar", "Lovable", "Do zero a um link no ar em minutos.", false]
+    ]]
+  ],
+
+  "desempates": [
+    ["Imagem", [
+      ["Gemini", "Quando a imagem é <b>meio</b>: ilustrar um post, testar uma ideia, resolver e seguir."],
+      ["Higgsfield", "Quando a imagem <b>é o produto</b>: foto de produto, cena de anúncio, algo que vai ser julgado por si só."]
+    ]],
+    ["Pesquisa", [
+      ["Perplexity", "Quando você quer <b>profundidade e a fonte junto</b>, pra poder conferir."],
+      ["Grok", "Quando você quer <b>o que está acontecendo agora</b>, nesta hora."]
+    ]],
+    ["Conteúdo", [
+      ["Poppy AI", "Roteiro e estrutura, em cima das <b>suas referências</b>."],
+      ["Higgsfield", "A parte visual depois que o roteiro existe. Não competem, são <b>etapas</b>."]
+    ]]
+  ],
+
+  "cinco": [
+    ["Claude", "Escrever bem, decidir e construir."],
+    ["Gemini", "Engolir material longo e resolver rápido."],
+    ["ChatGPT", "Começar do zero e conversar."],
+    ["Perplexity", "Pesquisar com fonte na mão."],
+    ["Higgsfield", "Imagem e vídeo que precisam ser bons de verdade."]
+  ]
+}

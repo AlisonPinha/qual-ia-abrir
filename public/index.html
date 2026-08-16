@@ -24,12 +24,9 @@
 <meta name="theme-color" content="#F1F2F5" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" as="image" href="/logos/claude.svg">
-<link rel="preload" as="image" href="/logos/chatgpt.svg">
-<link rel="preload" as="image" href="/logos/gemini.svg">
-
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Qual IA abrir pra cada tarefa","description":"24 tarefas do dia a dia e a ferramenta de IA certa para cada uma.","numberOfItems":24,"itemListElement":[{"@type":"ListItem","position":1,"name":"Escrever um e-mail: Claude","url":"https://claude.ai"},{"@type":"ListItem","position":2,"name":"Escrever página de vendas: Claude","url":"https://claude.ai"},{"@type":"ListItem","position":3,"name":"Texto criativo: Gemini","url":"https://gemini.google.com"},{"@type":"ListItem","position":4,"name":"Revisar e encurtar um texto: Claude","url":"https://claude.ai"},{"@type":"ListItem","position":5,"name":"Falar por voz, sem digitar: ChatGPT","url":"https://chatgpt.com"},{"@type":"ListItem","position":6,"name":"Brainstorm do zero: ChatGPT","url":"https://chatgpt.com"},{"@type":"ListItem","position":7,"name":"Planejar o dia: ChatGPT","url":"https://chatgpt.com"},{"@type":"ListItem","position":8,"name":"Tomar uma decisão difícil: Claude","url":"https://claude.ai"},{"@type":"ListItem","position":9,"name":"Deixar rodando enquanto você faz outra coisa: Claude","url":"https://claude.ai"},{"@type":"ListItem","position":10,"name":"Pesquisa profunda, com fonte: Perplexity","url":"https://www.perplexity.ai"},{"@type":"ListItem","position":11,"name":"Notícia de agora, trend em tempo real: Grok","url":"https://grok.com"},{"@type":"ListItem","position":12,"name":"Entender um podcast inteiro: Gemini","url":"https://gemini.google.com"},{"@type":"ListItem","position":13,"name":"Resumir um PDF de 40 páginas: Gemini","url":"https://gemini.google.com"},{"@type":"ListItem","position":14,"name":"Aprender um assunto novo: Gemini","url":"https://gemini.google.com"},{"@type":"ListItem","position":15,"name":"Gerar imagem: Higgsfield","url":"https://higgsfield.ai"},{"@type":"ListItem","position":16,"name":"Conteúdo cinematográfico: Higgsfield","url":"https://higgsfield.ai"},{"@type":"ListItem","position":17,"name":"Foto de produto: Higgsfield","url":"https://higgsfield.ai"},{"@type":"ListItem","position":18,"name":"Criar vídeo: Higgsfield","url":"https://higgsfield.ai"},{"@type":"ListItem","position":19,"name":"Imagem rápida do dia a dia: Gemini","url":"https://gemini.google.com"},{"@type":"ListItem","position":20,"name":"Montar uma apresentação: Gemini","url":"https://gemini.google.com"},{"@type":"ListItem","position":21,"name":"Roteiro e estrutura de conteúdo: Poppy AI","url":"https://poppyai.com"},{"@type":"ListItem","position":22,"name":"Fazer um site ou app: Claude Code","url":"https://claude.com/product/claude-code"},{"@type":"ListItem","position":23,"name":"Programar de verdade: Claude Code","url":"https://claude.com/product/claude-code"},{"@type":"ListItem","position":24,"name":"Protótipo rápido pra mostrar: Lovable","url":"https://lovable.dev"}]}</script>
 <style>
-  :root {
+:root {
     --bg: #F1F2F5;
     --surface: #FFFFFF;
     --surface-2: #F7F8FA;
@@ -554,7 +551,7 @@
 <div class="wrap">
 
   <header class="top">
-    <div class="fileira" id="fileira" aria-hidden="true"></div>
+    <div class="fileira" aria-hidden="true"><img src="/logos/claude.svg" alt="" width="30" height="30"><img src="/logos/chatgpt.svg" alt="" width="30" height="30"><img src="/logos/gemini.svg" alt="" width="30" height="30"><img src="/logos/perplexity.svg" alt="" width="30" height="30"><img src="/logos/grok.png" alt="" width="30" height="30"><img src="/logos/higgsfield.svg" alt="" width="30" height="30"><img src="/logos/poppy.png" alt="" width="30" height="30"><img src="/logos/lovable.png" alt="" width="30" height="30"></div>
     <div class="eyebrow">A lista completa · <b>@aalisonaraujo</b></div>
     <h1>Qual IA abrir</h1>
     <p class="tese">
@@ -573,12 +570,12 @@
              placeholder="o que você precisa fazer?" aria-label="Buscar uma tarefa">
       <button id="clear" type="button" aria-label="Limpar busca">×</button>
     </div>
-    <div class="chips" id="chips" role="group" aria-label="Filtrar por ferramenta"></div>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por ferramenta"><button type="button" class="chip" aria-pressed="false" data-ferr="Claude"><img src="/logos/claude.svg" alt="" width="18" height="18">Claude</button><button type="button" class="chip" aria-pressed="false" data-ferr="ChatGPT"><img src="/logos/chatgpt.svg" alt="" width="18" height="18">ChatGPT</button><button type="button" class="chip" aria-pressed="false" data-ferr="Gemini"><img src="/logos/gemini.svg" alt="" width="18" height="18">Gemini</button><button type="button" class="chip" aria-pressed="false" data-ferr="Perplexity"><img src="/logos/perplexity.svg" alt="" width="18" height="18">Perplexity</button><button type="button" class="chip" aria-pressed="false" data-ferr="Grok"><img src="/logos/grok.png" alt="" width="18" height="18">Grok</button><button type="button" class="chip" aria-pressed="false" data-ferr="Higgsfield"><img src="/logos/higgsfield.svg" alt="" width="18" height="18">Higgsfield</button><button type="button" class="chip" aria-pressed="false" data-ferr="Poppy AI"><img src="/logos/poppy.png" alt="" width="18" height="18">Poppy AI</button><button type="button" class="chip" aria-pressed="false" data-ferr="Lovable"><img src="/logos/lovable.png" alt="" width="18" height="18">Lovable</button></div>
   </div>
 
-  <p class="count" id="count"></p>
+  <p class="count" id="count">24 tarefas mapeadas</p>
 
-  <main id="lista"></main>
+  <main id="lista"><section class="grupo"><h2>Escrever e comunicar</h2><ul class="linhas"><li class="linha" data-busca="escrever um e-mail claude sai no tom certo e pronto pra enviar, sem aquele entusiasmo de robo. escrever e comunicar" data-ferr="Claude"><span class="tarefa">Escrever um e-mail<span class="selo">no reel</span></span><a class="ferramenta" href="https://claude.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/claude.svg" alt="" width="26" height="26" loading="lazy">Claude</a><span class="porque">Sai no tom certo e pronto pra enviar, sem aquele entusiasmo de robô.</span></li><li class="linha" data-busca="escrever pagina de vendas claude segura argumento longo sem virar enrolacao. escrever e comunicar" data-ferr="Claude"><span class="tarefa">Escrever página de vendas<span class="selo">no reel</span></span><a class="ferramenta" href="https://claude.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/claude.svg" alt="" width="26" height="26" loading="lazy">Claude</a><span class="porque">Segura argumento longo sem virar enrolação.</span></li><li class="linha" data-busca="texto criativo gemini arrisca mais na imagem e na frase do que os outros. escrever e comunicar" data-ferr="Gemini"><span class="tarefa">Texto criativo</span><a class="ferramenta" href="https://gemini.google.com" target="_blank" rel="noopener"><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy">Gemini</a><span class="porque">Arrisca mais na imagem e na frase do que os outros.</span></li><li class="linha" data-busca="revisar e encurtar um texto claude corta o excesso sem apagar quem escreveu. escrever e comunicar" data-ferr="Claude"><span class="tarefa">Revisar e encurtar um texto</span><a class="ferramenta" href="https://claude.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/claude.svg" alt="" width="26" height="26" loading="lazy">Claude</a><span class="porque">Corta o excesso sem apagar quem escreveu.</span></li><li class="linha" data-busca="falar por voz, sem digitar chatgpt o modo de voz ainda e o mais natural de conversar. escrever e comunicar" data-ferr="ChatGPT"><span class="tarefa">Falar por voz, sem digitar</span><a class="ferramenta" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="ico" src="/logos/chatgpt.svg" alt="" width="26" height="26" loading="lazy">ChatGPT</a><span class="porque">O modo de voz ainda é o mais natural de conversar.</span></li></ul></section><section class="grupo"><h2>Pensar e decidir</h2><ul class="linhas"><li class="linha" data-busca="brainstorm do zero chatgpt cospe volume rapido, e no comeco volume e o que serve. pensar e decidir" data-ferr="ChatGPT"><span class="tarefa">Brainstorm do zero<span class="selo">no reel</span></span><a class="ferramenta" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="ico" src="/logos/chatgpt.svg" alt="" width="26" height="26" loading="lazy">ChatGPT</a><span class="porque">Cospe volume rápido, e no começo volume é o que serve.</span></li><li class="linha" data-busca="planejar o dia chatgpt transforma bagunca mental em lista em segundos. pensar e decidir" data-ferr="ChatGPT"><span class="tarefa">Planejar o dia<span class="selo">no reel</span></span><a class="ferramenta" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="ico" src="/logos/chatgpt.svg" alt="" width="26" height="26" loading="lazy">ChatGPT</a><span class="porque">Transforma bagunça mental em lista em segundos.</span></li><li class="linha" data-busca="tomar uma decisao dificil claude aguenta contraponto em vez de concordar com tudo que voce diz. pensar e decidir" data-ferr="Claude"><span class="tarefa">Tomar uma decisão difícil</span><a class="ferramenta" href="https://claude.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/claude.svg" alt="" width="26" height="26" loading="lazy">Claude</a><span class="porque">Aguenta contraponto em vez de concordar com tudo que você diz.</span></li><li class="linha" data-busca="deixar rodando enquanto voce faz outra coisa claude tarefa longa que voce entrega e volta pronta depois. pensar e decidir" data-ferr="Claude"><span class="tarefa">Deixar rodando enquanto você faz outra coisa</span><a class="ferramenta" href="https://claude.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/claude.svg" alt="" width="26" height="26" loading="lazy">Claude</a><span class="porque">Tarefa longa que você entrega e volta pronta depois.</span></li></ul></section><section class="grupo"><h2>Pesquisar e entender</h2><ul class="linhas"><li class="linha" data-busca="pesquisa profunda, com fonte perplexity entrega o link junto, entao da pra conferir antes de repetir por ai. pesquisar e entender" data-ferr="Perplexity"><span class="tarefa">Pesquisa profunda, com fonte<span class="selo">no reel</span></span><a class="ferramenta" href="https://www.perplexity.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/perplexity.svg" alt="" width="26" height="26" loading="lazy">Perplexity</a><span class="porque">Entrega o link junto, então dá pra conferir antes de repetir por aí.</span></li><li class="linha" data-busca="noticia de agora, trend em tempo real grok esta dentro do x, ve o que esta sendo dito nesta hora. pesquisar e entender" data-ferr="Grok"><span class="tarefa">Notícia de agora, trend em tempo real<span class="selo">no reel</span></span><a class="ferramenta" href="https://grok.com" target="_blank" rel="noopener"><img class="ico" src="/logos/grok.png" alt="" width="26" height="26" loading="lazy">Grok</a><span class="porque">Está dentro do X, vê o que está sendo dito nesta hora.</span></li><li class="linha" data-busca="entender um podcast inteiro gemini joga o link e pergunta o que quiser sobre o que foi dito. pesquisar e entender" data-ferr="Gemini"><span class="tarefa">Entender um podcast inteiro<span class="selo">no reel</span></span><a class="ferramenta" href="https://gemini.google.com" target="_blank" rel="noopener"><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy">Gemini</a><span class="porque">Joga o link e pergunta o que quiser sobre o que foi dito.</span></li><li class="linha" data-busca="resumir um pdf de 40 paginas gemini engole arquivo grande sem reclamar do tamanho. pesquisar e entender" data-ferr="Gemini"><span class="tarefa">Resumir um PDF de 40 páginas</span><a class="ferramenta" href="https://gemini.google.com" target="_blank" rel="noopener"><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy">Gemini</a><span class="porque">Engole arquivo grande sem reclamar do tamanho.</span></li><li class="linha" data-busca="aprender um assunto novo gemini explica em camadas, do raso ao fundo, no seu ritmo. pesquisar e entender" data-ferr="Gemini"><span class="tarefa">Aprender um assunto novo</span><a class="ferramenta" href="https://gemini.google.com" target="_blank" rel="noopener"><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy">Gemini</a><span class="porque">Explica em camadas, do raso ao fundo, no seu ritmo.</span></li></ul></section><section class="grupo"><h2>Criar imagem e vídeo</h2><ul class="linhas"><li class="linha" data-busca="gerar imagem higgsfield quando a imagem e o produto e nao so um enfeite do post. criar imagem e video" data-ferr="Higgsfield"><span class="tarefa">Gerar imagem<span class="selo">no reel</span></span><a class="ferramenta" href="https://higgsfield.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/higgsfield.svg" alt="" width="26" height="26" loading="lazy">Higgsfield</a><span class="porque">Quando a imagem é o produto e não só um enfeite do post.</span></li><li class="linha" data-busca="conteudo cinematografico higgsfield controle de luz, lente e cena, que e o que falta nas outras. criar imagem e video" data-ferr="Higgsfield"><span class="tarefa">Conteúdo cinematográfico<span class="selo">no reel</span></span><a class="ferramenta" href="https://higgsfield.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/higgsfield.svg" alt="" width="26" height="26" loading="lazy">Higgsfield</a><span class="porque">Controle de luz, lente e cena, que é o que falta nas outras.</span></li><li class="linha" data-busca="foto de produto higgsfield o nivel que anuncio exige, sem estudio. criar imagem e video" data-ferr="Higgsfield"><span class="tarefa">Foto de produto<span class="selo">no reel</span></span><a class="ferramenta" href="https://higgsfield.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/higgsfield.svg" alt="" width="26" height="26" loading="lazy">Higgsfield</a><span class="porque">O nível que anúncio exige, sem estúdio.</span></li><li class="linha" data-busca="criar video higgsfield o que mais entrega movimento crivel hoje. criar imagem e video" data-ferr="Higgsfield"><span class="tarefa">Criar vídeo<span class="selo">no reel</span></span><a class="ferramenta" href="https://higgsfield.ai" target="_blank" rel="noopener"><img class="ico" src="/logos/higgsfield.svg" alt="" width="26" height="26" loading="lazy">Higgsfield</a><span class="porque">O que mais entrega movimento crível hoje.</span></li><li class="linha" data-busca="imagem rapida do dia a dia gemini quando a imagem e meio, nao fim. resolve e segue. criar imagem e video" data-ferr="Gemini"><span class="tarefa">Imagem rápida do dia a dia</span><a class="ferramenta" href="https://gemini.google.com" target="_blank" rel="noopener"><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy">Gemini</a><span class="porque">Quando a imagem é meio, não fim. Resolve e segue.</span></li><li class="linha" data-busca="montar uma apresentacao gemini monta o deck inteiro a partir de um tema. criar imagem e video" data-ferr="Gemini"><span class="tarefa">Montar uma apresentação</span><a class="ferramenta" href="https://gemini.google.com" target="_blank" rel="noopener"><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy">Gemini</a><span class="porque">Monta o deck inteiro a partir de um tema.</span></li><li class="linha" data-busca="roteiro e estrutura de conteudo poppy ai trabalha em cima das suas referencias, nao do nada. criar imagem e video" data-ferr="Poppy AI"><span class="tarefa">Roteiro e estrutura de conteúdo</span><a class="ferramenta" href="https://poppyai.com" target="_blank" rel="noopener"><img class="ico" src="/logos/poppy.png" alt="" width="26" height="26" loading="lazy">Poppy AI</a><span class="porque">Trabalha em cima das suas referências, não do nada.</span></li></ul></section><section class="grupo"><h2>Construir</h2><ul class="linhas"><li class="linha" data-busca="fazer um site ou app claude code constroi e ainda arruma o que ele mesmo quebrou. construir" data-ferr="Claude Code"><span class="tarefa">Fazer um site ou app</span><a class="ferramenta" href="https://claude.com/product/claude-code" target="_blank" rel="noopener"><img class="ico" src="/logos/claudecode.svg" alt="" width="26" height="26" loading="lazy">Claude Code</a><span class="porque">Constrói e ainda arruma o que ele mesmo quebrou.</span></li><li class="linha" data-busca="programar de verdade claude code trabalha dentro do seu projeto, nao num chat solto. construir" data-ferr="Claude Code"><span class="tarefa">Programar de verdade</span><a class="ferramenta" href="https://claude.com/product/claude-code" target="_blank" rel="noopener"><img class="ico" src="/logos/claudecode.svg" alt="" width="26" height="26" loading="lazy">Claude Code</a><span class="porque">Trabalha dentro do seu projeto, não num chat solto.</span></li><li class="linha" data-busca="prototipo rapido pra mostrar lovable do zero a um link no ar em minutos. construir" data-ferr="Lovable"><span class="tarefa">Protótipo rápido pra mostrar</span><a class="ferramenta" href="https://lovable.dev" target="_blank" rel="noopener"><img class="ico" src="/logos/lovable.png" alt="" width="26" height="26" loading="lazy">Lovable</a><span class="porque">Do zero a um link no ar em minutos.</span></li></ul></section></main>
 
   <div id="vazio">
     <p>Essa eu não mapeei ainda.</p>
@@ -591,19 +588,19 @@
       Três casos em que eu troco de ferramenta no meio do caminho. É aqui que a maioria erra,
       e é o que separa quem tem as ferramentas de quem sabe usar.
     </p>
-    <div class="desempates" id="desempates"></div>
+    <div class="desempates"><div class="desempate"><h3>Imagem</h3><div class="versus"><div class="lado"><span class="nome"><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy">Gemini</span><span class="quando">Quando a imagem é <b>meio</b>: ilustrar um post, testar uma ideia, resolver e seguir.</span></div><div class="lado"><span class="nome"><img class="ico" src="/logos/higgsfield.svg" alt="" width="26" height="26" loading="lazy">Higgsfield</span><span class="quando">Quando a imagem <b>é o produto</b>: foto de produto, cena de anúncio, algo que vai ser julgado por si só.</span></div></div></div><div class="desempate"><h3>Pesquisa</h3><div class="versus"><div class="lado"><span class="nome"><img class="ico" src="/logos/perplexity.svg" alt="" width="26" height="26" loading="lazy">Perplexity</span><span class="quando">Quando você quer <b>profundidade e a fonte junto</b>, pra poder conferir.</span></div><div class="lado"><span class="nome"><img class="ico" src="/logos/grok.png" alt="" width="26" height="26" loading="lazy">Grok</span><span class="quando">Quando você quer <b>o que está acontecendo agora</b>, nesta hora.</span></div></div></div><div class="desempate"><h3>Conteúdo</h3><div class="versus"><div class="lado"><span class="nome"><img class="ico" src="/logos/poppy.png" alt="" width="26" height="26" loading="lazy">Poppy AI</span><span class="quando">Roteiro e estrutura, em cima das <b>suas referências</b>.</span></div><div class="lado"><span class="nome"><img class="ico" src="/logos/higgsfield.svg" alt="" width="26" height="26" loading="lazy">Higgsfield</span><span class="quando">A parte visual depois que o roteiro existe. Não competem, são <b>etapas</b>.</span></div></div></div></div>
   </section>
 
   <section class="bloco">
     <h2>As nove ferramentas</h2>
     <p class="sub">Toca em qualquer uma pra abrir. Essas são as que eu tenho aberto num dia normal de trabalho.</p>
-    <div class="cards" id="cards"></div>
+    <div class="cards"><a class="card" href="https://claude.ai" target="_blank" rel="noopener"><img class="ico g" src="/logos/claude.svg" alt="" width="44" height="44" loading="lazy"><span class="nome">Claude <span class="seta">↗</span></span><span class="oq">Escrever, decidir e construir. O que menos estraga o seu texto.</span></a><a class="card" href="https://claude.com/product/claude-code" target="_blank" rel="noopener"><img class="ico g" src="/logos/claudecode.svg" alt="" width="44" height="44" loading="lazy"><span class="nome">Claude Code <span class="seta">↗</span></span><span class="oq">O Claude trabalhando dentro do seu projeto, não num chat solto.</span></a><a class="card" href="https://chatgpt.com" target="_blank" rel="noopener"><img class="ico g" src="/logos/chatgpt.svg" alt="" width="44" height="44" loading="lazy"><span class="nome">ChatGPT <span class="seta">↗</span></span><span class="oq">O mais versátil pra começar do zero e pra conversar por voz.</span></a><a class="card" href="https://gemini.google.com" target="_blank" rel="noopener"><img class="ico g" src="/logos/gemini.svg" alt="" width="44" height="44" loading="lazy"><span class="nome">Gemini <span class="seta">↗</span></span><span class="oq">Engole PDF, vídeo e podcast inteiro sem reclamar do tamanho.</span></a><a class="card" href="https://www.perplexity.ai" target="_blank" rel="noopener"><img class="ico g" src="/logos/perplexity.svg" alt="" width="44" height="44" loading="lazy"><span class="nome">Perplexity <span class="seta">↗</span></span><span class="oq">Pesquisa com a fonte do lado, pra você poder conferir.</span></a><a class="card" href="https://grok.com" target="_blank" rel="noopener"><img class="ico g" src="/logos/grok.png" alt="" width="44" height="44" loading="lazy"><span class="nome">Grok <span class="seta">↗</span></span><span class="oq">Dentro do X, vê o que está sendo dito nesta hora.</span></a><a class="card" href="https://higgsfield.ai" target="_blank" rel="noopener"><img class="ico g" src="/logos/higgsfield.svg" alt="" width="44" height="44" loading="lazy"><span class="nome">Higgsfield <span class="seta">↗</span></span><span class="oq">Imagem e vídeo no nível que anúncio exige.</span></a><a class="card" href="https://poppyai.com" target="_blank" rel="noopener"><img class="ico g" src="/logos/poppy.png" alt="" width="44" height="44" loading="lazy"><span class="nome">Poppy AI <span class="seta">↗</span></span><span class="oq">Roteiro e estrutura em cima das suas próprias referências.</span></a><a class="card" href="https://lovable.dev" target="_blank" rel="noopener"><img class="ico g" src="/logos/lovable.png" alt="" width="44" height="44" loading="lazy"><span class="nome">Lovable <span class="seta">↗</span></span><span class="oq">Do zero a um link no ar em minutos.</span></a></div>
   </section>
 
   <section class="bloco">
     <h2>Se você só lembrar de cinco</h2>
     <p class="sub">Fecha esta página sabendo isto e você já está à frente de quase todo mundo.</p>
-    <ul class="cinco" id="cinco"></ul>
+    <ul class="cinco"><li><img class="ico" src="/logos/claude.svg" alt="" width="26" height="26" loading="lazy"><span class="nome">Claude</span><span class="papel">Escrever bem, decidir e construir.</span></li><li><img class="ico" src="/logos/gemini.svg" alt="" width="26" height="26" loading="lazy"><span class="nome">Gemini</span><span class="papel">Engolir material longo e resolver rápido.</span></li><li><img class="ico" src="/logos/chatgpt.svg" alt="" width="26" height="26" loading="lazy"><span class="nome">ChatGPT</span><span class="papel">Começar do zero e conversar.</span></li><li><img class="ico" src="/logos/perplexity.svg" alt="" width="26" height="26" loading="lazy"><span class="nome">Perplexity</span><span class="papel">Pesquisar com fonte na mão.</span></li><li><img class="ico" src="/logos/higgsfield.svg" alt="" width="26" height="26" loading="lazy"><span class="nome">Higgsfield</span><span class="papel">Imagem e vídeo que precisam ser bons de verdade.</span></li></ul>
   </section>
 
   <section class="fecho">
@@ -619,176 +616,38 @@
     </p>
     <div class="assina">
       <span>Alison Araújo · <a href="https://instagram.com/aalisonaraujo" target="_blank" rel="noopener">@aalisonaraujo</a></span>
-      <span id="stamp"></span>
+      <span>24 tarefas · 9 ferramentas</span>
     </div>
   </section>
 
 </div>
 
 <script>
-  const F = {
-    "Claude":      { logo: "claude.svg",     url: "https://claude.ai",                        oq: "Escrever, decidir e construir. O que menos estraga o seu texto." },
-    "Claude Code": { logo: "claudecode.svg", url: "https://claude.com/product/claude-code",   oq: "O Claude trabalhando dentro do seu projeto, não num chat solto." },
-    "ChatGPT":     { logo: "chatgpt.svg",    url: "https://chatgpt.com",                      oq: "O mais versátil pra começar do zero e pra conversar por voz." },
-    "Gemini":      { logo: "gemini.svg",     url: "https://gemini.google.com",                oq: "Engole PDF, vídeo e podcast inteiro sem reclamar do tamanho." },
-    "Perplexity":  { logo: "perplexity.svg", url: "https://www.perplexity.ai",                oq: "Pesquisa com a fonte do lado, pra você poder conferir." },
-    "Grok":        { logo: "grok.png",       url: "https://grok.com",                         oq: "Dentro do X, vê o que está sendo dito nesta hora." },
-    "Higgsfield":  { logo: "higgsfield.svg", url: "https://higgsfield.ai",                    oq: "Imagem e vídeo no nível que anúncio exige." },
-    "Poppy AI":    { logo: "poppy.png",      url: "https://poppyai.com",                      oq: "Roteiro e estrutura em cima das suas próprias referências." },
-    "Lovable":     { logo: "lovable.png",    url: "https://lovable.dev",                      oq: "Do zero a um link no ar em minutos." }
-  };
-
-  const DADOS = [
-    ["Escrever e comunicar", [
-      ["Escrever um e-mail", "Claude", "Sai no tom certo e pronto pra enviar, sem aquele entusiasmo de robô.", 1],
-      ["Escrever página de vendas", "Claude", "Segura argumento longo sem virar enrolação.", 1],
-      ["Texto criativo", "Gemini", "Arrisca mais na imagem e na frase do que os outros.", 0],
-      ["Revisar e encurtar um texto", "Claude", "Corta o excesso sem apagar quem escreveu.", 0],
-      ["Falar por voz, sem digitar", "ChatGPT", "O modo de voz ainda é o mais natural de conversar.", 0]
-    ]],
-    ["Pensar e decidir", [
-      ["Brainstorm do zero", "ChatGPT", "Cospe volume rápido, e no começo volume é o que serve.", 1],
-      ["Planejar o dia", "ChatGPT", "Transforma bagunça mental em lista em segundos.", 1],
-      ["Tomar uma decisão difícil", "Claude", "Aguenta contraponto em vez de concordar com tudo que você diz.", 0],
-      ["Deixar rodando enquanto você faz outra coisa", "Claude", "Tarefa longa que você entrega e volta pronta depois.", 0]
-    ]],
-    ["Pesquisar e entender", [
-      ["Pesquisa profunda, com fonte", "Perplexity", "Entrega o link junto, então dá pra conferir antes de repetir por aí.", 1],
-      ["Notícia de agora, trend em tempo real", "Grok", "Está dentro do X, vê o que está sendo dito nesta hora.", 1],
-      ["Entender um podcast inteiro", "Gemini", "Joga o link e pergunta o que quiser sobre o que foi dito.", 1],
-      ["Resumir um PDF de 40 páginas", "Gemini", "Engole arquivo grande sem reclamar do tamanho.", 0],
-      ["Aprender um assunto novo", "Gemini", "Explica em camadas, do raso ao fundo, no seu ritmo.", 0]
-    ]],
-    ["Criar imagem e vídeo", [
-      ["Gerar imagem", "Higgsfield", "Quando a imagem é o produto e não só um enfeite do post.", 1],
-      ["Conteúdo cinematográfico", "Higgsfield", "Controle de luz, lente e cena, que é o que falta nas outras.", 1],
-      ["Foto de produto", "Higgsfield", "O nível que anúncio exige, sem estúdio.", 1],
-      ["Criar vídeo", "Higgsfield", "O que mais entrega movimento crível hoje.", 1],
-      ["Imagem rápida do dia a dia", "Gemini", "Quando a imagem é meio, não fim. Resolve e segue.", 0],
-      ["Montar uma apresentação", "Gemini", "Monta o deck inteiro a partir de um tema.", 0],
-      ["Roteiro e estrutura de conteúdo", "Poppy AI", "Trabalha em cima das suas referências, não do nada.", 0]
-    ]],
-    ["Construir", [
-      ["Fazer um site ou app", "Claude Code", "Constrói e ainda arruma o que ele mesmo quebrou.", 0],
-      ["Programar de verdade", "Claude Code", "Trabalha dentro do seu projeto, não num chat solto.", 0],
-      ["Protótipo rápido pra mostrar", "Lovable", "Do zero a um link no ar em minutos.", 0]
-    ]]
-  ];
-
-  const DESEMPATES = [
-    ["Imagem", [
-      ["Gemini", "Quando a imagem é <b>meio</b>: ilustrar um post, testar uma ideia, resolver e seguir."],
-      ["Higgsfield", "Quando a imagem <b>é o produto</b>: foto de produto, cena de anúncio, algo que vai ser julgado por si só."]
-    ]],
-    ["Pesquisa", [
-      ["Perplexity", "Quando você quer <b>profundidade e a fonte junto</b>, pra poder conferir."],
-      ["Grok", "Quando você quer <b>o que está acontecendo agora</b>, nesta hora."]
-    ]],
-    ["Conteúdo", [
-      ["Poppy AI", "Roteiro e estrutura, em cima das <b>suas referências</b>."],
-      ["Higgsfield", "A parte visual depois que o roteiro existe. Não competem, são <b>etapas</b>."]
-    ]]
-  ];
-
-  const CINCO = [
-    ["Claude", "Escrever bem, decidir e construir."],
-    ["Gemini", "Engolir material longo e resolver rápido."],
-    ["ChatGPT", "Começar do zero e conversar."],
-    ["Perplexity", "Pesquisar com fonte na mão."],
-    ["Higgsfield", "Imagem e vídeo que precisam ser bons de verdade."]
-  ];
-
-  const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-  const img = (nome, cls) => `<img class="ico${cls ? " " + cls : ""}" src="/logos/${F[nome].logo}" alt="" width="26" height="26" loading="lazy">`;
-
   const el = id => document.getElementById(id);
   const listaEl = el("lista"), chipsEl = el("chips"), countEl = el("count"), qEl = el("q");
-
-  // fileira do topo
-  el("fileira").innerHTML = Object.keys(F)
-    .filter(n => n !== "Claude Code")
-    .map(n => `<img src="/logos/${F[n].logo}" alt="" width="30" height="30">`).join("");
-
-  // lista
-  let total = 0;
-  const itens = [];
-
-  DADOS.forEach(([grupo, linhas]) => {
-    const sec = document.createElement("section");
-    sec.className = "grupo";
-    sec.innerHTML = `<h2>${grupo}</h2><ul class="linhas"></ul>`;
-    const ul = sec.querySelector("ul");
-
-    linhas.forEach(([tarefa, ferr, porque, noReel]) => {
-      total++;
-      const li = document.createElement("li");
-      li.className = "linha";
-      li.innerHTML =
-        `<span class="tarefa">${tarefa}${noReel ? '<span class="selo">no reel</span>' : ""}</span>` +
-        `<a class="ferramenta" href="${F[ferr].url}" target="_blank" rel="noopener">${img(ferr)}${ferr}</a>` +
-        `<span class="porque">${porque}</span>`;
-      ul.appendChild(li);
-      itens.push({ el: li, busca: norm(`${tarefa} ${ferr} ${porque} ${grupo}`), ferr });
-    });
-
-    listaEl.appendChild(sec);
-  });
-
-  // desempates
-  el("desempates").innerHTML = DESEMPATES.map(([titulo, lados]) => `
-    <div class="desempate"><h3>${titulo}</h3><div class="versus">${
-      lados.map(([n, txt]) =>
-        `<div class="lado"><span class="nome">${img(n)}${n}</span><span class="quando">${txt}</span></div>`
-      ).join("")
-    }</div></div>`).join("");
-
-  // cards
-  el("cards").innerHTML = Object.entries(F).map(([nome, d]) =>
-    `<a class="card" href="${d.url}" target="_blank" rel="noopener">
-       <img class="ico g" src="/logos/${d.logo}" alt="" width="44" height="44" loading="lazy">
-       <span class="nome">${nome} <span class="seta">↗</span></span>
-       <span class="oq">${d.oq}</span>
-     </a>`).join("");
-
-  // cinco
-  el("cinco").innerHTML = CINCO.map(([n, papel]) =>
-    `<li>${img(n)}<span class="nome">${n}</span><span class="papel">${papel}</span></li>`).join("");
-
-  // chips
+  const itens = [...document.querySelectorAll(".linha")]
+    .map(n => ({ el: n, busca: n.dataset.busca, ferr: n.dataset.ferr }));
+  const total = itens.length;
+  const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   let ativo = null;
-
-  Object.keys(F).filter(n => n !== "Claude Code").forEach(nome => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "chip";
-    b.setAttribute("aria-pressed", "false");
-    b.innerHTML = `<img src="/logos/${F[nome].logo}" alt="" width="18" height="18">${nome}`;
-    b.addEventListener("click", () => {
-      ativo = ativo === nome ? null : nome;
-      [...chipsEl.children].forEach(c => c.setAttribute("aria-pressed", String(c.textContent === ativo)));
-      aplicar();
-    });
-    chipsEl.appendChild(b);
-  });
 
   function aplicar() {
     const termo = norm(qEl.value.trim());
     let vis = 0;
 
-    itens.forEach(it => {
+    for (const it of itens) {
       const ok = (!termo || it.busca.includes(termo)) &&
                  (!ativo || it.ferr === ativo || (ativo === "Claude" && it.ferr === "Claude Code"));
       it.el.hidden = !ok;
       if (ok) vis++;
-    });
+    }
 
-    [...listaEl.children].forEach(sec =>
-      sec.hidden = ![...sec.querySelectorAll(".linha")].some(l => !l.hidden));
+    for (const sec of listaEl.children)
+      sec.hidden = ![...sec.querySelectorAll(".linha")].some(l => !l.hidden);
 
     const filtrando = !!termo || !!ativo;
     document.body.classList.toggle("filtering", filtrando);
     document.body.classList.toggle("vazio-on", vis === 0);
-
     countEl.textContent = filtrando
       ? `${vis} ${vis === 1 ? "tarefa encontrada" : "tarefas encontradas"}`
       : `${total} tarefas mapeadas`;
@@ -796,10 +655,19 @@
 
   qEl.addEventListener("input", aplicar);
 
+  for (const b of chipsEl.children) {
+    b.addEventListener("click", () => {
+      ativo = ativo === b.dataset.ferr ? null : b.dataset.ferr;
+      for (const c of chipsEl.children)
+        c.setAttribute("aria-pressed", String(c.dataset.ferr === ativo));
+      aplicar();
+    });
+  }
+
   el("clear").addEventListener("click", () => {
     qEl.value = "";
     ativo = null;
-    [...chipsEl.children].forEach(c => c.setAttribute("aria-pressed", "false"));
+    for (const c of chipsEl.children) c.setAttribute("aria-pressed", "false");
     aplicar();
     qEl.focus();
   });
@@ -808,17 +676,11 @@
   const sentinela = document.createElement("div");
   sentinela.style.height = "1px";
   consoleEl.parentNode.insertBefore(sentinela, consoleEl);
-  new IntersectionObserver(([e]) => consoleEl.classList.toggle("stuck", !e.isIntersecting)).observe(sentinela);
-
-  el("stamp").textContent = "Atualizada em " +
-    new Date(document.lastModified).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
-
-  aplicar();
+  new IntersectionObserver(([e]) => consoleEl.classList.toggle("stuck", !e.isIntersecting))
+    .observe(sentinela);
 </script>
-
-<!-- Medição: ative "Web Analytics" no painel do projeto na Vercel e descomente a linha abaixo.
-     Sem isso o script responde 404 e suja o console. A contagem básica de acessos já
-     aparece no dashboard da Vercel mesmo sem ele. -->
+<!-- Medição: ative "Web Analytics" no painel da Vercel e descomente a linha abaixo.
+     Sem o toggle o script responde 404 e suja o console. -->
 <!-- <script defer src="/_vercel/insights/script.js"></script> -->
 </body>
 </html>
