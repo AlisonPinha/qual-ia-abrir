@@ -14,7 +14,7 @@ CAPTURA_URL = ""
 # mais aparece. Pode ser a mesma implantação de CAPTURA_URL: o Apps Script separa
 # por "tipo" no payload e grava em abas diferentes.
 # Vazio: nada é enviado e nada quebra.
-ANALITICO_URL = ""
+ANALITICO_URL = "https://script.google.com/macros/s/AKfycbzY1PYcR4EC_AUXE3zASDVd7UWySYdltrwg1IX1RqjbZFGccNxf2fiDo0-b5jnMLMVqLA/exec"
 
 # Checkout do "Qual IA Usar?" (R$ 67). Vazio = o resultado do diagnóstico oferece a
 # lista de espera pelo direct em vez de um botão de compra que não leva a lugar nenhum.
