@@ -45,6 +45,16 @@ Serve de referência para os próximos passos:
 - **Gateways:** EFI/Gerencianet e Asaas para PIX, Hotmart no estorno.
 - **Dedup de evento:** `analytics_event_id` do servidor usado no Pixel e na CAPI.
 
+## Bug que aconteceu duas vezes nesta sessão
+
+Recortar o template por `t.index(inicio) ... t.index(fim)` apagou tudo que estava no meio.
+Aconteceu ao reescrever o rodapé: levou junto o `<dialog>` do diagnóstico **e a seção de
+oferta inteira** (preço, entregáveis, botão de compra). Passou porque a bateria de QA
+verificava layout, contraste e console, e bloco ausente não gera erro.
+
+**Antes de cortar por índice:** listar os ids que devem sobreviver no intervalo.
+**Depois de gerar:** rodar o inventário de peças e o fluxo do pop-up, não só o de layout.
+
 ## Próximo passo sugerido
 
 Ligar `CHECKOUT_URL` e `CAPTURA_URL`. Sem os dois, a página convence e não cobra, e o lead

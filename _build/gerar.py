@@ -789,6 +789,39 @@ html = f"""<!doctype html>
   </div>
 </section>
 
+<section class="sec sec-claro" id="oferta">
+  <div class="env">
+    <div class="cabeca">
+      <span class="eyebrow">O mapa completo</span>
+      <h2>A ferramenta certa é metade.<br><span class="g">O prompt certo é a outra.</span></h2>
+      <p>{escape(OF["promessa"])}</p>
+    </div>
+
+    <div class="para-quem">{para_quem}</div>
+
+    <div class="oferta-card">
+      <div class="oferta-topo">
+        <span class="selo-rosa">{escape(OF["nome"])}</span>
+        <div class="preco">
+          <span class="de">de R$ {OF["de"]} por</span>
+          <span class="valor"><b>R$</b>{PRECO_N}</span>
+          <span class="unico">pagamento único</span>
+        </div>
+        {botao_compra}
+        <p class="form-aviso">{aviso_compra}</p>
+        <div class="garantias">{garantias_of}</div>
+      </div>
+      <div class="inclusos">
+        <div class="inclusos-topo">
+          <span class="rot">O que vem no mapa</span>
+          <span class="selo-verde">{escape(OF["selo_inclusos"])}</span>
+        </div>
+        <ul class="entregaveis">{entregaveis}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec">
   <div class="env">
     <div class="cabeca">
