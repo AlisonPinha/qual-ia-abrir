@@ -1,5 +1,47 @@
 # Status e pendências
 
+## Próxima sessão começa aqui
+
+**Tarefa:** criar 3 produtos na Cakto, um por variante do teste de nome chiclete.
+O Alison já está logado; dá para conduzir pelo Claude in Chrome.
+
+Para cada um, o fluxo da Cakto é: Adicionar Produto → Pagamento único → nome,
+descrição (mínimo 100 caracteres), página de vendas, preço → Continuar →
+**Área de membros Externa** → URL de entrega → Cadastrar.
+
+| # | Nome do produto | Página de vendas | Preço |
+|---|---|---|---|
+| 1 | Método das 3 Abas | `https://qual-ia-abrir.vercel.app/abas` | 67,00 |
+| 2 | Regra das 3 IAs | `https://qual-ia-abrir.vercel.app/regra` | 67,00 |
+| 3 | Stack Mínima | `https://qual-ia-abrir.vercel.app/stack` | 67,00 |
+
+**URL de entrega dos três (a mesma):** `https://qual-ia-abrir.vercel.app/mapa`
+
+**Descrições** (todas passam dos 100 caracteres exigidos):
+
+1. *Método das 3 Abas:* "Diagnóstico que devolve as 3 abas de IA certas para o seu trabalho e orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área e o que não vale a pena assinar agora."
+2. *Regra das 3 IAs:* "Diagnóstico que devolve as 3 ferramentas de IA certas para o seu trabalho e orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área e o que não vale a pena assinar agora."
+3. *Stack Mínima:* "Diagnóstico que devolve a stack mínima de IA para o seu trabalho e orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área e o que não vale a pena assinar agora."
+
+**Depois de criar:** colar cada link `pay.cakto.com.br/...` no campo `checkout` da
+variante correspondente em `_build/config.py`, rebuildar as quatro e publicar:
+
+```bash
+for v in "" abas regra stack; do python3 _build/gerar.py $v; done
+python3 _build/gerar_mapa.py && vercel deploy --prod --yes
+```
+
+**Por que isso importa:** hoje as quatro LPs caem no mesmo checkout, que diz
+"Qual IA Usar?". O nome quebra bem na hora do pagamento e contamina a leitura de
+conversão do teste.
+
+**Onde ler o resultado do teste:** planilha "Qual IA Usar? — Diagnósticos e Leads",
+aba `diagnosticos`, coluna `origem` (`site`, `abas`, `regra`, `stack`). Tem 6 linhas
+de teste que podem ser apagadas: as com origem `teste` e as do "Teste do Claude".
+
+---
+
+
 Atualizado em 18/08/2026, depois do deploy que ligou o checkout.
 
 ## O que a página é hoje
