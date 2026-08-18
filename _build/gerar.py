@@ -547,7 +547,6 @@ html = f"""<!doctype html>
 <header class="hero">
   <div class="env">
     <div>
-      <span class="badge">Do Reel que 89 mil pessoas viram</span>
       <h1>Pare de assinar IA<br>que você <span class="g">não usa.</span></h1>
       <!-- o H1 tem 2 linhas por desenho: se mudar a copy, confira a quebra em 1440 e em 390 -->
       <p class="tese">
