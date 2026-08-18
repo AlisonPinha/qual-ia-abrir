@@ -39,7 +39,23 @@ conversão do teste.
 aba `diagnosticos`, coluna `origem` (`site`, `abas`, `regra`, `stack`). Tem 6 linhas
 de teste que podem ser apagadas: as com origem `teste` e as do "Teste do Claude".
 
----
+### A fila depois dos checkouts
+
+| # | Tarefa | Depende de | Quem |
+|---|---|---|---|
+| 1 | **3 produtos na Cakto** e os links em `config.py` | nada | Claude conduz no browser |
+| 2 | **Compra de teste de R$ 67** em si mesmo | item 1 | Alison paga, Claude confere a entrega e se a Cakto repassa parâmetros na URL |
+| 3 | **Unificar a marca** do logo, hoje "qual ia abrir" contra "Qual IA Usar?" no checkout | nada | Claude, 3 minutos |
+| 4 | **Custo do Higgsfield** | conferir no site da ferramenta | Alison confere, Claude atualiza `dados.json` |
+| 5 | **Conteúdo dos 7 dias** do upsell de R$ 197 | método do Alison | os dois: Claude estrutura, Alison revisa a voz |
+| 6 | **Página `/plano`** da entrega do upsell | item 5 | Claude, ~2h |
+| 7 | **Ramificação do diagnóstico** por área, com perguntas próprias em cada trilha | nada | Claude, uma sessão inteira |
+| 8 | **Recuperação por WhatsApp** (+20% de faturamento na operação de referência) | item 1 (webhook) | Claude no n8n |
+| 9 | **Web Analytics** da Vercel e **domínio próprio** | painel da Vercel | Alison |
+
+**Não ligar o upsell no funil antes do item 5.** Vender e não conseguir entregar é
+reembolso e reclamação, e queima a autoridade que é o ativo do produto.
+
 
 
 Atualizado em 18/08/2026, depois do deploy que ligou o checkout.
