@@ -12,62 +12,692 @@
   },
 
   "grupos": [
-    ["Escrever e comunicar", [
-      ["Escrever um e-mail", "Claude", "Sai no tom certo e pronto pra enviar, sem aquele entusiasmo de robô.", true],
-      ["Escrever página de vendas", "Claude", "Segura argumento longo sem virar enrolação.", true],
-      ["Texto criativo", "Gemini", "Arrisca mais na imagem e na frase do que os outros.", false],
-      ["Revisar e encurtar um texto", "Claude", "Corta o excesso sem apagar quem escreveu.", false],
-      ["Falar por voz, sem digitar", "ChatGPT", "O modo de voz ainda é o mais natural de conversar.", false]
-    ]],
-    ["Pensar e decidir", [
-      ["Brainstorm do zero", "ChatGPT", "Cospe volume rápido, e no começo volume é o que serve.", true],
-      ["Planejar o dia", "ChatGPT", "Transforma bagunça mental em lista em segundos.", true],
-      ["Tomar uma decisão difícil", "Claude", "Aguenta contraponto em vez de concordar com tudo que você diz.", false],
-      ["Deixar rodando enquanto você faz outra coisa", "Claude", "Tarefa longa que você entrega e volta pronta depois.", false]
-    ]],
-    ["Pesquisar e entender", [
-      ["Pesquisa profunda, com fonte", "Perplexity", "Entrega o link junto, então dá pra conferir antes de repetir por aí.", true],
-      ["Notícia de agora, trend em tempo real", "Grok", "Está dentro do X, vê o que está sendo dito nesta hora.", true],
-      ["Entender um podcast inteiro", "Gemini", "Joga o link e pergunta o que quiser sobre o que foi dito.", true],
-      ["Resumir um PDF de 40 páginas", "Gemini", "Engole arquivo grande sem reclamar do tamanho.", false],
-      ["Aprender um assunto novo", "Gemini", "Explica em camadas, do raso ao fundo, no seu ritmo.", false]
-    ]],
-    ["Criar imagem e vídeo", [
-      ["Gerar imagem", "Higgsfield", "Quando a imagem é o produto e não só um enfeite do post.", true],
-      ["Conteúdo cinematográfico", "Higgsfield", "Controle de luz, lente e cena, que é o que falta nas outras.", true],
-      ["Foto de produto", "Higgsfield", "O nível que anúncio exige, sem estúdio.", true],
-      ["Criar vídeo", "Higgsfield", "O que mais entrega movimento crível hoje.", true],
-      ["Imagem rápida do dia a dia", "Gemini", "Quando a imagem é meio, não fim. Resolve e segue.", false],
-      ["Montar uma apresentação", "Gemini", "Monta o deck inteiro a partir de um tema.", false],
-      ["Roteiro e estrutura de conteúdo", "Poppy AI", "Trabalha em cima das suas referências, não do nada.", false]
-    ]],
-    ["Construir", [
-      ["Fazer um site ou app", "Claude Code", "Constrói e ainda arruma o que ele mesmo quebrou.", false],
-      ["Programar de verdade", "Claude Code", "Trabalha dentro do seu projeto, não num chat solto.", false],
-      ["Protótipo rápido pra mostrar", "Lovable", "Do zero a um link no ar em minutos.", false]
-    ]]
+    [
+      "Escrever e comunicar",
+      [
+        [
+          "Escrever um e-mail",
+          "Claude",
+          "Sai no tom certo e pronto pra enviar, sem aquele entusiasmo de robô.",
+          true
+        ],
+        [
+          "Escrever página de vendas",
+          "Claude",
+          "Segura argumento longo sem virar enrolação.",
+          true
+        ],
+        [
+          "Texto criativo",
+          "Gemini",
+          "Arrisca mais na imagem e na frase do que os outros.",
+          false
+        ],
+        [
+          "Revisar e encurtar um texto",
+          "Claude",
+          "Corta o excesso sem apagar quem escreveu.",
+          false
+        ],
+        [
+          "Falar por voz, sem digitar",
+          "ChatGPT",
+          "O modo de voz ainda é o mais natural de conversar.",
+          false
+        ]
+      ]
+    ],
+    [
+      "Pensar e decidir",
+      [
+        [
+          "Brainstorm do zero",
+          "ChatGPT",
+          "Cospe volume rápido, e no começo volume é o que serve.",
+          true
+        ],
+        [
+          "Planejar o dia",
+          "ChatGPT",
+          "Transforma bagunça mental em lista em segundos.",
+          true
+        ],
+        [
+          "Tomar uma decisão difícil",
+          "Claude",
+          "Aguenta contraponto em vez de concordar com tudo que você diz.",
+          false
+        ],
+        [
+          "Deixar rodando enquanto você faz outra coisa",
+          "Claude",
+          "Tarefa longa que você entrega e volta pronta depois.",
+          false
+        ]
+      ]
+    ],
+    [
+      "Pesquisar e entender",
+      [
+        [
+          "Pesquisa profunda, com fonte",
+          "Perplexity",
+          "Entrega o link junto, então dá pra conferir antes de repetir por aí.",
+          true
+        ],
+        [
+          "Notícia de agora, trend em tempo real",
+          "Grok",
+          "Está dentro do X, vê o que está sendo dito nesta hora.",
+          true
+        ],
+        [
+          "Entender um podcast inteiro",
+          "Gemini",
+          "Joga o link e pergunta o que quiser sobre o que foi dito.",
+          true
+        ],
+        [
+          "Resumir um PDF de 40 páginas",
+          "Gemini",
+          "Engole arquivo grande sem reclamar do tamanho.",
+          false
+        ],
+        [
+          "Aprender um assunto novo",
+          "Gemini",
+          "Explica em camadas, do raso ao fundo, no seu ritmo.",
+          false
+        ]
+      ]
+    ],
+    [
+      "Criar imagem e vídeo",
+      [
+        [
+          "Gerar imagem",
+          "Higgsfield",
+          "Quando a imagem é o produto e não só um enfeite do post.",
+          true
+        ],
+        [
+          "Conteúdo cinematográfico",
+          "Higgsfield",
+          "Controle de luz, lente e cena, que é o que falta nas outras.",
+          true
+        ],
+        [
+          "Foto de produto",
+          "Higgsfield",
+          "O nível que anúncio exige, sem estúdio.",
+          true
+        ],
+        [
+          "Criar vídeo",
+          "Higgsfield",
+          "O que mais entrega movimento crível hoje.",
+          true
+        ],
+        [
+          "Imagem rápida do dia a dia",
+          "Gemini",
+          "Quando a imagem é meio, não fim. Resolve e segue.",
+          false
+        ],
+        [
+          "Montar uma apresentação",
+          "Gemini",
+          "Monta o deck inteiro a partir de um tema.",
+          false
+        ],
+        [
+          "Roteiro e estrutura de conteúdo",
+          "Poppy AI",
+          "Trabalha em cima das suas referências, não do nada.",
+          false
+        ]
+      ]
+    ],
+    [
+      "Construir",
+      [
+        [
+          "Fazer um site ou app",
+          "Claude Code",
+          "Constrói e ainda arruma o que ele mesmo quebrou.",
+          false
+        ],
+        [
+          "Programar de verdade",
+          "Claude Code",
+          "Trabalha dentro do seu projeto, não num chat solto.",
+          false
+        ],
+        [
+          "Protótipo rápido pra mostrar",
+          "Lovable",
+          "Do zero a um link no ar em minutos.",
+          false
+        ]
+      ]
+    ]
   ],
-
-  "desempates": [
-    ["Imagem", [
-      ["Gemini", "Quando a imagem é <b>meio</b>: ilustrar um post, testar uma ideia, resolver e seguir."],
-      ["Higgsfield", "Quando a imagem <b>é o produto</b>: foto de produto, cena de anúncio, algo que vai ser julgado por si só."]
-    ]],
-    ["Pesquisa", [
-      ["Perplexity", "Quando você quer <b>profundidade e a fonte junto</b>, pra poder conferir."],
-      ["Grok", "Quando você quer <b>o que está acontecendo agora</b>, nesta hora."]
-    ]],
-    ["Conteúdo", [
-      ["Poppy AI", "Roteiro e estrutura, em cima das <b>suas referências</b>."],
-      ["Higgsfield", "A parte visual depois que o roteiro existe. Não competem, são <b>etapas</b>."]
-    ]]
+  "diagnostico": {
+    "aviso_custo": "Valores conferidos em 18/08/2026. Ferramenta de IA cobra em dólar, então o valor em real muda com o câmbio.",
+    "acesso": {
+      "Claude": {
+        "custo": "US$ 20/mês no Pro",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "US$ 20/mês"
+      },
+      "Claude Code": {
+        "custo": "já vem no Pro ou no Max do Claude",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "sem custo extra"
+      },
+      "ChatGPT": {
+        "custo": "US$ 20/mês no Plus",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "US$ 20/mês"
+      },
+      "Gemini": {
+        "custo": "US$ 19,99/mês no Google AI Pro",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "US$ 19,99/mês"
+      },
+      "Perplexity": {
+        "custo": "US$ 20/mês no Pro",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "US$ 20/mês"
+      },
+      "Grok": {
+        "custo": "US$ 10 a 30/mês, ou US$ 8 pelo X",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "US$ 10 a 30/mês"
+      },
+      "Lovable": {
+        "custo": "US$ 20/mês no Starter",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "US$ 20/mês"
+      },
+      "Higgsfield": {
+        "custo": "cobra por crédito, entrada com 70 créditos/mês",
+        "faixa": 2,
+        "verificado": false,
+        "curto": "cobrado por crédito"
+      },
+      "Poppy AI": {
+        "custo": "US$ 399 por ano no Basic, sem teste",
+        "faixa": 3,
+        "verificado": true,
+        "curto": "US$ 399 por ano"
+      }
+    },
+    "perguntas": [
+      [
+        "area",
+        "No que você trabalha?",
+        [
+          [
+            "Conteúdo e redes sociais",
+            {
+              "Higgsfield": 3,
+              "Poppy AI": 3,
+              "ChatGPT": 2,
+              "Claude": 2,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Negócio próprio ou gestão",
+            {
+              "Claude": 3,
+              "ChatGPT": 2,
+              "Perplexity": 2,
+              "Gemini": 2,
+              "Claude Code": 1
+            }
+          ],
+          [
+            "Vendas e atendimento",
+            {
+              "Claude": 3,
+              "ChatGPT": 3,
+              "Perplexity": 1,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Estudos ou docência",
+            {
+              "Gemini": 3,
+              "Perplexity": 3,
+              "ChatGPT": 2,
+              "Claude": 1
+            }
+          ],
+          [
+            "Técnico e desenvolvimento",
+            {
+              "Claude Code": 4,
+              "Claude": 2,
+              "Lovable": 2,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Outra área",
+            {
+              "ChatGPT": 2,
+              "Claude": 2,
+              "Gemini": 2,
+              "Perplexity": 1
+            }
+          ]
+        ]
+      ],
+      [
+        "tarefa",
+        "O que mais come o seu tempo hoje?",
+        [
+          [
+            "Escrever",
+            {
+              "Claude": 4,
+              "ChatGPT": 2,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Pesquisar e entender material longo",
+            {
+              "Perplexity": 4,
+              "Gemini": 3,
+              "Grok": 1
+            }
+          ],
+          [
+            "Criar imagem e vídeo",
+            {
+              "Higgsfield": 4,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Organizar e decidir",
+            {
+              "Claude": 3,
+              "ChatGPT": 3
+            }
+          ],
+          [
+            "Montar apresentação e relatório",
+            {
+              "Gemini": 4,
+              "Claude": 2,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Construir site ou app",
+            {
+              "Claude Code": 4,
+              "Lovable": 3,
+              "Claude": 1
+            }
+          ]
+        ]
+      ],
+      [
+        "nivel",
+        "Como você usa IA hoje?",
+        [
+          [
+            "Quase nunca abro",
+            {
+              "ChatGPT": 2,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Abro um chat de vez em quando",
+            {
+              "ChatGPT": 1,
+              "Claude": 1,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Uso todo dia, mas sem método",
+            {
+              "Claude": 2,
+              "Perplexity": 1,
+              "Higgsfield": 1
+            }
+          ],
+          [
+            "Uso pra trabalhar e quero avançar",
+            {
+              "Claude Code": 2,
+              "Claude": 2,
+              "Higgsfield": 1,
+              "Poppy AI": 1
+            }
+          ]
+        ]
+      ],
+      [
+        "orcamento",
+        "Quanto você pode investir por mês em ferramenta?",
+        [
+          [
+            "Até R$ 150, uma assinatura",
+            {}
+          ],
+          [
+            "De R$ 150 a R$ 400, duas ou três",
+            {}
+          ],
+          [
+            "Acima de R$ 400, sem restrição",
+            {}
+          ]
+        ]
+      ],
+      [
+        "onde",
+        "Onde você trabalha na maior parte do tempo?",
+        [
+          [
+            "No celular",
+            {
+              "ChatGPT": 1,
+              "Gemini": 1
+            }
+          ],
+          [
+            "No computador",
+            {
+              "Claude": 1,
+              "Claude Code": 1
+            }
+          ]
+        ]
+      ]
+    ],
+    "comeco": {
+      "Claude": [
+        "Preenche as instruções do perfil antes do primeiro prompt: quem você é, o que faz e o que ele tem que parar de fazer.",
+        "Leia o material em anexo e me devolva 3 versões deste texto, tom direto, cada uma 30% mais curta que o original."
+      ],
+      "Claude Code": [
+        "Instala no computador e abre já dentro da pasta do projeto, nunca num chat solto.",
+        "Leia este projeto inteiro e me diga, em 5 linhas, o que ele faz e onde está o risco maior."
+      ],
+      "ChatGPT": [
+        "Ativa o modo de voz e usa ele no deslocamento, é onde ele ganha dos outros.",
+        "Sou {sua profissão}. Me faça 8 perguntas, uma por vez, até entender meu problema antes de sugerir qualquer coisa."
+      ],
+      "Gemini": [
+        "Joga o arquivo inteiro, não o seu resumo dele. É o que ele faz melhor que todos.",
+        "Este PDF tem 40 páginas. Me dê 1 tese central, 3 pontos que sustentam e 1 coisa que ficou mal explicada."
+      ],
+      "Perplexity": [
+        "Usa no lugar da busca do Google quando você precisa repassar a informação pra alguém.",
+        "Compare as 3 principais fontes sobre {seu tema} e me diga onde elas discordam, com o link de cada uma."
+      ],
+      "Grok": [
+        "Só vale a pena se você já usa o X. Fora dele, não é a sua primeira compra.",
+        "O que está sendo dito sobre {seu tema} nas últimas 24 horas? Cite os posts."
+      ],
+      "Higgsfield": [
+        "Começa pelo modelo mais barato pra testar a cena, e só sobe o modelo quando a composição já está certa.",
+        "Foto de produto: {produto} sobre superfície de concreto, luz lateral dura, fundo neutro, lente 50mm."
+      ],
+      "Poppy AI": [
+        "É a mais cara da lista e cobra o ano inteiro de uma vez. Só entra depois que o seu conteúdo já dá retorno.",
+        "Analise estas 5 referências que subi e me diga a estrutura que as três de melhor desempenho têm em comum."
+      ],
+      "Lovable": [
+        "Serve pra mostrar uma ideia no ar rápido, não pra manter o produto depois.",
+        "Monte uma página de captura para {sua oferta}, com um campo de e-mail e um botão só."
+      ]
+    },
+    "ordem": [
+      "Assina agora",
+      "Nos próximos 30 dias",
+      "Só quando escalar"
+    ],
+    "_regras": "Estes três campos existem para o motor não depender da ordem das perguntas.",
+    "cabem": [
+      1,
+      3,
+      3
+    ],
+    "celular": [
+      "onde",
+      0
+    ],
+    "perfil": [
+      "area",
+      "orcamento"
+    ]
+  },
+  "faq": [
+    [
+      "O que exatamente eu recebo por R$ 47?",
+      "O diagnóstico completo, a sua stack em três camadas (o que assinar agora, em 30 dias e depois), o prompt pronto de cada tarefa da sua área, o tutorial de cada ferramenta recomendada, os comparativos diretos, o plano de 7 dias e a lista do que cortar. Mais as atualizações quando alguma escolha mudar."
+    ],
+    [
+      "Não acho essa informação de graça na internet?",
+      "Você acha lista de ferramenta em qualquer lugar. O que não acha é qual delas serve para o SEU trabalho e orçamento, em que ordem assinar, o prompt exato de cada uma e o que cortar. Ferramenta certa com prompt errado devolve resposta genérica: é aí que a maioria desiste e conclui que IA não funciona."
+    ],
+    [
+      "O ChatGPT não me daria essa mesma recomendação?",
+      "Ele te dá uma resposta plausível, sem saber quanto cada plano custa hoje, sem ter testado as ferramentas no seu tipo de trabalho e sem te dizer o que cortar. Os valores daqui foram conferidos um por um, e as escolhas vêm de uso em projeto de cliente, não de material de treinamento."
+    ],
+    [
+      "Preciso assinar todas as ferramentas recomendadas?",
+      "Não, e o produto existe justamente para evitar isso. A stack vem em três camadas dentro do orçamento que você declarar, começando por uma única assinatura se for o caso."
+    ],
+    [
+      "Quanto tempo leva para eu aplicar?",
+      "O diagnóstico leva menos de dois minutos. O plano é de 7 dias, uma tarefa por dia. Não é curso, não tem aula de uma hora para assistir."
+    ],
+    [
+      "E se não servir pra mim?",
+      "Sete dias de garantia. Você pede o reembolso e recebe o valor integral, sem precisar justificar."
+    ],
+    [
+      "Os links são de afiliado?",
+      "Não. Nenhum link, nem na lista pública nem dentro do produto. Se algum dia algum for, vai estar escrito ao lado dele."
+    ],
+    [
+      "As atualizações são por quanto tempo?",
+      "Enquanto o produto existir. Não prometo prazo em meses porque não quero criar uma data de validade artificial: se eu trocar a ferramenta de uma tarefa, quem comprou fica sabendo."
+    ]
   ],
-
-  "cinco": [
-    ["Claude", "Escrever bem, decidir e construir."],
-    ["Gemini", "Engolir material longo e resolver rápido."],
-    ["ChatGPT", "Começar do zero e conversar."],
-    ["Perplexity", "Pesquisar com fonte na mão."],
-    ["Higgsfield", "Imagem e vídeo que precisam ser bons de verdade."]
-  ]
+  "oferta": {
+    "nome": "Qual IA Usar?",
+    "preco": "47",
+    "de": "97",
+    "promessa": "Em poucos minutos você sabe quais ferramentas precisa, em que ordem começar e o prompt exato para usar cada uma.",
+    "entregaveis": [
+      [
+        "Diagnóstico completo",
+        "Profissão, objetivo e orçamento"
+      ],
+      [
+        "Sua stack em 3 camadas",
+        "Agora, em 30 dias e depois"
+      ],
+      [
+        "Os prompts perfeitos",
+        "Um para cada tarefa da sua área"
+      ],
+      [
+        "Tutorial de cada ferramenta",
+        "Do cadastro ao primeiro resultado"
+      ],
+      [
+        "Comparativos diretos",
+        "ChatGPT, Claude, Gemini e Perplexity"
+      ],
+      [
+        "Plano de 7 dias",
+        "Uma tarefa por dia, na ordem"
+      ],
+      [
+        "O que NÃO assinar",
+        "Com a conta do que isso devolve"
+      ],
+      [
+        "Atualizações inclusas",
+        "Quando alguma escolha mudar"
+      ]
+    ],
+    "garantias": [
+      "Pagamento único",
+      "7 dias de garantia",
+      "Acesso imediato"
+    ],
+    "para_quem": [
+      [
+        "É pra você se",
+        "você já paga IA e não sabe se está usando a certa, ou trava na hora de escrever o prompt e a resposta volta genérica."
+      ],
+      [
+        "Não é pra você se",
+        "você só quer colecionar nomes de ferramenta. Aqui não tem catálogo de 500 apps: tem três escolhas para o seu caso e o que fazer com elas."
+      ]
+    ],
+    "selo_inclusos": "Sem mensalidade"
+  },
+  "problema": [
+    [
+      "Você paga e não abre",
+      "Assinatura de IA que você usa uma vez por mês continua saindo do cartão todo mês."
+    ],
+    [
+      "Abre sempre a mesma",
+      "Ter cinco instaladas não muda nada se o reflexo é abrir a mesma para tudo, inclusive para o que ela faz pior."
+    ],
+    [
+      "A resposta volta genérica",
+      "Aí você conclui que a ferramenta é fraca. Na maioria das vezes o pedido é que estava vago."
+    ],
+    [
+      "Testa a da moda e abandona",
+      "Entra por indicação, não sabe o que pedir, não vê resultado em três dias e desiste. Repete no mês seguinte."
+    ]
+  ],
+  "captura_lead": {
+    "titulo": "Pra onde eu mando o seu mapa?",
+    "sub": "O diagnóstico terminou. Deixa o seu WhatsApp que eu te mostro o resultado agora e envio o mapa por lá quando você fechar.",
+    "botao": "Ver o meu resultado →",
+    "aviso": "Só uso para te entregar o mapa e avisar quando alguma escolha mudar. Sem spam."
+  },
+  "faixa": [
+    [
+      "2 minutos",
+      "e você sabe a sua stack"
+    ],
+    [
+      "3 ferramentas",
+      "não uma lista de 50"
+    ],
+    [
+      "1 prompt pronto",
+      "para cada tarefa da sua área"
+    ],
+    [
+      "Preços conferidos",
+      "em agosto de 2026"
+    ],
+    [
+      "Zero",
+      "link de afiliado"
+    ],
+    [
+      "7 dias",
+      "de garantia, sem justificar"
+    ],
+    [
+      "Pagamento único",
+      "sem mensalidade"
+    ],
+    [
+      "Testado",
+      "em projeto de cliente, não em teoria"
+    ]
+  ],
+  "conta": {
+    "linhas": [
+      [
+        "Uma assinatura de US$ 20/mês que você abre uma vez por mês",
+        "US$ 240",
+        "por ano"
+      ],
+      [
+        "A ferramenta da moda, que cobra o ano inteiro adiantado",
+        "US$ 399",
+        "por ano"
+      ],
+      [
+        "Três \"só pra testar\" que viraram cobrança fixa",
+        "US$ 700+",
+        "por ano"
+      ]
+    ],
+    "fecho": [
+      "O mapa",
+      "R$ 47",
+      "uma vez"
+    ],
+    "remate": "Cortar uma única assinatura errada paga o mapa quase cinco vezes no primeiro mês.",
+    "rodape": "Valores conferidos em 18 de agosto de 2026, um a um, no site de cada ferramenta."
+  },
+  "pedidos": {
+    "casos": [
+      [
+        "Trabalho",
+        "Escrever o e-mail difícil pro chefe",
+        "Preciso responder meu chefe sobre o prazo que estourou, sem parecer desculpa",
+        "0:09"
+      ],
+      [
+        "Faculdade",
+        "A redação que vale a vaga",
+        "Me ajuda com a redação do vestibular, tema de meio ambiente, mil palavras",
+        "0:07"
+      ],
+      [
+        "Conteúdo",
+        "O vídeo do produto pro Instagram",
+        "Quero um vídeo do meu produto pra postar amanhã, não tenho estúdio",
+        "0:06"
+      ],
+      [
+        "Criação",
+        "Imagem que não pareça feita por IA",
+        "Preciso de uma imagem pro post e as que eu faço têm cara de IA",
+        "0:08"
+      ]
+    ],
+    "outros": [
+      "Resumir um PDF de 80 páginas",
+      "Montar a apresentação de amanhã",
+      "Responder cliente no WhatsApp",
+      "Organizar a minha semana",
+      "Fazer um site sem programar",
+      "Revisar contrato antes de assinar"
+    ]
+  }
 }
