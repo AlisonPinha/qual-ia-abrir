@@ -29,6 +29,16 @@ INSTA = "https://instagram.com/aalisonaraujo"
 # onde a mesma constante precisa ser colada.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from config import CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO  # noqa: E402
+from config import VARIANTES  # noqa: E402
+
+# Variante do teste seco de nome chiclete: "" é o controle, na raiz.
+SLUG = sys.argv[1] if len(sys.argv) > 1 else ""
+if SLUG not in VARIANTES:
+    raise SystemExit(f"variante desconhecida: {SLUG!r}. Use uma de {list(VARIANTES)}")
+V = VARIANTES[SLUG]
+CHECKOUT_URL = V["checkout"] or CHECKOUT_URL
+SAIDA = RAIZ / "public" / SLUG / "index.html" if SLUG else RAIZ / "public" / "index.html"
+NOINDEX = '<meta name="robots" content="noindex,nofollow">' if SLUG else ""
 
 d = json.loads((BUILD / "dados.json").read_text(encoding="utf-8"))
 CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
@@ -171,6 +181,15 @@ orbita_itens = "".join(orbes)
 
 DG = d["diagnostico"]
 CL = d["captura_lead"]
+DG["mecanismo"] = V["mecanismo"]
+DG["crenca"] = V["crenca"]
+d["oferta"]["nome"] = V["nome"]
+# o break do One Belief carrega o nome do mecanismo
+DG["perguntas"] = [
+    (pid, titulo.replace("A Regra das 3 IAs", V["mecanismo"]), opc)
+    if pid == "break1" else (pid, titulo, opc)
+    for pid, titulo, opc in DG["perguntas"]
+]
 
 # As perguntas vão escritas no HTML (existem sem JavaScript). O JS só soma os pesos.
 # Passo com pid "break*" é uma tela de conteúdo, não pergunta: quebra o clique
@@ -227,6 +246,7 @@ motor = {
     "celular": DG["celular"],
     "perfil": DG["perfil"],
     "analitico": ANALITICO_URL,
+    "origem": SLUG or "site",
     "pids": [pid for pid, _t, _o in DG["perguntas"] if not pid.startswith("break")],
     "ferramentas": {
         # só o que o teaser exibe. logo, url, descrição e custo completo são do produto
@@ -378,7 +398,7 @@ JS = """
       const { stack, corta } = calcular();
       // memória para o /mapa não pedir tudo de novo, e o anônimo para saber quem responde
       salvarSessao(resp, MOTOR.pids);
-      enviarAnalitico(MOTOR.analitico, "site", MOTOR, resp, stack, corta);
+      enviarAnalitico(MOTOR.analitico, MOTOR.origem, MOTOR, resp, stack, corta);
       const [qArea, qOrc] = MOTOR.perfil;
       const area = MOTOR.rotulos[qArea][resp[qArea]];
       const orc = MOTOR.rotulos[qOrc][resp[qOrc]];
@@ -478,7 +498,8 @@ html = f"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Qual IA Usar? A sua stack de IA em 2 minutos</title>
+<title>{escape(V["titulo"])}</title>
+{NOINDEX}
 <meta name="description" content="{escape(DESC, quote=True)}">
 <meta name="author" content="Alison Araújo">
 <link rel="canonical" href="{SITE}/">
@@ -486,13 +507,13 @@ html = f"""<!doctype html>
 <meta property="og:site_name" content="@aalisonaraujo">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="{SITE}/">
-<meta property="og:title" content="Qual IA Usar? A sua stack de IA em 2 minutos">
+<meta property="og:title" content="{escape(V["titulo"], quote=True)}">
 <meta property="og:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 67.">
 <meta property="og:image" content="{SITE}/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Qual IA Usar? A sua stack de IA em 2 minutos">
+<meta name="twitter:title" content="{escape(V["titulo"], quote=True)}">
 <meta name="twitter:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 67.">
 <meta name="twitter:image" content="{SITE}/og.png">
 <meta name="theme-color" content="#0c0a10">
@@ -512,7 +533,7 @@ html = f"""<!doctype html>
 
 <nav class="nav">
   <div class="nav-in">
-    <span class="marca"><span class="bolha">?</span> qual ia abrir</span>
+    <span class="marca"><span class="bolha">?</span> {escape(V["marca"])}</span>
     <div class="nav-links">
       <a href="#diagnostico">Diagnóstico</a>
       <a href="#oferta">O que vem</a>
@@ -589,7 +610,7 @@ html = f"""<!doctype html>
           <div class="push">
             <span class="push-ico">?</span>
             <div class="push-txt">
-              <b>Qual IA Usar?</b><i>agora</i>
+              <b>{escape(V["nome"])}</b><i>agora</i>
               <span>Seu prompt de carrossel está pronto 📋</span>
             </div>
           </div>
@@ -692,7 +713,7 @@ html = f"""<!doctype html>
         <li><b>2</b> Recebe a sua stack e os prompts</li>
         <li><b>3</b> Aplica no plano de 7 dias</li>
       </ul>
-      <button type="button" class="btn btn-p abre-diag">Receber meu diagnóstico personalizado →</button>
+      <button type="button" class="btn btn-p abre-diag">{escape(V["headline"])} →</button>
       <p class="diag-nota">{escape(DG["aviso_custo"])}</p>
     </div>
   </div>
@@ -832,7 +853,7 @@ html = f"""<!doctype html>
   <div class="env">
     <div class="rodape-topo">
       <div class="rodape-marca">
-        <span class="marca"><span class="bolha">?</span> qual ia abrir</span>
+        <span class="marca"><span class="bolha">?</span> {escape(V["marca"])}</span>
         <p>O mapa que diz qual IA abrir pra cada tarefa do seu trabalho, e o prompt exato
            pra pedir. Feito por quem usa IA em projeto de cliente todo dia.</p>
         <div class="rodape-selos">
