@@ -1,0 +1,65 @@
+// Memória do diagnóstico e envio anônimo. Compartilhado pelo site e pela entrega paga.
+//
+// Memória: as respostas ficam no navegador para o comprador não ter que refazer o
+// diagnóstico dentro do /mapa. Só vale no mesmo aparelho; em outro, o mapa pergunta
+// de novo, que é o comportamento normal.
+//
+// Anônimo: nem nome nem WhatsApp saem daqui. Só o que foi respondido e o que o motor
+// recomendou, para saber qual perfil responde e onde as pessoas abandonam.
+
+const SESSAO_CHAVE = "qia:resp";
+const SESSAO_DIAS = 30;
+
+function salvarSessao(resp, pids) {
+  try {
+    localStorage.setItem(SESSAO_CHAVE, JSON.stringify({
+      v: 1, resp, pids, ts: Date.now()
+    }));
+  } catch (e) { /* modo privado ou storage cheio: seguir sem memória */ }
+}
+
+// Devolve as respostas salvas apenas se cobrirem TODAS as perguntas desta página.
+// Se o questionário mudou desde a última visita, ignora e deixa refazer: melhor
+// perguntar de novo do que montar a stack com pergunta que não existe mais.
+function lerSessao(pidsNecessarios) {
+  try {
+    const bruto = localStorage.getItem(SESSAO_CHAVE);
+    if (!bruto) return null;
+    const d = JSON.parse(bruto);
+    if (d.v !== 1) return null;
+    if (Date.now() - d.ts > SESSAO_DIAS * 864e5) return null;
+    if (pidsNecessarios.some(p => !(p in d.resp))) return null;
+    return d.resp;
+  } catch (e) { return null; }
+}
+
+function limparSessao() {
+  try { localStorage.removeItem(SESSAO_CHAVE); } catch (e) {}
+}
+
+// Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:
+// o que importa é gravar, não ler a resposta. Falha em silêncio de propósito,
+// porque analytics não pode quebrar a entrega.
+function enviarAnalitico(url, origem, MOTOR, resp, stack, corta) {
+  if (!url) return;
+  try {
+    const respostas = {};
+    for (const [q, i] of Object.entries(resp)) {
+      if (q.startsWith("break")) continue;          // o break não é resposta
+      respostas[q] = MOTOR.rotulos[q][i];
+    }
+    fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        tipo: "diagnostico",
+        origem,                                      // "site" ou "mapa"
+        respostas,
+        stack: stack.map(s => s.nome),
+        cortar: corta,
+        ts: new Date().toISOString()
+      })
+    }).catch(() => {});
+  } catch (e) { /* nunca atrapalhar o resultado */ }
+}

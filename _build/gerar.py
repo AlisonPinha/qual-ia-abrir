@@ -15,6 +15,7 @@ Uso:             python3 _build/gerar.py && vercel deploy --prod --yes
 import json
 import math
 import pathlib
+import sys
 import unicodedata
 from html import escape
 
@@ -24,19 +25,15 @@ SAIDA = RAIZ / "public" / "index.html"
 SITE = "https://qual-ia-abrir.vercel.app"
 INSTA = "https://instagram.com/aalisonaraujo"
 
-# Web App do Apps Script que grava o lead do diagnóstico na planilha.
-# Vazio: o passo de contato é pulado e o resultado aparece direto, porque prender
-# a pessoa num formulário que não salva nada seria perder o lead e a venda.
-# "DEMO": mostra a tela para conferência visual, sem enviar nada. Nunca publicar assim.
-CAPTURA_URL = ""
-
-# Checkout do "Qual IA Usar?" (R$ 47). Vazio = o resultado do diagnóstico oferece a
-# lista de espera pelo direct em vez de um botão de compra que não leva a lugar nenhum.
-CHECKOUT_URL = ""
-PRECO = "R$ 47"
+# As URLs e o preço vivem em _build/config.py, para não haver dois lugares
+# onde a mesma constante precisa ser colada.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from config import CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO  # noqa: E402
 
 d = json.loads((BUILD / "dados.json").read_text(encoding="utf-8"))
 CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
+MOTOR_JS = (BUILD / "motor.js").read_text(encoding="utf-8")
+SESSAO_JS = (BUILD / "sessao.js").read_text(encoding="utf-8")
 F = d["ferramentas"]
 
 
@@ -176,16 +173,31 @@ DG = d["diagnostico"]
 CL = d["captura_lead"]
 
 # As perguntas vão escritas no HTML (existem sem JavaScript). O JS só soma os pesos.
+# Passo com pid "break*" é uma tela de conteúdo, não pergunta: quebra o clique
+# automático de quem só vai batendo em "próximo". O título traz manchete e corpo
+# separados por " | ", e o botão único avança pelo mesmo caminho de uma opção.
 perguntas_html = []
+n_perguntas = sum(1 for pid, _t, _o in DG["perguntas"] if not pid.startswith("break"))
+n_pergunta = 0
 for i, (pid, titulo, opcoes) in enumerate(DG["perguntas"], start=1):
     botoes = "".join(
         f'<button type="button" class="opc" data-q="{escape(pid, quote=True)}" data-i="{j}">'
         f'{escape(texto)}</button>'
         for j, (texto, _pesos) in enumerate(opcoes)
     )
+    if pid.startswith("break"):
+        manchete, _, corpo = titulo.partition(" | ")
+        perguntas_html.append(
+            f'<fieldset class="passo passo-break" data-passo="{i}" data-q="{escape(pid, quote=True)}">'
+            f'<legend>{escape(manchete)}</legend>'
+            f'<p class="break-corpo">{escape(corpo)}</p>'
+            f'<div class="opcoes">{botoes}</div></fieldset>'
+        )
+        continue
+    n_pergunta += 1
     perguntas_html.append(
         f'<fieldset class="passo" data-passo="{i}" data-q="{escape(pid, quote=True)}">'
-        f'<legend><span class="num">{i} de {len(DG["perguntas"]) + 1}</span>{escape(titulo)}</legend>'
+        f'<legend><span class="num">{n_pergunta} de {n_perguntas}</span>{escape(titulo)}</legend>'
         f'<div class="opcoes">{botoes}</div></fieldset>'
     )
 
@@ -193,7 +205,7 @@ n_passos = len(DG["perguntas"]) + 1
 if CAPTURA_URL:
     perguntas_html.append(
         f'<fieldset class="passo passo-lead" data-passo="{n_passos}" data-q="lead">'
-        f'<legend><span class="num">{n_passos} de {n_passos}</span>{escape(CL["titulo"])}</legend>'
+        f'<legend><span class="num">{n_perguntas + 1} de {n_perguntas + 1}</span>{escape(CL["titulo"])}</legend>'
         f'<p class="lead-sub">{escape(CL["sub"])}</p>'
         f'<label class="campo-lead">Seu nome'
         f'<input id="lead-nome" type="text" autocomplete="given-name" required'
@@ -214,6 +226,8 @@ motor = {
     "cabem": DG["cabem"],
     "celular": DG["celular"],
     "perfil": DG["perfil"],
+    "analitico": ANALITICO_URL,
+    "pids": [pid for pid, _t, _o in DG["perguntas"] if not pid.startswith("break")],
     "ferramentas": {
         # só o que o teaser exibe. logo, url, descrição e custo completo são do produto
         n: {"curto": DG["acesso"][n]["curto"], "faixa": DG["acesso"][n]["faixa"]}
@@ -358,49 +372,13 @@ JS = """
       el("barra-fill").style.width = ((atual + 0.4) / passos.length * 100) + "%";
     };
 
-    function calcular() {
-      const pontos = {};
-      for (const [q, i] of Object.entries(resp))
-        for (const [ferr, p] of Object.entries(MOTOR.pesos[q][i] || {}))
-          pontos[ferr] = (pontos[ferr] || 0) + p;
-
-      // no celular o Claude Code não roda: é terminal, não chat
-      const [qCel, iCel] = MOTOR.celular;
-      const noCelular = resp[qCel] === iCel;
-      if (noCelular) delete pontos["Claude Code"];
-
-      const ranking = Object.entries(pontos).sort((a, b) => b[1] - a[1]);
-      const top = ranking.slice(0, 3).map(([n]) => n);
-
-      // quantas entram já, conforme o orçamento declarado
-      const cabem = MOTOR.cabem[resp[MOTOR.perfil[1]] ?? 0];
-      const stack = top.map((n, i) => ({
-        nome: n,
-        quando: MOTOR.ordem[i < cabem ? 0 : (i === cabem ? 1 : 2)],
-        ...MOTOR.ferramentas[n]
-      }));
-
-      // Claude Code vem dentro do plano do Claude: uma assinatura só, um momento só
-      const cc = stack.find(s => s.nome === "Claude Code");
-      const cl = stack.find(s => s.nome === "Claude");
-      if (cc && cl) {
-        const antes = MOTOR.ordem.indexOf(cc.quando) <= MOTOR.ordem.indexOf(cl.quando) ? cc.quando : cl.quando;
-        cc.quando = cl.quando = antes;
-      }
-
-      // o corte: o que a pessoa provavelmente ia assinar por hype e não precisa agora
-      const corta = Object.keys(MOTOR.ferramentas)
-        .filter(n => !top.includes(n))
-        .filter(n => !(noCelular && n === "Claude Code"))
-        .sort((a, b) => (MOTOR.ferramentas[b].faixa - MOTOR.ferramentas[a].faixa)
-                     || ((pontos[a] || 0) - (pontos[b] || 0)))
-        .slice(0, 3);
-
-      return { stack, corta };
-    }
+    const calcular = () => calcularStack(MOTOR, resp);
 
     function render() {
       const { stack, corta } = calcular();
+      // memória para o /mapa não pedir tudo de novo, e o anônimo para saber quem responde
+      salvarSessao(resp, MOTOR.pids);
+      enviarAnalitico(MOTOR.analitico, "site", MOTOR, resp, stack, corta);
       const [qArea, qOrc] = MOTOR.perfil;
       const area = MOTOR.rotulos[qArea][resp[qArea]];
       const orc = MOTOR.rotulos[qOrc][resp[qOrc]];
@@ -484,7 +462,7 @@ JS = """
       el("resultado").hidden = true;
       quiz.hidden = false;
       mostrar();
-      el("diag").scrollIntoView({ block: "center", behavior: "smooth" });
+      el("diagnostico").scrollIntoView({ block: "center", behavior: "smooth" });
     });
 
     mostrar();
@@ -492,7 +470,7 @@ JS = """
 
 """
 
-DESC = ("Responda 5 perguntas e receba as 3 ferramentas de IA certas para o seu trabalho e "
+DESC = ("Responda ao diagnóstico e receba as 3 ferramentas de IA certas para o seu trabalho e "
         "orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área.")
 
 html = f"""<!doctype html>
@@ -509,13 +487,13 @@ html = f"""<!doctype html>
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="{SITE}/">
 <meta property="og:title" content="Qual IA Usar? A sua stack de IA em 2 minutos">
-<meta property="og:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 47.">
+<meta property="og:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 67.">
 <meta property="og:image" content="{SITE}/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Qual IA Usar? A sua stack de IA em 2 minutos">
-<meta name="twitter:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 47.">
+<meta name="twitter:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 67.">
 <meta name="twitter:image" content="{SITE}/og.png">
 <meta name="theme-color" content="#0c0a10">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -710,11 +688,11 @@ html = f"""<!doctype html>
 
     <div class="diag-chamada">
       <ul class="diag-passos">
-        <li><b>1</b> Responde 5 perguntas</li>
+        <li><b>1</b> Responde às perguntas do seu perfil</li>
         <li><b>2</b> Recebe a sua stack e os prompts</li>
         <li><b>3</b> Aplica no plano de 7 dias</li>
       </ul>
-      <button type="button" class="btn btn-p abre-diag">Começar o diagnóstico →</button>
+      <button type="button" class="btn btn-p abre-diag">Receber meu diagnóstico personalizado →</button>
       <p class="diag-nota">{escape(DG["aviso_custo"])}</p>
     </div>
   </div>
@@ -919,7 +897,7 @@ html = f"""<!doctype html>
 </dialog>
 
 <script>const DESTINO = {json.dumps(CAPTURA_URL)};
-const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{JS}</script>
+const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{SESSAO_JS}{JS}</script>
 <!-- Medição: ative "Web Analytics" no painel da Vercel e descomente a linha abaixo.
      Sem o toggle o script responde 404 e suja o console. -->
 <!-- <script defer src="/_vercel/insights/script.js"></script> -->

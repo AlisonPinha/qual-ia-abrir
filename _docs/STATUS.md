@@ -1,10 +1,10 @@
 # Status e pendências
 
-Atualizado em 18/08/2026.
+Atualizado em 18/08/2026, depois do deploy que ligou o checkout.
 
 ## O que a página é hoje
 
-LP de venda do **Qual IA Usar? (R$ 47)**, modelada na LP do meuassessor.com. Nove seções:
+LP de venda do **Qual IA Usar? (R$ 67, ancorado em R$ 147)**, modelada na LP do meuassessor.com. Nove seções:
 
 1. **Hero** com mockup de iPhone rodando uma conversa de WhatsApp (o produto trabalhando)
 2. **Faixa** de argumentos de compra
@@ -13,24 +13,62 @@ LP de venda do **Qual IA Usar? (R$ 47)**, modelada na LP do meuassessor.com. Nov
 5. **Diagnóstico** (o pop-up), chamada com os 3 passos
 6. **Escopo**: as 9 ferramentas, só logo e nome
 7. **Órbita** radial das categorias
-8. **A conta do erro**: US$ 240 / 399 / 700+ por ano contra R$ 47 uma vez
-9. **Oferta** com preço, 8 entregáveis e garantia, depois FAQ e fecho
+8. **A conta do erro**: US$ 240 / 399 / 700+ por ano contra R$ 67 uma vez
+9. **Oferta** com preço, 5 entregáveis e garantia, depois FAQ e fecho
 
 Decisão do Alison em 18/08: **nada de graça**. Saíram a lista pública das 24 tarefas, os
 desempates, os papéis das cinco principais, as descrições das ferramentas e o bloco de captura
 gratuita. O resultado do diagnóstico é teaser com silhuetas.
 
+## O que entrou em 18/08 (aplicação do playbook de low ticket)
+
+Derivado de dois podcasts do VTurb (Tiago Filemon sobre funil de VSL, e a mesa de Davi
+Meurer, Kauê Puglies e Slender sobre low ticket). O plano completo está no vault, em
+`01 - Projects/Qual IA Usar/Qual IA Usar - Plano Low Ticket.md`.
+
+| Mudança | Por quê |
+|---|---|
+| Oferta cortada de 8 para 5 entregáveis | promessa boa demais pelo preço derruba conversão em low ticket, e "Atualizações inclusas" era o produto do upsell dado de graça no front |
+| Preço de R$ 47 para R$ 67, âncora de R$ 97 para R$ 147 | decisão do Alison; a âncora subiu junto porque 47 contra 97 dava só 31% de desconto |
+| Diagnóstico de 5 para 16 passos (14 perguntas + 2 breaks) | cada clique é um micro-sim; a operação de referência roda 30 a 50 etapas |
+| Mecanismo nomeado "Regra das 3 IAs" | critério FHC (fácil, hype, curioso); o nome do produto segue "Qual IA Usar?" até o teste seco decidir |
+| CTA "Receber meu diagnóstico personalizado" | nunca "iniciar quiz"; posicionar como conteúdo de valor |
+| Entrega paga em `/mapa` | mesmo diagnóstico sem paywall: custo real, primeiro passo e prompt de cada ferramenta |
+| Memória do diagnóstico | o comprador não refaz o quiz dentro do `/mapa`, no mesmo aparelho |
+| Analytics anônimo | saber qual perfil responde, sem nome nem WhatsApp |
+| Checkout Cakto | Pix a 0% + R$ 2,49 contra 8,99% da Kiwify: R$ 5,35 a mais por venda no bolso, com 80% de Pix |
+
+## Arquitetura depois desta sessão
+
+```
+_build/config.py       constantes de deploy (as 4 URLs e o preço), lidas pelos dois geradores
+_build/motor.js        cálculo da stack, injetado nas duas páginas (nunca divergem)
+_build/sessao.js       memória no navegador + envio anônimo
+_build/gerar.py        → public/index.html   (venda, com paywall)
+_build/gerar_mapa.py   → public/mapa/index.html (entrega paga, sem paywall)
+```
+
+Build: `python3 _build/gerar.py && python3 _build/gerar_mapa.py && vercel deploy --prod --yes`
+
 ## Pendências, em ordem de bloqueio
 
 | # | Pendência | Onde | Impacto |
 |---|---|---|---|
-| 1 | **`CHECKOUT_URL` vazia** | topo de `gerar.py` | **A página não vende.** Os 2 botões caem em lista de espera pelo direct. Kiwify é a recomendação nesse ticket (4,99% + R$ 0,50 contra 9,9% + R$ 1,00 da Hotmart) |
-| 2 | **`CAPTURA_URL` em `"DEMO"`** | topo de `gerar.py` | A tela de contato aparece mas **não grava**. Nunca publicar assim. Apps Script pronto em `_docs/apps-script-captura.js` |
-| 3 | **O produto não existe** | fora do repo | A LP promete tutoriais, comparativos e plano de 7 dias. Precisa existir antes da primeira venda |
-| 4 | **Custo do Higgsfield** | `dados.json` → `diagnostico.acesso` | Único não conferido; o build avisa a cada execução |
-| 5 | **Web Analytics** | painel da Vercel | Sem ele não dá para saber em qual pergunta as pessoas abandonam |
-| 6 | **Seção de autoridade** | seção `#prova` | Decisão do Alison: quais credenciais podem ir para o ar (Meta Business Partner, ERP em produção) |
-| 7 | **Pop-up por exit-intent** | não implementado | Discutido, não construído. Recomendado só no desktop |
+| 1 | **`ANALITICO_URL` vazia** | `_build/config.py` | A página já vende e **nenhum diagnóstico está sendo gravado**. Cada resposta perdida não volta. Apps Script pronto em `_docs/apps-script-captura.js`, 5 minutos para ligar |
+| 2 | **Produto do upsell não existe** | fora do repo | O bloco `upsell` do `dados.json` promete plano de 7 dias e prompts preenchidos. **Não ligar o upsell no funil antes de o conteúdo existir** |
+| 3 | **Compra de teste** | Cakto | Nunca foi feita. É a única forma de confirmar que a Cakto entrega o `/mapa` e se ela repassa parâmetros na URL (de que depende o cruzamento em outro aparelho) |
+| 4 | **Custo do Higgsfield** | `dados.json` → `diagnostico.acesso` | Único não conferido, e agora aparece **dentro do produto pago** |
+| 5 | **`CAPTURA_URL` vazia** | `_build/config.py` | O passo de nome e WhatsApp não aparece. Menos urgente que o item 1, porque o anônimo já responde as perguntas de produto |
+| 6 | **Web Analytics** | painel da Vercel | Precisa do toggle; sem ele o script comentado dá 404 |
+| 7 | **Ramificação do diagnóstico** | motor JS | Perguntas diferentes por área. É o que falta para a personalização ser real, e a maior mudança estrutural restante |
+| 8 | **Seção de autoridade** | seção `#prova` | Decisão do Alison sobre quais credenciais vão para o ar |
+| 9 | **Domínio próprio** | Vercel | `qual-ia-abrir.vercel.app` no checkout de um produto pago |
+
+## Código morto conhecido (não tocar sem motivo)
+
+`gerar.py`, linhas 239 a 246: a variável `oferta_cta` é montada e nunca usada no HTML. Por
+isso os dois botões de compra da página saem com o mesmo texto, os dois vindos de
+`botao_compra`. Já era assim antes desta sessão.
 
 ## O funil do meuassessor, mapeado em 18/08
 
@@ -55,7 +93,26 @@ verificava layout, contraste e console, e bloco ausente não gera erro.
 **Antes de cortar por índice:** listar os ids que devem sobreviver no intervalo.
 **Depois de gerar:** rodar o inventário de peças e o fluxo do pop-up, não só o de layout.
 
+## Comparativo de checkout, medido em 18/08/2026
+
+Custo por venda de R$ 67, no mix de 80% Pix e 20% cartão que é a regra em low ticket:
+
+| Plataforma | Pix | Cartão | Custo médio | Efetivo |
+|---|---|---|---|---|
+| **Cakto** (escolhida) | 0% | 4,99% | **R$ 3,16** | 4,7% |
+| Eduzz | 4,90% | 4,90% | R$ 5,77 | 8,6% |
+| Kirvano | 7,49% | 7,49% | R$ 7,02 | 10,5% |
+| Ticto | 6,99% | 6,99% | R$ 7,17 | 10,7% |
+| Hotmart | 9,9% | 9,9% | R$ 7,63 | 11,4% |
+| Kiwify | 8,99% | 8,99% | R$ 8,51 | 12,7% |
+
+Todas cobram R$ 2,49 fixo, menos Kirvano (R$ 2,00) e Hotmart (R$ 1,00). Taxas conferidas nas
+centrais de ajuda oficiais. A recomendação anterior deste arquivo (Kiwify, com números que
+não batiam) estava errada e foi substituída.
+
+**Ressalva:** a Cakto é a mais nova da lista e tem reclamações de bloqueio de conta no
+Reclame Aqui. O índice de solução não foi verificado, o site bloqueia leitura automatizada.
+
 ## Próximo passo sugerido
 
-Ligar `CHECKOUT_URL` e `CAPTURA_URL`. Sem os dois, a página convence e não cobra, e o lead
-que chega no fim do diagnóstico se perde.
+Ligar `ANALITICO_URL` e fazer uma compra de teste. O produto está vendendo sem medir nada.

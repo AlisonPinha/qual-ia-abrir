@@ -183,6 +183,8 @@
     ]
   ],
   "diagnostico": {
+    "mecanismo": "Regra das 3 IAs",
+    "crenca": "Escolher a IA certa para cada tarefa é a chave para a IA finalmente devolver resposta útil, e isso é possível através da Regra das 3 IAs.",
     "aviso_custo": "Valores conferidos em 18/08/2026. Ferramenta de IA cobra em dólar, então o valor em real muda com o câmbio.",
     "acesso": {
       "Claude": {
@@ -304,6 +306,60 @@
         ]
       ],
       [
+        "tempo_ia",
+        "Há quanto tempo você usa IA no trabalho?",
+        [
+          [
+            "Comecei agora",
+            {
+              "ChatGPT": 1,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Alguns meses",
+            {
+              "ChatGPT": 1,
+              "Claude": 1
+            }
+          ],
+          [
+            "Mais de um ano",
+            {
+              "Claude": 1,
+              "Perplexity": 1
+            }
+          ]
+        ]
+      ],
+      [
+        "quantas",
+        "Quantas ferramentas de IA você tem abertas hoje?",
+        [
+          ["Nenhuma ainda", {}],
+          ["Uma só", {}],
+          ["Duas ou três", {}],
+          ["Perdi a conta", {}]
+        ]
+      ],
+      [
+        "gasto",
+        "Quanto você paga por mês hoje, somando tudo?",
+        [
+          ["Nada, só uso o que é grátis", {}],
+          ["Até R$ 150", {}],
+          ["De R$ 150 a R$ 400", {}],
+          ["Mais de R$ 400", {}]
+        ]
+      ],
+      [
+        "break1",
+        "A Regra das 3 IAs | O problema quase nunca é a IA, é abrir a errada para aquela tarefa. Escolher a certa é o que faz a resposta parar de voltar genérica. Vai até o fim e você sai daqui com as três ferramentas do seu caso, na ordem de assinar e com o prompt de cada uma.",
+        [
+          ["Continuar →", {}]
+        ]
+      ],
+      [
         "tarefa",
         "O que mais come o seu tempo hoje?",
         [
@@ -356,6 +412,62 @@
         ]
       ],
       [
+        "generica",
+        "Quando a resposta volta genérica, o que você faz?",
+        [
+          [
+            "Refaço o prompt até sair algo",
+            {
+              "Claude": 1
+            }
+          ],
+          [
+            "Tento em outra ferramenta",
+            {
+              "Perplexity": 1
+            }
+          ],
+          ["Desisto e faço na mão", {}]
+        ]
+      ],
+      [
+        "parada",
+        "Você já assinou alguma ferramenta que não usou?",
+        [
+          ["Nunca", {}],
+          ["Uma", {}],
+          ["Mais de uma", {}],
+          ["Prefiro nem contar", {}]
+        ]
+      ],
+      [
+        "refaz",
+        "Quantas vezes você refaz o mesmo prompt até prestar?",
+        [
+          ["Sai de primeira", {}],
+          ["Duas ou três", {}],
+          ["Cinco ou mais", {}],
+          ["Quase sempre desisto antes", {}]
+        ]
+      ],
+      [
+        "horas",
+        "Quantas horas por semana isso te custa?",
+        [
+          ["Menos de uma", {}],
+          ["De uma a três", {}],
+          ["De três a seis", {}],
+          ["Mais de seis", {}]
+        ]
+      ],
+      [
+        "break2",
+        "Por que três, e não dez | Testei ferramenta por ferramenta em trabalho real, não em review. O que sobrou foi um trio por perfil: uma para pensar e escrever, uma para buscar e checar, uma para produzir. O resto é assinatura parada.",
+        [
+          ["Continuar →", {}]
+        ]
+      ],
+      [
         "nivel",
         "Como você usa IA hoje?",
         [
@@ -389,6 +501,35 @@
               "Claude": 2,
               "Higgsfield": 1,
               "Poppy AI": 1
+            }
+          ]
+        ]
+      ],
+      [
+        "prazo",
+        "Em quanto tempo você quer isso resolvido?",
+        [
+          ["Essa semana", {}],
+          ["Neste mês", {}],
+          ["Sem pressa, quero fazer certo", {}]
+        ]
+      ],
+      [
+        "estilo",
+        "Você prefere dominar uma ferramenta ou saber trocar entre várias?",
+        [
+          [
+            "Dominar uma a fundo",
+            {
+              "Claude": 1,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Saber trocar conforme a tarefa",
+            {
+              "Perplexity": 1,
+              "Gemini": 1
             }
           ]
         ]
@@ -492,7 +633,7 @@
   },
   "faq": [
     [
-      "O que exatamente eu recebo por R$ 47?",
+      "O que exatamente eu recebo por R$ 67?",
       "O diagnóstico completo, a sua stack em três camadas (o que assinar agora, em 30 dias e depois), o prompt pronto de cada tarefa da sua área, o tutorial de cada ferramenta recomendada, os comparativos diretos, o plano de 7 dias e a lista do que cortar. Mais as atualizações quando alguma escolha mudar."
     ],
     [
@@ -526,8 +667,8 @@
   ],
   "oferta": {
     "nome": "Qual IA Usar?",
-    "preco": "47",
-    "de": "97",
+    "preco": "67",
+    "de": "147",
     "promessa": "Em poucos minutos você sabe quais ferramentas precisa, em que ordem começar e o prompt exato para usar cada uma.",
     "entregaveis": [
       [
@@ -540,27 +681,15 @@
       ],
       [
         "Os prompts perfeitos",
-        "Um para cada tarefa da sua área"
-      ],
-      [
-        "Tutorial de cada ferramenta",
-        "Do cadastro ao primeiro resultado"
+        "Um para cada tarefa da sua área, com o tutorial de cada ferramenta"
       ],
       [
         "Comparativos diretos",
         "ChatGPT, Claude, Gemini e Perplexity"
       ],
       [
-        "Plano de 7 dias",
-        "Uma tarefa por dia, na ordem"
-      ],
-      [
         "O que NÃO assinar",
         "Com a conta do que isso devolve"
-      ],
-      [
-        "Atualizações inclusas",
-        "Quando alguma escolha mudar"
       ]
     ],
     "garantias": [
@@ -579,6 +708,33 @@
       ]
     ],
     "selo_inclusos": "Sem mensalidade"
+  },
+  "upsell": {
+    "nome": "Sua primeira semana pronta",
+    "rotulo": "Sua aula de boas-vindas",
+    "preco": "197",
+    "credito": "67",
+    "promessa": "O diagnóstico diz o que usar. Isto aqui resolve o que fazer na segunda de manhã.",
+    "entregaveis": [
+      [
+        "Plano de 7 dias",
+        "Uma tarefa por dia, na ordem, com o resultado esperado de cada uma"
+      ],
+      [
+        "Prompts já preenchidos",
+        "Com o seu contexto do diagnóstico, não modelo em branco"
+      ],
+      [
+        "Revisão da sua stack",
+        "Quando uma ferramenta mudar de preço ou for superada, você recebe a troca"
+      ],
+      [
+        "Checklist de corte",
+        "O que cancelar primeiro e em que ordem, com a conta do que volta"
+      ]
+    ],
+    "razao_preco": "Fora desta tela o mesmo pacote sai por R$ 197 cheio, sem o crédito dos R$ 67.",
+    "nota": "Pagamento único. Sem mensalidade. 7 dias de garantia."
   },
   "problema": [
     [
@@ -658,10 +814,10 @@
     ],
     "fecho": [
       "O mapa",
-      "R$ 47",
+      "R$ 67",
       "uma vez"
     ],
-    "remate": "Cortar uma única assinatura errada paga o mapa quase cinco vezes no primeiro mês.",
+    "remate": "Cortar uma única assinatura errada de US$ 20 já paga o mapa no primeiro mês, e ainda sobra.",
     "rodape": "Valores conferidos em 18 de agosto de 2026, um a um, no site de cada ferramenta."
   },
   "pedidos": {
