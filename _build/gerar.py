@@ -28,7 +28,7 @@ INSTA = "https://instagram.com/aalisonaraujo"
 # Vazio: o passo de contato é pulado e o resultado aparece direto, porque prender
 # a pessoa num formulário que não salva nada seria perder o lead e a venda.
 # "DEMO": mostra a tela para conferência visual, sem enviar nada. Nunca publicar assim.
-CAPTURA_URL = "DEMO"
+CAPTURA_URL = ""
 
 # Checkout do "Qual IA Usar?" (R$ 47). Vazio = o resultado do diagnóstico oferece a
 # lista de espera pelo direct em vez de um botão de compra que não leva a lugar nenhum.
