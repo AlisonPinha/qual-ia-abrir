@@ -492,15 +492,15 @@ JS = """
 
 """
 
-DESC = (f"{total} tarefas do dia a dia e a ferramenta de IA certa para cada uma, "
-        "com o porquê da escolha e o link de cada ferramenta.")
+DESC = ("Responda 5 perguntas e receba as 3 ferramentas de IA certas para o seu trabalho e "
+        "orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área.")
 
 html = f"""<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Qual IA abrir pra cada tarefa</title>
+<title>Qual IA Usar? A sua stack de IA em 2 minutos</title>
 <meta name="description" content="{escape(DESC, quote=True)}">
 <meta name="author" content="Alison Araújo">
 <link rel="canonical" href="{SITE}/">
@@ -508,14 +508,14 @@ html = f"""<!doctype html>
 <meta property="og:site_name" content="@aalisonaraujo">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="{SITE}/">
-<meta property="og:title" content="Qual IA abrir pra cada tarefa">
-<meta property="og:description" content="{total} tarefas, a ferramenta certa pra cada uma e o porquê. Com o link de todas.">
+<meta property="og:title" content="Qual IA Usar? A sua stack de IA em 2 minutos">
+<meta property="og:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 47.">
 <meta property="og:image" content="{SITE}/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Qual IA abrir pra cada tarefa">
-<meta name="twitter:description" content="{total} tarefas, a ferramenta certa pra cada uma e o porquê. Com o link de todas.">
+<meta name="twitter:title" content="Qual IA Usar? A sua stack de IA em 2 minutos">
+<meta name="twitter:description" content="As 3 IAs certas pro seu trabalho, na ordem de assinar, com o prompt de cada uma. R$ 47.">
 <meta name="twitter:image" content="{SITE}/og.png">
 <meta name="theme-color" content="#0c0a10">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
