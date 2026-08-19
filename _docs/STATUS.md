@@ -9,6 +9,22 @@
 vendendo o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a
 primeira venda feita e o checkout do upsell de R$ 130 criado na Cakto.
 
+### A próxima sessão começa por aqui
+
+Duas tarefas, as duas só dependem do Claude, e as duas são sobre quem escapa do funil:
+
+**2.11, saber onde a pessoa abandona o quiz.** Hoje o envio anônimo só acontece quando o quiz
+**termina**: quem sai no meio não deixa rastro, e não dá para saber se as 19 perguntas seguram
+ou derrubam. O desenho: um `sendBeacon` na saída, uma linha por pessoa, com a pergunta em que
+parou, quantas respondeu, a área e a UTM. Exige uma aba nova (`abandonos`) e recolar o Apps
+Script, **e o Claude recola sozinho pelo navegador**, como fez em 19/08. **Ligar antes do
+primeiro tráfego pago**, senão a primeira leva passa sem instrumentação.
+
+**2.5, recuperação por WhatsApp.** Antes de escrever qualquer workflow, levantar: a Cakto
+dispara webhook de cobrança gerada e não paga? Existe canal de WhatsApp de pé (a instância
+Evolution do Alison está parada)? Sem os dois, a tarefa não fecha, e é melhor descobrir isso
+antes de montar meio workflow.
+
 ### O que fazer no começo da próxima sessão
 
 1. `for v in "" abas regra stack; do python3 _build/gerar.py $v; done`, mais
@@ -22,11 +38,27 @@ primeira venda feita e o checkout do upsell de R$ 130 criado na Cakto.
 - **Revisar a voz dos 7 dias**, que estão no ar em `/plano`
 - **Trocar a chave da API**, parado por decisão dele até acabar a fase de teste
 
+### A revisão da sessão de 19/08, e o que ela achou
+
+Revisão do diff inteiro no fim do dia (18 commits, 20 arquivos). Limpo em: travessão (zero no
+que entrou), promessa numérica desatualizada no texto visível, determinismo do build (gerar
+duas vezes dá o mesmo byte) e console.
+
+**Dois defeitos reais, os dois filhos da memória parcial que entrou hoje na LP:**
+
+| O que acontecia | Por que nenhum teste pegou |
+|---|---|
+| O botão de voltar do quiz apagava a resposta do estado da página, mas não do que estava guardado. Sair e reabrir devolvia justamente a resposta desfeita | eu testei a retomada, não o desfazer |
+| O refazer zerava a tela e não o guardado: clicar em refazer e fechar reabria no resultado antigo | idem |
+
+**A lição:** ao ligar memória, todo caminho que **apaga** estado tem que apagar nos dois
+lugares. Testar só o caminho feliz da retomada deixa o desfazer fora.
+
 ### O que eu pego em seguida
 
-Fase 2 do plano: recuperação por WhatsApp (2.5), a VSL quando o Alison gravar (2.6) e cada um
-dos 7 dias como ponto de ascensão (2.7), que depende de existir um próximo produto, que é
-justamente o que a aba `presentes` vai dizer.
+Ver "A próxima sessão começa por aqui", no topo: 2.11 (onde a pessoa abandona) e 2.5
+(recuperação por WhatsApp). O 2.7 continua esperando existir um próximo produto, que é
+justamente o que a aba `presentes` vai dizer, e a VSL (2.6) espera o Alison gravar.
 
 ### O que fechou no fim de 19/08
 
@@ -509,7 +541,7 @@ reembolso e reclamação, e queima a autoridade que é o ativo do produto.
 
 
 
-Atualizado em 18/08/2026, depois do deploy que deu checkout próprio a cada variante.
+Atualizado em 19/08/2026, no fim da sessão que ligou a venda dentro da entrega, abriu o quiz para vida pessoal e fez o QA do funil inteiro.
 
 ## O que a página é hoje
 
