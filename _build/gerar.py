@@ -332,11 +332,18 @@ para_quem = "".join(
     for i, (t2, txt) in enumerate(OF["para_quem"])
 )
 
+# O botão do fim do quiz ficava a 582px da dobra no iPhone e a 815px num Android pequeno,
+# medido em 19/08: a pessoa via o resultado e não via como comprar. A correção pontual 2 da
+# Frente 6 do playbook é justamente essa. Este é o mesmo link, logo abaixo do resultado, e o
+# JS decora os dois com a UTM e o código.
 if CHECKOUT_URL:
+    botao_topo = (f'<a class="btn-cta" href="{CHECKOUT_URL}" target="_blank" rel="noopener">'
+                  f'Desbloquear as minhas 3 por R$ {OF["preco"]} →</a>')
     botao_compra = (f'<a class="btn-cta" href="{CHECKOUT_URL}" target="_blank" rel="noopener">'
                     f'Quero a minha stack por R$ {PRECO_N} →</a>')
     aviso_compra = "Pagamento único, acesso imediato e 7 dias de garantia."
 else:
+    botao_topo = ""
     botao_compra = (f'<a class="btn-cta" href="{INSTA}" target="_blank" rel="noopener">'
                     f'Entrar na lista de lançamento →</a>')
     aviso_compra = ("O checkout abre em instantes. Manda <b>STACK</b> no direct que você entra na "
@@ -1072,13 +1079,10 @@ html = f"""<!doctype html>
         <span class="selo-rosa">Seu resultado</span>
         <h3 id="res-titulo" tabindex="-1">Sua stack</h3>
         <p id="res-perfil"></p>
-        <div class="res-codigo" id="res-codigo" hidden>
-          <span class="res-codigo-rot">O seu código de acesso</span>
-          <code id="res-codigo-valor"></code>
-          <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
-          <a class="m-copiar" id="res-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
-          <p class="res-codigo-ajuda">Guarda este código. Ele abre o seu mapa em qualquer
-             aparelho, sem responder de novo.</p>
+        <div class="res-cta-topo">
+          {botao_topo}
+          <p class="res-cta-nota">Os nomes, a ordem, o prompt de cada tarefa e o que cortar.
+             Pagamento único, acesso na hora.</p>
         </div>
       </div>
       <ol class="res-stack" id="res-stack"></ol>
@@ -1095,6 +1099,14 @@ html = f"""<!doctype html>
         </div>
         {botao_compra}
         <p class="form-aviso">{aviso_compra}</p>
+      </div>
+      <div class="res-codigo" id="res-codigo" hidden>
+        <span class="res-codigo-rot">O seu código de acesso</span>
+        <code id="res-codigo-valor"></code>
+        <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
+        <a class="m-copiar" id="res-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
+        <p class="res-codigo-ajuda">Não vai comprar agora? Guarda este código: ele traz as suas
+           respostas de volta em qualquer aparelho, sem responder tudo de novo.</p>
       </div>
       <button type="button" class="refazer" id="refazer">Refazer o diagnóstico</button>
     </div>

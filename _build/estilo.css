@@ -831,6 +831,12 @@ body.travado { overflow: hidden; }
 .res-codigo code { font-size: 19px; font-weight: 700; letter-spacing: .07em; font-family: ui-monospace, monospace; }
 .res-codigo .m-copiar { margin-left: 10px; }
 .res-codigo-ajuda { font-size: 12.5px; color: var(--cinza-min); margin: 8px 0 0; line-height: 1.5; }
+/* o CTA logo abaixo do resultado: o de baixo continua, este existe para quem já decidiu
+   não ter que rolar a tela inteira atrás do botão */
+.res-cta-topo { margin: 20px 0 4px; }
+.res-cta-topo .btn-cta { display: flex; width: 100%; text-align: center; text-decoration: none; }
+.res-cta-nota { margin: 10px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--cinza-min); text-align: center; }
+
 .entrar-codigo { margin: 0 0 22px; padding: 15px 16px; border-radius: 14px;
   border: 1px solid rgba(193,131,251,.28); background: rgba(193,131,251,.05); }
 .entrar-codigo p { margin: 0 0 10px; font-size: 14px; color: var(--cinza-claro); }

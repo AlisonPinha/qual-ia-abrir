@@ -21,7 +21,7 @@ Quem nunca usou IA responde menos, porque três perguntas dependem de já ter fe
 | 9 | `e_tarefa` | pergunta, **vota** no motor | `area` = Estudos ou docência |
 | 10 | `t_tarefa` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
 | 11 | `tarefa` | pergunta, **vota** no motor | `area` = Outra área |
-| 12 | `l_tarefa` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 12 | `l_tarefa` | pergunta, **vota** no motor | `area` = Vida pessoal, fora do trabalho |
 | 13 | `tempo_ia` | pergunta, não vota (implicação e espelho) | sempre |
 | 14 | `quantas` | pergunta, não vota (implicação e espelho) | sempre |
 | 15 | `gasto` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
@@ -38,8 +38,8 @@ Quem nunca usou IA responde menos, porque três perguntas dependem de já ter fe
 | 26 | `t_entrega` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
 | 27 | `o_saida` | pergunta, **vota** no motor | `area` = Outra área |
 | 28 | `o_contexto` | pergunta, **vota** no motor | `area` = Outra área |
-| 29 | `l_preco` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
-| 30 | `l_repete` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 29 | `l_preco` | pergunta, **vota** no motor | `area` = Vida pessoal, fora do trabalho |
+| 30 | `l_repete` | pergunta, **vota** no motor | `area` = Vida pessoal, fora do trabalho |
 | 31 | `s_registro` | pergunta, **vota** no motor | `area` = Saúde e consultório |
 | 32 | `s_dado` | pergunta, **vota** no motor | `area` = Saúde e consultório |
 | 33 | `j_volume` | pergunta, **vota** no motor | `area` = Jurídico |
@@ -68,12 +68,12 @@ Quem nunca usou IA responde menos, porque três perguntas dependem de já ter fe
 | 56 | `p_ritmo` | pergunta, **vota** no motor | `area` = Projeto e obra |
 | 57 | `o_entrega` | pergunta, **vota** no motor | `area` = Outra área |
 | 58 | `o_ritmo` | pergunta, **vota** no motor | `area` = Outra área |
-| 59 | `l_entrega` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
-| 60 | `l_ritmo` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 59 | `l_entrega` | pergunta, **vota** no motor | `area` = Vida pessoal, fora do trabalho |
+| 60 | `l_ritmo` | pergunta, **vota** no motor | `area` = Vida pessoal, fora do trabalho |
 | 61 | `break3` | break: conteúdo entre blocos | sempre |
-| 62 | `generica` | pergunta, não vota (implicação e espelho) | sempre |
+| 62 | `generica` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
 | 63 | `parada` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
-| 64 | `refaz` | pergunta, não vota (implicação e espelho) | sempre |
+| 64 | `refaz` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
 | 65 | `horas` | pergunta, não vota (implicação e espelho) | sempre |
 | 66 | `custo_parado` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
 | 67 | `break2` | break: conteúdo entre blocos | sempre |
@@ -113,7 +113,7 @@ parte do quiz que mais muda a stack.
 **3. Estudos ou docência**
 - `e_tarefa` O que mais toma o seu tempo de estudo ou de aula?
 - `e_fonte` O que acontece quando você pede fonte pra IA?
-- `e_volume` Por semana, o material que você tem que dar conta é do tamanho de...
+- `e_volume` Por semana, quanto material você tem que dar conta?
 - `e_entrega` O que você precisa produzir no fim?
 - `e_ritmo` Você prefere consumir o material lendo ou ouvindo?
 
@@ -133,7 +133,7 @@ parte do quiz que mais muda a stack.
 
 **6. Jurídico**
 - `j_tarefa` Na rotina jurídica, onde o tempo vai embora?
-- `j_volume` O material de um processo seu costuma ser do tamanho de...
+- `j_volume` Qual costuma ser o tamanho do material de um processo seu?
 - `j_risco` O que mais te trava pra usar IA no jurídico?
 - `j_entrega` O que precisa sair pronto no fim?
 - `j_ritmo` Quanto das suas peças nasce de um modelo parecido?
@@ -159,28 +159,26 @@ parte do quiz que mais muda a stack.
 - `o_entrega` Em que formato o seu trabalho chega em quem recebe?
 - `o_ritmo` Quanto do seu trabalho se repete quase igual?
 
-**10. Na minha vida pessoal, fora do trabalho**
+**10. Vida pessoal, fora do trabalho**
 - `l_tarefa` Fora do trabalho, o que você mais quer resolver?
 - `l_preco` Quando você vai comprar alguma coisa, o que trava?
 - `l_repete` Tem alguma coisa que você fica conferindo toda semana?
 - `l_entrega` O que você queria receber pronto?
-- `l_ritmo` Com que frequência isso aparece na sua vida?
+- `l_ritmo` E com que frequência você precisa disso?
 
 ## O tronco, igual para todo mundo
 
 | pid | Pergunta | Vota? |
 |---|---|---|
 | `area` | Onde a IA entra primeiro pra você? | sim |
-| `tempo_ia` | Há quanto tempo você usa IA no trabalho? | não |
+| `tempo_ia` | Há quanto tempo você usa IA? | não |
 | `quantas` | Quantas ferramentas de IA você tem abertas hoje? | não |
-| `generica` | Quando a resposta volta genérica, o que você faz? | não |
-| `refaz` | Quantas vezes você refaz o mesmo prompt até prestar? | não |
-| `horas` | Quantas horas por semana isso te custa? | não |
+| `horas` | Somando tudo isso, quantas horas por semana você perde? | não |
 | `nivel` | Como você usa IA hoje? | sim |
 | `prazo` | Em quanto tempo você quer isso resolvido? | não |
 | `estilo` | Você prefere dominar uma ferramenta ou saber trocar entre várias? | não |
 | `orcamento` | Quanto você pode investir por mês em ferramenta? | não |
-| `onde` | Onde você trabalha na maior parte do tempo? | sim |
+| `onde` | Onde você usa IA na maior parte do tempo? | sim |
 
 ## O que cada resposta faz com a stack
 
@@ -200,7 +198,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Contábil e financeiro | Gemini +3, Claude +3, ChatGPT +1 |
 | Projeto e obra | Claude +2, Gemini +2, Higgsfield +2, ChatGPT +1 |
 | Outra área | ChatGPT +2, Claude +2, Gemini +2, Perplexity +1 |
-| Na minha vida pessoal, fora do trabalho | ChatGPT +3, Perplexity +3, Gemini +1 |
+| Vida pessoal, fora do trabalho | ChatGPT +3, Perplexity +3, Gemini +1 |
 
 ### `s_tarefa` Fora do atendimento, o que mais toma o seu tempo?
 
@@ -398,7 +396,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Uso só o que a instituição indica | Gemini +3, Gemini Notebook +3 |
 | Não uso fonte, o conteúdo é meu | Claude +3, ChatGPT +1 |
 
-### `e_volume` Por semana, o material que você tem que dar conta é do tamanho de...
+### `e_volume` Por semana, quanto material você tem que dar conta?
 
 | Resposta | Favorece |
 |---|---|
@@ -481,7 +479,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Nunca entra, uso só pra estudo e texto | Perplexity +3, Gemini +1 |
 | Sinceramente, não sei o que pode | Claude +2, Perplexity +2 |
 
-### `j_volume` O material de um processo seu costuma ser do tamanho de...
+### `j_volume` Qual costuma ser o tamanho do material de um processo seu?
 
 | Resposta | Favorece |
 |---|---|
@@ -720,7 +718,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Um aplicativo simples, só pra mim | Lovable +7, Claude Code +2 |
 | Uma imagem ou um vídeo bem feito | Higgsfield +7, Gemini +1 |
 
-### `l_ritmo` Com que frequência isso aparece na sua vida?
+### `l_ritmo` E com que frequência você precisa disso?
 
 | Resposta | Favorece |
 |---|---|
@@ -737,7 +735,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Uso todo dia, mas sem método | Claude +2, Perplexity +1, Higgsfield +1 |
 | Uso pra trabalhar e quero avançar | Claude Code +2, Claude +2, Higgsfield +1, Poppy AI +1 |
 
-### `onde` Onde você trabalha na maior parte do tempo?
+### `onde` Onde você usa IA na maior parte do tempo?
 
 | Resposta | Favorece |
 |---|---|

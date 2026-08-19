@@ -58,7 +58,7 @@ async function responderTudo(page, escopo) {
     checkout: document.querySelector('a[href*="pay.cakto"]')?.href || '',
     silhueta: document.querySelectorAll('#res-stack .oculto').length,
   }));
-  ok('LP: quiz completa', cliques >= 18, `${cliques} cliques`);
+  ok('LP: quiz completa', cliques >= 14, `${cliques} cliques`);
   ok('LP: resultado aparece', /stack/i.test(lp.titulo || ''), lp.titulo);
   ok('LP: teaser em silhueta', lp.silhueta === 3, `${lp.silhueta} cards ocultos`);
   ok('LP: código gerado', /^[0-9A-Z-]{8,}$/.test(lp.codigo), lp.codigo);

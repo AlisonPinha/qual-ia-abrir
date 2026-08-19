@@ -448,7 +448,7 @@
             }
           ],
           [
-            "Na minha vida pessoal, fora do trabalho",
+            "Vida pessoal, fora do trabalho",
             {
               "ChatGPT": 3,
               "Perplexity": 3,
@@ -1095,7 +1095,7 @@
       ],
       [
         "tempo_ia",
-        "Há quanto tempo você usa IA no trabalho?",
+        "Há quanto tempo você usa IA?",
         [
           [
             "Comecei agora",
@@ -1457,7 +1457,7 @@
       ],
       [
         "e_volume",
-        "Por semana, o material que você tem que dar conta é do tamanho de...",
+        "Por semana, quanto material você tem que dar conta?",
         [
           [
             "Alguns artigos",
@@ -1821,7 +1821,7 @@
       ],
       [
         "j_volume",
-        "O material de um processo seu costuma ser do tamanho de...",
+        "Qual costuma ser o tamanho do material de um processo seu?",
         [
           [
             "Poucas páginas",
@@ -2792,7 +2792,7 @@
       ],
       [
         "l_ritmo",
-        "Com que frequência isso aparece na sua vida?",
+        "E com que frequência você precisa disso?",
         [
           [
             "Toda semana",
@@ -2843,14 +2843,21 @@
             "Desisto e faço na mão",
             {}
           ]
-        ]
+        ],
+        {
+          "quantas": [
+            1,
+            2,
+            3
+          ]
+        }
       ],
       [
         "parada",
-        "Você já assinou alguma ferramenta que não usou?",
+        "Quantas ferramentas você já assinou e não usou?",
         [
           [
-            "Nunca",
+            "Nenhuma",
             {}
           ],
           [
@@ -2894,11 +2901,18 @@
             "Quase sempre desisto antes",
             {}
           ]
-        ]
+        ],
+        {
+          "quantas": [
+            1,
+            2,
+            3
+          ]
+        }
       ],
       [
         "horas",
-        "Quantas horas por semana isso te custa?",
+        "Somando tudo isso, quantas horas por semana você perde?",
         [
           [
             "Menos de uma",
@@ -3055,7 +3069,7 @@
       ],
       [
         "onde",
-        "Onde você trabalha na maior parte do tempo?",
+        "Onde você usa IA na maior parte do tempo?",
         [
           [
             "No celular",
