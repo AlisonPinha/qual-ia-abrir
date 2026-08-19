@@ -548,6 +548,7 @@ JS = """
       atual = anterior;
       delete resp[passos[atual].dataset.q];
       limparOrfas(MOTOR, resp);
+      salvarSessao(resp, MOTOR.pids, livre, MOTOR);   // senão a retomada devolve o que ela desfez
       for (const b of passos[atual].querySelectorAll(".opc")) b.setAttribute("aria-pressed", "false");
       mostrar();
     };
@@ -720,6 +721,7 @@ JS = """
   }
 
   el("refazer").addEventListener("click", () => {
+    limparSessao();          // refazer é para começar do zero, inclusive no que ficou guardado
       for (const k of Object.keys(resp)) delete resp[k];
       for (const b of quiz.querySelectorAll(".opc")) b.setAttribute("aria-pressed", "false");
       atual = 0;
