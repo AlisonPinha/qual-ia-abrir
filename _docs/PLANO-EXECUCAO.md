@@ -52,6 +52,7 @@ Ordem por impacto medido, não por esforço. Os itens 1.1 a 1.4 saíram da audit
 | 1.5 | ~~**De 18 para 23 etapas**~~ **feito 19/08** | Seguiu a Frente 6 do plano do vault, não invenção: entrou a pergunta 10 (`custo_parado`) e as duas que faltavam em cada trilha, fechando as 5 do bloco ramificado. **Parou em 23, não em 30**, porque as 30 a 50 do playbook contam as duas mini VSLs, e o produto foi decidido sem vídeo | Claude | 23 etapas para quem usa IA, 20 para quem nunca usou, e nenhuma pergunta de enchimento |
 | 1.6 | ~~**Reason why na abertura**~~ **feito 19/08**. A escassez foi descartada | O porquê está na primeira tela e some depois dela. **A escassez não entra:** o playbook pede escassez sob o botão, mas o projeto proíbe inventar escassez em produto digital sem limite real, e não existe limite real aqui. Entre o playbook e a regra do Alison, vale a regra | Claude | Reason why no ar, sem alterar a simplicidade da etapa 1 |
 | 1.7 | ~~**`estilo` passa a valer**~~ **feito 19/08** | Quem diz "prefiro dominar uma a fundo" recebe três ferramentas igual | Claude | A composição muda entre as duas respostas |
+| 1.8 | **Botão acima da dobra, medido em aparelho** | É a correção pontual 2 da Frente 6 do playbook e nunca foi medida. Teve funil que não vendia só porque o CTA caía abaixo da dobra em alguns celulares | Claude | O CTA aparece sem rolagem em 390x844 e em 360x640 |
 
 ### O que o bloco do motor mudou, medido em 37.632 combinações
 
@@ -113,7 +114,9 @@ barato. Hoje não há para onde subir.
 | 2.5 | **Recuperação por WhatsApp** | Claude no n8n | 0.1 | Mensagem sai para quem gerou cobrança e não pagou |
 | 2.6 | **VSL do upsell** (decisão revista em 19/08: o Alison vai gravar) | Alison grava rosto e voz, Claude grava as telas | 2.2 | O roteiro de 1min45 já está escrito no vault. **Ordem obrigatória: a página existe antes da gravação das telas**, porque o bloco de 0:48 promete "você manda e recebe rodado" e é o único insubstituível do roteiro |
 | 2.7 | **Cada um dos 7 dias vira ponto de ascensão** | Claude | 2.2 e existir um próximo produto | "Trate a entrega do seu produto como um funil de vendas pro próximo". Os quatro pontos deles, em ordem: WhatsApp, e-mail, banner e descrição de cada aula. Aqui cada dia é uma aula |
-| 2.8 | ~~**Formulário do presente na pós-compra**~~ **feito 19/08**, falta o Alison recolar o Apps Script | Claude | 0.1 | Cinco opções e uma saída aberta, no fim do `/mapa`, gravando na aba `presentes`. Fica **depois** do CTA de ascensão de propósito: o voto não pode competir com a venda |
+| 2.8 | ~~**Formulário do presente na pós-compra**~~ **feito 19/08** | Claude | 0.1 | Cinco opções e uma saída aberta, no fim do `/mapa`, gravando na aba `presentes`. Fica **depois** do CTA de ascensão de propósito: o voto não pode competir com a venda |
+| 2.9 | **Back redirect** no diagnóstico e no checkout | Claude | nada | +15% de faturamento na operação de referência, e **não depende de tráfego nem de terceiro**. Estava no playbook desde 18/08 e nunca tinha entrado nesta fila |
+| 2.10 | **O e-mail de acesso levar o upsell junto** | Alison edita na Cakto, Claude escreve | 2.3 | Hoje o e-mail manda só o link do mapa. É o ponto de ascensão que alcança quem pagou no Pix e nunca voltou ao checkout |
 
 ### O achado que destravou a página, e que vale para o produto inteiro
 
@@ -194,6 +197,7 @@ decisão do Alison, não minha.
 | 4.4 | **Auditoria das 9 seções** pela régua de Makepeace, como variante A/B | Claude | 3.3 | Roda como teste, nunca por decreto |
 | 4.5 | **One Belief em todos os pontos de contato** | Claude | nada | A mesma frase no hero, no criativo, no e-mail e no upsell |
 | 4.6 | **Uso pessoal: decidir com dado** | Claude | 0.2, 3.3 | A coluna `descreveu` diz quantos não se encaixaram nas 10 áreas e o que queriam. Só então se cria trilha |
+| 4.7 | **World wide** | Claude | 3.3 | Duplicar o funil, filtrar português e excluir o Brasil. O playbook estima meia hora de trabalho e ROI alto nos primeiros dias. Só depois de o funil provar que converte aqui |
 
 ---
 

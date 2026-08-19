@@ -1,10 +1,12 @@
 # Qual IA Usar?
 
-**No ar:** https://qual-ia-abrir.vercel.app
+**No ar:** https://diagnostico.noahai.com.br (o `.vercel.app` responde 308 para ele)
 
-Landing page de venda do produto **Qual IA Usar? (R$ 47)**: diagnóstico de 5 perguntas que
-devolve as 3 ferramentas de IA certas para o contexto da pessoa, na ordem de assinar, com o
-prompt pronto de cada tarefa da área dela, tutoriais, plano de 7 dias e a lista do que cortar.
+Funil inteiro do **Qual IA Usar?**: a LP de venda em 4 variantes de nome, o diagnóstico de 23
+etapas, a entrega paga em `/mapa` (R$ 67) e a entrega do upsell em `/plano` (R$ 130 para quem
+já comprou, R$ 197 cheio). O diagnóstico devolve as 3 ferramentas de IA certas para o contexto
+da pessoa, na ordem de assinar, com o prompt pronto de cada tarefa da área dela e a lista do
+que cortar.
 
 Nasceu do Reel `Db37tHWCLMV` (@aalisonaraujo, 10/08/2026), que fez 89.501 views.
 
@@ -26,13 +28,21 @@ transforma os dados em HTML.
 |---|---|
 | `_build/dados.json` | **Fonte única.** Ferramentas, tarefas, desempates, splits, números, FAQ, captura |
 | `_build/gerar.py` | Gera `public/index.html` a partir do JSON e do CSS |
-| `_build/gerar_mapa.py` | Gera `public/mapa/index.html` (entrega paga) e `_lib/motor.mjs` |
+| `_build/gerar_mapa.py` | Gera `public/mapa/index.html` (entrega paga, mais a venda do upsell) e `_lib/motor.mjs` |
+| `_build/gerar_plano.py` | Gera `public/plano/index.html`, a entrega do upsell |
+| `_build/gerar_doc_quiz.py` | Gera `_docs/DIAGNOSTICO.md` a partir do `dados.json` |
+| `_build/config.py` | As URLs de deploy, os checkouts e o pixel. **Um lugar só para cada URL** |
+| `_build/sessao.js` | Memória do diagnóstico no navegador, origem do tráfego e envio anônimo |
+| `_build/codigo.js` | O código de acesso: as respostas viram texto curto, para abrir em outro aparelho |
+| `_build/espelho.js` | Repete as respostas na tela antes do resultado |
+| `_build/regressao.js` | A bateria de ponta a ponta, rodada contra produção |
 | `_build/questionario.py` | HTML dos passos e as regras de trilha, usados pelos dois geradores |
 | `_build/motor.js` | Cálculo da stack, injetado nas duas páginas e reusado pela function |
 | `_build/testar_motor.mjs` | Confere pesos, trilhas e cobertura do catálogo (`node`) |
 | `_build/estilo.css` | Todo o CSS. Editar aqui, nunca no HTML gerado |
 | `_build/og-fonte.html` | Página 1200x630 que vira a imagem de preview |
-| `api/mapa.mjs` | Function da camada de redação por IA (ADR-0001) |
+| `api/mapa.mjs` | Function da camada de redação por IA do mapa (ADR-0001) |
+| `api/plano.mjs` | Function que escreve os 7 dias, as configurações e roda o material da pessoa |
 | `_lib/motor.mjs` | **Gerado.** O motor do lado do servidor, para a function não confiar no navegador |
 | `public/index.html` | **Gerado. Não editar à mão**, `gerar.py` sobrescreve |
 | `public/logos/` | Ícones no mesmo squircle dos Reels |
@@ -46,12 +56,14 @@ são os PNGs usados nos próprios Reels.
 
 ```bash
 # 1. mexer em _build/dados.json
-# 2. gerar as 4 variantes do teste de nome e a entrega paga
+# 2. gerar as 4 variantes do teste de nome, as duas entregas e a doc do quiz
 for v in "" abas regra stack; do python3 _build/gerar.py $v; done
-python3 _build/gerar_mapa.py
-# 3. conferir o motor (pesos, trilhas, cobertura das 9 ferramentas)
+python3 _build/gerar_mapa.py && python3 _build/gerar_plano.py && python3 _build/gerar_doc_quiz.py
+# 3. conferir o motor (pesos, trilhas, cobertura do catálogo)
 node _build/testar_motor.mjs
-# 4. publicar
+# 4. antes de publicar mudança grande, a bateria de ponta a ponta
+cd ~/.claude/skills/playwright-skill && node run.js ~/Projetos/qual-ia-abrir/_build/regressao.js
+# 5. publicar
 vercel deploy --prod --yes
 ```
 
@@ -90,6 +102,22 @@ começar. Por isso, numa pergunta de trilha:
 Peso 4 numa pergunta só não chega ao pódio: o ElevenLabs entrou assim e aparecia em 0% das
 stacks. Quem pega isso é `node _build/testar_motor.mjs`, que falha quando alguma ferramenta
 do catálogo fica impossível de sair.
+
+## A venda dentro da entrega
+
+O `/mapa` não é só entrega: é onde o upsell é vendido, porque a entrega da Cakto é uma URL fixa
+sem redirect pós-compra, e 80% paga no Pix e não volta ao checkout.
+
+- **Tela pós-compra:** aparece uma vez, entre a identificação e o mapa, com a conta R$ 197 menos
+  os R$ 67 já pagos. Some para sempre depois da primeira vez (`qia:oto` no navegador).
+- **CTA de ascensão:** bloco fixo no fim da entrega, mesmo preço e mesmo link.
+- **O presente:** uma pergunta no fim do mapa. O mais votado vira o próximo produto, e o voto
+  vai para a aba `presentes` da planilha.
+
+O crédito é de quem comprou, não da tela: quem pagou os R$ 67 tem o abatimento sempre que
+voltar. Nada de "só nesta página", que seria escassez inventada.
+
+Sem `CHECKOUT_UPSELL` no `config.py`, as duas peças de venda somem e a entrega segue inteira.
 
 ## A camada de IA (`/api/mapa`)
 
