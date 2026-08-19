@@ -479,6 +479,16 @@ JS = """
         el("res-codigo").hidden = false;
         for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
           if (!a.href.includes("c=")) a.href += (a.href.includes("?") ? "&" : "?") + "c=" + encodeURIComponent(codigo);
+      // o código só serve se ela conseguir levar para o outro aparelho, e o WhatsApp é o
+      // único app que ela tem nos dois. O link vai junto com o código dentro: no outro
+      // aparelho é um toque, sem digitar nada
+      const zap = el("res-codigo-zap");
+      if (zap) {
+        const texto = "O meu código do Qual IA Usar: " + codigo
+          + ". Para abrir o mapa em qualquer aparelho, e o link já vai com ele dentro: "
+          + location.origin + "/mapa?c=" + encodeURIComponent(codigo);
+        zap.href = "https://wa.me/?text=" + encodeURIComponent(texto);
+      }
       }
 
       el("res-stack").innerHTML = stack.map((s, i) => `
@@ -1007,6 +1017,7 @@ html = f"""<!doctype html>
           <span class="res-codigo-rot">O seu código de acesso</span>
           <code id="res-codigo-valor"></code>
           <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
+          <a class="m-copiar" id="res-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
           <p class="res-codigo-ajuda">Guarda este código. Ele abre o seu mapa em qualquer
              aparelho, sem responder de novo.</p>
         </div>

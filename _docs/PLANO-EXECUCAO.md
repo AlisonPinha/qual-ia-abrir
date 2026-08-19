@@ -18,9 +18,23 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 
 | # | Tarefa | Quem | Depende | Critério de pronto |
 |---|---|---|---|---|
-| 0.1 | **Compra de teste de R$ 67** no checkout da `stack` | Alison paga, Claude confere | nada | O e-mail de acesso chegou, o link abre o `/mapa`, e o mapa sai escrito pela IA em outro aparelho |
+| 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
+| 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
 | 0.2 | **Recolar o Apps Script** (`_docs/apps-script-captura.js`) | Alison cola, Claude confere | nada | A aba `diagnosticos` tem as colunas `trilha`, `descreveu` e `utm` no cabeçalho |
 | 0.3 | **Conferir o `Purchase` no Events Manager** | Claude | 0.1 | Uma venda, um `Purchase`, com o `content_name` da variante |
+
+### O que a compra de teste ensinou
+
+**A entrega da Cakto é uma URL fixa.** O campo chama "Link de acesso enviado ao e-mail" e
+aceita texto puro: sem variável, sem parâmetro de pedido, e não existe redirect pós-compra nas
+configurações do produto. Conferido no painel em 19/08. Ou seja, o `c=` que o link do checkout
+carrega **morre na plataforma**, e qualquer solução que dependesse dela repassar dado estava
+condenada. Foi por isso que o código de acesso nasceu autocontido.
+
+**O transporte é o problema, não o armazenamento.** A pessoa vê o código na tela, mas copiar no
+celular e colar no computador exige mandar para si mesma. Daí o botão "Guardar no WhatsApp",
+que abre a conversa com a mensagem pronta e o link já com o código dentro: no outro aparelho é
+um toque, sem digitar.
 
 ---
 
