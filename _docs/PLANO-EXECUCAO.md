@@ -117,6 +117,7 @@ barato. Hoje não há para onde subir.
 | 2.7 | **Cada um dos 7 dias vira ponto de ascensão** | Claude | 2.2 e existir um próximo produto | "Trate a entrega do seu produto como um funil de vendas pro próximo". Os quatro pontos deles, em ordem: WhatsApp, e-mail, banner e descrição de cada aula. Aqui cada dia é uma aula |
 | 2.8 | ~~**Formulário do presente na pós-compra**~~ **feito 19/08** | Claude | 0.1 | Cinco opções e uma saída aberta, no fim do `/mapa`, gravando na aba `presentes`. Fica **depois** do CTA de ascensão de propósito: o voto não pode competir com a venda |
 | 2.9 | ~~**Back redirect** no diagnóstico~~ **feito 19/08** | Claude | nada | O pop-up passou a existir no histórico, o voltar mostra uma vez o que a pessoa perde, e quem insiste sai. O do **checkout** não dá: a página é da Cakto |
+| 2.11 | **Saber onde a pessoa abandona o quiz** | Claude | nada | Hoje o anônimo só é enviado quando o quiz **termina**: quem sai no meio não deixa rastro, e a taxa de abandono por pergunta é invisível. O funil de referência grava etapa a etapa. **Ligar antes do tráfego**, senão a primeira leva passa sem instrumentação |
 | 2.10 | **O e-mail de acesso levar o upsell junto** | Alison edita na Cakto, Claude escreve | 2.3 | Hoje o e-mail manda só o link do mapa. É o ponto de ascensão que alcança quem pagou no Pix e nunca voltou ao checkout |
 
 ### O achado que destravou a página, e que vale para o produto inteiro
@@ -195,9 +196,12 @@ decisão do Alison, não minha.
 | 4.1 | **CAPI com dedup por `event_id`** | Claude | 0.3 | Uma venda conta uma vez, browser e servidor |
 | 4.2 | **GA4** | Claude | 4.1 | No ar |
 | 4.3 | ~~**Seção das ferramentas vira tensão**~~ **feito 19/08** | Claude | nada | As 4 conhecidas com nome e logo, as outras 9 por categoria, com a silhueta do teaser. Conferido em produção: **zero** dos 9 nomes no HTML visível |
-| 4.4 | **Auditoria das 9 seções** pela régua de Makepeace, como variante A/B | Claude | 3.3 | Roda como teste, nunca por decreto |
+| 4.4 | **Auditoria das 9 seções** pela régua de Makepeace, como variante A/B | Claude | 3.3 | Roda como teste, nunca por decreto. **A ordem dos testes é do playbook:** headline primeiro (maior retorno, menor esforço), depois imagem, copy do botão e por fim layout, sempre uma variável por vez e medindo pela conversão final |
 | 4.5 | ~~**One Belief**~~ **feito 19/08 no que é meu** | Claude | nada | A crença abre o hero das 4 LPs (com o mecanismo de cada variante), a tela pós-compra e as duas entregas (sem mecanismo, porque servem as 4). **Falta o criativo e o e-mail**, que dependem do Alison |
 | 4.6 | ~~**Uso pessoal: decidir com dado**~~ **antecipado em 19/08, por decisão do Alison** | Claude | nada | A trilha de vida pessoal entrou antes do dado, porque a LP passou a prometer uso pessoal e o quiz não atendia. A coluna `descreveu` continua sendo o canal para saber o que falta dentro dela |
+| 4.8 | **Captura de nome e WhatsApp antes do resultado** | Alison decide, Claude liga | 3.3 | `CAPTURA_URL` está vazia e o passo não existe. O funil de referência **grava o cliente antes de mostrar o preço**, e é o que permitiria o espelho chamar a pessoa pelo nome, como o playbook pede. Em troca, é fricção antes da venda: decisão de produto, e o certo é medir contra a versão sem captura |
+| 4.9 | **Cupom pela URL** (`?cupom=X`) | Claude | Alison decidir usar cupom | O funil de referência guarda o cupom por 7 dias e decora todos os links do checkout. Só faz sentido se houver campanha com cupom |
+| 4.10 | **Downsell, no lugar da escada de recuperação** | Alison decide | 2.5 | A escada do playbook (anual → desconto → mensal → primeiro mês por R$ 1) é de assinatura, e o produto é pagamento único. O equivalente aqui é um degrau abaixo do upsell, e isso é decisão de produto, não de execução |
 | 4.7 | **World wide** | Claude | 3.3 | Duplicar o funil, filtrar português e excluir o Brasil. O playbook estima meia hora de trabalho e ROI alto nos primeiros dias. Só depois de o funil provar que converte aqui |
 
 ---
