@@ -3022,6 +3022,68 @@
       "orcamento"
     ]
   },
+  "semana": {
+    "_": "Os 7 dias do upsell. O mapa diz quais ferramentas e por quê; aqui elas entram na semana da pessoa. {F1}, {F2} e {F3} são as três da stack dela, na ordem do motor, e {tarefa} é a tarefa da trilha. Quem redige o detalhe por pessoa é a IA, como manda o ADR-0001: aqui ficam só o esqueleto e o que cada dia tem que entregar.",
+    "promessa": "Sete tarefas de 20 minutos. No sétimo dia as suas 3 estão na sua rotina, não abertas em aba.",
+    "dias": [
+      {
+        "n": 1,
+        "titulo": "Ensina para a {F1} quem é você",
+        "ferramenta": "F1",
+        "objetivo": "A principal para de responder genérico.",
+        "tarefa": "Colar nas instruções permanentes da {F1} o texto que vem pronto aqui, junto de três trabalhos seus de verdade.",
+        "entrega": "A {F1} configurada, respondendo dentro do seu contexto e não do contexto de ninguém."
+      },
+      {
+        "n": 2,
+        "titulo": "A primeira entrega de verdade",
+        "ferramenta": "F1",
+        "objetivo": "Tirar da sua semana uma tarefa que existe, não um teste.",
+        "tarefa": "Colar aqui um trabalho seu de verdade, um texto, um caso ou um processo que já existe. Ele volta rodado dentro da {F1}, com o resultado pronto para você usar hoje.",
+        "entrega": "A sua primeira entrega feita, não um modelo para preencher. É o que separa este plano do mapa que você já tem."
+      },
+      {
+        "n": 3,
+        "titulo": "O recurso que quase ninguém usa",
+        "ferramenta": "F1",
+        "objetivo": "Sair do chat e usar o que a ferramenta tem de verdade.",
+        "tarefa": "Ligar o recurso que o seu mapa aponta dentro da {F1} e refazer a tarefa de ontem com ele.",
+        "entrega": "A mesma tarefa, com menos tempo e menos correção."
+      },
+      {
+        "n": 4,
+        "titulo": "Abre a segunda aba",
+        "ferramenta": "F2",
+        "objetivo": "A {F2} entra para o que a {F1} não faz bem.",
+        "tarefa": "Configurar a {F2} do mesmo jeito do dia 1 e rodar nela a tarefa que a {F1} devolveu pior.",
+        "entrega": "A segunda configurada, e a prova de que ela existe por um motivo."
+      },
+      {
+        "n": 5,
+        "titulo": "A regra da troca",
+        "ferramenta": "todas",
+        "objetivo": "Saber qual abrir sem parar para pensar.",
+        "tarefa": "Escrever uma linha por tarefa da sua semana dizendo qual das três abre. É a Regra das 3 IAs virando rotina.",
+        "entrega": "Uma tabela de bolso: tarefa de um lado, ferramenta do outro."
+      },
+      {
+        "n": 6,
+        "titulo": "O corte",
+        "ferramenta": "todas",
+        "objetivo": "Parar de pagar pelo que não entrou na sua semana.",
+        "tarefa": "Revisar o que o seu mapa mandou cortar e decidir o que cancelar, o que adiar e o que nunca assinar.",
+        "entrega": "O seu gasto de IA recalculado, com o número na mão."
+      },
+      {
+        "n": 7,
+        "titulo": "A semana que se repete sozinha",
+        "ferramenta": "F3",
+        "objetivo": "Transformar o que funcionou em rotina.",
+        "tarefa": "Escolher a tarefa que mais se repete e deixar ela pronta para a semana que vem, com a {F3} ou com o que o seu mapa indicou para repetição.",
+        "entrega": "A sua semana escrita, com as três no lugar e a próxima já encaminhada."
+      }
+    ]
+  },
   "faq": [
     [
       "O que exatamente eu recebo por R$ 67?",
