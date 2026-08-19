@@ -8,6 +8,10 @@
  * A aba 'diagnosticos' é a que responde: qual perfil responde mais, qual dor
  * aparece, qual ferramenta o motor mais recomenda e o que ele mais manda cortar.
  *
+ * A coluna 'descreveu' é a mais importante para o produto: é o que a pessoa escreveu
+ * quando nenhuma opção era a tarefa dela. Tarefa que aparece muito ali é opção que
+ * está faltando no quiz e precisa virar alternativa na próxima versão.
+ *
  * Como ligar (5 minutos):
  *  1. Cria uma planilha no Google Sheets.
  *  2. Extensões → Apps Script, apaga o que estiver lá e cola este arquivo.
@@ -27,9 +31,17 @@ const ABA_LEADS = 'leads';
 const ABA_DIAG = 'diagnosticos';
 
 // colunas de resposta gravadas em coluna própria; o resto vai no bruto
-const PERGUNTAS = ['area', 'tempo_ia', 'quantas', 'gasto', 'tarefa', 'generica',
+// Só o tronco tem coluna fixa. As perguntas de trilha mudam conforme a área, então
+// não cabem em coluna própria: vão todas juntas na coluna 'trilha', no formato
+// pid=resposta, e continuam inteiras no 'bruto'.
+const PERGUNTAS = ['area', 'tempo_ia', 'quantas', 'gasto', 'generica',
                    'parada', 'refaz', 'horas', 'nivel', 'prazo', 'estilo',
                    'orcamento', 'onde'];
+
+function trilhaDe(r) {
+  return Object.keys(r).filter(function (k) { return PERGUNTAS.indexOf(k) < 0; })
+               .map(function (k) { return k + '=' + r[k]; }).join(' | ');
+}
 
 function doPost(e) {
   // grava o corpo cru primeiro: se o formato mudar, o dado não se perde
@@ -46,25 +58,27 @@ function doPost(e) {
 /** Anônimo: nem nome nem WhatsApp entram aqui, de propósito. */
 function gravarDiagnostico(d, bruto) {
   const aba = abaOu(ABA_DIAG, ['recebido em', 'origem'].concat(PERGUNTAS)
-                              .concat(['stack', 'cortar', 'bruto', 'utm']));
+                              .concat(['trilha', 'descreveu', 'stack', 'cortar', 'bruto', 'utm']));
   const r = d.respostas || {};
   aba.appendRow(
     [new Date(), d.origem || '']
       .concat(PERGUNTAS.map(p => r[p] || ''))
-      .concat([(d.stack || []).join(', '), (d.cortar || []).join(', '), bruto, d.utm || ''])
+      .concat([trilhaDe(r), d.descreveu || '',
+               (d.stack || []).join(', '), (d.cortar || []).join(', '), bruto, d.utm || ''])
   );
 }
 
 function gravarLead(d, bruto) {
   const aba = abaOu(ABA_LEADS, ['recebido em', 'nome', 'whatsapp'].concat(PERGUNTAS)
-                               .concat(['stack', 'cortar', 'bruto', 'utm']));
+                               .concat(['trilha', 'descreveu', 'stack', 'cortar', 'bruto', 'utm']));
   const r = d.respostas || {};
   aba.appendRow(
     [new Date(),
      d.nome || '',
      d.whatsapp ? "'" + d.whatsapp : '']    // apóstrofo: senão o Sheets come o zero à esquerda
       .concat(PERGUNTAS.map(p => r[p] || ''))
-      .concat([(d.stack || []).join(', '), (d.cortar || []).join(', '), bruto])
+      .concat([trilhaDe(r), d.descreveu || '',
+               (d.stack || []).join(', '), (d.cortar || []).join(', '), bruto])
   );
 }
 

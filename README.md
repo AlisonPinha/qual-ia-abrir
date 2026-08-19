@@ -26,8 +26,14 @@ transforma os dados em HTML.
 |---|---|
 | `_build/dados.json` | **Fonte única.** Ferramentas, tarefas, desempates, splits, números, FAQ, captura |
 | `_build/gerar.py` | Gera `public/index.html` a partir do JSON e do CSS |
+| `_build/gerar_mapa.py` | Gera `public/mapa/index.html` (entrega paga) e `_lib/motor.mjs` |
+| `_build/questionario.py` | HTML dos passos e as regras de trilha, usados pelos dois geradores |
+| `_build/motor.js` | Cálculo da stack, injetado nas duas páginas e reusado pela function |
+| `_build/testar_motor.mjs` | Confere pesos, trilhas e cobertura do catálogo (`node`) |
 | `_build/estilo.css` | Todo o CSS. Editar aqui, nunca no HTML gerado |
 | `_build/og-fonte.html` | Página 1200x630 que vira a imagem de preview |
+| `api/mapa.mjs` | Function da camada de redação por IA (ADR-0001) |
+| `_lib/motor.mjs` | **Gerado.** O motor do lado do servidor, para a function não confiar no navegador |
 | `public/index.html` | **Gerado. Não editar à mão**, `gerar.py` sobrescreve |
 | `public/logos/` | Ícones no mesmo squircle dos Reels |
 | `public/og.png` | Preview de compartilhamento |
@@ -40,11 +46,61 @@ são os PNGs usados nos próprios Reels.
 
 ```bash
 # 1. mexer em _build/dados.json
-# 2. gerar
-python3 _build/gerar.py
-# 3. publicar
+# 2. gerar as 4 variantes do teste de nome e a entrega paga
+for v in "" abas regra stack; do python3 _build/gerar.py $v; done
+python3 _build/gerar_mapa.py
+# 3. conferir o motor (pesos, trilhas, cobertura das 9 ferramentas)
+node _build/testar_motor.mjs
+# 4. publicar
 vercel deploy --prod --yes
 ```
+
+## O diagnóstico ramifica por área
+
+Depois da pergunta `area`, cada área tem perguntas próprias sobre as tarefas daquela
+profissão. No `dados.json`, a pergunta de trilha tem um quarto item, que é a regra que a
+liga:
+
+```json
+["t_tarefa", "No trabalho técnico, onde o tempo vai embora?", [...], {"area": [4]}]
+```
+
+Sem esse item, a pergunta é do tronco e vale para todo mundo. Todas as trilhas precisam ter
+o mesmo número de perguntas, senão `questionario.py` derruba o build: o contador "n de m"
+mentiria para quem estivesse na trilha menor.
+
+### A saída de quem não se encaixou
+
+`diagnostico.aberta` no `dados.json` é `{pid: rótulo do campo}`. Nesses passos, a última
+opção abre um campo de uma linha em vez de avançar, para ninguém ter que escolher a tarefa
+de outra pessoa só para o quiz deixar passar. O texto não vota no motor (peso vazio), vai
+para a redação como descrição delimitada e para a planilha na coluna `descreveu`, que é
+onde se descobre qual opção está faltando no quiz.
+
+### A régua de peso, que não é arbitrária
+
+As perguntas do tronco dão de 7 a 9 pontos de vantagem às generalistas antes de a trilha
+começar. Por isso, numa pergunta de trilha:
+
+- **7** quando aquela ferramenta É a resposta da tarefa perguntada
+- **3** quando ela só ajuda
+- **nada** quando a pergunta não diz qual ferramenta serve (ela continua no quiz como
+  micro-sim e alimenta a redação da IA, mas não vota)
+
+Peso 4 numa pergunta só não chega ao pódio: o ElevenLabs entrou assim e aparecia em 0% das
+stacks. Quem pega isso é `node _build/testar_motor.mjs`, que falha quando alguma ferramenta
+do catálogo fica impossível de sair.
+
+## A camada de IA (`/api/mapa`)
+
+As regras decidem, a IA redige (ADR-0001). O motor escolhe as 3 ferramentas, e a function
+escreve a abertura, o porquê de cada uma, o prompt sob medida e o corte.
+
+- **Liga com a chave:** `vercel env add ANTHROPIC_API_KEY` (production e preview).
+- **Desliga:** remove a variável. A página volta ao texto fixo do `dados.json` sozinha,
+  sem deploy e sem erro na tela.
+- O navegador manda só índices de resposta. Nenhum texto dele entra no prompt.
+- O texto fica guardado no aparelho: reabrir o mapa não gasta chamada nova.
 
 ## O paywall, e por que ele fica no servidor
 

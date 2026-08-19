@@ -2,52 +2,149 @@
 
 ## Próxima sessão começa aqui
 
-**Tarefa: deixar o diagnóstico certeiro e a entrega densa.** São duas frentes, nesta ordem,
-e a segunda depende da primeira.
+Tudo desta sessão está no código, testado, **não publicado**. A produção segue com a versão
+antiga. Amanhã fecha o que falta.
 
-### Frente 1: ramificação do diagnóstico por área
+### 1. Ligar a chave e publicar
 
-Hoje um médico e um social media respondem exatamente as mesmas 14 perguntas
-(`area, tempo_ia, quantas, gasto, tarefa, generica, parada, refaz, horas, nivel, prazo,
-estilo, orcamento, onde`). Por isso o resultado parece raso: ele não podia ser fundo, porque
-a entrada é genérica.
+```bash
+vercel env add ANTHROPIC_API_KEY production      # e repetir para preview
+for v in "" abas regra stack; do python3 _build/gerar.py $v; done
+python3 _build/gerar_mapa.py
+node _build/testar_motor.mjs
+vercel deploy --prod --yes
+```
 
-O que fazer: depois da pergunta `area`, abrir trilhas com perguntas próprias de cada área,
-sobre as tarefas reais daquela profissão. Manter o tronco comum onde a pergunta vale para
-todos (orçamento, nível, onde usa) e ramificar onde não vale.
+Sem a variável a function devolve 503 e o `/mapa` fica com o texto fixo do `dados.json`, que
+é o comportamento de hoje. Dá para publicar antes da chave sem quebrar nada.
 
-Cuidados:
-- **Não alongar por alongar.** A operação de referência roda 30 a 50 etapas, mas cada passo
-  precisa ser um micro-sim, não enchimento.
-- O `motor.js` soma pesos por resposta: perguntas novas precisam de pesos nas 9 ferramentas.
-- O `sessao.js` invalida a memória se o questionário mudar (compara os `pids`), então quem
-  respondeu antes vai refazer. É o comportamento correto, só não estranhar.
-- As 4 LPs são geradas do mesmo `dados.json`: mudança de pergunta vale para todas de uma vez
-  e **não** quebra o teste de nome.
+Conferido no preview `qual-ia-abrir-4a86mmzbp`: a rota `/api/mapa` sobe, responde 405 no GET
+e 503 sem chave. **O que nunca foi testado é a resposta real do modelo**, por falta de chave.
+O primeiro mapa depois de ligar precisa ser lido inteiro antes de mandar tráfego.
 
-### Frente 2: IA redigindo prompt e justificativa
+Quem respondeu o quiz antes vai refazer, porque os `pids` mudaram. É o comportamento correto
+da memória.
 
-Decisão registrada no **ADR-0001** (`_docs/adrs/`): **as regras decidem, a IA redige.** O
-motor determinístico continua escolhendo as 3 ferramentas; a IA escreve o prompt sob medida,
-a justificativa e o que não assinar.
+### 2. Colar o Apps Script de novo
 
-O que construir:
-- Function na Vercel (`/api/mapa`), com a chave da API fora do navegador.
-- **Fallback obrigatório** para o texto fixo do `dados.json` se a API falhar ou demorar.
-- **Streaming:** mapa determinístico na hora, textos da IA por cima.
-- **Rate limit**, porque o `/mapa` é público.
+`_docs/apps-script-captura.js` ganhou três colunas: `trilha` (as perguntas de trilha não têm
+coluna fixa, vão como `pid=resposta`), `descreveu` (o que a pessoa escreveu quando nenhuma
+opção era a dela, o canal que diz qual opção falta no quiz) e `utm`, que é da sessão passada e
+nunca foi colada.
 
-Custo medido: menos de R$ 0,35 por mapa no modelo mais caro, contra R$ 3,16 de taxa da Cakto
-por venda. Custo não é critério aqui, qualidade é.
+O cabeçalho só é escrito quando a aba nasce, então a aba `diagnosticos` que já existe não
+ganha as colunas sozinha: ou renomeia a antiga, ou adiciona na mão. O `bruto` continua
+gravando o payload inteiro, então nada se perde no meio tempo.
 
-### Ainda pendente e não bloqueia nenhuma das duas
+### 3. Compra de teste de R$ 67
 
-**A compra de teste de R$ 67.** É o que decide se dá para entregar o mapa pronto em outro
-aparelho: se a Cakto repassar parâmetros na URL de entrega, o `/mapa?d=<respostas>` monta
-tudo sem a pessoa refazer nada. Se não repassar, o comportamento atual continua (memória
-local por 30 dias no mesmo aparelho, e refazer o quiz dentro do `/mapa` em outro).
+Continua sendo o próximo passo de produto e agora vale mais: além de provar que o e-mail
+chega e que a Cakto repassa parâmetros na URL, é a única forma de ver o mapa escrito pela IA
+no fluxo real de um comprador, em outro aparelho. Use o checkout da `abas`, `regra` ou
+`stack`, que nunca receberam venda.
 
-Use o checkout da `abas`, `regra` ou `stack`, que nunca receberam venda.
+### 4. A LP, que não foi tocada nesta sessão
+
+- **A seção "as 9 ferramentas"** entrega o catálogo de graça: a pessoa lê os nomes e vai atrás
+  sozinha. Com 13 ferramentas e a camada de recursos, agora dá para virar tensão. O desenho:
+  manter com nome as 4 que todo mundo já conhece (superestrutura, prova emprestada) e trocar
+  as outras 9 por categoria sem nome ("a que narra com a sua voz", "a que monta a
+  apresentação", "a que roda a tarefa sem você").
+- **Auditoria das 9 seções** pela régua das nove vendas do Makepeace (atenção, visualização,
+  credibilidade, autoridade, problema, história, solução, conveniência, valor, mais escassez).
+  Seção que não faz nenhuma delas sai. Como variante de teste A/B, nunca por decreto: é o que
+  o plano manda.
+- **Prova social só real.** O que existe hoje sem depender de aluno: número de diagnósticos
+  concluídos (está na planilha), print de conversa verdadeira, e a demonstração na tela, que
+  o playbook considera mais forte que depoimento. A IA escrevendo o mapa ao vivo é a
+  demonstração mais forte que o produto tem, e não existia antes desta sessão.
+- **30 a 50 etapas.** O quiz tem 18 por pessoa. Com a ramificação de pé, dá para chegar a 30
+  com mais duas perguntas por trilha, mais dois breaks e o fechamento com loading e espelho
+  das respostas, que continua não existindo.
+
+## O que entrou em 19/08
+
+### Diagnóstico ramificado em 10 áreas
+
+De 6 para 10 áreas, cada uma com 3 perguntas da profissão. "Outra área" era um saco onde caíam
+médico, advogado, contador e engenheiro; saíram de lá **saúde e consultório**, **jurídico**,
+**contábil e financeiro** e **projeto e obra**. Continuam 16 perguntas por pessoa, então o
+quiz não ficou mais longo, mas a segunda tela já é sobre a profissão de quem responde.
+
+**Saída aberta:** toda pergunta de tarefa termina com "Nenhuma dessas, a minha é outra", que
+abre um campo de uma linha em vez de avançar. O texto não vota no motor (sem informação, sem
+voto), vai para a redação da IA delimitado por etiqueta e cai na planilha em `descreveu`. O
+servidor só aceita esse texto na pergunta em que a pessoa marcou a última opção, corta em 120
+caracteres e tira quebra de linha e colchete.
+
+**Três perguntas perderam o voto** (`tempo_ia`, `generica`, `estilo`). Continuam no quiz como
+micro-sim e alimentam a redação, mas nenhuma diz qual ferramenta serve: o voto delas só
+empilhava ponto nas quatro generalistas.
+
+### Catálogo de 9 para 13, por categoria ausente
+
+O quiz perguntava sobre apresentação e respondia Gemini, que não monta slide.
+
+| Entrou | Preço, conferido no site oficial em 19/08/2026 |
+|---|---|
+| **Gemini Notebook** | grátis na conta Google, com limite diário |
+| **Gamma** | Free resolve; Plus R$ 30/mês no anual (cobra em real) |
+| **ElevenLabs** | Free com 10 mil créditos; Starter US$ 6; Creator US$ 22 |
+| **n8n** | grátis se hospedar; Starter €20/mês |
+
+Fechou também a pendência antiga: **Higgsfield** com Plus a US$ 49/mês no anual (1.000
+créditos) e Ultra a US$ 129/mês. **Não há mais custo não conferido dentro do produto pago.**
+
+Dois achados da conferência: o **NotebookLM virou Gemini Notebook** em 16/07/2026 e o
+**ChatGPT Atlas foi descontinuado em 09/08/2026**. Escrever de cabeça teria colocado erro
+dentro da entrega paga.
+
+### A camada de IA, conforme o ADR-0001
+
+`api/mapa.mjs` na Vercel, Claude Opus 5. O motor recalcula a stack **no servidor** e o
+navegador manda só índices de resposta, então ninguém escreve o que quiser dentro de uma
+chamada paga. A IA escreve por cima do mapa que já está na tela: abertura, o porquê de cada
+card, o prompt sob medida e o corte.
+
+- **Fallback é o estado inicial, não um plano B.** Bloco que a IA não escreve fica com o texto
+  de fábrica, e bloco que ela não terminou volta para ele.
+- **"Terminou" não é o stream fechar, é o último marcador chegar.** A conexão pode cair e o
+  navegador dar a leitura por encerrada mesmo assim. Sem isso, um prompt cortado no meio
+  ficaria na tela com cara de pronto, e é o prompt que a pessoa copia. Testado cortando o
+  stream no meio do prompt.
+- **Preço só sai de onde o produto escreveu.** Bloco de justificativa que citar valor é
+  descartado.
+- **Rate limit** de 6 por IP por hora e 120 por instância, na memória da function.
+- **O texto fica guardado no aparelho:** reabrir o mapa não gasta chamada nem espera nova.
+
+### Recursos dentro da ferramenta
+
+Cada card ganhou "Dentro dela, o que quase ninguém usa": Claude com Projects e Cowork, ChatGPT
+com modo de voz, deep research e agent mode, Gemini com Deep Research, Canvas e Gems, Gemini
+Notebook com o resumo em áudio. Conferido no fabricante em 19/08/2026, e a IA foi instruída a
+escolher qual serve para o caso da pessoa e a **nunca citar recurso fora da lista**.
+
+**Por que isso importa mais que o catálogo:** varrendo todas as combinações do motor, os mapas
+feitos só de Claude, ChatGPT, Gemini e Perplexity caíram de **69,8% para 49,4%**. Só que,
+zerando o tronco inteiro, o piso é **45,8%**: para um advogado que escreve petição, Claude é
+mesmo a resposta certa. Abaixo disso só se desce com exotismo mentiroso. Logo, o valor não
+pode ser "ferramenta que você nunca ouviu": é a ordem, o corte e o que fazer dentro da que ele
+já tem.
+
+### Upsell redesenhado
+
+A IA no front passou a entregar duas das quatro alavancas que o plano reservava para o upsell
+de R$ 197. A fronteira nova, em uma frase: **o front escreve para o seu perfil, o upsell roda
+no seu material**. Sem VSL e sem aula gravada, por decisão do Alison: os quatro entregáveis
+saem do mesmo motor e da mesma function, então o upsell não depende de gravação. Detalhes e o
+roteiro da VSL (guardado caso um dia entre) no plano do vault.
+
+### QA
+
+Onze passadas de browser: as 10 trilhas, a saída aberta na LP e no mapa, API caindo, stream
+cortado no meio do prompt, cache na segunda visita, injeção pelo campo livre e o fluxo LP →
+`/mapa` com a memória. Nenhum erro de console além do 404 do Web Analytics, que é local. O
+quiz sai **idêntico byte a byte nas 4 variantes**, então o teste de nome segue limpo.
 
 ### O estado de hoje, para não ter que descobrir de novo
 
@@ -61,7 +158,7 @@ Use o checkout da `abas`, `regra` ou `stack`, que nunca receberam venda.
 Domínio: **`https://diagnostico.noahai.com.br`** (o `.vercel.app` responde 308 para ele).
 Os 4 produtos são idênticos, exceto nome e página de vendas.
 
-**Onde ler o resultado do teste de nome:** planilha "Qual IA Usar? — Diagnósticos e Leads",
+**Onde ler o resultado do teste de nome:** planilha `Qual IA Usar? — Diagnósticos e Leads` (nome literal no Drive),
 aba `diagnosticos`, coluna `origem` (`site`, `abas`, `regra`, `stack`). Tem 6 linhas de teste
 que podem ser apagadas: as com origem `teste` e as do "Teste do Claude".
 
