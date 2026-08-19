@@ -762,7 +762,7 @@ html = f"""<!doctype html>
       <ul class="diag-passos">
         <li><b>1</b> Responde às perguntas do seu perfil</li>
         <li><b>2</b> Recebe a sua stack e os prompts</li>
-        <li><b>3</b> Aplica no plano de 7 dias</li>
+        <li><b>3</b> Aplica com o prompt pronto</li>
       </ul>
       <button type="button" class="btn btn-p abre-diag">{escape(V["headline"])} →</button>
       <p class="diag-nota">{escape(DG["aviso_custo"])}</p>
@@ -952,7 +952,7 @@ html = f"""<!doctype html>
       <div class="res-corta" id="res-corta"></div>
       <div class="res-oferta">
         <span class="selo-rosa">Desbloqueie o seu mapa</span>
-        <h4>Suas 3 ferramentas, os prompts e o plano de 7 dias.</h4>
+        <h4>Suas 3 ferramentas, os prompts e o que não assinar.</h4>
         <p>Recebe agora quais são, em que ordem assinar, o <b>prompt pronto de cada tarefa da sua
            área</b>, o tutorial de cada uma e a lista do que cortar, com a conta do que isso te
            devolve por mês.</p>
