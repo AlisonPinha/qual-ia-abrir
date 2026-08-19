@@ -366,6 +366,42 @@ h1 {
 .f-card .nome { font-size: 15px; font-weight: 600; }
 @media (max-width: 520px) { .ferr-grid { grid-template-columns: repeat(2, 1fr); } }
 
+/* escopo com tensão: as 4 conhecidas com nome, as 9 restantes só por categoria */
+.ferr-grid-4 { margin-top: 14px; grid-template-columns: repeat(4, 1fr); max-width: 700px; }
+@media (max-width: 620px) { .ferr-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+.esc-rot {
+  display: block; margin: 44px auto 0; max-width: 700px; font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--roxo);
+}
+.esc-rot-2 { margin-top: 40px; }
+.esc-lista {
+  margin: 14px auto 0; padding: 0; max-width: 700px; list-style: none;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+}
+.esc-lista li {
+  display: flex; align-items: center; gap: 12px; padding: 15px 17px; border-radius: 15px;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .02);
+  font-size: 14.5px; line-height: 1.45; color: #c9c6d4;
+}
+/* o mesmo apagado do teaser do resultado: a silhueta é a promessa que o mapa cumpre */
+.esc-off {
+  width: 30px; height: 30px; flex: none; border-radius: 9px;
+  background: linear-gradient(135deg, rgba(193, 131, 251, .42), rgba(226, 123, 183, .26));
+}
+.esc-fecho {
+  margin: 18px auto 0; max-width: 700px; font-size: 14px; color: var(--cinza-min); text-align: center;
+}
+@media (max-width: 620px) { .esc-lista { grid-template-columns: 1fr; } }
+
+/* prova social: só entra na página quando existir depoimento real */
+.deps { margin: 40px auto 0; max-width: 900px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.dep { margin: 0; padding: 24px; border-radius: var(--r-g); border: 1px solid var(--linha); background: rgba(255, 255, 255, .03); }
+.dep blockquote { margin: 0; font-size: 15.5px; line-height: 1.62; color: #ded9ea; }
+.dep blockquote::before { content: "“"; color: var(--roxo); }
+.dep blockquote::after { content: "”"; color: var(--roxo); }
+.dep figcaption { margin-top: 14px; font-size: 13.5px; font-weight: 600; color: var(--cinza-claro); }
+@media (max-width: 620px) { .deps { grid-template-columns: 1fr; } }
+
 /* ---------- órbita de categorias ---------- */
 
 .orbita { position: relative; margin: 46px auto 0; width: 100%; max-width: 1000px; aspect-ratio: 2 / 1; }

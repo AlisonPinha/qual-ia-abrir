@@ -98,12 +98,46 @@ chips = "".join(
     for n in F if n != "Claude Code"
 )
 
+# As 4 conhecidas saem com nome e logo: são prova emprestada e não revelam nada, porque
+# quem chega aqui já ouviu falar das quatro. As outras 9 saem por categoria, sem nome e sem
+# logo, senão a página entrega o catálogo e a pessoa vai atrás sozinha.
+ESC = d["escopo"]
 cards = "".join(
     f'<div class="f-card">'
     f'<img src="/logos/{F[n]["logo"]}" alt="" width="42" height="42" loading="lazy">'
     f'<span class="nome">{escape(n)}</span></div>'
-    for n in F
+    for n in ESC["conhecidas"]
 )
+ocultas = "".join(
+    f'<li><span class="esc-off" aria-hidden="true"></span>{escape(x)}</li>'
+    for x in ESC["sem_nome"]
+)
+
+# ---------- prova social ----------
+# Só existe quando houver depoimento real, dito pela pessoa e com print guardado. Com a lista
+# vazia a seção inteira some, e é assim que ela deve ficar até alguém falar de verdade:
+# depoimento escrito por nós, ainda que "para trocar depois", é publicidade enganosa.
+PROVA = d["prova"]
+if PROVA["depoimentos"]:
+    provas = "".join(
+        f'<figure class="dep">'
+        f'<blockquote>{escape(texto)}</blockquote>'
+        f'<figcaption>{escape(quem)}</figcaption>'
+        f'</figure>'
+        for quem, texto in PROVA["depoimentos"]
+    )
+    prova_html = f"""
+<section class="sec" id="depoimentos">
+  <div class="env">
+    <div class="cabeca">
+      <span class="eyebrow">{escape(PROVA["eyebrow"])}</span>
+      <h2>{escape(PROVA["titulo"])}</h2>
+    </div>
+    <div class="deps">{provas}</div>
+  </div>
+</section>"""
+else:
+    prova_html = ""
 
 problemas = "".join(
     f'<article class="p-card"><span class="p-n">{i}</span>'
@@ -822,8 +856,8 @@ html = f"""<!doctype html>
     <div class="cabeca">
       <span class="eyebrow">Serve pra qualquer pedido</span>
       <h2>Você fala do seu jeito.<br>O mapa responde as duas.</h2>
-      <p>Qual ferramenta abrir <b>e</b> o prompt exato pra pedir. Trabalho, faculdade,
-         conteúdo ou aquela tarefa que você vem empurrando.</p>
+      <p>Qual ferramenta abrir <b>e</b> o prompt exato pra pedir. Consultório, escritório,
+         fechamento do mês ou aquela tarefa da sua vida que você vem empurrando.</p>
     </div>
     <div class="casos">{casos}</div>
     <div class="outros-pedidos">{outros}</div>
@@ -838,7 +872,7 @@ html = f"""<!doctype html>
     <div class="cabeca">
       <span class="eyebrow">Como funciona</span>
       <h2>Você não precisa de mais ferramentas.<br><span class="g">Precisa saber quais três usar.</span></h2>
-      <p>Cinco perguntas sobre o seu trabalho e o seu orçamento. O mapa sai do seu contexto:
+      <p>Um diagnóstico rápido sobre o seu trabalho e o seu orçamento. O mapa sai do seu contexto:
          as três ferramentas certas, na ordem de assinar, com o prompt exato de cada uma e a
          conta do que você corta.</p>
     </div>
@@ -870,12 +904,15 @@ html = f"""<!doctype html>
 <section class="sec" id="ferramentas">
   <div class="env">
     <div class="cabeca">
-      <span class="eyebrow">As {len(F)} ferramentas</span>
-      <h2>O mapa cobre as {len(F)} que eu uso<br><span class="g">num dia normal de trabalho.</span></h2>
-      <p>O seu mapa indica quais dessas fazem sentido pro seu caso, em que ordem e o que ignorar.
-         Nenhuma recomendação é de afiliado, e onde eu não uso de verdade, eu não opino.</p>
+      <span class="eyebrow">{escape(ESC["eyebrow"])}</span>
+      <h2>{escape(ESC["titulo"])}<br><span class="g">{escape(ESC["titulo_2"])}</span></h2>
+      <p>{escape(ESC["sub"])}</p>
     </div>
-    <div class="ferr-grid">{cards}</div>
+    <span class="esc-rot">{escape(ESC["conhecidas_rot"])}</span>
+    <div class="ferr-grid ferr-grid-4">{cards}</div>
+    <span class="esc-rot esc-rot-2">{escape(ESC["sem_nome_rot"])}</span>
+    <ul class="esc-lista">{ocultas}</ul>
+    <p class="esc-fecho">{escape(ESC["fecho"])}</p>
   </div>
 </section>
 
@@ -923,6 +960,7 @@ html = f"""<!doctype html>
   </div>
 </section>
 
+{prova_html}
 <section class="sec sec-claro" id="oferta">
   <div class="env">
     <div class="cabeca">

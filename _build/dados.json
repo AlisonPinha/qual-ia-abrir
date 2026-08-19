@@ -3214,6 +3214,34 @@
     "botao": "Enviar a minha escolha",
     "pronto": "Anotado. O mais pedido é o que eu faço primeiro, e ele chega no e-mail da sua compra."
   },
+  "_escopo": "A seção das ferramentas entregava o catálogo: 13 logos com nome, e a pessoa saía da página com a lista pronta para pesquisar sozinha. As 4 que todo mundo já conhece ficam com nome, porque são prova emprestada e não revelam nada. As outras 9 viram categoria sem nome: mostram o tamanho do que existe sem entregar o produto.",
+  "escopo": {
+    "eyebrow": "As 13 ferramentas",
+    "titulo": "O mapa cobre as 13 que eu uso",
+    "titulo_2": "num dia normal de trabalho.",
+    "sub": "O seu mapa diz quais dessas fazem sentido pro seu caso, em que ordem e o que ignorar. Nenhuma recomendação é de afiliado, e onde eu não uso de verdade, eu não opino.",
+    "conhecidas": ["Claude", "ChatGPT", "Gemini", "Perplexity"],
+    "conhecidas_rot": "As quatro que você já conhece",
+    "sem_nome_rot": "E as nove que quase ninguém sabe usar",
+    "sem_nome": [
+      "a que lê o processo inteiro e responde sobre ele",
+      "a que monta a apresentação pronta pra mostrar",
+      "a que narra com a sua voz",
+      "a que roda a tarefa sozinha, sem você abrir nada",
+      "a que cria a cena que ainda não existe",
+      "a que sobe um site funcionando a partir de uma conversa",
+      "a que trabalha dentro do seu projeto, não numa aba",
+      "a que explica por que um conteúdo funcionou e o outro não",
+      "a que sabe o que estão falando agora, não mês passado"
+    ],
+    "fecho": "Qual é cada uma, e quais são as suas três, está no mapa."
+  },
+  "_prova": "Depoimento só entra aqui quando for real, dito pela pessoa, com print guardado. Lista vazia: a seção inteira não é renderizada. Nunca preencher com exemplo, nem \"para trocar depois\": isso é publicidade enganosa pelo CDC e é a primeira linha do que não fazer no playbook.",
+  "prova": {
+    "eyebrow": "Quem já fez",
+    "titulo": "O que muda depois do mapa",
+    "depoimentos": []
+  },
   "problema": [
     [
       "Você paga e não abre",
@@ -3298,40 +3326,43 @@
     "remate": "Cortar uma única assinatura errada de US$ 20 já paga o mapa no primeiro mês, e ainda sobra.",
     "rodape": "Valores conferidos em 18 de agosto de 2026, um a um, no site de cada ferramenta."
   },
+  "_pedidos": "Pedidos, não depoimentos: é o que a pessoa diria, não o que alguém disse. Sem nome próprio, sem aspas de fala atribuída e sem número de resultado, porque prova social aqui só entra quando for real.",
   "pedidos": {
     "casos": [
       [
-        "Trabalho",
-        "Escrever o e-mail difícil pro chefe",
-        "Preciso responder meu chefe sobre o prazo que estourou, sem parecer desculpa",
+        "Saúde e consultório",
+        "O prontuário que sobra pro fim do dia",
+        "Preciso evoluir o prontuário e escrever o encaminhamento sem levar isso pra casa",
+        "0:08"
+      ],
+      [
+        "Jurídico",
+        "As 300 páginas que chegaram hoje",
+        "Chegou um processo de trezentas páginas e a audiência é quinta, preciso do que interessa",
         "0:09"
       ],
       [
-        "Faculdade",
-        "A redação que vale a vaga",
-        "Me ajuda com a redação do vestibular, tema de meio ambiente, mil palavras",
+        "Contábil e financeiro",
+        "O fechamento que repete igual todo mês",
+        "Todo mês eu refaço o mesmo relatório pra cada cliente, muda só o número",
         "0:07"
       ],
       [
-        "Conteúdo",
-        "O vídeo do produto pro Instagram",
-        "Quero um vídeo do meu produto pra postar amanhã, não tenho estúdio",
+        "Do dia a dia",
+        "A passagem que fica mais barata depois que você compra",
+        "Quero a passagem mais barata pra novembro sem abrir dez abas e sem ficar olhando todo dia",
         "0:06"
-      ],
-      [
-        "Criação",
-        "Imagem que não pareça feita por IA",
-        "Preciso de uma imagem pro post e as que eu faço têm cara de IA",
-        "0:08"
       ]
     ],
     "outros": [
+      "Escrever o e-mail difícil pro chefe",
       "Resumir um PDF de 80 páginas",
       "Montar a apresentação de amanhã",
       "Responder cliente no WhatsApp",
-      "Organizar a minha semana",
+      "Imagem que não pareça feita por IA",
+      "Revisar contrato antes de assinar",
       "Fazer um site sem programar",
-      "Revisar contrato antes de assinar"
+      "Organizar a minha semana"
     ]
   }
 }

@@ -398,6 +398,42 @@ h1 {
 .f-card .nome { font-size: 15px; font-weight: 600; }
 @media (max-width: 520px) { .ferr-grid { grid-template-columns: repeat(2, 1fr); } }
 
+/* escopo com tensão: as 4 conhecidas com nome, as 9 restantes só por categoria */
+.ferr-grid-4 { margin-top: 14px; grid-template-columns: repeat(4, 1fr); max-width: 700px; }
+@media (max-width: 620px) { .ferr-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+.esc-rot {
+  display: block; margin: 44px auto 0; max-width: 700px; font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--roxo);
+}
+.esc-rot-2 { margin-top: 40px; }
+.esc-lista {
+  margin: 14px auto 0; padding: 0; max-width: 700px; list-style: none;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+}
+.esc-lista li {
+  display: flex; align-items: center; gap: 12px; padding: 15px 17px; border-radius: 15px;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .02);
+  font-size: 14.5px; line-height: 1.45; color: #c9c6d4;
+}
+/* o mesmo apagado do teaser do resultado: a silhueta é a promessa que o mapa cumpre */
+.esc-off {
+  width: 30px; height: 30px; flex: none; border-radius: 9px;
+  background: linear-gradient(135deg, rgba(193, 131, 251, .42), rgba(226, 123, 183, .26));
+}
+.esc-fecho {
+  margin: 18px auto 0; max-width: 700px; font-size: 14px; color: var(--cinza-min); text-align: center;
+}
+@media (max-width: 620px) { .esc-lista { grid-template-columns: 1fr; } }
+
+/* prova social: só entra na página quando existir depoimento real */
+.deps { margin: 40px auto 0; max-width: 900px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.dep { margin: 0; padding: 24px; border-radius: var(--r-g); border: 1px solid var(--linha); background: rgba(255, 255, 255, .03); }
+.dep blockquote { margin: 0; font-size: 15.5px; line-height: 1.62; color: #ded9ea; }
+.dep blockquote::before { content: "“"; color: var(--roxo); }
+.dep blockquote::after { content: "”"; color: var(--roxo); }
+.dep figcaption { margin-top: 14px; font-size: 13.5px; font-weight: 600; color: var(--cinza-claro); }
+@media (max-width: 620px) { .deps { grid-template-columns: 1fr; } }
+
 /* ---------- órbita de categorias ---------- */
 
 .orbita { position: relative; margin: 46px auto 0; width: 100%; max-width: 1000px; aspect-ratio: 2 / 1; }
@@ -1183,11 +1219,11 @@ body.travado { overflow: hidden; }
     <div class="cabeca">
       <span class="eyebrow">Serve pra qualquer pedido</span>
       <h2>Você fala do seu jeito.<br>O mapa responde as duas.</h2>
-      <p>Qual ferramenta abrir <b>e</b> o prompt exato pra pedir. Trabalho, faculdade,
-         conteúdo ou aquela tarefa que você vem empurrando.</p>
+      <p>Qual ferramenta abrir <b>e</b> o prompt exato pra pedir. Consultório, escritório,
+         fechamento do mês ou aquela tarefa da sua vida que você vem empurrando.</p>
     </div>
-    <div class="casos"><article class="caso"><span class="caso-tag">Trabalho</span><h3>Escrever o e-mail difícil pro chefe</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:09</span></div><p class="caso-fala">“Preciso responder meu chefe sobre o prazo que estourou, sem parecer desculpa”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Faculdade</span><h3>A redação que vale a vaga</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:07</span></div><p class="caso-fala">“Me ajuda com a redação do vestibular, tema de meio ambiente, mil palavras”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Conteúdo</span><h3>O vídeo do produto pro Instagram</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:06</span></div><p class="caso-fala">“Quero um vídeo do meu produto pra postar amanhã, não tenho estúdio”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Criação</span><h3>Imagem que não pareça feita por IA</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:08</span></div><p class="caso-fala">“Preciso de uma imagem pro post e as que eu faço têm cara de IA”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article></div>
-    <div class="outros-pedidos"><span>Resumir um PDF de 80 páginas</span><span>Montar a apresentação de amanhã</span><span>Responder cliente no WhatsApp</span><span>Organizar a minha semana</span><span>Fazer um site sem programar</span><span>Revisar contrato antes de assinar</span></div>
+    <div class="casos"><article class="caso"><span class="caso-tag">Saúde e consultório</span><h3>O prontuário que sobra pro fim do dia</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:08</span></div><p class="caso-fala">“Preciso evoluir o prontuário e escrever o encaminhamento sem levar isso pra casa”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Jurídico</span><h3>As 300 páginas que chegaram hoje</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:09</span></div><p class="caso-fala">“Chegou um processo de trezentas páginas e a audiência é quinta, preciso do que interessa”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Contábil e financeiro</span><h3>O fechamento que repete igual todo mês</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:07</span></div><p class="caso-fala">“Todo mês eu refaço o mesmo relatório pra cada cliente, muda só o número”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Do dia a dia</span><h3>A passagem que fica mais barata depois que você compra</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:06</span></div><p class="caso-fala">“Quero a passagem mais barata pra novembro sem abrir dez abas e sem ficar olhando todo dia”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article></div>
+    <div class="outros-pedidos"><span>Escrever o e-mail difícil pro chefe</span><span>Resumir um PDF de 80 páginas</span><span>Montar a apresentação de amanhã</span><span>Responder cliente no WhatsApp</span><span>Imagem que não pareça feita por IA</span><span>Revisar contrato antes de assinar</span><span>Fazer um site sem programar</span><span>Organizar a minha semana</span></div>
     <div class="acoes" style="justify-content:center;margin-top:30px">
       <a class="btn btn-p abre-diag" href="#diagnostico">Ver a resposta do meu caso →</a>
     </div>
@@ -1199,7 +1235,7 @@ body.travado { overflow: hidden; }
     <div class="cabeca">
       <span class="eyebrow">Como funciona</span>
       <h2>Você não precisa de mais ferramentas.<br><span class="g">Precisa saber quais três usar.</span></h2>
-      <p>Cinco perguntas sobre o seu trabalho e o seu orçamento. O mapa sai do seu contexto:
+      <p>Um diagnóstico rápido sobre o seu trabalho e o seu orçamento. O mapa sai do seu contexto:
          as três ferramentas certas, na ordem de assinar, com o prompt exato de cada uma e a
          conta do que você corta.</p>
     </div>
@@ -1233,10 +1269,13 @@ body.travado { overflow: hidden; }
     <div class="cabeca">
       <span class="eyebrow">As 13 ferramentas</span>
       <h2>O mapa cobre as 13 que eu uso<br><span class="g">num dia normal de trabalho.</span></h2>
-      <p>O seu mapa indica quais dessas fazem sentido pro seu caso, em que ordem e o que ignorar.
-         Nenhuma recomendação é de afiliado, e onde eu não uso de verdade, eu não opino.</p>
+      <p>O seu mapa diz quais dessas fazem sentido pro seu caso, em que ordem e o que ignorar. Nenhuma recomendação é de afiliado, e onde eu não uso de verdade, eu não opino.</p>
     </div>
-    <div class="ferr-grid"><div class="f-card"><img src="/logos/claude.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Claude</span></div><div class="f-card"><img src="/logos/claudecode.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Claude Code</span></div><div class="f-card"><img src="/logos/chatgpt.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">ChatGPT</span></div><div class="f-card"><img src="/logos/gemini.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Gemini</span></div><div class="f-card"><img src="/logos/perplexity.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Perplexity</span></div><div class="f-card"><img src="/logos/grok.png" alt="" width="42" height="42" loading="lazy"><span class="nome">Grok</span></div><div class="f-card"><img src="/logos/higgsfield.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Higgsfield</span></div><div class="f-card"><img src="/logos/poppy.png" alt="" width="42" height="42" loading="lazy"><span class="nome">Poppy AI</span></div><div class="f-card"><img src="/logos/lovable.png" alt="" width="42" height="42" loading="lazy"><span class="nome">Lovable</span></div><div class="f-card"><img src="/logos/notebook.png" alt="" width="42" height="42" loading="lazy"><span class="nome">Gemini Notebook</span></div><div class="f-card"><img src="/logos/gamma.png" alt="" width="42" height="42" loading="lazy"><span class="nome">Gamma</span></div><div class="f-card"><img src="/logos/elevenlabs.png" alt="" width="42" height="42" loading="lazy"><span class="nome">ElevenLabs</span></div><div class="f-card"><img src="/logos/n8n.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">n8n</span></div></div>
+    <span class="esc-rot">As quatro que você já conhece</span>
+    <div class="ferr-grid ferr-grid-4"><div class="f-card"><img src="/logos/claude.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Claude</span></div><div class="f-card"><img src="/logos/chatgpt.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">ChatGPT</span></div><div class="f-card"><img src="/logos/gemini.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Gemini</span></div><div class="f-card"><img src="/logos/perplexity.svg" alt="" width="42" height="42" loading="lazy"><span class="nome">Perplexity</span></div></div>
+    <span class="esc-rot esc-rot-2">E as nove que quase ninguém sabe usar</span>
+    <ul class="esc-lista"><li><span class="esc-off" aria-hidden="true"></span>a que lê o processo inteiro e responde sobre ele</li><li><span class="esc-off" aria-hidden="true"></span>a que monta a apresentação pronta pra mostrar</li><li><span class="esc-off" aria-hidden="true"></span>a que narra com a sua voz</li><li><span class="esc-off" aria-hidden="true"></span>a que roda a tarefa sozinha, sem você abrir nada</li><li><span class="esc-off" aria-hidden="true"></span>a que cria a cena que ainda não existe</li><li><span class="esc-off" aria-hidden="true"></span>a que sobe um site funcionando a partir de uma conversa</li><li><span class="esc-off" aria-hidden="true"></span>a que trabalha dentro do seu projeto, não numa aba</li><li><span class="esc-off" aria-hidden="true"></span>a que explica por que um conteúdo funcionou e o outro não</li><li><span class="esc-off" aria-hidden="true"></span>a que sabe o que estão falando agora, não mês passado</li></ul>
+    <p class="esc-fecho">Qual é cada uma, e quais são as suas três, está no mapa.</p>
   </div>
 </section>
 
@@ -1283,6 +1322,7 @@ body.travado { overflow: hidden; }
     </div>
   </div>
 </section>
+
 
 <section class="sec sec-claro" id="oferta">
   <div class="env">
