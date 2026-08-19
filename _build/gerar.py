@@ -428,6 +428,9 @@ JS = """
   // diagnóstico: soma os pesos das respostas e devolve as 3 ferramentas com a ordem de compra
   const quiz = el("quiz");
   const modal = el("modal");
+  // o quiz vive num pop-up: quem só leu a página não abandonou quiz nenhum, e não pode
+  // entrar na conta de abandono
+  let abriuQuiz = false;
   if (modal) {
     // O pop-up não existia no histórico: um gesto de voltar no meio do quiz levava a pessoa
     // para fora do site, com metade das respostas dadas. Empilhando um estado, o voltar passa
@@ -436,6 +439,7 @@ JS = """
     const abrir = e => {
       e.preventDefault();
       modal.showModal();
+      abriuQuiz = true;
       px("ViewContent");
       document.body.classList.add("travado");
       if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
@@ -483,6 +487,7 @@ JS = """
     const resp = {};
     const livre = {};        // o que a pessoa escreveu quando nenhuma opção era a dela
     let atual = 0;
+    let terminouQuiz = false;
 
     // trilha por área: o passo que não é da área respondida não aparece nem conta
     const vale = i => valePergunta(MOTOR, passos[i].dataset.q, resp);
@@ -556,6 +561,7 @@ JS = """
     const calcular = () => calcularStack(MOTOR, resp);
 
     function render() {
+      terminouQuiz = true;
       const { stack, corta } = calcular();
       // memória para o /mapa não pedir tudo de novo, e o anônimo para saber quem responde
       salvarSessao(resp, MOTOR.pids, livre, MOTOR);
@@ -729,6 +735,28 @@ JS = """
       quiz.hidden = false;
       mostrar();
       el("diagnostico").scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+
+    // funil: em que pergunta a pessoa parou. É o que diz se as 19 perguntas seguram ou
+    // derrubam, e não dava para saber, porque o envio anônimo só sai de quem chega ao fim.
+    rastrearFunil(MOTOR.analitico, MOTOR.origem, () => {
+      if (!abriuQuiz) return null;
+      const passo = passos[Math.min(atual, passos.length - 1)];
+      const legenda = passo.querySelector("legend");
+      const caminho = passos.map((_p, i) => i).filter(i => vale(i) && ehPergunta(i));
+      const [qArea] = MOTOR.perfil;
+      return {
+        pid: terminouQuiz ? "(concluiu)" : passo.dataset.q,
+        // o enunciado sai do DOM porque o contador "n de m" é o primeiro filho do legend
+        pergunta: terminouQuiz || !legenda || !legenda.lastChild
+                ? "" : legenda.lastChild.textContent.trim(),
+        posicao: terminouQuiz ? ""
+               : caminho.filter(i => i <= atual).length + " de " + totalPerguntas(),
+        respondidas: Object.keys(resp).filter(q => MOTOR.pids.includes(q)).length,
+        total: totalPerguntas(),
+        area: qArea in resp ? MOTOR.rotulos[qArea][resp[qArea]] : "",
+        concluiu: terminouQuiz ? "sim" : ""
+      };
     });
 
     mostrar();

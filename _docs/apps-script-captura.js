@@ -1,10 +1,12 @@
 /**
  * Recebe os dados do diagnóstico do qual-ia-abrir e grava numa planilha.
  *
- * Grava três coisas em abas diferentes, conforme o campo "tipo" do payload:
+ * Grava quatro coisas em abas diferentes, conforme o campo "tipo" do payload:
  *   - "lead"        → aba 'leads', com nome e WhatsApp (só quando o passo de contato existe)
  *   - "diagnostico" → aba 'diagnosticos', ANÔNIMO, toda vez que alguém termina o quiz
  *   - "presente"    → aba 'presentes', o que o comprador escolheu de próximo produto
+ *   - "funil"       → aba 'abandonos', uma linha por pessoa que ABRIU o quiz, com a
+ *                     pergunta em que ela parou. É a única que grava quem não terminou.
  *
  * A aba 'diagnosticos' é a que responde: qual perfil responde mais, qual dor
  * aparece, qual ferramenta o motor mais recomenda e o que ele mais manda cortar.
@@ -35,6 +37,7 @@
 const ABA_LEADS = 'leads';
 const ABA_DIAG = 'diagnosticos';
 const ABA_PRESENTE = 'presentes';
+const ABA_FUNIL = 'abandonos';
 
 // colunas de resposta gravadas em coluna própria; o resto vai no bruto
 // Só o tronco tem coluna fixa. As perguntas de trilha mudam conforme a área, então
@@ -57,6 +60,7 @@ function doPost(e) {
 
   if (d.tipo === 'diagnostico') gravarDiagnostico(d, bruto);
   else if (d.tipo === 'presente') gravarPresente(d, bruto);
+  else if (d.tipo === 'funil') gravarFunil(d, bruto);
   else gravarLead(d, bruto);
 
   return ContentService.createTextOutput('ok');
@@ -99,6 +103,59 @@ function gravarLead(d, bruto) {
       .concat([trilhaDe(r), d.descreveu || '',
                (d.stack || []).join(', '), (d.cortar || []).join(', '), bruto])
   );
+}
+
+/**
+ * O funil do quiz: uma linha por pessoa, com onde ela parou.
+ *
+ * A aba 'diagnosticos' só recebe quem TERMINA, então ela é o numerador sem denominador:
+ * não dá para saber se as 19 perguntas seguram ou derrubam. Aqui entra todo mundo que
+ * abriu o quiz, e a coluna 'concluiu' separa os dois grupos na mesma aba.
+ *
+ * Atualiza a linha em vez de acrescentar: cada saída da pessoa manda um sinal novo, e
+ * sem o upsert quem troca de aba cinco vezes viraria cinco linhas. A chave é sid+origem,
+ * porque a mesma pessoa passa pelo quiz do site e depois pelo do /mapa, e os dois
+ * abandonos são coisas diferentes.
+ *
+ * O sid é sorteado no navegador e não identifica ninguém: existe só para a mesma pessoa
+ * não virar várias linhas.
+ */
+function gravarFunil(d, bruto) {
+  const aba = abaOu(ABA_FUNIL,
+    ['primeiro sinal', 'último sinal', 'sid', 'origem', 'concluiu', 'parou em', 'pergunta',
+     'posição', 'respondidas', 'total', 'area', 'utm', 'bruto']);
+  // sem trava, dois sinais quase juntos da mesma pessoa acham a linha vazia e gravam duas
+  const trava = LockService.getScriptLock();
+  try { trava.waitLock(20000); } catch (err) { return; }
+  try {
+    const linha = acharLinha(aba, d.sid || '', d.origem || '');
+    const agora = new Date();
+    // quem já concluiu está congelado: se ela refizer o quiz, a linha voltaria a dizer
+    // 'parou na pergunta 1' com 'concluiu sim' ao lado, e a conversão do quiz sumiria
+    if (linha && aba.getRange(linha, 5).getValue() === 'sim') {
+      aba.getRange(linha, 2).setValue(agora);
+      return;
+    }
+    const dados = [agora, d.sid || '', d.origem || '', d.concluiu || '', d.pid || '',
+                   d.pergunta || '', d.posicao || '', d.respondidas || 0, d.total || 0,
+                   d.area || '', d.utm || '', bruto];
+    // a coluna 1 é o primeiro sinal e nunca é reescrita: é a hora em que a pessoa chegou
+    if (linha) aba.getRange(linha, 2, 1, dados.length).setValues([dados]);
+    else aba.appendRow([agora].concat(dados));
+  } finally {
+    trava.releaseLock();
+  }
+}
+
+/** A linha desta pessoa nesta origem, ou 0. De trás para frente: quem manda sinal agora
+ *  quase sempre chegou há pouco. */
+function acharLinha(aba, sid, origem) {
+  const n = aba.getLastRow();
+  if (n < 2 || !sid) return 0;
+  const vals = aba.getRange(2, 3, n - 1, 2).getValues();
+  for (let i = vals.length - 1; i >= 0; i--)
+    if (vals[i][0] === sid && vals[i][1] === origem) return i + 2;
+  return 0;
 }
 
 function abaOu(nome, cabecalho) {

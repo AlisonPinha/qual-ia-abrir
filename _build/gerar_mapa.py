@@ -183,6 +183,9 @@ JS = r"""
   const quiz = el("quiz");
   const passos = [...quiz.querySelectorAll(".passo")];
   const resp = {};
+  // quem entra por código ou por memória não passa pelo quiz, e não é abandono de quiz
+  let abriuQuiz = false;
+  let terminouQuiz = false;
   const livre = {};          // o que a pessoa escreveu quando nenhuma opção era a dela
   let atual = 0;
   let stackAtual = [];       // a última stack calculada, para o voto do presente
@@ -228,6 +231,7 @@ JS = r"""
   };
 
   const mostrar = () => {
+    abriuQuiz = true;          // a partir daqui existe quiz na tela, e existe abandono
     const btVoltar = el("quiz-voltar");
     if (btVoltar) btVoltar.hidden = historico.length === 0;
     passos.forEach((p, i) => { p.hidden = i !== atual; });
@@ -269,6 +273,7 @@ JS = r"""
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   function render(daMemoria) {
+    terminouQuiz = true;
     const { stack, corta } = calcularStack(MOTOR, resp);
     stackAtual = stack;
     if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre, MOTOR);
@@ -606,6 +611,28 @@ JS = r"""
       el("pres-pronto").hidden = false;
     });
   }
+
+  // funil: em que pergunta a pessoa parou. Aqui é quem já pagou: comprador que trava no
+  // meio do quiz não recebe a entrega, e isso é reembolso, não só métrica.
+  rastrearFunil(MOTOR.analitico, "mapa", () => {
+    if (!abriuQuiz) return null;
+    const passo = passos[Math.min(atual, passos.length - 1)];
+    const legenda = passo.querySelector("legend");
+    const caminho = passos.map((_p, i) => i).filter(i => vale(i) && ehPergunta(i));
+    const [qArea] = MOTOR.perfil;
+    return {
+      pid: terminouQuiz ? "(concluiu)" : passo.dataset.q,
+      // o enunciado sai do DOM porque o contador "n de m" é o primeiro filho do legend
+      pergunta: terminouQuiz || !legenda || !legenda.lastChild
+              ? "" : legenda.lastChild.textContent.trim(),
+      posicao: terminouQuiz ? ""
+             : caminho.filter(i => i <= atual).length + " de " + totalPerguntas(),
+      respondidas: Object.keys(resp).filter(q => MOTOR.pids.includes(q)).length,
+      total: totalPerguntas(),
+      area: qArea in resp ? MOTOR.rotulos[qArea][resp[qArea]] : "",
+      concluiu: terminouQuiz ? "sim" : ""
+    };
+  });
 
   // veio do site no mesmo aparelho: não faz a pessoa responder tudo de novo
   // ordem de entrada: código na URL, código digitado, memória do navegador, quiz.

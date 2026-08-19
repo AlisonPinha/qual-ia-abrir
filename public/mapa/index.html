@@ -1547,10 +1547,74 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
   } catch (e) { /* nunca atrapalhar o resultado */ }
 }
 
+// Funil do quiz: onde a pessoa parou. O envio anônimo acima só acontece quando o quiz
+// TERMINA, então quem sai no meio não deixava rastro nenhum e a taxa de saída por
+// pergunta era invisível. Aqui sai uma linha por pessoa, atualizada a cada saída, e quem
+// conclui fica marcado na mesma linha: assim a aba tem numerador e denominador juntos.
+//
+// Não é do playbook. É medição nossa, e serve para diagnóstico do quiz, não para decidir
+// teste A/B, que o playbook manda julgar pela conversão final.
+const FUNIL_CHAVE = "qia:sid";
+
+// Identidade anônima da visita, só para a mesma pessoa não virar dez linhas. Não é
+// login, não sai daqui e não se cruza com nada: é um número de sorteio no navegador.
+function idVisita() {
+  try {
+    let id = localStorage.getItem(FUNIL_CHAVE);
+    if (!id) {
+      id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      localStorage.setItem(FUNIL_CHAVE, id);
+    }
+    return id;
+  } catch (e) { return "anonimo"; }      // modo privado: vira linha nova a cada saída
+}
+
+// `estado()` devolve onde a pessoa está, ou null quando ela nem abriu o quiz: quem só
+// leu a página não é abandono de quiz e não pode entrar na conta.
+function rastrearFunil(url, origem, estado) {
+  if (!url) return;
+  let ultimo = "";
+  const enviar = () => {
+    const e = estado();
+    if (!e) return;
+    // trocar de app e voltar dispara isto várias vezes no mesmo ponto; sem esta guarda,
+    // uma pessoa parada na pergunta 3 gera um POST a cada troca
+    const chave = e.pid + "|" + e.respondidas + "|" + e.concluiu;
+    if (chave === ultimo) return;
+    ultimo = chave;
+    const corpo = JSON.stringify(Object.assign(
+      { tipo: "funil", sid: idVisita(), origem, utm: origemTrafego(),
+        ts: new Date().toISOString() }, e));
+    // sendBeacon é o único envio que o navegador promete entregar com a aba fechando;
+    // fetch keepalive fica de reserva para quem não tem
+    try {
+      if (navigator.sendBeacon
+          && navigator.sendBeacon(url, new Blob([corpo], { type: "text/plain;charset=utf-8" })))
+        return;
+    } catch (err) { /* cai no fetch abaixo */ }
+    try {
+      fetch(url, {
+        method: "POST", mode: "no-cors", keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: corpo
+      }).catch(() => {});
+    } catch (err) { /* medição nunca quebra a página */ }
+  };
+  // visibilitychange é o que dispara de verdade no celular: trocar de app, bloquear a
+  // tela ou fechar a aba pelo gerenciador não passa por beforeunload nem por unload
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") enviar();
+  });
+  addEventListener("pagehide", enviar);
+}
+
   const el = id => document.getElementById(id);
   const quiz = el("quiz");
   const passos = [...quiz.querySelectorAll(".passo")];
   const resp = {};
+  // quem entra por código ou por memória não passa pelo quiz, e não é abandono de quiz
+  let abriuQuiz = false;
+  let terminouQuiz = false;
   const livre = {};          // o que a pessoa escreveu quando nenhuma opção era a dela
   let atual = 0;
   let stackAtual = [];       // a última stack calculada, para o voto do presente
@@ -1596,6 +1660,7 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
   };
 
   const mostrar = () => {
+    abriuQuiz = true;          // a partir daqui existe quiz na tela, e existe abandono
     const btVoltar = el("quiz-voltar");
     if (btVoltar) btVoltar.hidden = historico.length === 0;
     passos.forEach((p, i) => { p.hidden = i !== atual; });
@@ -1637,6 +1702,7 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   function render(daMemoria) {
+    terminouQuiz = true;
     const { stack, corta } = calcularStack(MOTOR, resp);
     stackAtual = stack;
     if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre, MOTOR);
@@ -1974,6 +2040,28 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
       el("pres-pronto").hidden = false;
     });
   }
+
+  // funil: em que pergunta a pessoa parou. Aqui é quem já pagou: comprador que trava no
+  // meio do quiz não recebe a entrega, e isso é reembolso, não só métrica.
+  rastrearFunil(MOTOR.analitico, "mapa", () => {
+    if (!abriuQuiz) return null;
+    const passo = passos[Math.min(atual, passos.length - 1)];
+    const legenda = passo.querySelector("legend");
+    const caminho = passos.map((_p, i) => i).filter(i => vale(i) && ehPergunta(i));
+    const [qArea] = MOTOR.perfil;
+    return {
+      pid: terminouQuiz ? "(concluiu)" : passo.dataset.q,
+      // o enunciado sai do DOM porque o contador "n de m" é o primeiro filho do legend
+      pergunta: terminouQuiz || !legenda || !legenda.lastChild
+              ? "" : legenda.lastChild.textContent.trim(),
+      posicao: terminouQuiz ? ""
+             : caminho.filter(i => i <= atual).length + " de " + totalPerguntas(),
+      respondidas: Object.keys(resp).filter(q => MOTOR.pids.includes(q)).length,
+      total: totalPerguntas(),
+      area: qArea in resp ? MOTOR.rotulos[qArea][resp[qArea]] : "",
+      concluiu: terminouQuiz ? "sim" : ""
+    };
+  });
 
   // veio do site no mesmo aparelho: não faz a pessoa responder tudo de novo
   // ordem de entrada: código na URL, código digitado, memória do navegador, quiz.

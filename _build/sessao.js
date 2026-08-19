@@ -111,3 +111,64 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
     }).catch(() => {});
   } catch (e) { /* nunca atrapalhar o resultado */ }
 }
+
+// Funil do quiz: onde a pessoa parou. O envio anônimo acima só acontece quando o quiz
+// TERMINA, então quem sai no meio não deixava rastro nenhum e a taxa de saída por
+// pergunta era invisível. Aqui sai uma linha por pessoa, atualizada a cada saída, e quem
+// conclui fica marcado na mesma linha: assim a aba tem numerador e denominador juntos.
+//
+// Não é do playbook. É medição nossa, e serve para diagnóstico do quiz, não para decidir
+// teste A/B, que o playbook manda julgar pela conversão final.
+const FUNIL_CHAVE = "qia:sid";
+
+// Identidade anônima da visita, só para a mesma pessoa não virar dez linhas. Não é
+// login, não sai daqui e não se cruza com nada: é um número de sorteio no navegador.
+function idVisita() {
+  try {
+    let id = localStorage.getItem(FUNIL_CHAVE);
+    if (!id) {
+      id = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      localStorage.setItem(FUNIL_CHAVE, id);
+    }
+    return id;
+  } catch (e) { return "anonimo"; }      // modo privado: vira linha nova a cada saída
+}
+
+// `estado()` devolve onde a pessoa está, ou null quando ela nem abriu o quiz: quem só
+// leu a página não é abandono de quiz e não pode entrar na conta.
+function rastrearFunil(url, origem, estado) {
+  if (!url) return;
+  let ultimo = "";
+  const enviar = () => {
+    const e = estado();
+    if (!e) return;
+    // trocar de app e voltar dispara isto várias vezes no mesmo ponto; sem esta guarda,
+    // uma pessoa parada na pergunta 3 gera um POST a cada troca
+    const chave = e.pid + "|" + e.respondidas + "|" + e.concluiu;
+    if (chave === ultimo) return;
+    ultimo = chave;
+    const corpo = JSON.stringify(Object.assign(
+      { tipo: "funil", sid: idVisita(), origem, utm: origemTrafego(),
+        ts: new Date().toISOString() }, e));
+    // sendBeacon é o único envio que o navegador promete entregar com a aba fechando;
+    // fetch keepalive fica de reserva para quem não tem
+    try {
+      if (navigator.sendBeacon
+          && navigator.sendBeacon(url, new Blob([corpo], { type: "text/plain;charset=utf-8" })))
+        return;
+    } catch (err) { /* cai no fetch abaixo */ }
+    try {
+      fetch(url, {
+        method: "POST", mode: "no-cors", keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: corpo
+      }).catch(() => {});
+    } catch (err) { /* medição nunca quebra a página */ }
+  };
+  // visibilitychange é o que dispara de verdade no celular: trocar de app, bloquear a
+  // tela ou fechar a aba pelo gerenciador não passa por beforeunload nem por unload
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") enviar();
+  });
+  addEventListener("pagehide", enviar);
+}
