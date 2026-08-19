@@ -97,6 +97,9 @@ barato. Hoje não há para onde subir.
 | 2.3 | **Tela pós-compra** com o upsell a R$ 130 (crédito de R$ 67 abatido) | Claude | 2.2 | Sai no fluxo real de quem compra, e o crédito bate |
 | 2.4 | **CTA de ascensão dentro do `/mapa`** | Claude | 2.2 | Existe um caminho do produto de entrada para o upsell fora do checkout, porque 80% paga no Pix e não volta |
 | 2.5 | **Recuperação por WhatsApp** | Claude no n8n | 0.1 | Mensagem sai para quem gerou cobrança e não pagou |
+| 2.6 | **Camuflar a venda do upsell** | Claude | 2.2 | A tela pós-compra se apresenta como o primeiro passo depois do mapa, não como segunda cobrança. No playbook quem faz isso é o vídeo ("camuflo a oferta como aula inaugural"), e sem vídeo a camuflagem tem que vir do enquadramento em texto |
+| 2.7 | **Cada um dos 7 dias vira ponto de ascensão** | Claude | 2.2 e existir um próximo produto | "Trate a entrega do seu produto como um funil de vendas pro próximo". Os quatro pontos deles, em ordem: WhatsApp, e-mail, banner e descrição de cada aula. Aqui cada dia é uma aula |
+| 2.8 | **Formulário do presente na pós-compra** | Claude | 0.1 | "Você vai ganhar um presente, qual você quer?" O mais votado vira o próximo produto. É como eles descobrem o que vender depois, e resolve o problema de não sabermos o que vem depois do upsell |
 
 **Não ligar o upsell no funil antes de 2.2 existir.** Vender e não entregar é reembolso e
 queima a autoridade, que é o ativo do produto.
