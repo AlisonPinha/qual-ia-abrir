@@ -439,6 +439,9 @@ JS = """
       passos.forEach((p, i) => { p.hidden = i !== atual; });
       // a tela de espelho carrega, repete as respostas e só então libera o resultado
       if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
+      // o porquê vive na primeira tela: depois dela a pessoa já está dentro
+      const porque = el("modal-porque");
+      if (porque) porque.hidden = atual !== 0;
       const fila = passos.map((_p, i) => i).filter(vale);
       const pos = fila.indexOf(atual);
       // o passo atual conta como iniciado: barra vazia na pergunta 1 derruba a conclusão
@@ -981,6 +984,7 @@ html = f"""<!doctype html>
 
   <div class="modal-corpo">
     <h2 id="modal-titulo" class="modal-h">Qual IA você deveria usar</h2>
+    <p class="modal-porque" id="modal-porque">{escape(DG["porque"])}</p>
     <form id="quiz" novalidate>{"".join(perguntas_html)}</form>
 
     <div id="resultado" role="region" aria-live="polite" aria-label="Resultado do diagnóstico" hidden>

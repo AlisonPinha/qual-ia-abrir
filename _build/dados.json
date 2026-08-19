@@ -2155,6 +2155,8 @@
       ]
     ],
     "espelhoPronto": "Pronto. Com base no que você respondeu, o seu mapa está montado.",
+    "_porque": "O reason why da personalização, na primeira tela do quiz: sem ele a pessoa não sabe por que está respondendo, e cada pergunta vira atrito em vez de investimento.",
+    "porque": "Cada resposta muda o resultado: as suas 3 ferramentas saem do que você responder aqui, não de uma lista pronta.",
     "recursos": {
       "Claude": [
         [
