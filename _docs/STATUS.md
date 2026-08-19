@@ -28,6 +28,26 @@ Fase 2 do plano: recuperação por WhatsApp (2.5), a VSL quando o Alison gravar 
 dos 7 dias como ponto de ascensão (2.7), que depende de existir um próximo produto, que é
 justamente o que a aba `presentes` vai dizer.
 
+### A LP parou de entregar o catálogo, em 19/08
+
+A seção das 13 mostrava logo e nome de todas: quem lia saía com a lista pronta para pesquisar
+sozinho, e o produto vende justamente saber quais são as suas 3. Agora:
+
+| Quem | Como aparece |
+|---|---|
+| Claude, ChatGPT, Gemini, Perplexity | nome e logo, porque são prova emprestada e já são conhecidas |
+| As outras 9 | categoria sem nome nem logo, com a silhueta do teaser do resultado |
+
+**Medido em produção:** zero dos 9 nomes no HTML visível. Eles seguem dentro do `<script>`,
+nos pesos do motor, que precisa rodar no navegador para o teaser existir. O paywall continua
+sendo o de sempre: `passo`, `prompt`, `oq` e o custo completo nunca saem para o cliente.
+
+Os casos de uso passaram a ser os perfis que o quiz atende (saúde, jurídico, contábil e uma
+tarefa da vida, a passagem mais barata) e os temas antigos viraram chips. **Continuam sendo
+pedidos, não depoimentos.**
+
+Achado de passagem: a página prometia "cinco perguntas" e o quiz tem 19. Corrigido.
+
 ### A planilha, resolvida em 19/08 pelo navegador
 
 O Apps Script foi recolado e **implantado como versão 2 na mesma implantação**, então a URL do

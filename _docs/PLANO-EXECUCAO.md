@@ -193,13 +193,31 @@ decisão do Alison, não minha.
 |---|---|---|---|---|
 | 4.1 | **CAPI com dedup por `event_id`** | Claude | 0.3 | Uma venda conta uma vez, browser e servidor |
 | 4.2 | **GA4** | Claude | 4.1 | No ar |
-| 4.3 | **Seção "as 9 ferramentas" da LP** vira tensão | Claude | nada | As 4 conhecidas ficam com nome, as outras viram categoria sem nome |
+| 4.3 | ~~**Seção das ferramentas vira tensão**~~ **feito 19/08** | Claude | nada | As 4 conhecidas com nome e logo, as outras 9 por categoria, com a silhueta do teaser. Conferido em produção: **zero** dos 9 nomes no HTML visível |
 | 4.4 | **Auditoria das 9 seções** pela régua de Makepeace, como variante A/B | Claude | 3.3 | Roda como teste, nunca por decreto |
 | 4.5 | **One Belief em todos os pontos de contato** | Claude | nada | A mesma frase no hero, no criativo, no e-mail e no upsell |
 | 4.6 | **Uso pessoal: decidir com dado** | Claude | 0.2, 3.3 | A coluna `descreveu` diz quantos não se encaixaram nas 10 áreas e o que queriam. Só então se cria trilha |
 | 4.7 | **World wide** | Claude | 3.3 | Duplicar o funil, filtrar português e excluir o Brasil. O playbook estima meia hora de trabalho e ROI alto nos primeiros dias. Só depois de o funil provar que converte aqui |
 
 ---
+
+## Prova social, e a regra que vale aqui
+
+O bloco `prova` existe no `dados.json` com a lista **vazia de propósito**, e a seção só é
+renderizada quando houver depoimento dentro. A regra, que não se reabre:
+
+**Depoimento só entra quando for real, dito pela pessoa, com print guardado.** Escrever
+depoimento nosso, ainda que "para trocar pelo verdadeiro depois", é publicidade enganosa pelo
+CDC (art. 37, §1º), fere as regras de anúncio do Meta e é a primeira linha da lista "o que não
+fazer" do playbook. Pedido em cenário ilustrativo, do jeito que a seção de casos faz, **não é
+depoimento**: ninguém afirma que alguém disse aquilo, e por isso ele é permitido.
+
+**O que existe de prova real hoje, sem depender de aluno:** a demonstração da IA escrevendo o
+mapa ao vivo (o playbook considera mais forte que depoimento), os Reels medidos e a compradora
+de 19/08, que segundo o Alison gostou. É dela que sai a primeira frase verdadeira.
+
+**Como colar quando chegar:** `prova.depoimentos` recebe pares `["Quem é", "a frase"]`, e o
+build faz o resto. Nome da ferramenta não entra na frase, para não furar o paywall.
 
 ## Dívidas e riscos conhecidos
 
