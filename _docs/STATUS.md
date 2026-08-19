@@ -31,6 +31,29 @@ só vale a partir do primeiro deploy seguinte.
 **O código está no GitHub.** Os 9 commits que existiam só no disco foram enviados em 19/08:
 `main` está em `5bf6c6c` e a branch `feat/diagnostico-ramificado` também subiu.
 
+### 1b. A entrega, endurecida em 19/08
+
+Três defeitos fechados depois de QA no navegador, em produção:
+
+| Era | Virou |
+|---|---|
+| O `SISTEMA` chamava a pessoa de "ela" 13 vezes, e o modelo devolvia isso nos prompts em primeira pessoa | Instruções falam de "a pessoa" e "quem respondeu", mais a regra 7 proibindo adjetivo e particípio que concordem com quem fala |
+| O relógio do `redigir()` abortava o stream em 45s, e a resposta leva de 34 a 44s: o `CORTE` chegava depois do abort | Teto de 75s, acima do `maxDuration` de 60s da function |
+| Resposta incompleta caía direto no texto de fábrica | Uma segunda tentativa antes do fallback; 429 e 503 saem sem insistir |
+
+**O "7 de 8 blocos" não era omissão do modelo, era o relógio do cliente.** Quem mede pela API
+direta não vê esse defeito, porque o corte acontece só no navegador. Foi preciso rodar o quiz
+inteiro no browser para achar.
+
+**Medido no fim:** 8 de 8 blocos, nenhuma lacuna `{}`, nenhuma marca de gênero, console limpo,
+31s até a entrega completa (abertura em 6s, corte em 28s). O retry foi conferido à parte, com
+resposta truncada simulada por `page.route`: dispara a segunda chamada e preenche os 8 blocos.
+
+**Armadilha do instrumento, para não repetir:** `waitForFunction` do Playwright roda em
+`requestAnimationFrame`, que congela quando a janela perde o foco, e por isso deu "não chegou
+em 150s" com o bloco preenchido na tela. Medir stream longo pede polling explícito com
+`evaluate`.
+
 ### 2. Colar o Apps Script de novo
 
 `_docs/apps-script-captura.js` ganhou três colunas: `trilha` (as perguntas de trilha não têm
