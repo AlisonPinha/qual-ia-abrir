@@ -5,6 +5,7 @@ Doc viva do **Qual IA Usar?**. Report encerrado vai para `archive/`.
 | Arquivo | O que é |
 |---|---|
 | [PLANO-EXECUCAO.md](PLANO-EXECUCAO.md) | A fila única, em 5 fases, com quem faz e o critério de pronto de cada tarefa. **Comece por aqui.** |
+| [DIAGNOSTICO.md](DIAGNOSTICO.md) | O quiz por dentro: fluxo, trilhas, o que cada resposta faz com a stack e onde mexer. **Gerado do `dados.json`, não editar à mão** |
 | [STATUS.md](STATUS.md) | Estado do que está no ar, o que foi medido e o handoff da última sessão |
 | [adrs/](adrs/) | Decisões técnicas que não se reabrem sem motivo novo |
 | [apps-script-captura.js](apps-script-captura.js) | Web App do Apps Script que grava diagnóstico e lead na planilha |
