@@ -1311,38 +1311,50 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
       if (guardado && guardado.k === chave) return aplicar(alvos, guardado.t, true);
     } catch (e) { /* sem memória: escreve de novo */ }
 
-    const ctrl = new AbortController();
-    emEscrita = ctrl;
-    const relogio = setTimeout(() => ctrl.abort(), 45000);
     const aviso = el("res-escrevendo");
-    let buffer = "";
-    try {
-      const r = await fetch("/api/mapa", {
-        method: "POST", signal: ctrl.signal,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resp, livre }),
-      });
-      if (!r.ok || !r.body) throw new Error(r.status);
-      aviso.hidden = false;
-      const leitor = r.body.getReader();
-      const dec = new TextDecoder();
-      for (;;) {
-        const { done, value } = await leitor.read();
-        if (done) break;
-        buffer += dec.decode(value, { stream: true });
-        aplicar(alvos, buffer, false);
+    // Duas tentativas: resposta sem os oito blocos deixaria a pessoa com o texto de
+    // fábrica em cima do que ela pagou. Escrever de novo custa menos que entregar
+    // genérico, e o teto de duas impede que um modelo teimoso rode em laço.
+    for (let tentativa = 0; tentativa < 2; tentativa++) {
+      const ctrl = new AbortController();
+      emEscrita = ctrl;
+      // 75s: a function tem maxDuration de 60s e as respostas medidas levam de 34 a 44s.
+      // Em 45s o relógio cortava o stream no último bloco, e a pessoa perdia o corte.
+      const relogio = setTimeout(() => ctrl.abort(), 75000);
+      let buffer = "";
+      try {
+        const r = await fetch("/api/mapa", {
+          method: "POST", signal: ctrl.signal,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ resp, livre }),
+        });
+        // 429 é o teto de chamadas e 503 é falta de chave: insistir dá o mesmo,
+        // e a segunda tentativa só existe para resposta incompleta ou queda no meio.
+        if (r.status === 429 || r.status === 503) break;
+        if (!r.ok || !r.body) throw new Error(r.status);
+        aviso.hidden = false;
+        const leitor = r.body.getReader();
+        const dec = new TextDecoder();
+        for (;;) {
+          const { done, value } = await leitor.read();
+          if (done) break;
+          buffer += dec.decode(value, { stream: true });
+          aplicar(alvos, buffer, false);
+        }
+        if (inteiro(buffer)) {
+          aplicar(alvos, buffer, true);
+          try { localStorage.setItem(IA_CHAVE, JSON.stringify({ k: chave, t: buffer })); } catch (e) {}
+          return;
+        }
+      } catch (e) {
+        if (ctrl.signal.aborted && emEscrita !== ctrl) return;   // o quiz foi refeito: some
+      } finally {
+        clearTimeout(relogio);
+        aviso.hidden = true;
+        if (emEscrita === ctrl) emEscrita = null;
       }
-      const fim = inteiro(buffer);
-      aplicar(alvos, buffer, fim);
-      if (!fim) devolver(alvos);               // veio pela metade: o que faltou volta ao fixo
-      else try { localStorage.setItem(IA_CHAVE, JSON.stringify({ k: chave, t: buffer })); } catch (e) {}
-    } catch (e) {
-      devolver(alvos);                          // texto de fábrica, entrega intacta
-    } finally {
-      clearTimeout(relogio);
-      aviso.hidden = true;
-      if (emEscrita === ctrl) emEscrita = null;
     }
+    devolver(alvos);                            // as duas falharam: texto de fábrica, entrega intacta
   }
 
   // "nenhuma dessas": em vez de avançar, abre o campo. Ninguém é obrigado a escolher

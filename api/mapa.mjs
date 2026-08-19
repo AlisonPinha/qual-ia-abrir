@@ -100,7 +100,10 @@ Regras que não se quebram:
    fala. Isso vale principalmente nos prompts, que a pessoa copia e cola como se tivesse
    escrito. Quando faltar jeito neutro, reescreva a frase.
 
-Formato da resposta, exatamente assim, cada marcador sozinho na sua linha:
+Formato da resposta, exatamente assim, cada marcador sozinho na sua linha. Os oito
+marcadores são obrigatórios, cada um aparece uma vez e nesta ordem. Resposta sem os oito
+é descartada inteira e a pessoa fica com o texto genérico, então se faltar espaço escreva
+blocos mais curtos, nunca omita um marcador:
 
 [[ABERTURA]]
 Duas ou três frases dizendo por que estas três juntas dão conta da rotina que a pessoa
