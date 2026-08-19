@@ -20,7 +20,7 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 |---|---|---|---|---|
 | 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
 | 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
-| 0.2 | **Recolar o Apps Script** (`_docs/apps-script-captura.js`) | Alison cola, Claude confere | nada | A aba `diagnosticos` tem as colunas `trilha`, `descreveu` e `utm` no cabeçalho |
+| 0.2 | **Recolar o Apps Script** (`_docs/apps-script-captura.js`) | Alison cola, Claude confere | nada | A aba `diagnosticos` tem as colunas `trilha`, `descreveu` e `utm` no cabeçalho, e existe a aba `presentes`. **O arquivo ganhou o roteamento do presente em 19/08**, para ser colado uma vez só |
 | 0.3 | **Conferir o `Purchase` no Events Manager** | Claude | 0.1 | Uma venda, um `Purchase`, com o `content_name` da variante |
 
 ### O que a compra de teste ensinou
@@ -108,12 +108,12 @@ barato. Hoje não há para onde subir.
 |---|---|---|---|---|
 | 2.1 | ~~**Conteúdo da primeira semana** (os 7 dias)~~ **feito 19/08**, falta a revisão de voz do Alison | Claude estrutura, Alison revisa a voz | nada | Os sete dias saem do mesmo motor e não repetem o `/mapa` |
 | 2.2 | ~~**Página `/plano`**, a entrega do upsell~~ **feito 19/08** | Claude | 2.1 | No ar em `/plano`, com os 4 blocos e o material rodando de verdade |
-| 2.3 | **Tela pós-compra** com o upsell a R$ 130 (crédito de R$ 67 abatido) | Claude | 2.2 | Sai no fluxo real de quem compra, e o crédito bate |
-| 2.4 | **CTA de ascensão dentro do `/mapa`** | Claude | 2.2 | Existe um caminho do produto de entrada para o upsell fora do checkout, porque 80% paga no Pix e não volta |
+| 2.3 | ~~**Tela pós-compra** com o upsell a R$ 130~~ **feito 19/08** | Claude | 2.2 | Aparece uma vez, entre a identificação e o mapa, com a conta R$ 197 menos os R$ 67 já pagos. Produto na Cakto criado e conferido no checkout público |
+| 2.4 | ~~**CTA de ascensão dentro do `/mapa`**~~ **feito 19/08** | Claude | 2.2 | Bloco fixo no fim da entrega, mesmo preço e mesmo link. Quem dispensou a tela pós-compra ainda encontra o caminho |
 | 2.5 | **Recuperação por WhatsApp** | Claude no n8n | 0.1 | Mensagem sai para quem gerou cobrança e não pagou |
 | 2.6 | **VSL do upsell** (decisão revista em 19/08: o Alison vai gravar) | Alison grava rosto e voz, Claude grava as telas | 2.2 | O roteiro de 1min45 já está escrito no vault. **Ordem obrigatória: a página existe antes da gravação das telas**, porque o bloco de 0:48 promete "você manda e recebe rodado" e é o único insubstituível do roteiro |
 | 2.7 | **Cada um dos 7 dias vira ponto de ascensão** | Claude | 2.2 e existir um próximo produto | "Trate a entrega do seu produto como um funil de vendas pro próximo". Os quatro pontos deles, em ordem: WhatsApp, e-mail, banner e descrição de cada aula. Aqui cada dia é uma aula |
-| 2.8 | **Formulário do presente na pós-compra** | Claude | 0.1 | "Você vai ganhar um presente, qual você quer?" O mais votado vira o próximo produto. É como eles descobrem o que vender depois, e resolve o problema de não sabermos o que vem depois do upsell |
+| 2.8 | ~~**Formulário do presente na pós-compra**~~ **feito 19/08**, falta o Alison recolar o Apps Script | Claude | 0.1 | Cinco opções e uma saída aberta, no fim do `/mapa`, gravando na aba `presentes`. Fica **depois** do CTA de ascensão de propósito: o voto não pode competir com a venda |
 
 ### O achado que destravou a página, e que vale para o produto inteiro
 
@@ -132,6 +132,33 @@ voltando rodado em 5s, console limpo.
 
 **Não ligar o upsell no funil antes de 2.2 existir.** Vender e não entregar é reembolso e
 queima a autoridade, que é o ativo do produto.
+
+### A venda dentro da entrega, decidida em 19/08
+
+**O crédito é de quem comprou, não da tela.** O texto antigo do `dados.json` dizia "fora desta
+tela o pacote sai por R$ 197 cheio", o que criaria duas verdades de preço no mesmo produto e
+seria escassez inventada, proibida aqui. A regra que valeu: **quem pagou os R$ 67 tem o
+abatimento sempre**, na tela pós-compra e no lembrete do fim do mapa. Os R$ 197 são o preço de
+quem chega direto no pacote, e é isso que a página diz.
+
+**Por que dentro do `/mapa` e não numa página nova.** A entrega da Cakto é uma URL fixa,
+conferida em 19/08: não existe redirect pós-compra. Uma página `/obrigado` obrigaria a trocar o
+link de entrega dos quatro produtos e deixaria de fora quem já comprou. Dentro do `/mapa` a
+oferta sai no fluxo real, sem tocar na plataforma de pagamento.
+
+**A entrega nunca fica atrás da venda.** O botão de abrir o mapa tem o mesmo peso visual do de
+comprar, e clicar em comprar também libera o mapa, porque o checkout abre em outra aba. A tela
+aparece uma vez (`qia:oto` no navegador) e o mapa abre direto em toda visita seguinte.
+
+**O produto na Cakto:** `Sua primeira semana pronta`, R$ 130,00, entrega em
+`https://diagnostico.noahai.com.br/plano`, checkout `https://pay.cakto.com.br/j79id6y_1051180`.
+Conferido campo a campo contra o "Qual IA Usar?": pixel 827402089420392, os dois gatilhos de
+`Purchase` ao gerar Pix e boleto **desligados** (nascem ligados), PicPay fora, Pix em primeiro,
+produtor "Noah.ai" e categoria igual à do front.
+
+**O `/mapa` continua sem pixel**, por decisão anterior: `InitiateCheckout` do upsell não é
+medido no navegador, e a venda aparece pelo `Purchase` que a Cakto dispara. Reabrir isso é
+decisão do Alison, não minha.
 
 ---
 
@@ -182,4 +209,4 @@ queima a autoridade, que é o ativo do produto.
   porque o episódio traz dois testes em que prolongar a etapa 1 converteu menos
 - O nome do produto não muda sem o teste seco
 
-Atualizado em 19/08/2026.
+Atualizado em 19/08/2026, depois da sessão que ligou a venda dentro da entrega.

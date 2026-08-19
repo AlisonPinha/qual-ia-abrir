@@ -31,10 +31,16 @@ SESSAO_JS = (BUILD / "sessao.js").read_text(encoding="utf-8")
 ESPELHO_JS = (BUILD / "espelho.js").read_text(encoding="utf-8")
 CODIGO_JS = (BUILD / "codigo.js").read_text(encoding="utf-8")
 sys.path.insert(0, str(BUILD))
-from config import ANALITICO_URL  # noqa: E402
+from config import ANALITICO_URL, CHECKOUT_UPSELL  # noqa: E402
 import questionario  # noqa: E402
 F = d["ferramentas"]
 DG = d["diagnostico"]
+UP = d["upsell"]
+PR = d["presente"]
+
+# O que a pessoa paga aqui é o pacote menos o que ela já pagou pelo mapa. O número não
+# se escreve à mão em lugar nenhum: sai sempre desta conta, senão um dia os dois divergem.
+LIQUIDO = int(UP["preco"]) - int(UP["credito"])
 
 # ---------- perguntas: mesmo HTML do index, incluindo os breaks e as trilhas ----------
 
@@ -97,6 +103,80 @@ motor_api["aberta"] = DG["aberta"]
 motor_api["dias"] = d["semana"]["dias"]
 motor_api["recursos"] = DG["recursos"]
 
+# ---------- a venda dentro da entrega ----------
+#
+# Duas peças com o mesmo preço e o mesmo link, em momentos diferentes:
+#   oto  → aparece uma vez, na primeira vez que o mapa é revelado (tarefa 2.3)
+#   asc  → fica no fim do mapa para sempre, porque quem paga no Pix não volta ao
+#          checkout, e sem isto não existe caminho do produto de entrada para o
+#          upsell fora da plataforma de pagamento (tarefa 2.4)
+#
+# Sem CHECKOUT_UPSELL as duas somem e a entrega segue inteira: botão que não leva a
+# lugar nenhum é pior do que botão nenhum.
+
+def _conta(rotulo, valor, classe=""):
+    return (f'<span class="{classe}"><i>{escape(rotulo)}</i>'
+            f'<b>{escape(valor)}</b></span>')
+
+
+if CHECKOUT_UPSELL:
+    _itens = "".join(f'<li><b>{escape(titulo)}</b><span>{escape(txt)}</span></li>'
+                     for titulo, txt in UP["entregaveis"])
+    _r1, _r2, _r3 = UP["conta"]
+    oto_html = f"""
+  <section class="oto" id="oto" hidden aria-labelledby="oto-titulo">
+    <span class="selo-rosa">{escape(UP["rotulo"])}</span>
+    <h2 id="oto-titulo" tabindex="-1">{escape(UP["nome"])}</h2>
+    <p class="oto-promessa">{escape(UP["promessa"])}</p>
+    <ul class="oto-lista">{_itens}</ul>
+    <div class="oto-conta">
+      {_conta(_r1, f'R$ {UP["preco"]}')}
+      {_conta(_r2, f'- R$ {UP["credito"]}')}
+      {_conta(_r3, f'R$ {LIQUIDO}', "oto-total")}
+    </div>
+    <p class="oto-razao">{escape(UP["razao_preco"])}</p>
+    <a class="btn-cta" id="oto-comprar" href="{CHECKOUT_UPSELL}" target="_blank"
+       rel="noopener">{escape(UP["cta"])} por R$ {LIQUIDO}\u00a0→</a>
+    <p class="oto-nota">{escape(UP["nota"])}</p>
+    <button type="button" class="oto-pular" id="oto-pular">{escape(UP["pular"])}</button>
+  </section>"""
+
+    asc_html = f"""
+    <section class="asc" id="ascensao">
+      <span class="asc-rot">{escape(UP["rotulo_mapa"])}</span>
+      <h3>{escape(UP["nome"])}</h3>
+      <p>{escape(UP["promessa"])}</p>
+      <p class="asc-preco"><b>R$ {LIQUIDO}</b><i>com os seus R$ {UP["credito"]} já abatidos</i></p>
+      <a class="btn-cta" href="{CHECKOUT_UPSELL}" target="_blank" rel="noopener">{escape(UP["cta"])}\u00a0→</a>
+      <p class="asc-nota">{escape(UP["nota"])}</p>
+    </section>"""
+else:
+    oto_html = asc_html = ""
+
+# ---------- o presente: qual produto vem depois ----------
+# Só existe se houver para onde gravar. Uma pergunta, no fim da entrega, depois de a
+# pessoa ter recebido o que comprou.
+
+if ANALITICO_URL:
+    _opcoes = "".join(
+        f'<button type="button" class="opc" aria-pressed="false">{escape(o)}</button>'
+        for o in PR["opcoes"] + [PR["outro"]])
+    pres_html = f"""
+    <section class="pres" id="presente">
+      <h3>{escape(PR["titulo"])}</h3>
+      <p class="pres-sub">{escape(PR["sub"])}</p>
+      <div class="pres-opcoes" id="pres-opcoes" role="group"
+           aria-label="{escape(PR["titulo"])}">{_opcoes}</div>
+      <div class="campo-aberto" id="pres-campo" hidden>
+        <label for="pres-outro">{escape(PR["campo"])}</label>
+        <input id="pres-outro" type="text" maxlength="120" autocomplete="off">
+      </div>
+      <button type="button" class="btn btn-p" id="pres-enviar" disabled>{escape(PR["botao"])}</button>
+      <p class="pres-pronto" id="pres-pronto" hidden>{escape(PR["pronto"])}</p>
+    </section>"""
+else:
+    pres_html = ""
+
 JS = r"""
   const el = id => document.getElementById(id);
   const quiz = el("quiz");
@@ -104,6 +184,7 @@ JS = r"""
   const resp = {};
   const livre = {};          // o que a pessoa escreveu quando nenhuma opção era a dela
   let atual = 0;
+  let stackAtual = [];       // a última stack calculada, para o voto do presente
 
   // trilha por área: o passo que não é da área respondida não aparece nem conta
   const vale = i => valePergunta(MOTOR, passos[i].dataset.q, resp);
@@ -183,12 +264,18 @@ JS = r"""
 
   function render(daMemoria) {
     const { stack, corta } = calcularStack(MOTOR, resp);
+    stackAtual = stack;
     if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre, MOTOR);
     enviarAnalitico(MOTOR.analitico, "mapa", MOTOR, resp, stack, corta, livre);
     el("res-memoria").hidden = !daMemoria;
-    if (daMemoria) el("mapa-sub").textContent =
-      "Suas respostas do site já estão aqui. Abaixo vem tudo: o custo real de cada uma, "
-      + "o primeiro passo e o prompt pronto para copiar.";
+    // o campo de código é para quem ainda não entrou: em cima do mapa vira ruído
+    const entrar = el("entrar-codigo");
+    if (entrar) entrar.hidden = true;
+    el("mapa-sub").textContent = daMemoria
+      ? "Suas respostas do site já estão aqui. Abaixo vem tudo: o custo real de cada uma, "
+        + "o primeiro passo e o prompt pronto para copiar."
+      : "Pronto. Abaixo vem tudo: o custo real de cada uma, o primeiro passo e o prompt "
+        + "pronto para copiar.";
     const [qArea, qOrc] = MOTOR.perfil;
     el("res-perfil").textContent =
       `${MOTOR.rotulos[qArea][resp[qArea]]} · ${MOTOR.rotulos[qOrc][resp[qOrc]]}.`;
@@ -255,9 +342,15 @@ JS = r"""
     }
 
     quiz.hidden = true;
-    el("resultado").hidden = false;
     el("barra-fill").style.width = "100%";
-    el("res-titulo").focus();
+    // a origem viaja junto para a Cakto: sem ela a venda do upsell aparece como direta
+    const origem = origemTrafego();
+    for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
+      if (origem && !a.dataset.org) a.href += (a.href.includes("?") ? "&" : "?") + origem;
+      a.dataset.org = "1";
+    }
+    if (oto && !otoVisto()) { oto.hidden = false; el("oto-titulo").focus(); }
+    else abrirMapa();
     redigir(resp, livre);
   }
 
@@ -432,6 +525,70 @@ JS = r"""
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
+  // ---------- a tela pós-compra (2.3) ----------
+  //
+  // Aparece uma vez, entre a identificação e o mapa. Nunca segura a entrega: o botão de
+  // abrir o mapa está na mesma tela, e comprar também libera, porque o checkout abre em
+  // outra aba e a pessoa volta para esta. Quem já dispensou não vê de novo, e o lembrete
+  // permanente do fim do mapa passa a ser o único caminho.
+  const OTO_CHAVE = "qia:oto";
+  const oto = el("oto");
+  const otoVisto = () => {
+    try { return localStorage.getItem(OTO_CHAVE) === "1"; } catch (e) { return false; }
+  };
+  function abrirMapa() {
+    try { localStorage.setItem(OTO_CHAVE, "1"); } catch (e) { /* modo privado: só desta vez */ }
+    if (oto) oto.hidden = true;
+    el("resultado").hidden = false;
+    el("res-titulo").focus();
+  }
+  if (oto) {
+    el("oto-pular").addEventListener("click", abrirMapa);
+    el("oto-comprar").addEventListener("click", abrirMapa);
+  }
+
+  // ---------- o presente: qual produto vem depois (2.8) ----------
+  const pres = el("presente");
+  if (pres) {
+    const opcoes = [...pres.querySelectorAll(".opc")];
+    const campo = el("pres-campo");
+    const enviar = el("pres-enviar");
+    let escolha = "";
+    for (const b of opcoes) {
+      b.addEventListener("click", () => {
+        escolha = b.textContent.trim();
+        for (const irmao of opcoes) irmao.setAttribute("aria-pressed", String(irmao === b));
+        const aberto = b === opcoes[opcoes.length - 1];   // "outra coisa" abre o campo
+        campo.hidden = !aberto;
+        if (aberto) el("pres-outro").focus();
+        enviar.disabled = false;
+      });
+    }
+    enviar.addEventListener("click", () => {
+      const qArea = MOTOR.perfil[0];
+      try {
+        fetch(MOTOR.analitico, {
+          method: "POST", mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            tipo: "presente",
+            escolha,
+            outro: el("pres-outro").value.trim().slice(0, 120),
+            area: MOTOR.rotulos[qArea][resp[qArea]] || "",
+            stack: stackAtual.map(s => s.nome),
+            origem: "mapa",
+            utm: origemTrafego(),
+            ts: new Date().toISOString(),
+          }),
+        }).catch(() => {});
+      } catch (e) { /* voto não pode quebrar a entrega */ }
+      el("pres-opcoes").hidden = true;
+      campo.hidden = true;
+      enviar.hidden = true;
+      el("pres-pronto").hidden = false;
+    });
+  }
+
   // veio do site no mesmo aparelho: não faz a pessoa responder tudo de novo
   // ordem de entrada: código na URL, código digitado, memória do navegador, quiz.
   // A primeira venda de teste mostrou por que: quem compra no celular abre o e-mail no
@@ -528,6 +685,57 @@ CSS_MAPA = """
 .res-abertura { margin: 14px 0 0; font-size: 15.5px; line-height: 1.65; color: #ded9ea; }
 .res-corta-ia { margin: 10px 0 0; font-size: 14.5px; line-height: 1.6; color: #a29fae; }
 @media (prefers-reduced-motion: reduce) { .res-escrevendo::after { animation: none; } }
+
+/* ---------- a venda dentro da entrega ---------- */
+.oto[hidden], .asc[hidden], .pres[hidden] { display: none; }
+.oto { margin: 10px 0 0; padding: 24px 22px 22px; border-radius: 20px;
+       border: 1px solid rgba(193,131,251,.34); background: rgba(193,131,251,.06); }
+.oto h2 { margin: 13px 0 8px; font-size: clamp(22px,3.4vw,29px); line-height: 1.18; letter-spacing: -.02em; }
+.oto-promessa { margin: 0 0 18px; font-size: 15.5px; line-height: 1.62; color: #ded9ea; }
+.oto-lista { margin: 0; padding: 0; list-style: none; display: grid; gap: 13px; }
+.oto-lista li { padding-left: 14px; border-left: 2px solid rgba(193,131,251,.45); }
+.oto-lista b { display: block; font-size: 15px; font-weight: 600; color: #fff; }
+.oto-lista span { display: block; margin-top: 3px; font-size: 14px; line-height: 1.55; color: var(--cinza-claro); }
+.oto-conta { margin: 21px 0 0; padding: 15px 16px; border-radius: 14px; background: rgba(0,0,0,.3);
+             display: grid; gap: 9px; }
+.oto-conta span { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; }
+.oto-conta i { font-style: normal; font-size: 14px; color: var(--cinza-claro); }
+.oto-conta b { font-size: 15px; font-weight: 600; }
+.oto-total { padding-top: 10px; border-top: 1px solid var(--linha); }
+.oto-total i { color: #fff; font-weight: 600; }
+.oto-total b { font-size: 25px; }
+.oto-razao { margin: 14px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--cinza-min); }
+.oto .btn-cta, .asc .btn-cta { display: flex; width: 100%; margin-top: 17px; text-align: center;
+                               text-decoration: none; }
+.oto-nota, .asc-nota { margin: 11px 0 0; text-align: center; font-size: 12.5px; color: var(--cinza-min); }
+.oto-pular { display: block; width: 100%; margin-top: 15px; padding: 14px; cursor: pointer;
+             border-radius: 14px; border: 1px solid var(--linha); background: rgba(255,255,255,.05);
+             color: #e9e7f0; font-family: inherit; font-size: 15px; font-weight: 600; }
+.oto-pular:hover { background: rgba(255,255,255,.1); }
+
+.asc { margin: 32px 0 0; padding: 20px; border-radius: 18px;
+       border: 1px solid rgba(193,131,251,.3); background: rgba(193,131,251,.05); }
+.asc-rot { display: block; font-size: 11px; font-weight: 600; letter-spacing: .12em;
+           text-transform: uppercase; color: var(--roxo); }
+.asc h3 { margin: 10px 0 7px; font-size: 19px; }
+.asc p { margin: 0; font-size: 14.5px; line-height: 1.6; color: #ded9ea; }
+.asc p.asc-preco { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 15px 0 0; }
+.asc-preco b { font-size: 26px; }
+.asc-preco i { font-style: normal; font-size: 13px; color: var(--cinza-min); }
+
+.pres { margin: 32px 0 0; padding: 20px; border-radius: 18px;
+        border: 1px solid var(--linha); background: rgba(255,255,255,.03); }
+.pres h3 { margin: 0 0 7px; font-size: 19px; }
+.pres-sub { margin: 0 0 15px; font-size: 14px; line-height: 1.6; color: var(--cinza-claro); }
+.pres-opcoes { display: grid; gap: 9px; }
+.pres-opcoes[hidden] { display: none; }
+.pres .opc { font-size: 14.5px; padding: 14px 17px; }
+.pres .campo-aberto { margin-top: 12px; }
+.pres #pres-enviar { margin-top: 14px; }
+.pres .btn[hidden] { display: none; }
+/* nasce desabilitado: sem isto ele parece clicável antes de a pessoa escolher */
+.pres .btn:disabled { opacity: .5; cursor: default; }
+.pres-pronto { margin: 14px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--roxo); }
 """
 
 html = f"""<!doctype html>
@@ -563,6 +771,7 @@ html = f"""<!doctype html>
      que você respondeu. As suas respostas continuam aqui: falta só o que é novo.</p>
   <form id="quiz"><button type="button" id="quiz-voltar" class="quiz-voltar" hidden aria-label="Voltar para a pergunta anterior">←</button>{perguntas_html}</form>
 
+{oto_html}
   <div id="resultado" role="region" aria-live="polite" aria-label="O seu mapa" hidden>
     <div class="res-topo">
       <span class="selo-rosa">Sua stack</span>
@@ -583,7 +792,7 @@ html = f"""<!doctype html>
     <p class="res-abertura" id="res-abertura" hidden></p>
     <ol class="res-stack" id="res-stack"></ol>
     <div class="res-corta" id="res-corta"></div>
-    <p class="res-corta-ia" id="res-corta-ia" hidden></p>
+    <p class="res-corta-ia" id="res-corta-ia" hidden></p>{asc_html}{pres_html}
     <button type="button" class="refazer" id="refazer">Refazer com outras respostas</button>
   </div>
 </main>
@@ -606,4 +815,9 @@ API_MOTOR.write_text(
 print(f"gerado: public/mapa/index.html  ({len(html):,} bytes)")
 print(f"  {n_perguntas} perguntas, {len(F)} ferramentas com passo, prompt e custo real")
 print("  noindex ligado. A URL não é divulgada: quem chega aqui é quem comprou.")
+if CHECKOUT_UPSELL:
+    print(f"  upsell no ar: tela pós-compra e CTA de ascensão por R$ {LIQUIDO}")
+else:
+    print("  AVISO: CHECKOUT_UPSELL vazia. A tela pós-compra e o CTA de ascensão não saem,\n"
+          "         e o mapa abre direto. Preencha em _build/config.py para ligar.")
 print(f"gerado: _lib/motor.mjs  ({API_MOTOR.stat().st_size:,} bytes) para a /api/mapa")

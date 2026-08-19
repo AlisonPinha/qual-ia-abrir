@@ -5,8 +5,9 @@
 **Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
 `DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
-**Estado em 19/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo, `/plano`
-com a entrega do upsell, quiz de 23 etapas, código de acesso e a primeira venda feita.
+**Estado em 19/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo e agora
+vendendo o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a
+primeira venda feita e o checkout do upsell de R$ 130 criado na Cakto.
 
 ### O que fazer no começo da próxima sessão
 
@@ -18,15 +19,62 @@ com a entrega do upsell, quiz de 23 etapas, código de acesso e a primeira venda
 
 ### O que está esperando o Alison
 
-- **Recolar o Apps Script** (`apps-script-captura.js`): colunas `trilha`, `descreveu` e `utm`
+- **Recolar o Apps Script** (`apps-script-captura.js`): colunas `trilha`, `descreveu` e `utm`,
+  mais a aba `presentes`, que entrou em 19/08. **É uma colagem só, e sem ela o voto do
+  presente cai na aba errada**, porque o script antigo manda tudo que não é `diagnostico`
+  para `leads`
 - **Gravar a VSL** do upsell, roteiro no vault. As telas eu gravo com Playwright quando ele pedir
 - **Revisar a voz dos 7 dias**, que estão no ar em `/plano`
 - **Trocar a chave da API**, parado por decisão dele até acabar a fase de teste
 
 ### O que eu pego em seguida
 
-Fase 2 do plano: tela pós-compra com o upsell (2.3), CTA de ascensão dentro do `/mapa` (2.4),
-recuperação por WhatsApp (2.5) e o formulário do presente (2.8).
+Fase 2 do plano: recuperação por WhatsApp (2.5), a VSL quando o Alison gravar (2.6) e cada um
+dos 7 dias como ponto de ascensão (2.7), que depende de existir um próximo produto, que é
+justamente o que a aba `presentes` vai dizer.
+
+### A venda dentro da entrega, feita em 19/08
+
+O `/mapa` deixou de ser só entrega e passou a ter três peças novas, todas geradas do
+`dados.json` como o resto:
+
+| Peça | O que é | Quando aparece |
+|---|---|---|
+| Tela pós-compra (2.3) | A oferta inteira do upsell, com a conta R$ 197 menos os R$ 67 já pagos | Uma vez, entre a identificação e o mapa |
+| CTA de ascensão (2.4) | O mesmo preço e o mesmo link, em bloco curto | Sempre, no fim da entrega |
+| Presente (2.8) | Cinco opções mais uma saída aberta, gravando na aba `presentes` | Sempre, depois do CTA |
+
+**O crédito é do comprador, não da tela.** O texto que estava no `dados.json` prometia R$ 197
+"fora desta tela", o que é escassez inventada, proibida no projeto. Quem pagou os R$ 67 tem o
+abatimento sempre que voltar. Os R$ 197 valem para quem chega direto no pacote.
+
+**Onde a oferta mora, e por quê.** A entrega da Cakto é URL fixa e não tem redirect
+pós-compra, então uma página `/obrigado` exigiria trocar o link dos quatro produtos e deixaria
+de fora quem já comprou. Dentro do `/mapa` a oferta sai no fluxo real sem tocar na plataforma.
+
+**A entrega nunca fica atrás da venda:** o botão de abrir o mapa tem o mesmo peso do de
+comprar, comprar também libera o mapa (o checkout abre em outra aba) e a tela some para sempre
+depois da primeira vez (`qia:oto`).
+
+**O produto na Cakto:** `Sua primeira semana pronta`, R$ 130,00, entrega em `/plano`, checkout
+`https://pay.cakto.com.br/j79id6y_1051180`, em `_build/config.py` como `CHECKOUT_UPSELL`.
+Conferido campo a campo contra o "Qual IA Usar?" pela API interna: pixel 827402089420392, os
+dois gatilhos de `Purchase` ao gerar Pix e boleto desligados (**nascem ligados**), PicPay fora,
+Pix em primeiro, produtor "Noah.ai". A página pública do checkout foi aberta e conferida.
+
+**QA, em três voltas contra o build local** (sem gastar chamada de API e com o POST do presente
+interceptado, para não sujar a planilha):
+
+| Volta | O que os 15 testes disseram | O que o print mostrou |
+|---|---|---|
+| 1 | 15/15 | O campo "cola o seu código" ficava de ruído em cima da oferta, e o botão do presente não sumia depois do voto |
+| 2 | 15/15 | A seta do CTA de ascensão quebrava sozinha na segunda linha |
+| 3 | 16/16 | Aprovado |
+
+**Dois defeitos que só o print pegou, e o porquê:** `hidden` não esconde elemento cujo CSS
+declara `display` (é o caso de `.btn`), então o botão continuava lá depois de enviado; e o
+`entrar-codigo` só sumia em quem entrava por código ou memória, nunca em quem respondia o quiz
+ali mesmo. Os dois eram invisíveis para teste que olha só `hidden`.
 
 ### O que a primeira venda ensinou
 

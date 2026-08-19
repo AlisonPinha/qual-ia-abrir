@@ -1,9 +1,10 @@
 /**
  * Recebe os dados do diagnóstico do qual-ia-abrir e grava numa planilha.
  *
- * Grava duas coisas em abas diferentes, conforme o campo "tipo" do payload:
+ * Grava três coisas em abas diferentes, conforme o campo "tipo" do payload:
  *   - "lead"        → aba 'leads', com nome e WhatsApp (só quando o passo de contato existe)
  *   - "diagnostico" → aba 'diagnosticos', ANÔNIMO, toda vez que alguém termina o quiz
+ *   - "presente"    → aba 'presentes', o que o comprador escolheu de próximo produto
  *
  * A aba 'diagnosticos' é a que responde: qual perfil responde mais, qual dor
  * aparece, qual ferramenta o motor mais recomenda e o que ele mais manda cortar.
@@ -11,6 +12,10 @@
  * A coluna 'descreveu' é a mais importante para o produto: é o que a pessoa escreveu
  * quando nenhuma opção era a tarefa dela. Tarefa que aparece muito ali é opção que
  * está faltando no quiz e precisa virar alternativa na próxima versão.
+ *
+ * A aba 'presentes' responde a outra pergunta: o que vender depois. Quem já comprou
+ * escolhe o presente que quer, e o mais votado vira o próximo produto. É o único
+ * lugar do funil em que a demanda do próximo lançamento é declarada por quem já pagou.
  *
  * Como ligar (5 minutos):
  *  1. Cria uma planilha no Google Sheets.
@@ -29,6 +34,7 @@
 
 const ABA_LEADS = 'leads';
 const ABA_DIAG = 'diagnosticos';
+const ABA_PRESENTE = 'presentes';
 
 // colunas de resposta gravadas em coluna própria; o resto vai no bruto
 // Só o tronco tem coluna fixa. As perguntas de trilha mudam conforme a área, então
@@ -50,6 +56,7 @@ function doPost(e) {
   try { d = JSON.parse(bruto); } catch (err) { d = {}; }
 
   if (d.tipo === 'diagnostico') gravarDiagnostico(d, bruto);
+  else if (d.tipo === 'presente') gravarPresente(d, bruto);
   else gravarLead(d, bruto);
 
   return ContentService.createTextOutput('ok');
@@ -66,6 +73,18 @@ function gravarDiagnostico(d, bruto) {
       .concat([trilhaDe(r), d.descreveu || '',
                (d.stack || []).join(', '), (d.cortar || []).join(', '), bruto, d.utm || ''])
   );
+}
+
+/**
+ * O presente escolhido por quem já comprou. Anônimo como o resto: o que interessa é a
+ * contagem por opção, não quem votou. A coluna 'outro' é a que abre produto que não
+ * está na lista, do mesmo jeito que 'descreveu' abre pergunta que falta no quiz.
+ */
+function gravarPresente(d, bruto) {
+  const aba = abaOu(ABA_PRESENTE,
+    ['recebido em', 'escolha', 'outro', 'area', 'stack', 'origem', 'utm', 'bruto']);
+  aba.appendRow([new Date(), d.escolha || '', d.outro || '', d.area || '',
+                 (d.stack || []).join(', '), d.origem || '', d.utm || '', bruto]);
 }
 
 function gravarLead(d, bruto) {

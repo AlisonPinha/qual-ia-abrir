@@ -3190,8 +3190,29 @@
         "Quando uma das suas 3 mudar de preço ou for superada, você recebe a troca e o motivo"
       ]
     ],
-    "razao_preco": "Fora desta tela o mesmo pacote sai por R$ 197 cheio, sem o crédito dos R$ 67 que você acabou de pagar.",
+    "_razao_preco": "O crédito é de quem comprou, não desta tela: quem já pagou os R$ 67 tem o abatimento sempre que voltar ao mapa. Escassez inventada é proibida no projeto, e não existe limite real aqui.",
+    "razao_preco": "O pacote é R$ 197 para quem chega direto nele. Como você já comprou o mapa, os seus R$ 67 saem do preço.",
+    "conta": ["Pacote completo", "Crédito do que você já pagou", "Você paga"],
+    "cta": "Quero a minha primeira semana",
+    "pular": "Abrir o meu mapa agora",
+    "rotulo_mapa": "O passo depois do mapa",
     "nota": "Pagamento único. Sem mensalidade. 7 dias de garantia."
+  },
+  "_presente": "Qual produto vem depois do upsell. Quem já pagou escolhe, e o mais votado é o que se produz. Vai para a aba 'presentes' da planilha, anônimo como o resto.",
+  "presente": {
+    "titulo": "Escolhe o seu presente",
+    "sub": "O próximo material sai do que a maioria pedir aqui. É uma pergunta só, e ele chega no e-mail da sua compra quando ficar pronto.",
+    "opcoes": [
+      "Os prompts prontos da minha área, um para cada tarefa da semana",
+      "Uma aula gravada com as 3 rodando num caso real, do começo ao fim",
+      "Um agente de WhatsApp que faz sozinho a tarefa que se repete",
+      "Os modelos do que eu entrego, prontos para preencher",
+      "Um mapa novo a cada 3 meses, quando as ferramentas mudarem"
+    ],
+    "outro": "Outra coisa, eu digo qual",
+    "campo": "O que você queria receber?",
+    "botao": "Enviar a minha escolha",
+    "pronto": "Anotado. O mais pedido é o que eu faço primeiro, e ele chega no e-mail da sua compra."
   },
   "problema": [
     [

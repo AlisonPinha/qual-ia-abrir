@@ -21,6 +21,13 @@ ANALITICO_URL = "https://script.google.com/macros/s/AKfycbzY1PYcR4EC_AUXE3zASDVd
 CHECKOUT_URL = "https://pay.cakto.com.br/3fxqxg5_1049811"
 PRECO = "R$ 67"
 
+# Checkout do upsell "Sua primeira semana pronta", vendido dentro da entrega (/mapa).
+# O preço aqui é o líquido: R$ 197 do pacote menos os R$ 67 que a pessoa já pagou pelo
+# mapa. Quem chega no /mapa é comprador, então o crédito vale sempre, e não só na
+# primeira tela: escassez inventada é proibida no projeto.
+# Vazio: a tela pós-compra e o CTA de ascensão não aparecem, e a entrega segue intacta.
+CHECKOUT_UPSELL = "https://pay.cakto.com.br/j79id6y_1051180"
+
 # Pixel do Meta das quatro LPs. É o mesmo nos quatro: um pixel só aprende junto,
 # quatro pixels separados fragmentam o aprendizado e não somam. O que separa as
 # variantes no Events Manager é a URL do evento e o content_name que vai em

@@ -3,14 +3,16 @@
 // Uso: cd ~/.claude/skills/playwright-skill && node run.js _build/regressao.js
 //
 // Cobre: quiz da LP, teaser em silhueta, código de acesso, botão do WhatsApp, checkout com
-// UTM, voltar com limpeza de trilha, entrega do /mapa com IA, acesso por código em outro
-// aparelho, memória parcial e a /plano inteira, incluindo o material rodado.
+// UTM, voltar com limpeza de trilha, tela pós-compra do upsell, entrega do /mapa com IA,
+// CTA de ascensão, formulário do presente, acesso por código em outro aparelho, memória
+// parcial e a /plano inteira, incluindo o material rodado.
 //
 // Custo por rodada: 1 chamada ao /api/mapa e 3 ao /api/plano. Os limites por IP são 6 e
 // 6/6/5 por hora, então dá para rodar umas duas vezes seguidas, não mais.
 const { chromium } = require('playwright');
 
 const BASE = 'https://diagnostico.noahai.com.br';
+const CHECKOUT_UPSELL = 'pay.cakto.com.br/j79id6y_1051180';
 const r = [];
 const ok = (nome, passou, obs = '') => r.push({ nome, passou, obs });
 
@@ -86,8 +88,26 @@ async function responderTudo(page, escopo) {
   const c3 = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const p3 = await c3.newPage();
   p3.on('pageerror', e => erros.push('mapa: ' + e.message));
-  await p3.goto(BASE + '/mapa', { waitUntil: 'domcontentloaded' });
+  await p3.goto(BASE + '/mapa?utm_source=regressao', { waitUntil: 'domcontentloaded' });
   await responderTudo(p3, '#quiz');
+  await p3.waitForTimeout(500);
+  const oto = await p3.evaluate(() => {
+    const el = id => document.getElementById(id);
+    return {
+      visivel: !!el('oto') && !el('oto').hidden,
+      segurouOMapa: el('resultado').hidden,
+      conta: [...document.querySelectorAll('.oto-conta span')].map(s => s.textContent.trim()).join(' | '),
+      href: el('oto-comprar')?.href || '',
+    };
+  });
+  ok('/mapa: tela pós-compra aparece antes do mapa', oto.visivel && oto.segurouOMapa);
+  ok('/mapa: a conta do upsell bate', /R\$ 197/.test(oto.conta) && /- R\$ 67/.test(oto.conta)
+     && /R\$ 130/.test(oto.conta), oto.conta);
+  ok('/mapa: o botão leva ao checkout do upsell com UTM',
+     oto.href.includes(CHECKOUT_UPSELL) && oto.href.includes('utm_source=regressao'), oto.href);
+  await p3.locator('#oto-pular').click();
+  await p3.waitForTimeout(300);
+  ok('/mapa: um clique abre a entrega', await p3.evaluate(() => !document.getElementById('resultado').hidden));
   const tMapa = await esperar(p3, () => (document.getElementById('res-corta-ia')?.textContent || '').trim().length > 50);
   const mapa = await p3.evaluate(() => {
     const t = id => (document.getElementById(id)?.textContent || '').trim();
@@ -112,6 +132,26 @@ async function responderTudo(page, escopo) {
     ok('/mapa: sem marca de gênero', false, 'texto salvo em /tmp/regressao-genero.txt');
   } else ok('/mapa: sem marca de gênero', true);
   ok('/mapa: mostra o código', mapa.codigo.length > 8, mapa.codigo);
+
+  const fimDoMapa = await p3.evaluate(() => {
+    const el = id => document.getElementById(id);
+    const b = el('pres-enviar');
+    return {
+      asc: !!el('ascensao') && !el('ascensao').hidden,
+      ascHref: el('ascensao')?.querySelector('a')?.href || '',
+      ascPreco: (document.querySelector('.asc-preco')?.textContent || '').replace(/\s+/g, ' ').trim(),
+      presente: !!el('presente') && !el('presente').hidden,
+      opcoes: document.querySelectorAll('#pres-opcoes .opc').length,
+      botaoApagado: !!b && b.disabled,
+    };
+  });
+  ok('/mapa: CTA de ascensão no fim da entrega',
+     fimDoMapa.asc && fimDoMapa.ascHref.includes(CHECKOUT_UPSELL) && /130/.test(fimDoMapa.ascPreco),
+     fimDoMapa.ascPreco);
+  // o voto não é enviado aqui de propósito: cada rodada viraria uma linha falsa na planilha
+  ok('/mapa: formulário do presente pronto',
+     fimDoMapa.presente && fimDoMapa.opcoes === 6 && fimDoMapa.botaoApagado,
+     `${fimDoMapa.opcoes} opções`);
 
   // ---------- 4. código em outro aparelho ----------
   const c4 = await browser.newContext({ viewport: { width: 1280, height: 900 } });
