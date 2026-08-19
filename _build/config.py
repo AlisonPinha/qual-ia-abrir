@@ -21,6 +21,13 @@ ANALITICO_URL = "https://script.google.com/macros/s/AKfycbzY1PYcR4EC_AUXE3zASDVd
 CHECKOUT_URL = "https://pay.cakto.com.br/3fxqxg5_1049811"
 PRECO = "R$ 67"
 
+# Pixel do Meta das quatro LPs. É o mesmo nos quatro: um pixel só aprende junto,
+# quatro pixels separados fragmentam o aprendizado e não somam. O que separa as
+# variantes no Events Manager é a URL do evento e o content_name que vai em
+# ViewContent e InitiateCheckout.
+# Vazio: nada é injetado e nada quebra.
+PIXEL_META = "827402089420392"
+
 # ---------- variantes do teste seco de nome chiclete ----------
 # Uma LP por nome, servida em pasta própria. Só o nome muda e o que ele
 # obriga (título, marca, mecanismo, crença e a headline do diagnóstico).
@@ -48,7 +55,7 @@ VARIANTES = {
         "headline": "Descubra quais são as suas 3 abas",
         "crenca": ("Deixar aberta a aba certa para cada tarefa é a chave para a IA finalmente "
                    "devolver resposta útil, e isso é possível através do Método das 3 Abas."),
-        "checkout": "",   # criar produto próprio na Cakto; vazio cai no controle
+        "checkout": "https://pay.cakto.com.br/32hjw7j_1049893",
     },
     "regra": {
         "nome": "Regra das 3 IAs",
@@ -58,7 +65,7 @@ VARIANTES = {
         "headline": "Descubra quais são as suas 3 IAs",
         "crenca": ("Escolher a IA certa para cada tarefa é a chave para a IA finalmente devolver "
                    "resposta útil, e isso é possível através da Regra das 3 IAs."),
-        "checkout": "",
+        "checkout": "https://pay.cakto.com.br/8t2cigd_1049903",
     },
     "stack": {
         "nome": "Stack Mínima",
@@ -68,6 +75,6 @@ VARIANTES = {
         "headline": "Descubra a sua stack mínima",
         "crenca": ("Ficar só com as ferramentas que você de fato usa é a chave para a IA "
                    "finalmente devolver resposta útil, e isso é possível através da Stack Mínima."),
-        "checkout": "",
+        "checkout": "https://pay.cakto.com.br/3dtj6z8_1049909",
     },
 }

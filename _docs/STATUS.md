@@ -2,48 +2,135 @@
 
 ## Próxima sessão começa aqui
 
-**Tarefa:** criar 3 produtos na Cakto, um por variante do teste de nome chiclete.
-O Alison já está logado; dá para conduzir pelo Claude in Chrome.
+**Tarefa: deixar o diagnóstico certeiro e a entrega densa.** São duas frentes, nesta ordem,
+e a segunda depende da primeira.
 
-Para cada um, o fluxo da Cakto é: Adicionar Produto → Pagamento único → nome,
-descrição (mínimo 100 caracteres), página de vendas, preço → Continuar →
-**Área de membros Externa** → URL de entrega → Cadastrar.
+### Frente 1: ramificação do diagnóstico por área
 
-| # | Nome do produto | Página de vendas | Preço |
+Hoje um médico e um social media respondem exatamente as mesmas 14 perguntas
+(`area, tempo_ia, quantas, gasto, tarefa, generica, parada, refaz, horas, nivel, prazo,
+estilo, orcamento, onde`). Por isso o resultado parece raso: ele não podia ser fundo, porque
+a entrada é genérica.
+
+O que fazer: depois da pergunta `area`, abrir trilhas com perguntas próprias de cada área,
+sobre as tarefas reais daquela profissão. Manter o tronco comum onde a pergunta vale para
+todos (orçamento, nível, onde usa) e ramificar onde não vale.
+
+Cuidados:
+- **Não alongar por alongar.** A operação de referência roda 30 a 50 etapas, mas cada passo
+  precisa ser um micro-sim, não enchimento.
+- O `motor.js` soma pesos por resposta: perguntas novas precisam de pesos nas 9 ferramentas.
+- O `sessao.js` invalida a memória se o questionário mudar (compara os `pids`), então quem
+  respondeu antes vai refazer. É o comportamento correto, só não estranhar.
+- As 4 LPs são geradas do mesmo `dados.json`: mudança de pergunta vale para todas de uma vez
+  e **não** quebra o teste de nome.
+
+### Frente 2: IA redigindo prompt e justificativa
+
+Decisão registrada no **ADR-0001** (`_docs/adrs/`): **as regras decidem, a IA redige.** O
+motor determinístico continua escolhendo as 3 ferramentas; a IA escreve o prompt sob medida,
+a justificativa e o que não assinar.
+
+O que construir:
+- Function na Vercel (`/api/mapa`), com a chave da API fora do navegador.
+- **Fallback obrigatório** para o texto fixo do `dados.json` se a API falhar ou demorar.
+- **Streaming:** mapa determinístico na hora, textos da IA por cima.
+- **Rate limit**, porque o `/mapa` é público.
+
+Custo medido: menos de R$ 0,35 por mapa no modelo mais caro, contra R$ 3,16 de taxa da Cakto
+por venda. Custo não é critério aqui, qualidade é.
+
+### Ainda pendente e não bloqueia nenhuma das duas
+
+**A compra de teste de R$ 67.** É o que decide se dá para entregar o mapa pronto em outro
+aparelho: se a Cakto repassar parâmetros na URL de entrega, o `/mapa?d=<respostas>` monta
+tudo sem a pessoa refazer nada. Se não repassar, o comportamento atual continua (memória
+local por 30 dias no mesmo aparelho, e refazer o quiz dentro do `/mapa` em outro).
+
+Use o checkout da `abas`, `regra` ou `stack`, que nunca receberam venda.
+
+### O estado de hoje, para não ter que descobrir de novo
+
+| Variante | Produto na Cakto | LP | Checkout |
 |---|---|---|---|
-| 1 | Método das 3 Abas | `https://qual-ia-abrir.vercel.app/abas` | 67,00 |
-| 2 | Regra das 3 IAs | `https://qual-ia-abrir.vercel.app/regra` | 67,00 |
-| 3 | Stack Mínima | `https://qual-ia-abrir.vercel.app/stack` | 67,00 |
+| controle | Qual IA Usar? | `/` | `https://pay.cakto.com.br/3fxqxg5_1049811` |
+| abas | Método das 3 Abas | `/abas` | `https://pay.cakto.com.br/32hjw7j_1049893` |
+| regra | Regra das 3 IAs | `/regra` | `https://pay.cakto.com.br/8t2cigd_1049903` |
+| stack | Stack Mínima | `/stack` | `https://pay.cakto.com.br/3dtj6z8_1049909` |
 
-**URL de entrega dos três (a mesma):** `https://qual-ia-abrir.vercel.app/mapa`
+Domínio: **`https://diagnostico.noahai.com.br`** (o `.vercel.app` responde 308 para ele).
+Os 4 produtos são idênticos, exceto nome e página de vendas.
 
-**Descrições** (todas passam dos 100 caracteres exigidos):
+**Onde ler o resultado do teste de nome:** planilha "Qual IA Usar? — Diagnósticos e Leads",
+aba `diagnosticos`, coluna `origem` (`site`, `abas`, `regra`, `stack`). Tem 6 linhas de teste
+que podem ser apagadas: as com origem `teste` e as do "Teste do Claude".
 
-1. *Método das 3 Abas:* "Diagnóstico que devolve as 3 abas de IA certas para o seu trabalho e orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área e o que não vale a pena assinar agora."
-2. *Regra das 3 IAs:* "Diagnóstico que devolve as 3 ferramentas de IA certas para o seu trabalho e orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área e o que não vale a pena assinar agora."
-3. *Stack Mínima:* "Diagnóstico que devolve a stack mínima de IA para o seu trabalho e orçamento, na ordem de assinar, com o prompt pronto de cada tarefa da sua área e o que não vale a pena assinar agora."
+### Tracking, ligado em 18/08
 
-**Depois de criar:** colar cada link `pay.cakto.com.br/...` no campo `checkout` da
-variante correspondente em `_build/config.py`, rebuildar as quatro e publicar:
+Pixel do Meta **827402089420392**, o mesmo nos quatro. Um pixel só aprende junto;
+quatro pixels separados fragmentariam o aprendizado e não somariam.
 
-```bash
-for v in "" abas regra stack; do python3 _build/gerar.py $v; done
-python3 _build/gerar_mapa.py && vercel deploy --prod --yes
-```
+| Onde | Evento | Dispara quando |
+|---|---|---|
+| LP | `PageView` | a página carrega |
+| LP | `ViewContent` | o pop-up do diagnóstico abre |
+| LP | `InitiateCheckout` | clique em qualquer link do `pay.cakto.com.br` |
+| Cakto | `Purchase` | a Cakto dispara, **só no pagamento aprovado** |
 
-**Por que isso importa:** hoje as quatro LPs caem no mesmo checkout, que diz
-"Qual IA Usar?". O nome quebra bem na hora do pagamento e contamina a leitura de
-conversão do teste.
+`ViewContent` e `InitiateCheckout` levam `content_name` com o nome da variante, e
+o `PageView` se separa pela URL. É assim que o teste de nome se lê no Events
+Manager sem depender da planilha.
 
-**Onde ler o resultado do teste:** planilha "Qual IA Usar? — Diagnósticos e Leads",
-aba `diagnosticos`, coluna `origem` (`site`, `abas`, `regra`, `stack`). Tem 6 linhas
-de teste que podem ser apagadas: as com origem `teste` e as do "Teste do Claude".
+**O que estava errado e foi corrigido:** a Cakto vem de fábrica com "Disparar
+evento Purchase ao gerar um pix" e o mesmo para boleto **ligados**. Pix gerado não
+é Pix pago: em low ticket com 80% de Pix isso infla Purchase, mente o ROAS para
+cima e ensina o algoritmo a comprar quem gera cobrança e some. Desligado nos
+quatro produtos.
+
+**Fica pendente:** os gatilhos equivalentes de **PicPay e Nubank** continuam
+ligados (`fbPicpayPurchaseTrigger`, `fbNubankPurchaseTrigger`) porque a interface
+da Cakto não expõe esses dois toggles, só Pix e boleto. Como é igual nos quatro
+produtos, não distorce a comparação entre variantes, apenas infla um pouco o total
+se alguém pagar por PicPay.
+
+**Ainda não feito, de propósito:** CAPI (o campo de token existe em cada pixel, na
+engrenagem da linha), domínio verificado, e GA4. CAPI sem dedup por `event_id`
+conta a mesma venda duas vezes. Entra depois que a compra de teste confirmar que o
+`Purchase` do browser chega limpo.
+
+O `/mapa` **não** recebeu pixel: é página de entrega pós-compra, e `PageView` de
+comprador ali só sujaria o público.
+
+### Domínio próprio, ligado em 18/08
+
+`diagnostico.noahai.com.br`, apontado no projeto `qual-ia-abrir` da Vercel. O
+domínio raiz `noahai.com.br` já era do Alison e o DNS já estava na Vercel, então
+não houve compra nem espera de propagação.
+
+**Por que subdomínio e não caminho:** `noahai.com.br/diagnostico` obrigaria o site
+principal a rotear o produto, acoplando dois projetos que deployam separado.
+
+**Por que `diagnostico` e não `stack` ou `qual`:** é a única palavra que não
+favorece nenhuma das quatro variantes. Subdomínio com o nome de uma delas daria
+vantagem de marca a essa variante e o teste passaria a medir nome mais domínio.
+
+**Domínio verificado no Business Manager** da Nutra Seu Marketing, por registro
+TXT de DNS (`facebook-domain-verification=...`, criado via `vercel dns add`).
+Verificar o raiz cobre o subdomínio, e não exigiu tocar no site principal. A rota
+por metatag foi descartada: ela teria que ir no HTML de `noahai.com.br`, que é
+outro projeto.
+
+**Sobre o pixel:** ele vive no portfólio **Nutra Seu Marketing** (não no NOAH.AI),
+com o nome `Pixel - 001 - FESTIVAL HIT`, criado em 05/03/2024 e sem atividade há
+mais de 90 dias. Foi reaproveitado de propósito pelo Alison por já ter vendido. A
+conta de anúncios com acesso a ele é a `CA - 001 - INFO` (828815582355498). A
+correspondência avançada automática está **desativada** e vale ligar.
 
 ### A fila depois dos checkouts
 
 | # | Tarefa | Depende de | Quem |
 |---|---|---|---|
-| 1 | **3 produtos na Cakto** e os links em `config.py` | nada | Claude conduz no browser |
+| 1 | ~~**3 produtos na Cakto** e os links em `config.py`~~ **feito em 18/08** | nada | Claude conduz no browser |
 | 2 | **Compra de teste de R$ 67** em si mesmo | item 1 | Alison paga, Claude confere a entrega e se a Cakto repassa parâmetros na URL |
 | 3 | **Unificar a marca** do logo, hoje "qual ia abrir" contra "Qual IA Usar?" no checkout | nada | Claude, 3 minutos |
 | 4 | **Custo do Higgsfield** | conferir no site da ferramenta | Alison confere, Claude atualiza `dados.json` |
@@ -51,14 +138,15 @@ de teste que podem ser apagadas: as com origem `teste` e as do "Teste do Claude"
 | 6 | **Página `/plano`** da entrega do upsell | item 5 | Claude, ~2h |
 | 7 | **Ramificação do diagnóstico** por área, com perguntas próprias em cada trilha | nada | Claude, uma sessão inteira |
 | 8 | **Recuperação por WhatsApp** (+20% de faturamento na operação de referência) | item 1 (webhook) | Claude no n8n |
-| 9 | **Web Analytics** da Vercel e **domínio próprio** | painel da Vercel | Alison |
+| 9 | ~~**domínio próprio**~~ **feito em 18/08**; falta **Web Analytics** da Vercel | painel da Vercel | Alison |
+| 10 | **CAPI, domínio verificado e GA4** | item 2 (ver o Purchase chegar) | Claude |
 
 **Não ligar o upsell no funil antes do item 5.** Vender e não conseguir entregar é
 reembolso e reclamação, e queima a autoridade que é o ativo do produto.
 
 
 
-Atualizado em 18/08/2026, depois do deploy que ligou o checkout.
+Atualizado em 18/08/2026, depois do deploy que deu checkout próprio a cada variante.
 
 ## O que a página é hoje
 
@@ -112,15 +200,15 @@ Build: `python3 _build/gerar.py && python3 _build/gerar_mapa.py && vercel deploy
 
 | # | Pendência | Onde | Impacto |
 |---|---|---|---|
-| 1 | **`ANALITICO_URL` vazia** | `_build/config.py` | A página já vende e **nenhum diagnóstico está sendo gravado**. Cada resposta perdida não volta. Apps Script pronto em `_docs/apps-script-captura.js`, 5 minutos para ligar |
+| 1 | ~~**`ANALITICO_URL` vazia**~~ preenchida em 18/08 | `_build/config.py` | Falta conferir na planilha se as linhas estão chegando |
 | 2 | **Produto do upsell não existe** | fora do repo | O bloco `upsell` do `dados.json` promete plano de 7 dias e prompts preenchidos. **Não ligar o upsell no funil antes de o conteúdo existir** |
-| 3 | **Compra de teste** | Cakto | Nunca foi feita. É a única forma de confirmar que a Cakto entrega o `/mapa` e se ela repassa parâmetros na URL (de que depende o cruzamento em outro aparelho) |
+| 3 | **Compra de teste** | Cakto | Nunca foi feita. Agora que a entrega por e-mail aponta para o `/mapa`, é a única forma de confirmar que o e-mail chega e se a Cakto repassa parâmetros na URL (de que depende o cruzamento em outro aparelho) |
 | 4 | **Custo do Higgsfield** | `dados.json` → `diagnostico.acesso` | Único não conferido, e agora aparece **dentro do produto pago** |
 | 5 | **`CAPTURA_URL` vazia** | `_build/config.py` | O passo de nome e WhatsApp não aparece. Menos urgente que o item 1, porque o anônimo já responde as perguntas de produto |
 | 6 | **Web Analytics** | painel da Vercel | Precisa do toggle; sem ele o script comentado dá 404 |
 | 7 | **Ramificação do diagnóstico** | motor JS | Perguntas diferentes por área. É o que falta para a personalização ser real, e a maior mudança estrutural restante |
 | 8 | **Seção de autoridade** | seção `#prova` | Decisão do Alison sobre quais credenciais vão para o ar |
-| 9 | **Domínio próprio** | Vercel | `qual-ia-abrir.vercel.app` no checkout de um produto pago |
+| 9 | ~~**Domínio próprio**~~ resolvido em 18/08 | Vercel | `diagnostico.noahai.com.br`, verificado no Meta |
 
 ## Código morto conhecido (não tocar sem motivo)
 

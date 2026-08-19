@@ -6,11 +6,45 @@
   "headers": [
     {
       "source": "/logos/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
       "source": "/index.html",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "qual-ia-abrir.vercel.app"
+        }
+      ],
+      "destination": "https://diagnostico.noahai.com.br/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "qual-ia-abrir.vercel.app"
+        }
+      ],
+      "destination": "https://diagnostico.noahai.com.br/:path*",
+      "permanent": true
     }
   ]
 }

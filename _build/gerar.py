@@ -22,13 +22,13 @@ from html import escape
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 BUILD = RAIZ / "_build"
 SAIDA = RAIZ / "public" / "index.html"
-SITE = "https://qual-ia-abrir.vercel.app"
+SITE = "https://diagnostico.noahai.com.br"
 INSTA = "https://instagram.com/aalisonaraujo"
 
 # As URLs e o preço vivem em _build/config.py, para não haver dois lugares
 # onde a mesma constante precisa ser colada.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from config import CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO  # noqa: E402
+from config import CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO, PIXEL_META  # noqa: E402
 from config import VARIANTES  # noqa: E402
 
 # Variante do teste seco de nome chiclete: "" é o controle, na raiz.
@@ -362,8 +362,30 @@ schema = json.dumps({
     ],
 }, ensure_ascii=False, separators=(",", ":"))
 
+
+# Snippet oficial do Meta. Fica fora da f-string do template: o código do Meta tem
+# chaves e seria interpretado como campo de interpolação.
+PIXEL = ""
+if PIXEL_META:
+    PIXEL = ("""<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','__ID__');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=__ID__&ev=PageView&noscript=1"></noscript>
+""").replace("__ID__", PIXEL_META)
+
 JS = """
   const el = id => document.getElementById(id);
+
+  // Meta: PROD é o nome da variante, e é ele que separa o teste no Events Manager.
+  const px = ev => window.fbq && fbq("track", ev, {content_name: PROD});
+  for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
+    a.addEventListener("click", () => px("InitiateCheckout"));
 
   // diagnóstico: soma os pesos das respostas e devolve as 3 ferramentas com a ordem de compra
   const quiz = el("quiz");
@@ -372,6 +394,7 @@ JS = """
     const abrir = e => {
       e.preventDefault();
       modal.showModal();
+      px("ViewContent");
       document.body.classList.add("travado");
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();
     };
@@ -523,7 +546,7 @@ html = f"""<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 <script type="application/ld+json">{schema}</script>
-<style>
+{PIXEL}<style>
 {CSS}
 </style>
 </head>
@@ -918,6 +941,7 @@ html = f"""<!doctype html>
 </dialog>
 
 <script>const DESTINO = {json.dumps(CAPTURA_URL)};
+const PROD = {json.dumps(V["nome"], ensure_ascii=False)};
 const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{SESSAO_JS}{JS}</script>
 <!-- Medição: ative "Web Analytics" no painel da Vercel e descomente a linha abaixo.
      Sem o toggle o script responde 404 e suja o console. -->
