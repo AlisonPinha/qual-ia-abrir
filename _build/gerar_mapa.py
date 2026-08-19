@@ -233,16 +233,21 @@ JS = r"""
     // a tela de espelho carrega, repete as respostas e só então libera o resultado
     if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
     const fila = passos.map((_p, i) => i).filter(precisa);
-    const pos = fila.indexOf(atual);
-    el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
+    // A fila é o que ainda FALTA responder, e por isso não serve para medir progresso: a
+    // pergunta respondida sai dela na hora, então a posição dava "1 de 19" em toda tela e a
+    // barra ficava presa no começo. O caminho é o quiz inteiro desta pessoa, já respondido
+    // ou não, e é sobre ele que o contador e a barra andam.
+    const caminho = passos.map((_p, i) => i).filter(i => ehPergunta(i) && vale(i));
+    const feitas = caminho.filter(i => i <= atual).length;
+    // o passo atual conta como iniciado: barra vazia na pergunta 1 derruba a conclusão
+    el("barra-fill").style.width = ((feitas - 0.6) / caminho.length * 100) + "%";
     const num = passos[atual].querySelector(".num");
     if (num && ehPergunta(atual))
-      // o total sai da fila, não de uma constante: com pergunta condicional, um número
-      // fixo mentiria para quem pula duas, e contador que mente faz abandonar o quiz
-      // completando, a pergunta respondida sai da fila, então a posição vem do que já saiu
+      // o total não é constante: com pergunta condicional, um número fixo mentiria para
+      // quem pula duas, e contador que mente faz abandonar o quiz
       num.textContent = completando
         ? (faltavam - fila.filter(ehPergunta).length + 1) + " de " + faltavam
-        : fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + totalPerguntas();
+        : feitas + " de " + totalPerguntas();
   };
 
   const proximo = () => { do { atual++; } while (atual < passos.length && !precisa(atual)); };

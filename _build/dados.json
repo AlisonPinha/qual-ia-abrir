@@ -340,6 +340,7 @@
       }
     },
     "aberta": {
+      "l_tarefa": "O que você queria resolver com IA?",
       "c_tarefa": "Em uma linha: o que mais rouba o seu tempo na semana de conteúdo?",
       "n_tarefa": "Em uma linha: o que mais consome o seu dia na operação?",
       "v_tarefa": "Em uma linha: onde a sua venda trava?",
@@ -354,7 +355,7 @@
     "perguntas": [
       [
         "area",
-        "No que você trabalha?",
+        "Onde a IA entra primeiro pra você?",
         [
           [
             "Conteúdo e redes sociais",
@@ -444,6 +445,14 @@
               "Claude": 2,
               "Gemini": 2,
               "Perplexity": 1
+            }
+          ],
+          [
+            "Na minha vida pessoal, fora do trabalho",
+            {
+              "ChatGPT": 3,
+              "Perplexity": 3,
+              "Gemini": 1
             }
           ]
         ]
@@ -1027,6 +1036,64 @@
         }
       ],
       [
+        "l_tarefa",
+        "Fora do trabalho, o que você mais quer resolver?",
+        [
+          [
+            "Viagem: passagem, hospedagem e roteiro",
+            {
+              "ChatGPT": 4,
+              "Perplexity": 3
+            }
+          ],
+          [
+            "Compra grande: pesquisar antes de gastar",
+            {
+              "Perplexity": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Estudo por conta: concurso, idioma, curso",
+            {
+              "Gemini Notebook": 4,
+              "Gemini": 3,
+              "Perplexity": 1
+            }
+          ],
+          [
+            "Papelada: contrato, recurso, carta",
+            {
+              "Claude": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Casa e dinheiro: conta, rotina, planilha",
+            {
+              "Gemini": 4,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Foto e vídeo pra guardar ou postar",
+            {
+              "Higgsfield": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            10
+          ]
+        }
+      ],
+      [
         "tempo_ia",
         "Há quanto tempo você usa IA no trabalho?",
         [
@@ -1590,6 +1657,88 @@
         {
           "area": [
             9
+          ]
+        }
+      ],
+      [
+        "l_preco",
+        "Quando você vai comprar alguma coisa, o que trava?",
+        [
+          [
+            "Não sei se o preço está bom mesmo",
+            {
+              "Perplexity": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "A IA me responde preço velho ou inventado",
+            {
+              "Perplexity": 7,
+              "Grok": 2
+            }
+          ],
+          [
+            "Perco a noite abrindo dez abas",
+            {
+              "ChatGPT": 4,
+              "Perplexity": 2
+            }
+          ],
+          [
+            "Compro e depois vejo mais barato",
+            {
+              "n8n": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Não é preço, é decidir entre as opções",
+            {
+              "Claude": 4,
+              "Perplexity": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            10
+          ]
+        }
+      ],
+      [
+        "l_repete",
+        "Tem alguma coisa que você fica conferindo toda semana?",
+        [
+          [
+            "Preço de passagem, produto ou aluguel",
+            {
+              "n8n": 7,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Notícia ou assunto que eu acompanho",
+            {
+              "Grok": 4,
+              "Perplexity": 3
+            }
+          ],
+          [
+            "Prazo, boleto e vencimento",
+            {
+              "n8n": 4,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Nada, é sempre coisa diferente",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            10
           ]
         }
       ],
@@ -2583,6 +2732,92 @@
         }
       ],
       [
+        "l_entrega",
+        "O que você queria receber pronto?",
+        [
+          [
+            "Um roteiro de viagem fechado, com preço",
+            {
+              "ChatGPT": 4,
+              "Perplexity": 2
+            }
+          ],
+          [
+            "Um resumo do que eu tenho que estudar",
+            {
+              "Gemini Notebook": 7,
+              "Gemini": 2
+            }
+          ],
+          [
+            "O material pra ouvir enquanto faço outra coisa",
+            {
+              "ElevenLabs": 7,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Um texto pronto pra enviar, tipo carta ou recurso",
+            {
+              "Claude": 4
+            }
+          ],
+          [
+            "Uma planilha que se atualiza sozinha",
+            {
+              "n8n": 4,
+              "Gemini": 3
+            }
+          ],
+          [
+            "Um aplicativo simples, só pra mim",
+            {
+              "Lovable": 7,
+              "Claude Code": 2
+            }
+          ],
+          [
+            "Uma imagem ou um vídeo bem feito",
+            {
+              "Higgsfield": 7,
+              "Gemini": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            10
+          ]
+        }
+      ],
+      [
+        "l_ritmo",
+        "Com que frequência isso aparece na sua vida?",
+        [
+          [
+            "Toda semana",
+            {
+              "n8n": 3
+            }
+          ],
+          [
+            "Algumas vezes por mês",
+            {}
+          ],
+          [
+            "Só quando surge",
+            {
+              "Claude": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            10
+          ]
+        }
+      ],
+      [
         "break3",
         "Nenhuma entrou por indicação | As 13 ferramentas do catálogo foram testadas em trabalho real, com o preço conferido no site oficial de cada uma. As três que você vai receber saem dessas 13, não de um ranking da internet.",
         [
@@ -2851,13 +3086,14 @@
     ],
     "_mudaram": "Perguntas cujas OPÇÕES mudaram desde a memória sem assinatura (v1). Só elas são descartadas de quem respondeu antes; o resto é aproveitado. Esvaziar quando não houver mais memória v1 viva, uns 30 dias depois.",
     "mudaram": [
-      "orcamento"
+      "orcamento",
+      "area"
     ],
     "_espelho": "O que a penúltima tela repete de volta para a pessoa antes do resultado. \"*tarefa\" é a pergunta de tarefa da trilha dela, que muda por área.",
     "espelho": [
       [
         "area",
-        "No que trabalha"
+        "Onde a IA entra"
       ],
       [
         "*tarefa",

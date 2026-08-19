@@ -127,14 +127,17 @@ JS = r"""
     passos.forEach((p, i) => { p.hidden = i !== atual; });
     if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
     const fila = passos.map((_p, i) => i).filter(precisa);
-    const pos = fila.indexOf(atual);
-    el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
+    // a fila é o que falta responder: contar progresso nela trava a posição em "1 de 19" e
+    // deixa a barra parada. O caminho é o quiz inteiro desta pessoa, respondido ou não.
+    const caminho = passos.map((_p, i) => i).filter(i => ehPergunta(i) && vale(i));
+    const feitas = caminho.filter(i => i <= atual).length;
+    el("barra-fill").style.width = ((feitas - 0.6) / caminho.length * 100) + "%";
     const num = passos[atual].querySelector(".num");
     if (num && ehPergunta(atual))
       // completando, a pergunta respondida sai da fila, então a posição vem do que já saiu
       num.textContent = completando
         ? (faltavam - fila.filter(ehPergunta).length + 1) + " de " + faltavam
-        : fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + totalPerguntas();
+        : feitas + " de " + totalPerguntas();
   };
 
   const proximo = () => { do { atual++; } while (atual < passos.length && !precisa(atual)); };

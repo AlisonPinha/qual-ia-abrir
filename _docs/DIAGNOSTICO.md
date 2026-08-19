@@ -3,7 +3,7 @@
 **Gerado por `_build/gerar_doc_quiz.py` a partir do `dados.json`. Não editar à mão:
 rode o gerador depois de mexer no quiz.**
 
-São **68 passos no banco** e **19 perguntas por pessoa** no caminho mais longo.
+São **73 passos no banco** e **19 perguntas por pessoa** no caminho mais longo.
 Quem nunca usou IA responde menos, porque três perguntas dependem de já ter ferramenta.
 
 ## O fluxo, na ordem
@@ -21,63 +21,68 @@ Quem nunca usou IA responde menos, porque três perguntas dependem de já ter fe
 | 9 | `e_tarefa` | pergunta, **vota** no motor | `area` = Estudos ou docência |
 | 10 | `t_tarefa` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
 | 11 | `tarefa` | pergunta, **vota** no motor | `area` = Outra área |
-| 12 | `tempo_ia` | pergunta, não vota (implicação e espelho) | sempre |
-| 13 | `quantas` | pergunta, não vota (implicação e espelho) | sempre |
-| 14 | `gasto` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
-| 15 | `break1` | break: conteúdo entre blocos | sempre |
-| 16 | `c_ideia` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
-| 17 | `c_voz` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
-| 18 | `n_dados` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
-| 19 | `n_repete` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
-| 20 | `v_canal` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
-| 21 | `v_pesquisa` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
-| 22 | `e_fonte` | pergunta, **vota** no motor | `area` = Estudos ou docência |
-| 23 | `e_volume` | pergunta, **vota** no motor | `area` = Estudos ou docência |
-| 24 | `t_base` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
-| 25 | `t_entrega` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
-| 26 | `o_saida` | pergunta, **vota** no motor | `area` = Outra área |
-| 27 | `o_contexto` | pergunta, **vota** no motor | `area` = Outra área |
-| 28 | `s_registro` | pergunta, **vota** no motor | `area` = Saúde e consultório |
-| 29 | `s_dado` | pergunta, **vota** no motor | `area` = Saúde e consultório |
-| 30 | `j_volume` | pergunta, **vota** no motor | `area` = Jurídico |
-| 31 | `j_risco` | pergunta, **vota** no motor | `area` = Jurídico |
-| 32 | `f_origem` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
-| 33 | `f_carteira` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
-| 34 | `p_entrada` | pergunta, **vota** no motor | `area` = Projeto e obra |
-| 35 | `p_visual` | pergunta, **vota** no motor | `area` = Projeto e obra |
-| 36 | `c_entrega` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
-| 37 | `c_ritmo` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
-| 38 | `n_entrega` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
-| 39 | `n_ritmo` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
-| 40 | `v_entrega` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
-| 41 | `v_ritmo` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
-| 42 | `e_entrega` | pergunta, **vota** no motor | `area` = Estudos ou docência |
-| 43 | `e_ritmo` | pergunta, **vota** no motor | `area` = Estudos ou docência |
-| 44 | `t_entrega_2` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
-| 45 | `t_ritmo` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
-| 46 | `s_entrega` | pergunta, **vota** no motor | `area` = Saúde e consultório |
-| 47 | `s_ritmo` | pergunta, **vota** no motor | `area` = Saúde e consultório |
-| 48 | `j_entrega` | pergunta, **vota** no motor | `area` = Jurídico |
-| 49 | `j_ritmo` | pergunta, **vota** no motor | `area` = Jurídico |
-| 50 | `f_entrega` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
-| 51 | `f_ritmo` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
-| 52 | `p_entrega` | pergunta, **vota** no motor | `area` = Projeto e obra |
-| 53 | `p_ritmo` | pergunta, **vota** no motor | `area` = Projeto e obra |
-| 54 | `o_entrega` | pergunta, **vota** no motor | `area` = Outra área |
-| 55 | `o_ritmo` | pergunta, **vota** no motor | `area` = Outra área |
-| 56 | `break3` | break: conteúdo entre blocos | sempre |
-| 57 | `generica` | pergunta, não vota (implicação e espelho) | sempre |
-| 58 | `parada` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
-| 59 | `refaz` | pergunta, não vota (implicação e espelho) | sempre |
-| 60 | `horas` | pergunta, não vota (implicação e espelho) | sempre |
-| 61 | `custo_parado` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
-| 62 | `break2` | break: conteúdo entre blocos | sempre |
-| 63 | `nivel` | pergunta, **vota** no motor | sempre |
-| 64 | `prazo` | pergunta, não vota (implicação e espelho) | sempre |
-| 65 | `estilo` | pergunta, não vota (implicação e espelho) | sempre |
-| 66 | `orcamento` | pergunta, não vota (implicação e espelho) | sempre |
-| 67 | `onde` | pergunta, **vota** no motor | sempre |
-| 68 | `break_espelho` | espelho: repete as respostas antes do resultado | sempre |
+| 12 | `l_tarefa` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 13 | `tempo_ia` | pergunta, não vota (implicação e espelho) | sempre |
+| 14 | `quantas` | pergunta, não vota (implicação e espelho) | sempre |
+| 15 | `gasto` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
+| 16 | `break1` | break: conteúdo entre blocos | sempre |
+| 17 | `c_ideia` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
+| 18 | `c_voz` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
+| 19 | `n_dados` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
+| 20 | `n_repete` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
+| 21 | `v_canal` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
+| 22 | `v_pesquisa` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
+| 23 | `e_fonte` | pergunta, **vota** no motor | `area` = Estudos ou docência |
+| 24 | `e_volume` | pergunta, **vota** no motor | `area` = Estudos ou docência |
+| 25 | `t_base` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
+| 26 | `t_entrega` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
+| 27 | `o_saida` | pergunta, **vota** no motor | `area` = Outra área |
+| 28 | `o_contexto` | pergunta, **vota** no motor | `area` = Outra área |
+| 29 | `l_preco` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 30 | `l_repete` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 31 | `s_registro` | pergunta, **vota** no motor | `area` = Saúde e consultório |
+| 32 | `s_dado` | pergunta, **vota** no motor | `area` = Saúde e consultório |
+| 33 | `j_volume` | pergunta, **vota** no motor | `area` = Jurídico |
+| 34 | `j_risco` | pergunta, **vota** no motor | `area` = Jurídico |
+| 35 | `f_origem` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
+| 36 | `f_carteira` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
+| 37 | `p_entrada` | pergunta, **vota** no motor | `area` = Projeto e obra |
+| 38 | `p_visual` | pergunta, **vota** no motor | `area` = Projeto e obra |
+| 39 | `c_entrega` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
+| 40 | `c_ritmo` | pergunta, **vota** no motor | `area` = Conteúdo e redes sociais |
+| 41 | `n_entrega` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
+| 42 | `n_ritmo` | pergunta, **vota** no motor | `area` = Negócio próprio ou gestão |
+| 43 | `v_entrega` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
+| 44 | `v_ritmo` | pergunta, **vota** no motor | `area` = Vendas e atendimento |
+| 45 | `e_entrega` | pergunta, **vota** no motor | `area` = Estudos ou docência |
+| 46 | `e_ritmo` | pergunta, **vota** no motor | `area` = Estudos ou docência |
+| 47 | `t_entrega_2` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
+| 48 | `t_ritmo` | pergunta, **vota** no motor | `area` = Técnico e desenvolvimento |
+| 49 | `s_entrega` | pergunta, **vota** no motor | `area` = Saúde e consultório |
+| 50 | `s_ritmo` | pergunta, **vota** no motor | `area` = Saúde e consultório |
+| 51 | `j_entrega` | pergunta, **vota** no motor | `area` = Jurídico |
+| 52 | `j_ritmo` | pergunta, **vota** no motor | `area` = Jurídico |
+| 53 | `f_entrega` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
+| 54 | `f_ritmo` | pergunta, **vota** no motor | `area` = Contábil e financeiro |
+| 55 | `p_entrega` | pergunta, **vota** no motor | `area` = Projeto e obra |
+| 56 | `p_ritmo` | pergunta, **vota** no motor | `area` = Projeto e obra |
+| 57 | `o_entrega` | pergunta, **vota** no motor | `area` = Outra área |
+| 58 | `o_ritmo` | pergunta, **vota** no motor | `area` = Outra área |
+| 59 | `l_entrega` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 60 | `l_ritmo` | pergunta, **vota** no motor | `area` = Na minha vida pessoal, fora do trabalho |
+| 61 | `break3` | break: conteúdo entre blocos | sempre |
+| 62 | `generica` | pergunta, não vota (implicação e espelho) | sempre |
+| 63 | `parada` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
+| 64 | `refaz` | pergunta, não vota (implicação e espelho) | sempre |
+| 65 | `horas` | pergunta, não vota (implicação e espelho) | sempre |
+| 66 | `custo_parado` | pergunta, não vota (implicação e espelho) | `quantas` = Uma só ou Duas ou três ou Perdi a conta |
+| 67 | `break2` | break: conteúdo entre blocos | sempre |
+| 68 | `nivel` | pergunta, **vota** no motor | sempre |
+| 69 | `prazo` | pergunta, não vota (implicação e espelho) | sempre |
+| 70 | `estilo` | pergunta, não vota (implicação e espelho) | sempre |
+| 71 | `orcamento` | pergunta, não vota (implicação e espelho) | sempre |
+| 72 | `onde` | pergunta, **vota** no motor | sempre |
+| 73 | `break_espelho` | espelho: repete as respostas antes do resultado | sempre |
 
 ## As 10 trilhas
 
@@ -154,11 +159,18 @@ parte do quiz que mais muda a stack.
 - `o_entrega` Em que formato o seu trabalho chega em quem recebe?
 - `o_ritmo` Quanto do seu trabalho se repete quase igual?
 
+**10. Na minha vida pessoal, fora do trabalho**
+- `l_tarefa` Fora do trabalho, o que você mais quer resolver?
+- `l_preco` Quando você vai comprar alguma coisa, o que trava?
+- `l_repete` Tem alguma coisa que você fica conferindo toda semana?
+- `l_entrega` O que você queria receber pronto?
+- `l_ritmo` Com que frequência isso aparece na sua vida?
+
 ## O tronco, igual para todo mundo
 
 | pid | Pergunta | Vota? |
 |---|---|---|
-| `area` | No que você trabalha? | sim |
+| `area` | Onde a IA entra primeiro pra você? | sim |
 | `tempo_ia` | Há quanto tempo você usa IA no trabalho? | não |
 | `quantas` | Quantas ferramentas de IA você tem abertas hoje? | não |
 | `generica` | Quando a resposta volta genérica, o que você faz? | não |
@@ -174,7 +186,7 @@ parte do quiz que mais muda a stack.
 
 Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é reforço.
 
-### `area` No que você trabalha?
+### `area` Onde a IA entra primeiro pra você?
 
 | Resposta | Favorece |
 |---|---|
@@ -188,6 +200,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Contábil e financeiro | Gemini +3, Claude +3, ChatGPT +1 |
 | Projeto e obra | Claude +2, Gemini +2, Higgsfield +2, ChatGPT +1 |
 | Outra área | ChatGPT +2, Claude +2, Gemini +2, Perplexity +1 |
+| Na minha vida pessoal, fora do trabalho | ChatGPT +3, Perplexity +3, Gemini +1 |
 
 ### `s_tarefa` Fora do atendimento, o que mais toma o seu tempo?
 
@@ -309,6 +322,18 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Construir site ou app | Claude Code +4, Lovable +3 |
 | Nenhuma dessas, a minha é outra | não vota |
 
+### `l_tarefa` Fora do trabalho, o que você mais quer resolver?
+
+| Resposta | Favorece |
+|---|---|
+| Viagem: passagem, hospedagem e roteiro | ChatGPT +4, Perplexity +3 |
+| Compra grande: pesquisar antes de gastar | Perplexity +4, ChatGPT +2 |
+| Estudo por conta: concurso, idioma, curso | Gemini Notebook +4, Gemini +3, Perplexity +1 |
+| Papelada: contrato, recurso, carta | Claude +4, Gemini +1 |
+| Casa e dinheiro: conta, rotina, planilha | Gemini +4, ChatGPT +1 |
+| Foto e vídeo pra guardar ou postar | Higgsfield +4, Gemini +1 |
+| Nenhuma dessas, a minha é outra | não vota |
+
 ### `c_ideia` De onde sai a sua próxima ideia de post?
 
 | Resposta | Favorece |
@@ -418,6 +443,25 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Documento, norma e regra | Claude +4, Gemini +2, Gemini Notebook +2 |
 | Número e sistema | Gemini +3, Claude Code +1 |
 | Coisa física, no mundo real | ChatGPT +2, Gemini +2, Perplexity +1 |
+
+### `l_preco` Quando você vai comprar alguma coisa, o que trava?
+
+| Resposta | Favorece |
+|---|---|
+| Não sei se o preço está bom mesmo | Perplexity +4, ChatGPT +2 |
+| A IA me responde preço velho ou inventado | Perplexity +7, Grok +2 |
+| Perco a noite abrindo dez abas | ChatGPT +4, Perplexity +2 |
+| Compro e depois vejo mais barato | n8n +4, ChatGPT +2 |
+| Não é preço, é decidir entre as opções | Claude +4, Perplexity +1 |
+
+### `l_repete` Tem alguma coisa que você fica conferindo toda semana?
+
+| Resposta | Favorece |
+|---|---|
+| Preço de passagem, produto ou aluguel | n8n +7, ChatGPT +2 |
+| Notícia ou assunto que eu acompanho | Grok +4, Perplexity +3 |
+| Prazo, boleto e vencimento | n8n +4, Gemini +2 |
+| Nada, é sempre coisa diferente | não vota |
 
 ### `s_registro` Como o registro do atendimento acontece hoje?
 
@@ -663,6 +707,26 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Quase tudo | n8n +7 |
 | Metade | n8n +3 |
 | Quase nada | Claude +3 |
+
+### `l_entrega` O que você queria receber pronto?
+
+| Resposta | Favorece |
+|---|---|
+| Um roteiro de viagem fechado, com preço | ChatGPT +4, Perplexity +2 |
+| Um resumo do que eu tenho que estudar | Gemini Notebook +7, Gemini +2 |
+| O material pra ouvir enquanto faço outra coisa | ElevenLabs +7, Gemini Notebook +3 |
+| Um texto pronto pra enviar, tipo carta ou recurso | Claude +4 |
+| Uma planilha que se atualiza sozinha | n8n +4, Gemini +3 |
+| Um aplicativo simples, só pra mim | Lovable +7, Claude Code +2 |
+| Uma imagem ou um vídeo bem feito | Higgsfield +7, Gemini +1 |
+
+### `l_ritmo` Com que frequência isso aparece na sua vida?
+
+| Resposta | Favorece |
+|---|---|
+| Toda semana | n8n +3 |
+| Algumas vezes por mês | não vota |
+| Só quando surge | Claude +2 |
 
 ### `nivel` Como você usa IA hoje?
 
