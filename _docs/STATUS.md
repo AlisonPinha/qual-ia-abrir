@@ -2,28 +2,34 @@
 
 ## Próxima sessão começa aqui
 
-Tudo desta sessão está no código, testado, **não publicado**. A produção segue com a versão
-antiga. Amanhã fecha o que falta.
+**Publicado em 19/08/2026.** A produção roda o build desta sessão, com a camada de IA ligada.
+Conferido depois do deploy: a home em produção é byte a byte igual ao `public/index.html`
+local (mesmo md5), e `/api/mapa` responde 405 no GET e 200 no POST válido.
 
-### 1. Ligar a chave e publicar
+### 1. ~~Ligar a chave e publicar~~ feito em 19/08
 
-```bash
-vercel env add ANTHROPIC_API_KEY production      # e repetir para preview
-for v in "" abas regra stack; do python3 _build/gerar.py $v; done
-python3 _build/gerar_mapa.py
-node _build/testar_motor.mjs
-vercel deploy --prod --yes
-```
+`ANTHROPIC_API_KEY` está em **Production**. Em **Preview não entrou**: a CLI exige repositório
+Git conectado (`Project does not have a connected Git repository`) e este projeto deploya só
+por CLI. Preview continua caindo no 503, que é o fallback de texto fixo e não quebra nada.
 
-Sem a variável a function devolve 503 e o `/mapa` fica com o texto fixo do `dados.json`, que
-é o comportamento de hoje. Dá para publicar antes da chave sem quebrar nada.
+**O primeiro mapa foi lido inteiro**, como este arquivo mandava, e passou. Caso: conteúdo e
+redes sociais, roteiro e legenda, começou agora, celular, até R$ 150. Motor: Claude, ChatGPT e
+Higgsfield, cortando Poppy AI, Lovable e Gamma. Vieram os 8 blocos, a redação respeitou a
+stack e o corte, não citou preço nenhum e só usou recurso da lista (Projects no Claude, modo de
+voz no ChatGPT). Primeiro byte em 2,8s e stream completo em 41s, contra `maxDuration` de 60s.
 
-Conferido no preview `qual-ia-abrir-4a86mmzbp`: a rota `/api/mapa` sobe, responde 405 no GET
-e 503 sem chave. **O que nunca foi testado é a resposta real do modelo**, por falta de chave.
-O primeiro mapa depois de ligar precisa ser lido inteiro antes de mandar tráfego.
+**Achado do primeiro mapa, ainda aberto:** o texto se referiu à pessoa no feminino ("as
+legendas que eu mesma escrevi") sem que o quiz pergunte gênero. Como o prompt é copiado pela
+pessoa na primeira pessoa, vale instruir neutralidade no `SISTEMA` do `api/mapa.mjs`.
 
-Quem respondeu o quiz antes vai refazer, porque os `pids` mudaram. É o comportamento correto
-da memória.
+**A chave ligada é descartável:** foi colada no chat, então trocar por outra do console e
+apagar esta. A troca exige redeploy, porque a function lê a variável no boot.
+
+**Web Analytics** passou a servir `/_vercel/insights/script.js` depois deste deploy: o toggle
+só vale a partir do primeiro deploy seguinte.
+
+**O código está no GitHub.** Os 9 commits que existiam só no disco foram enviados em 19/08:
+`main` está em `5bf6c6c` e a branch `feat/diagnostico-ramificado` também subiu.
 
 ### 2. Colar o Apps Script de novo
 
