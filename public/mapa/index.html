@@ -1558,6 +1558,12 @@ const FUNIL_CHAVE = "qia:sid";
 
 // Identidade anônima da visita, só para a mesma pessoa não virar dez linhas. Não é
 // login, não sai daqui e não se cruza com nada: é um número de sorteio no navegador.
+//
+// O sorteio de reserva é feito UMA vez por carregamento, e não um valor fixo: com o
+// storage bloqueado, um valor fixo faria todo mundo cair na mesma linha da planilha, e o
+// upsert do Apps Script ficaria sobrescrevendo uma pessoa com a outra.
+const SID_DESTA_VISITA = "v" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+
 function idVisita() {
   try {
     let id = localStorage.getItem(FUNIL_CHAVE);
@@ -1566,7 +1572,7 @@ function idVisita() {
       localStorage.setItem(FUNIL_CHAVE, id);
     }
     return id;
-  } catch (e) { return "anonimo"; }      // modo privado: vira linha nova a cada saída
+  } catch (e) { return SID_DESTA_VISITA; }   // modo privado: uma linha por visita
 }
 
 // `estado()` devolve onde a pessoa está, ou null quando ela nem abriu o quiz: quem só

@@ -61,7 +61,7 @@ conta quem viu o quiz, porque quem entra por código ou por memória não passou
 
 | O que foi medido | Resultado |
 |---|---|
-| QA local, com o build servido em `localhost` | **15 de 15** |
+| QA local, com o build servido em `localhost` | **16 de 16** |
 | Regressão em produção, depois do deploy | **25 de 25**, sem erro de página |
 | Apps Script | versão 4 na **mesma** implantação, então a `ANALITICO_URL` não mudou |
 | POST real na planilha | 4 sinais viraram 2 linhas, com o upsert e o congelamento certos |
@@ -85,7 +85,7 @@ lugar, não cortar a medição.
 
 | Peça | Estado |
 |---|---|
-| `/api/cakto` | no ar, 25 de 25 no QA local |
+| `/api/cakto` | no ar, 29 de 29 no QA local |
 | Token da API de Conversões | gerado no Events Manager **só para este dataset**, sem a Dataset Quality API, e guardado em `META_CAPI_TOKEN` na Vercel |
 | Webhook na Cakto | `Purchase para o Meta (CAPI)`, ativo, nos 5 produtos, evento "Compra aprovada", disparo **Agrupado** |
 | `CAKTO_WEBHOOK_SECRET` | é o UUID que **a Cakto gera**, não o que a gente digita |

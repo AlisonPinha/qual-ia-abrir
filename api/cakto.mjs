@@ -26,6 +26,12 @@ const LIMITE_CORPO = 20000;
 // porque é o gatilho da recuperação por WhatsApp, que entra quando existir número para ela.
 const AGUARDANDO = ["pix_gerado", "boleto_gerado", "picpay_gerado", "checkout_abandonment"];
 
+// Status que contradizem uma compra aprovada. A lista é NEGATIVA de propósito: exigir
+// `status === "paid"` faria a venda sumir no dia em que a Cakto passar a escrever
+// "approved", e perder venda é pior do que deixar passar um status estranho.
+const NAO_E_VENDA = ["refunded", "chargeback", "chargedback", "canceled", "cancelled",
+                     "refused", "waiting_payment", "pending"];
+
 // O payload de exemplo do painel da Cakto, que é o que o botão "Testar" dispara. Sem esta
 // guarda, um clique ali vira uma venda de mentira no pixel, que entra no aprendizado da
 // campanha e no relatório para sempre. Os dois valores saem do modelo mostrado no painel.
@@ -122,6 +128,7 @@ export default {
       // o teste do painel chega aqui como compra aprovada de verdade: responde 200 e para
       if (EXEMPLO_DO_PAINEL.includes(pedido)
           || texto((d.customer || {}).email) === EMAIL_DO_EXEMPLO) continue;
+      if (NAO_E_VENDA.includes(texto(d.status))) continue;
       const produto = d.product || {};
       eventos.push({
         event_name: "Purchase",
@@ -149,7 +156,7 @@ export default {
         },
       });
     }
-    if (!eventos.length) return new Response("sem valor ou sem pedido", { status: 200 });
+    if (!eventos.length) return new Response("nada a enviar", { status: 200 });
 
     const payload = { data: eventos };
     // só em teste: o Events Manager mostra o evento na aba "Eventos de teste" sem sujar
