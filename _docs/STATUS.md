@@ -28,6 +28,43 @@ Fase 2 do plano: recuperação por WhatsApp (2.5), a VSL quando o Alison gravar 
 dos 7 dias como ponto de ascensão (2.7), que depende de existir um próximo produto, que é
 justamente o que a aba `presentes` vai dizer.
 
+### Vida pessoal virou trilha, em 19/08
+
+A LP passou a falar com quem quer IA fora do trabalho (hospedagem, comparação de preço,
+viagem), e aí apareceu o furo: **o quiz abria com "No que você trabalha?"**. Quem viesse pelo
+anúncio de passagem caía num interrogatório profissional, e mesmo em "Outra área" as perguntas
+eram "o que você entrega no fim do dia" e "como o seu trabalho chega em quem recebe".
+
+Agora a primeira tela pergunta **"Onde a IA entra primeiro pra você?"**, com a 11ª opção
+"Na minha vida pessoal, fora do trabalho" e trilha própria de 5 perguntas: o que quer resolver
+(viagem, compra, estudo, papelada, casa, criação), o que trava na hora de comprar, o que fica
+conferindo toda semana, o que queria receber pronto e com que frequência aparece.
+
+**Efeito medido em 587.776 combinações** (era 493.696):
+
+| Ferramenta | Antes | Depois |
+|---|---|---|
+| Claude | 92,8% | **83,0%** |
+| Perplexity | 17,9% | **28,0%** |
+| ChatGPT | 53,5% | 58,4% |
+| n8n | 12,3% | 13,8% |
+| Grok | 0,8% | 1,4% |
+
+A trilha é de pesquisa, comparação e monitoramento, então ela quebra o domínio do Claude, que
+é a resposta natural do trabalho. Continuam 19 perguntas por pessoa: a trilha nova tem o mesmo
+tamanho das outras dez, senão o build para.
+
+### O contador estava travado nas páginas pagas
+
+Achado pelo QA da trilha nova, e **não era desta mudança**: em `/mapa` e `/plano` o contador
+mostrava "1 de 19" em toda tela e a barra quase não saía do lugar. As duas contavam progresso
+sobre a **fila do que ainda falta responder**, e a pergunta respondida sai dela na hora, então
+a posição era sempre 1. A LP já estava certa, porque lá a fila é o caminho inteiro.
+
+**Quem pagou é que via o contador quebrado.** Agora as duas contam sobre o caminho da pessoa,
+respondido ou não: vai de "1 de 19" a "16 de 16" no teste, e o total só desce quando uma
+resposta elimina perguntas de vez, que é o comportamento projetado.
+
 ### A LP parou de entregar o catálogo, em 19/08
 
 A seção das 13 mostrava logo e nome de todas: quem lia saía com a lista pronta para pesquisar

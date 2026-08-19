@@ -196,7 +196,7 @@ decisão do Alison, não minha.
 | 4.3 | ~~**Seção das ferramentas vira tensão**~~ **feito 19/08** | Claude | nada | As 4 conhecidas com nome e logo, as outras 9 por categoria, com a silhueta do teaser. Conferido em produção: **zero** dos 9 nomes no HTML visível |
 | 4.4 | **Auditoria das 9 seções** pela régua de Makepeace, como variante A/B | Claude | 3.3 | Roda como teste, nunca por decreto |
 | 4.5 | **One Belief em todos os pontos de contato** | Claude | nada | A mesma frase no hero, no criativo, no e-mail e no upsell |
-| 4.6 | **Uso pessoal: decidir com dado** | Claude | 0.2, 3.3 | A coluna `descreveu` diz quantos não se encaixaram nas 10 áreas e o que queriam. Só então se cria trilha |
+| 4.6 | ~~**Uso pessoal: decidir com dado**~~ **antecipado em 19/08, por decisão do Alison** | Claude | nada | A trilha de vida pessoal entrou antes do dado, porque a LP passou a prometer uso pessoal e o quiz não atendia. A coluna `descreveu` continua sendo o canal para saber o que falta dentro dela |
 | 4.7 | **World wide** | Claude | 3.3 | Duplicar o funil, filtrar português e excluir o Brasil. O playbook estima meia hora de trabalho e ROI alto nos primeiros dias. Só depois de o funil provar que converte aqui |
 
 ---
