@@ -18,11 +18,6 @@ primeira venda feita e o checkout do upsell de R$ 130 criado na Cakto.
    `~/.claude/skills/playwright-skill`. Custa 1 chamada ao `/api/mapa` e 3 ao `/api/plano`.
 
 ### O que está esperando o Alison
-
-- **Recolar o Apps Script** (`apps-script-captura.js`): colunas `trilha`, `descreveu` e `utm`,
-  mais a aba `presentes`, que entrou em 19/08. **É uma colagem só, e sem ela o voto do
-  presente cai na aba errada**, porque o script antigo manda tudo que não é `diagnostico`
-  para `leads`
 - **Gravar a VSL** do upsell, roteiro no vault. As telas eu gravo com Playwright quando ele pedir
 - **Revisar a voz dos 7 dias**, que estão no ar em `/plano`
 - **Trocar a chave da API**, parado por decisão dele até acabar a fase de teste
@@ -32,6 +27,27 @@ primeira venda feita e o checkout do upsell de R$ 130 criado na Cakto.
 Fase 2 do plano: recuperação por WhatsApp (2.5), a VSL quando o Alison gravar (2.6) e cada um
 dos 7 dias como ponto de ascensão (2.7), que depende de existir um próximo produto, que é
 justamente o que a aba `presentes` vai dizer.
+
+### A planilha, resolvida em 19/08 pelo navegador
+
+O Apps Script foi recolado e **implantado como versão 2 na mesma implantação**, então a URL do
+`ANALITICO_URL` continua valendo: trocar de implantação teria quebrado o envio de todas as
+páginas.
+
+**O cabeçalho só nasce junto com a aba**, então recolar o código não conserta aba existente. E
+acrescentar as três colunas no fim não servia: o cabeçalho antigo tinha `tarefa`, que virou
+pergunta de trilha, e a ordem do `appendRow` mudou junto, então o dado novo entraria embaixo do
+rótulo errado. A saída foi arquivar: `diagnosticos` → `diagnosticos ate 19-08` (67 linhas) e
+`leads` → `leads ate 19-08` (4 linhas). O JSON inteiro de cada linha antiga continua na coluna
+`bruto`.
+
+**Conferido com POST real** nos dois tipos: a `diagnosticos` nasceu com 21 colunas, incluindo
+`trilha`, `descreveu` e `utm`, e a `presentes` com as 8 dela. As duas linhas de teste foram
+apagadas depois, e o arquivo temporário que rodou a arquivagem foi excluído do projeto.
+
+**Armadilha do instrumento:** `curl -L` num Web App do Apps Script devolve a página "Não foi
+possível abrir o arquivo", porque o redirect do Google converte o POST em GET. **A gravação
+acontece assim mesmo.** Conferir sempre pela planilha, nunca pela resposta do curl.
 
 ### A venda dentro da entrega, feita em 19/08
 

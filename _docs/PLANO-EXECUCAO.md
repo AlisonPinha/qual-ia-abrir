@@ -20,7 +20,7 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 |---|---|---|---|---|
 | 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
 | 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
-| 0.2 | **Recolar o Apps Script** (`_docs/apps-script-captura.js`) | Alison cola, Claude confere | nada | A aba `diagnosticos` tem as colunas `trilha`, `descreveu` e `utm` no cabeçalho, e existe a aba `presentes`. **O arquivo ganhou o roteamento do presente em 19/08**, para ser colado uma vez só |
+| 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08 pelo Claude, no navegador** | Claude | nada | Versão 2 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. A aba `diagnosticos` nasceu de novo com 21 colunas, incluindo `trilha`, `descreveu` e `utm`, e a `presentes` com as 8 dela. Conferido com POST real nos dois tipos |
 | 0.3 | **Conferir o `Purchase` no Events Manager** | Claude | 0.1 | Uma venda, um `Purchase`, com o `content_name` da variante |
 
 ### O que a compra de teste ensinou
@@ -132,6 +132,17 @@ voltando rodado em 5s, console limpo.
 
 **Não ligar o upsell no funil antes de 2.2 existir.** Vender e não entregar é reembolso e
 queima a autoridade, que é o ativo do produto.
+
+### O cabeçalho da planilha só nasce com a aba
+
+O script escreve o cabeçalho **uma vez, quando a aba é criada**, então recolar o código não
+conserta aba que já existe. E não dava para só acrescentar as três colunas no fim: o cabeçalho
+antigo tinha `tarefa`, que virou pergunta de trilha, e a ordem do `appendRow` mudou junto, então
+o dado novo entraria embaixo do rótulo errado.
+
+A saída foi **arquivar**: `diagnosticos` virou `diagnosticos ate 19-08` (67 linhas preservadas) e
+`leads` virou `leads ate 19-08` (4 linhas). As duas abas novas nasceram certas no primeiro envio.
+Nada se perdeu, e a coluna `bruto` das linhas antigas continua com o JSON inteiro.
 
 ### A venda dentro da entrega, decidida em 19/08
 
