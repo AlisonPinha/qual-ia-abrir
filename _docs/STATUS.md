@@ -12,19 +12,19 @@ quiz medido pergunta a pergunta.
 
 ### A próxima sessão começa por aqui
 
-**O `Purchase` não existe, e isso trava o tráfego pago.** É o achado da sessão da noite de
-19/08 e o item mais importante da fila. A venda paga não chegou ao Meta: nos últimos 14 dias o
-pixel recebeu 115 PageView, 83 ViewContent, 22 InitiateCheckout, 1 `pix_gerado` e **zero
-`Purchase`**, medido na UI do Events Manager e confirmado pela Graph API. Sem esse evento,
-campanha otimizada para compra não tem o que aprender, e o teste seco de nome (3.3) mediria
-clique em vez de venda. Ver "O `Purchase` não existe" no `PLANO-EXECUCAO.md`.
+**O `Purchase` já existe, e agora falta a primeira venda para conferir.** O achado da noite de
+19/08 foi que a venda paga não chegava ao Meta: em 14 dias o pixel tinha 115 PageView, 83
+ViewContent, 22 InitiateCheckout e **zero `Purchase`**, porque o Pix é pago fora do navegador e
+a pessoa nunca volta à página. Resolvido no mesmo dia: `/api/cakto` recebe o webhook
+`purchase_approved` e manda o evento pelo servidor, com o id do pedido como `event_id`.
 
-**A saída é o 4.1, e ela resolve o 2.5 de quebra.** O webhook `purchase_approved` da Cakto
-chama um endpoint nosso, que manda o `Purchase` para a Graph API com `event_id` para
-deduplicar. **É o mesmo webhook que a recuperação por WhatsApp precisa**, então uma
-configuração só destrava os dois. O que falta antes de escrever código: um token do Meta com
-permissão no dataset (o certo é gerar um dedicado no Events Manager, não reusar o pessoal) e
-criar o webhook no painel da Cakto. As duas coisas são do Alison.
+**O que conferir quando cair a próxima venda:** o `Purchase` aparecendo no Events Manager, com
+o `content_name` da variante. Se não aparecer, o log da função na Vercel diz por quê: ele
+registra a recusa do Meta e nada mais.
+
+**A recuperação por WhatsApp (2.5) está a uma decisão de distância.** A Cakto tem os eventos de
+cobrança gerada e não paga, o mesmo webhook já está criado e o n8n tem a fundação pronta. Falta
+o Alison dizer de que número sai a mensagem.
 
 ### O que está esperando o Alison
 
@@ -32,7 +32,6 @@ criar o webhook no painel da Cakto. As duas coisas são do Alison.
   eventos, a Evolution está no ar e o n8n tem a fundação pronta. O que falta é o número: a
   única instância dele é o `teste1`, no celular pessoal, já amarrada ao Clinic.io. Disparo frio
   ali arrisca o número que ele usa para tudo
-- **Token do Meta e webhook na Cakto**, para o `Purchase` existir
 - **Gravar a VSL** do upsell, roteiro no vault. As telas eu gravo com Playwright quando ele pedir.
   **O bloco de 1:26 precisa mudar antes:** ele promete "é só nessa tela" e a página não cumpre,
   porque o crédito é de quem comprou, não da tela
@@ -81,6 +80,26 @@ antes faria cada beacon virar linha na aba `leads`.
 **Risco conhecido:** conta gratuita do Apps Script tem 90 minutos de execução por dia, o que dá
 umas 5.000 gravações. Com tráfego pago grande o teto aparece, e aí a saída é gravar em outro
 lugar, não cortar a medição.
+
+### O `Purchase` pelo servidor, ligado em 19/08 à noite
+
+| Peça | Estado |
+|---|---|
+| `/api/cakto` | no ar, 25 de 25 no QA local |
+| Token da API de Conversões | gerado no Events Manager **só para este dataset**, sem a Dataset Quality API, e guardado em `META_CAPI_TOKEN` na Vercel |
+| Webhook na Cakto | `Purchase para o Meta (CAPI)`, ativo, nos 5 produtos, evento "Compra aprovada", disparo **Agrupado** |
+| `CAKTO_WEBHOOK_SECRET` | é o UUID que **a Cakto gera**, não o que a gente digita |
+| Provado em produção | a Cakto entrega no endpoint (2 envios, 1 entregue, 258ms) e o Meta responde `events_received: 1` |
+| Não provado ainda | uma venda real ponta a ponta, que só a próxima compra mostra |
+
+**A armadilha do botão "Testar":** ele manda um `purchase_approved` de verdade, e sem guarda um
+clique viraria venda de mentira no pixel para sempre. O endpoint ignora o id e o e-mail do
+payload de exemplo do painel, e foi conferido: depois de todos os testes, o pixel continua com
+**zero** `Purchase`.
+
+**Ao gerar o token, o pixel da NSM veio marcado junto** na opção recomendada (Dataset Quality
+API), e a Meta avisa que essa escolha é irreversível. Por isso o token saiu pela opção **sem**
+a Quality API, que não força a lista.
 
 ### O e-mail de acesso, e a premissa que estava errada
 

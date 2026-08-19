@@ -21,7 +21,7 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 | 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
 | 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
 | 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08 pelo Claude, no navegador** | Claude | nada | Versão 2 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. A aba `diagnosticos` nasceu de novo com 21 colunas, incluindo `trilha`, `descreveu` e `utm`, e a `presentes` com as 8 dela. Conferido com POST real nos dois tipos |
-| 0.3 | **Conferir o `Purchase` no Events Manager** | Claude | 0.1 | ~~conferido em 19/08~~ e **REPROVADO**: a venda paga não gerou `Purchase` nenhum. Ver "O `Purchase` não existe" abaixo. Vira bloqueante do 3.3 |
+| 0.3 | ~~**Conferir o `Purchase` no Events Manager**~~ **conferido e resolvido em 19/08** | Claude | 0.1 | Reprovou: a venda paga não gerou `Purchase` nenhum, porque o Pix é pago fora do navegador. Resolvido no mesmo dia pelo 4.1, que é o webhook da Cakto mandando o evento do servidor |
 
 ### O que a compra de teste ensinou
 
@@ -49,7 +49,7 @@ Ordem por impacto medido, não por esforço. Os itens 1.1 a 1.4 saíram da audit
 | 1.2 | ~~**`orcamento` decide de verdade**, com a opção "Nada, quero só o que é grátis"~~ **feito 19/08** | Hoje a faixa escolhida não muda nada, num produto que vende custo real. E o catálogo tem 4 ferramentas gratuitas que nunca são priorizadas | Claude | Duas pessoas com orçamentos opostos recebem stacks diferentes, medido no `testar_motor.mjs` |
 | 1.3 | ~~**Endurecer o `onde`**~~ **feito 19/08** | Quem responde "no celular" recebe Lovable como "assina agora". O peso atual é de 1 ponto, insuficiente | Claude | Nenhuma combinação com celular devolve Lovable, Claude Code ou n8n na primeira camada |
 | 1.4 | ~~**Pular o que não faz sentido para iniciante**~~ **feito 19/08** | Quem diz "nenhuma ferramenta" ainda recebe "já assinou alguma que não usou?". Sai junto com 1.1 e 1.5 porque as três mexem no contador "n de m", que hoje assume trilhas de tamanho fixo | Claude | As duas perguntas somem quando `quantas` = "Nenhuma ainda", sem o contador mentir |
-| 1.5 | ~~**De 18 para 23 etapas**~~ **feito 19/08** | Seguiu a Frente 6 do plano do vault, não invenção: entrou a pergunta 10 (`custo_parado`) e as duas que faltavam em cada trilha, fechando as 5 do bloco ramificado. **Parou em 23, não em 30**, porque as 30 a 50 do playbook contam as duas mini VSLs, e o produto foi decidido sem vídeo | Claude | 23 etapas para quem usa IA, 20 para quem nunca usou, e nenhuma pergunta de enchimento |
+| 1.5 | ~~**De 18 para 23 etapas**~~ **feito 19/08** | Seguiu a Frente 6 do plano do vault, não invenção: entrou a pergunta 10 (`custo_parado`) e as duas que faltavam em cada trilha, fechando as 5 do bloco ramificado. **Parou em 23, não em 30**, porque as 30 a 50 do playbook contam as duas mini VSLs, e o produto foi decidido sem vídeo | Claude | 23 etapas para quem usa IA e nenhuma pergunta de enchimento. **Medido de novo em 19/08 à noite: quem nunca usou IA vê 18 etapas, não 20**, porque as condicionais que somem viraram cinco com a 1.9 |
 | 1.6 | ~~**Reason why na abertura**~~ **feito 19/08**. A escassez foi descartada | O porquê está na primeira tela e some depois dela. **A escassez não entra:** o playbook pede escassez sob o botão, mas o projeto proíbe inventar escassez em produto digital sem limite real, e não existe limite real aqui. Entre o playbook e a regra do Alison, vale a regra | Claude | Reason why no ar, sem alterar a simplicidade da etapa 1 |
 | 1.7 | ~~**`estilo` passa a valer**~~ **feito 19/08** | Quem diz "prefiro dominar uma a fundo" recebe três ferramentas igual | Claude | A composição muda entre as duas respostas |
 | 1.8 | ~~**Botão acima da dobra, medido em aparelho**~~ **feito 19/08** | Estava a 582px da dobra no iPhone, 815px num Android pequeno e 415px no desktop. O que empurrava era o bloco do código de acesso, 200px no meio da venda | Claude | Aparece sem rolar em 390x844, 360x640 e 1280x900 |
@@ -81,7 +81,7 @@ volta com menos de três, porque o filtro do bolso podia esvaziar o ranking.
 
 | | Antes | Depois |
 |---|---|---|
-| Etapas por pessoa | 19 | **23** (20 para quem nunca usou IA) |
+| Etapas por pessoa | 19 | **23** (18 para quem nunca usou IA, medido em 19/08) |
 | Perguntas | 16 | 19, sendo 5 por trilha |
 | Breaks | 2 | 3 |
 | Mapas só das 4 generalistas | 63,3% | **37,4%**, melhor que os 49,4% de antes de tudo |
@@ -175,6 +175,36 @@ resolvem com uma configuração só.
 **O que os toggles desligados fizeram, e o que não fizeram.** Eles impediram o `Purchase` falso
 ao gerar Pix, que era o certo, e no lugar dele a Cakto passou a mandar o evento próprio
 `pix_gerado`. O que ninguém ligou foi o `Purchase` de quando o Pix é **pago**.
+
+### O `Purchase` passou a existir, pelo servidor
+
+Feito na mesma noite, porque sem o evento o teste seco de nome mediria clique em vez de venda.
+O caminho é `Cakto → /api/cakto → Graph API`, e ele não depende de a Cakto acertar a CAPI dela.
+
+**O que o endpoint faz.** Valida o `secret` do payload (comparação de tempo constante), monta
+um `Purchase` por pedido com `currency`, `value`, `content_name` (é ele que separa as quatro
+variantes do teste de nome dentro do mesmo pixel) e `order_id`, manda o comprador com hash
+SHA-256 depois de normalizar (minúsculas, telefone só com dígitos e com o 55 na frente) e usa
+o **id do pedido como `event_id`**, que é o que impede a mesma venda de contar duas vezes num
+reenvio. Responde 200 sempre que o segredo confere, inclusive quando o Meta recusa: devolver
+erro faria a Cakto reenviar o mesmo problema, e quem tem que gritar é o log.
+
+**Quatro coisas que só se descobrem fazendo, e que valem para a próxima integração:**
+
+| O que parecia | O que é |
+|---|---|
+| O token da API de Conversões preenchido no produto significa que a CAPI dela funciona | Não significa nada: os quatro eventos do pixel chegaram como **navegador**, nenhum como servidor |
+| O `data` do webhook é um objeto | No disparo **Agrupado** é uma **lista** de pedidos, e as datas vêm em camelCase (`paidAt`), não em snake_case |
+| A chave secreta é a que você digita | A Cakto **descarta** e gera um UUID próprio ao salvar. O endpoint recusou o primeiro teste com 401 por causa disso, e o certo é copiar o valor dela depois de salvar |
+| O botão "Testar" do painel é inofensivo | Ele manda um `purchase_approved` de verdade. Sem guarda, um clique vira venda de mentira no pixel para sempre. O endpoint ignora o id e o e-mail do exemplo do painel |
+
+**O que ainda não foi provado, e só uma venda real prova:** que o `purchase_approved` de uma
+compra de verdade chega com os campos esperados. O que já está provado é que a Cakto alcança o
+endpoint (2 envios, 1 entregue com 258ms; o que falhou foi o primeiro teste, antes de alinhar o
+segredo) e que o Meta aceita o payload que o endpoint monta.
+
+**Conferido que nada falso entrou:** o pixel continua com zero `Purchase` depois de todos os
+testes, porque os de curl foram com `test_event_code` e o do painel caiu na guarda.
 
 ### O que o 2.5 precisa, levantado em 19/08 antes de escrever workflow
 
@@ -314,7 +344,7 @@ decisão do Alison, não minha.
 
 | # | Tarefa | Quem | Depende | Critério de pronto |
 |---|---|---|---|---|
-| 4.1 | **CAPI com dedup por `event_id`** | Claude | 0.3 | Uma venda conta uma vez, browser e servidor |
+| 4.1 | ~~**CAPI com dedup por `event_id`**~~ **feito 19/08** | Claude | 0.3 | `/api/cakto` recebe o `purchase_approved`, valida o segredo e manda o `Purchase` para a Graph API com o id do pedido como `event_id`. **25 de 25 no QA**, e a cadeia inteira conferida em produção: a Cakto entrega no endpoint (200, 258ms) e o Meta responde `events_received: 1`. Antecipado da Fase 4 porque sem ele o 3.3 mede clique, não venda |
 | 4.2 | **GA4** | Claude | 4.1 | No ar |
 | 4.3 | ~~**Seção das ferramentas vira tensão**~~ **feito 19/08** | Claude | nada | As 4 conhecidas com nome e logo, as outras 9 por categoria, com a silhueta do teaser. Conferido em produção: **zero** dos 9 nomes no HTML visível |
 | 4.4 | **Auditoria das 9 seções** pela régua de Makepeace, como variante A/B | Claude | 3.3 | Roda como teste, nunca por decreto. **A ordem dos testes é do playbook:** headline primeiro (maior retorno, menor esforço), depois imagem, copy do botão e por fim layout, sempre uma variável por vez e medindo pela conversão final |
