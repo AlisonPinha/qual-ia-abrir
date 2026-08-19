@@ -4,7 +4,8 @@ Doc viva do **Qual IA Usar?**. Report encerrado vai para `archive/`.
 
 | Arquivo | O que é |
 |---|---|
-| [STATUS.md](STATUS.md) | Estado, pendências em ordem de bloqueio e o handoff da próxima sessão. **Comece por aqui.** |
+| [PLANO-EXECUCAO.md](PLANO-EXECUCAO.md) | A fila única, em 5 fases, com quem faz e o critério de pronto de cada tarefa. **Comece por aqui.** |
+| [STATUS.md](STATUS.md) | Estado do que está no ar, o que foi medido e o handoff da última sessão |
 | [adrs/](adrs/) | Decisões técnicas que não se reabrem sem motivo novo |
 | [apps-script-captura.js](apps-script-captura.js) | Web App do Apps Script que grava diagnóstico e lead na planilha |
 
