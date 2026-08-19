@@ -21,7 +21,7 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 | 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
 | 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
 | 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08 pelo Claude, no navegador** | Claude | nada | Versão 2 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. A aba `diagnosticos` nasceu de novo com 21 colunas, incluindo `trilha`, `descreveu` e `utm`, e a `presentes` com as 8 dela. Conferido com POST real nos dois tipos |
-| 0.3 | **Conferir o `Purchase` no Events Manager** | Claude | 0.1 | Uma venda, um `Purchase`, com o `content_name` da variante |
+| 0.3 | **Conferir o `Purchase` no Events Manager** | Claude | 0.1 | ~~conferido em 19/08~~ e **REPROVADO**: a venda paga não gerou `Purchase` nenhum. Ver "O `Purchase` não existe" abaixo. Vira bloqueante do 3.3 |
 
 ### O que a compra de teste ensinou
 
@@ -112,13 +112,134 @@ barato. Hoje não há para onde subir.
 | 2.2 | ~~**Página `/plano`**, a entrega do upsell~~ **feito 19/08** | Claude | 2.1 | No ar em `/plano`, com os 4 blocos e o material rodando de verdade |
 | 2.3 | ~~**Tela pós-compra** com o upsell a R$ 130~~ **feito 19/08** | Claude | 2.2 | Aparece uma vez, entre a identificação e o mapa, com a conta R$ 197 menos os R$ 67 já pagos. Produto na Cakto criado e conferido no checkout público |
 | 2.4 | ~~**CTA de ascensão dentro do `/mapa`**~~ **feito 19/08** | Claude | 2.2 | Bloco fixo no fim da entrega, mesmo preço e mesmo link. Quem dispensou a tela pós-compra ainda encontra o caminho |
-| 2.5 | **Recuperação por WhatsApp** | Claude no n8n | 0.1 | Mensagem sai para quem gerou cobrança e não pagou |
+| 2.5 | **Recuperação por WhatsApp** | Claude no n8n | **decisão do Alison sobre o número** | Infra levantada em 19/08 e a metade da Cakto existe. O que trava é de que número sai a mensagem. Ver "O que o 2.5 precisa" abaixo |
 | 2.6 | **VSL do upsell** (decisão revista em 19/08: o Alison vai gravar) | Alison grava rosto e voz, Claude grava as telas | 2.2 | O roteiro de 1min45 já está escrito no vault. **Ordem obrigatória: a página existe antes da gravação das telas**, porque o bloco de 0:48 promete "você manda e recebe rodado" e é o único insubstituível do roteiro |
 | 2.7 | **Cada um dos 7 dias vira ponto de ascensão** | Claude | 2.2 e existir um próximo produto | "Trate a entrega do seu produto como um funil de vendas pro próximo". Os quatro pontos deles, em ordem: WhatsApp, e-mail, banner e descrição de cada aula. Aqui cada dia é uma aula |
 | 2.8 | ~~**Formulário do presente na pós-compra**~~ **feito 19/08** | Claude | 0.1 | Cinco opções e uma saída aberta, no fim do `/mapa`, gravando na aba `presentes`. Fica **depois** do CTA de ascensão de propósito: o voto não pode competir com a venda |
 | 2.9 | ~~**Back redirect** no diagnóstico~~ **feito 19/08** | Claude | nada | O pop-up passou a existir no histórico, o voltar mostra uma vez o que a pessoa perde, e quem insiste sai. O do **checkout** não dá: a página é da Cakto |
-| 2.11 | **Saber onde a pessoa abandona o quiz** | Claude | nada | Hoje o anônimo só é enviado quando o quiz **termina**: quem sai no meio não deixa rastro, e a taxa de abandono por pergunta é invisível. O funil de referência grava etapa a etapa. **Ligar antes do tráfego**, senão a primeira leva passa sem instrumentação |
-| 2.10 | **O e-mail de acesso levar o upsell junto** | Alison edita na Cakto, Claude escreve | 2.3 | Hoje o e-mail manda só o link do mapa. É o ponto de ascensão que alcança quem pagou no Pix e nunca voltou ao checkout |
+| 2.11 | ~~**Saber onde a pessoa abandona o quiz**~~ **feito 19/08** | Claude | nada | `sendBeacon` no `visibilitychange` e no `pagehide`, uma linha por pessoa na aba `abandonos`, com o pid onde parou, o enunciado, a posição, quantas respondeu, a área e a UTM. Quem termina fica na mesma linha com `concluiu=sim`, então numerador e denominador ficam juntos. Ligado na LP, no `/mapa` e no `/plano`. **15 de 15 no QA local** e **25 de 25 na regressão** em produção. Apps Script na versão 4, mesma URL |
+| 2.10 | **O e-mail de acesso levar o upsell junto** | Alison, se quiser a marcação de origem | 2.3 | **A premissa estava errada, conferido em 19/08.** Ver "O e-mail já leva o upsell" abaixo: não existe corpo de e-mail para escrever, e o link já cai numa página que abre com a oferta. Sobra só marcar a origem do link |
+
+### O e-mail já leva o upsell, e não existe e-mail para escrever
+
+Conferido no painel em 19/08. A Cakto **não deixa editar o corpo do e-mail**: ela manda um
+"Pagamento Confirmado" próprio, e a única coisa que o produtor controla é o campo "Link de
+acesso enviado ao e-mail", hoje com `https://diagnostico.noahai.com.br/mapa`. Não há editor,
+template nem variável.
+
+**E o item já está resolvido por outro caminho.** A tela pós-compra do upsell (2.3) é revelada
+no fim do `render()` do `/mapa`, ou seja, em **todo** caminho de entrada: por código, por
+memória do navegador ou respondendo o quiz. Quem clica no link do e-mail cai nela antes de ver
+o mapa. Então a frase "o e-mail manda só o link do mapa" descrevia o problema errado: o link
+manda para a oferta.
+
+**O que sobra, e é decisão do Alison:** o link de entrega não carrega origem. Trocá-lo por
+`https://diagnostico.noahai.com.br/mapa?utm_source=email_cakto` faria a venda de upsell vinda do
+e-mail aparecer separada, porque o `/mapa` já repassa a origem para o link do checkout. É uma
+linha em cada um dos quatro produtos, **no campo que entrega o produto para quem pagou**:
+errar ali é comprador sem entrega, e por isso não mexi.
+
+### O `Purchase` não existe, e isso trava o tráfego pago
+
+Conferido em 19/08 pela UI do Events Manager e pela Graph API, que dão a mesma resposta.
+**Nos últimos 14 dias o pixel 827402089420392 recebeu:**
+
+| Evento | Quantidade | Integração |
+|---|---|---|
+| PageView | 115 | navegador |
+| ViewContent | 83 | navegador |
+| InitiateCheckout | 22 | navegador |
+| `pix_gerado` | 1 | navegador |
+| **Purchase** | **0** | nenhuma |
+
+A venda de 19/08 entrou na Cakto (R$ 64,51 líquidos, um pedido) e **não chegou ao Meta**.
+
+**Por que.** O Pix é pago fora do navegador: a pessoa sai do checkout, paga no app do banco e
+nunca volta à página. Evento de navegador não tem como disparar aí. Quem resolveria é a API de
+Conversões, que envia do servidor, e **o token dela está preenchido** no produto (conferido no
+painel, em Configurações → Pixels de conversão → engrenagem do Facebook). Mesmo assim, os
+quatro eventos que chegaram vieram todos como **navegador**: nenhum evento de servidor entrou
+neste pixel. Ou o token não está sendo usado pela Cakto para o `purchase_approved`, ou ele não
+vale mais. Não dá para distinguir os dois sem uma compra nova.
+
+**O que isso significa na prática.** Sem `Purchase`, uma campanha otimizada para compra não tem
+o que aprender, e o ROAS aparece zerado no gerenciador. **Isto deixa de ser tarefa da Fase 4 e
+vira pré-requisito do 3.3**, o teste seco de nome: sem o evento, o teste mede clique, não venda,
+e o playbook manda medir pela conversão final.
+
+**A saída que não depende da Cakto acertar, e que já é o item 4.1:** o webhook
+`purchase_approved` da Cakto chama um endpoint nosso, que manda o `Purchase` para a Graph API
+com `event_id` para deduplicar. **É o mesmo webhook que o 2.5 precisa**, então os dois se
+resolvem com uma configuração só.
+
+**O que os toggles desligados fizeram, e o que não fizeram.** Eles impediram o `Purchase` falso
+ao gerar Pix, que era o certo, e no lugar dele a Cakto passou a mandar o evento próprio
+`pix_gerado`. O que ninguém ligou foi o `Purchase` de quando o Pix é **pago**.
+
+### O que o 2.5 precisa, levantado em 19/08 antes de escrever workflow
+
+**A metade da Cakto existe, e é melhor do que o plano supunha.** Conferido na conta, em
+Integrações → Webhooks, com os eventos que o painel oferece:
+
+| Evento | Serve para |
+|---|---|
+| `Pix gerado`, `Boleto gerado`, `PicPay gerado` | cobrança criada e não paga, que é exatamente o gatilho do 2.5 |
+| `Abandono de Checkout` | quem preencheu os dados e nem chegou a gerar cobrança, e vem com nome, e-mail e celular |
+| `Compra aprovada` | é o que falta para o `Purchase` do 0.3 |
+
+O formulário aceita URL, filtro por produto, chave secreta e mostra o modelo do payload. O
+payload do pagamento único traz `customer.name`, `customer.email` e `customer.phone`, mais
+`amount`, `id` do pedido e `product`. **Nenhum webhook está criado**: a conta tem zero.
+
+**A metade do WhatsApp existe pela metade.** A Evolution (`api.nsmvps.com.br`, v2.3.7) está no
+ar com sete instâncias, cinco conectadas. O problema é de qual número sai a mensagem:
+
+| Instância | Estado | Serve? |
+|---|---|---|
+| `teste1`, perfil "Alison Araujo" | conectada | é o **número pessoal** dele, e já está amarrada ao Clinic.io por webhook |
+| `cs-bot-nsm`, perfil "Nutra Seu Marketing" | **desconectada** | seria o número da agência, não do produto |
+| as outras cinco | conectadas | são de clientes: Dra. Luciana, Clínica Solis, Kelly, Pedro |
+
+**Nenhuma é do produto.** O n8n está de pé e com a fundação pronta para reusar: dedup de
+webhook, idempotência por side-effect, janela comercial 08-20 e reversão com aviso.
+
+**O que trava, e é decisão do Alison, não minha:** disparo frio para quem não respondeu é o
+padrão que faz o WhatsApp banir número, e no `teste1` o número em risco é o pessoal dele, o
+mesmo que ele usa para tudo, inclusive para o Clinic.io. O caminho certo é chip novo com
+instância própria. **Não montei o workflow**, como combinado: falta a decisão do número.
+
+### O funil do quiz, ligado em 19/08
+
+**Não é do playbook**, e isso foi conferido na fonte: ele não pede medição por etapa, e onde
+fala de métrica diz o contrário, "medindo pela conversão final, nunca por métrica
+intermediária", no contexto de teste A/B. A aba `abandonos` serve para **diagnóstico do
+quiz** (as 19 perguntas seguram ou derrubam?), não para decidir teste, e é assim que ela
+tem que ser lida.
+
+**O desenho, e o porquê de cada peça:**
+
+| Decisão | Por quê |
+|---|---|
+| `visibilitychange` + `pagehide`, não `beforeunload` | no celular, trocar de app ou bloquear a tela não passa por `beforeunload`, e é assim que a maioria sai |
+| `sendBeacon`, com `fetch keepalive` de reserva | é o único envio que o navegador promete entregar com a aba fechando |
+| Uma linha por pessoa, com upsert por `sid`+`origem` | sem isso, quem troca de aba cinco vezes vira cinco linhas. A chave leva a origem junto porque a mesma pessoa passa pelo quiz do site e depois pelo do `/mapa`, e os dois abandonos são coisas diferentes |
+| Quem conclui entra na mesma aba | denominador e numerador juntos: a taxa sai de uma aba só, sem cruzar com `diagnosticos` |
+| A linha de quem concluiu fica congelada | achado no teste com POST real: sem isso, refazer o quiz reescrevia a linha para "parou na pergunta 1" com "concluiu sim" ao lado |
+| Quem não abriu o quiz não gera linha | quem só leu a página não abandonou quiz nenhum, e entraria como denominador falso |
+
+**O que o QA pegou, e de quem era o defeito.** Duas das falhas eram do teste: esconder a aba
+com `bringToFront` não deixa a página `hidden` no Chromium visível, e o `route` do Playwright
+enxerga o `sendBeacon` no `pagehide` mas não entrega o corpo. A prova de que o beacon sai de
+verdade é o evento de `request`, não o payload. A terceira falha era do produto, e é a linha
+congelada acima.
+
+**Ordem obrigatória, e vale para toda mudança de payload:** o Apps Script vai primeiro. O
+`doPost` manda todo tipo desconhecido para `gravarLead`, então publicar o front antes faria
+cada beacon virar linha na aba `leads`.
+
+**Risco conhecido:** conta gratuita do Apps Script tem 90 minutos de execução por dia. Cada
+sinal gasta cerca de um segundo, o que dá umas 5.000 gravações diárias. Com tráfego pago
+grande, o teto aparece, e aí a saída é gravar em outro lugar, não cortar a medição.
 
 ### O achado que destravou a página, e que vale para o produto inteiro
 

@@ -5,25 +5,41 @@
 **Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
 `DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
-**Estado em 19/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo e agora
-vendendo o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a
-primeira venda feita e o checkout do upsell de R$ 130 criado na Cakto.
+**Estado em 19/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo e vendendo
+o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a primeira
+venda feita, o checkout do upsell de R$ 130 na Cakto e, desde a sessão da noite, o funil do
+quiz medido pergunta a pergunta.
 
 ### A próxima sessão começa por aqui
 
-Duas tarefas, as duas só dependem do Claude, e as duas são sobre quem escapa do funil:
+**O `Purchase` não existe, e isso trava o tráfego pago.** É o achado da sessão da noite de
+19/08 e o item mais importante da fila. A venda paga não chegou ao Meta: nos últimos 14 dias o
+pixel recebeu 115 PageView, 83 ViewContent, 22 InitiateCheckout, 1 `pix_gerado` e **zero
+`Purchase`**, medido na UI do Events Manager e confirmado pela Graph API. Sem esse evento,
+campanha otimizada para compra não tem o que aprender, e o teste seco de nome (3.3) mediria
+clique em vez de venda. Ver "O `Purchase` não existe" no `PLANO-EXECUCAO.md`.
 
-**2.11, saber onde a pessoa abandona o quiz.** Hoje o envio anônimo só acontece quando o quiz
-**termina**: quem sai no meio não deixa rastro, e não dá para saber se as 19 perguntas seguram
-ou derrubam. O desenho: um `sendBeacon` na saída, uma linha por pessoa, com a pergunta em que
-parou, quantas respondeu, a área e a UTM. Exige uma aba nova (`abandonos`) e recolar o Apps
-Script, **e o Claude recola sozinho pelo navegador**, como fez em 19/08. **Ligar antes do
-primeiro tráfego pago**, senão a primeira leva passa sem instrumentação.
+**A saída é o 4.1, e ela resolve o 2.5 de quebra.** O webhook `purchase_approved` da Cakto
+chama um endpoint nosso, que manda o `Purchase` para a Graph API com `event_id` para
+deduplicar. **É o mesmo webhook que a recuperação por WhatsApp precisa**, então uma
+configuração só destrava os dois. O que falta antes de escrever código: um token do Meta com
+permissão no dataset (o certo é gerar um dedicado no Events Manager, não reusar o pessoal) e
+criar o webhook no painel da Cakto. As duas coisas são do Alison.
 
-**2.5, recuperação por WhatsApp.** Antes de escrever qualquer workflow, levantar: a Cakto
-dispara webhook de cobrança gerada e não paga? Existe canal de WhatsApp de pé (a instância
-Evolution do Alison está parada)? Sem os dois, a tarefa não fecha, e é melhor descobrir isso
-antes de montar meio workflow.
+### O que está esperando o Alison
+
+- **De que número sai a recuperação por WhatsApp (2.5).** A infra existe: a Cakto tem os
+  eventos, a Evolution está no ar e o n8n tem a fundação pronta. O que falta é o número: a
+  única instância dele é o `teste1`, no celular pessoal, já amarrada ao Clinic.io. Disparo frio
+  ali arrisca o número que ele usa para tudo
+- **Token do Meta e webhook na Cakto**, para o `Purchase` existir
+- **Gravar a VSL** do upsell, roteiro no vault. As telas eu gravo com Playwright quando ele pedir.
+  **O bloco de 1:26 precisa mudar antes:** ele promete "é só nessa tela" e a página não cumpre,
+  porque o crédito é de quem comprou, não da tela
+- **Revisar a voz dos 7 dias**, que estão no ar em `/plano`
+- **Trocar a chave da API**, parado por decisão dele até acabar a fase de teste
+- **Colher o primeiro depoimento real** com a compradora de 19/08. O `prova.depoimentos`
+  continua vazio de propósito, e a seção some enquanto estiver
 
 ### O que fazer no começo da próxima sessão
 
@@ -33,10 +49,47 @@ antes de montar meio workflow.
 3. Se for publicar algo grande, `node run.js _build/regressao.js` de dentro da
    `~/.claude/skills/playwright-skill`. Custa 1 chamada ao `/api/mapa` e 3 ao `/api/plano`.
 
-### O que está esperando o Alison
-- **Gravar a VSL** do upsell, roteiro no vault. As telas eu gravo com Playwright quando ele pedir
-- **Revisar a voz dos 7 dias**, que estão no ar em `/plano`
-- **Trocar a chave da API**, parado por decisão dele até acabar a fase de teste
+### O funil do quiz, ligado na noite de 19/08
+
+O envio anônimo só acontecia quando o quiz **terminava**: quem saía no meio não deixava rastro,
+e não dava para saber se as 19 perguntas seguram ou derrubam. Agora um `sendBeacon` na saída
+grava uma linha por pessoa na aba `abandonos`, com o pid onde ela parou, o enunciado da
+pergunta, a posição, quantas respondeu, a área e a UTM. Quem termina fica na mesma linha com
+`concluiu=sim`, então numerador e denominador ficam juntos e a taxa sai de uma aba só.
+
+Ligado nas três páginas com quiz. Na LP conta quem abriu o pop-up; no `/mapa` e no `/plano`
+conta quem viu o quiz, porque quem entra por código ou por memória não passou por ele.
+
+| O que foi medido | Resultado |
+|---|---|
+| QA local, com o build servido em `localhost` | **15 de 15** |
+| Regressão em produção, depois do deploy | **25 de 25**, sem erro de página |
+| Apps Script | versão 4 na **mesma** implantação, então a `ANALITICO_URL` não mudou |
+| POST real na planilha | 4 sinais viraram 2 linhas, com o upsert e o congelamento certos |
+
+**Duas das três falhas do QA eram do teste, não do produto.** Esconder a aba com
+`bringToFront` não deixa a página `hidden` no Chromium visível, e o `route` do Playwright
+enxerga o `sendBeacon` no `pagehide` mas não entrega o corpo: o que prova que o beacon saiu é o
+evento de `request`. A terceira era do produto: sem tratamento, quem concluía e depois refazia o
+quiz reescrevia a própria linha para "parou na pergunta 1" com "concluiu sim" ao lado. Agora a
+linha de quem concluiu fica congelada, e só o horário do último sinal avança.
+
+**A ordem que não pode inverter, e vale para qualquer mudança de payload:** o Apps Script vai
+primeiro. O `doPost` manda todo tipo desconhecido para `gravarLead`, então publicar o front
+antes faria cada beacon virar linha na aba `leads`.
+
+**Risco conhecido:** conta gratuita do Apps Script tem 90 minutos de execução por dia, o que dá
+umas 5.000 gravações. Com tráfego pago grande o teto aparece, e aí a saída é gravar em outro
+lugar, não cortar a medição.
+
+### O e-mail de acesso, e a premissa que estava errada
+
+O 2.10 dizia "o e-mail manda só o link do mapa". Conferido no painel: a Cakto **não deixa
+editar o corpo do e-mail**, o produtor só controla o campo do link, e a tela pós-compra do
+upsell aparece em todo caminho de entrada do `/mapa`, inclusive para quem clica no link do
+e-mail. Ou seja, não existe e-mail para escrever e o upsell já é alcançado. Sobra marcar a
+origem do link, que é mexer no campo que entrega o produto para quem pagou, e por isso ficou
+para ele decidir.
 
 ### A revisão da sessão de 19/08, e o que ela achou
 
