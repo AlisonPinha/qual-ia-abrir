@@ -82,7 +82,9 @@ async function responderTudo(page, escopo) {
   const trilhaNova = await p2.evaluate(() => document.querySelector('#modal .passo:not([hidden])')?.dataset.q);
   ok('voltar: escondido na 1ª pergunta', escondidoNoInicio === true);
   ok('voltar: volta até o início', voltouAoInicio === 'area', voltouAoInicio);
-  ok('voltar: trocar área troca a trilha', trilhaNova === 'tarefa', trilhaNova);
+  // a última opção da primeira pergunta é a vida pessoal desde 19/08: trocar a área tem que
+  // derrubar a trilha antiga e abrir a dela, senão a pessoa responde perguntas de outra vida
+  ok('voltar: trocar área troca a trilha', trilhaNova === 'l_tarefa', trilhaNova);
 
   // ---------- 3. /mapa: entrega com IA ----------
   const c3 = await browser.newContext({ viewport: { width: 390, height: 844 } });
