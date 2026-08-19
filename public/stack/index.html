@@ -813,6 +813,22 @@ body.travado { overflow: hidden; }
 }
 .modal-porque[hidden] { display: none; }
 
+/* código de acesso: leva as respostas para outro aparelho */
+.res-codigo { margin: 14px 0 4px; padding: 13px 15px; border-radius: 13px;
+  border: 1px dashed rgba(193,131,251,.45); background: rgba(193,131,251,.07); }
+.res-codigo-rot { display: block; font-size: 12px; color: var(--cinza-min); margin-bottom: 5px; }
+.res-codigo code { font-size: 19px; font-weight: 700; letter-spacing: .07em; font-family: ui-monospace, monospace; }
+.res-codigo .m-copiar { margin-left: 10px; }
+.res-codigo-ajuda { font-size: 12.5px; color: var(--cinza-min); margin: 8px 0 0; line-height: 1.5; }
+.entrar-codigo { margin: 0 0 22px; padding: 15px 16px; border-radius: 14px;
+  border: 1px solid rgba(193,131,251,.28); background: rgba(193,131,251,.05); }
+.entrar-codigo p { margin: 0 0 10px; font-size: 14px; color: var(--cinza-claro); }
+.entrar-codigo input { width: 100%; padding: 12px 13px; border-radius: 11px; font-size: 16px;
+  background: rgba(0,0,0,.3); color: #fff; border: 1px solid rgba(255,255,255,.16);
+  font-family: ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.entrar-codigo button { margin-top: 10px; }
+.entrar-codigo .erro { color: #ff9d9d; font-size: 13px; margin: 9px 0 0; }
+
 /* o espelho: o que a pessoa respondeu, devolvido antes do resultado */
 .espelho { list-style: none; margin: 16px 0 2px; padding: 0; display: grid; gap: 7px; }
 .espelho li {
@@ -1362,6 +1378,13 @@ body.travado { overflow: hidden; }
         <span class="selo-rosa">Seu resultado</span>
         <h3 id="res-titulo" tabindex="-1">Sua stack</h3>
         <p id="res-perfil"></p>
+        <div class="res-codigo" id="res-codigo" hidden>
+          <span class="res-codigo-rot">O seu código de acesso</span>
+          <code id="res-codigo-valor"></code>
+          <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
+          <p class="res-codigo-ajuda">Guarda este código. Ele abre o seu mapa em qualquer
+             aparelho, sem responder de novo.</p>
+        </div>
       </div>
       <ol class="res-stack" id="res-stack"></ol>
       <div class="res-corta" id="res-corta"></div>
@@ -1514,6 +1537,60 @@ function pintarEspelho(MOTOR, resp, lista) {
     li.append(k, v);
     lista.appendChild(li);
   }
+}
+// Código de acesso: as respostas viram um código curto que a pessoa digita em qualquer
+// aparelho. Existe porque a memória do diagnóstico é do navegador, e na primeira venda de
+// teste o comprador respondeu no celular, abriu o e-mail no computador e teve que refazer
+// as 23 etapas. Quem pagou não pode trabalhar de novo.
+//
+// Sem banco e sem depender da plataforma de pagamento: o código É o dado. Cada resposta
+// cabe em 4 bits (a pergunta de área tem 10 opções, então 3 bits não bastam), e 19
+// respostas viram uns 16 caracteres. A ordem é a que o próprio motor exige, e a trilha se resolve sozinha na
+// leitura: a área vem primeiro e decide quais perguntas vêm depois.
+
+const ALFABETO = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";   // sem 0/O e 1/I, que a pessoa confunde
+const BITS_POR_RESPOSTA = 4;   // 16 opções por pergunta; a de área já usa 10
+
+function gerarCodigo(MOTOR, resp) {
+  const pids = pidsExigidos(MOTOR, resp);
+  let bits = "";
+  for (const pid of pids) {
+    const i = resp[pid];
+    if (!Number.isInteger(i) || i > 15) return "";     // fora do que o código sabe guardar
+    bits += i.toString(2).padStart(BITS_POR_RESPOSTA, "0");
+  }
+  while (bits.length % 5) bits += "0";
+  let saida = "";
+  for (let i = 0; i < bits.length; i += 5)
+    saida += ALFABETO[parseInt(bits.slice(i, i + 5), 2)];
+  return saida.replace(/(.{4})(?=.)/g, "$1-");         // A7K2-M9P4-X3, mais fácil de ditar
+}
+
+function lerCodigo(MOTOR, texto) {
+  const limpo = String(texto || "").toUpperCase().replace(/[^0-9A-Z]/g, "")
+    .replace(/O/g, "0").replace(/I/g, "1");            // quem digita troca essas duas
+  if (limpo.length < 4) return null;
+  let bits = "";
+  for (const c of limpo) {
+    const v = ALFABETO.indexOf(c);
+    if (v < 0) return null;
+    bits += v.toString(2).padStart(5, "0");
+  }
+  // a trilha só é conhecida depois da área, então lê uma pergunta por vez e pergunta ao
+  // motor qual vem em seguida
+  const resp = {};
+  let cursor = 0;
+  for (let passo = 0; passo < 60; passo++) {
+    const pids = pidsExigidos(MOTOR, resp);
+    const pid = pids.find(p => !(p in resp));
+    if (!pid) break;
+    if (cursor + BITS_POR_RESPOSTA > bits.length) return null;
+    const i = parseInt(bits.slice(cursor, cursor + BITS_POR_RESPOSTA), 2);
+    cursor += BITS_POR_RESPOSTA;
+    if (!MOTOR.rotulos[pid] || i >= MOTOR.rotulos[pid].length) return null;
+    resp[pid] = i;
+  }
+  return pidsExigidos(MOTOR, resp).every(p => p in resp) ? resp : null;
 }
 // Memória do diagnóstico e envio anônimo. Compartilhado pelo site e pela entrega paga.
 //
@@ -1697,6 +1774,16 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
 
       el("res-titulo").textContent = "A sua stack está pronta";
       el("res-perfil").textContent = `${area} · ${orc}. Identifiquei ${stack.length} ferramentas pra você.`;
+
+      // o código carrega as respostas: é o que evita refazer o quiz no outro aparelho,
+      // que foi o que aconteceu na primeira venda de teste
+      const codigo = gerarCodigo(MOTOR, resp);
+      if (codigo) {
+        el("res-codigo-valor").textContent = codigo;
+        el("res-codigo").hidden = false;
+        for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
+          if (!a.href.includes("c=")) a.href += (a.href.includes("?") ? "&" : "?") + "c=" + encodeURIComponent(codigo);
+      }
 
       el("res-stack").innerHTML = stack.map((s, i) => `
         <li class="oculto">

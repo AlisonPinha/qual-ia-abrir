@@ -23,6 +23,7 @@ SAIDA = RAIZ / "public" / "plano" / "index.html"
 CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
 MOTOR_JS = (BUILD / "motor.js").read_text(encoding="utf-8")
 ESPELHO_JS = (BUILD / "espelho.js").read_text(encoding="utf-8")
+CODIGO_JS = (BUILD / "codigo.js").read_text(encoding="utf-8")
 SESSAO_JS = (BUILD / "sessao.js").read_text(encoding="utf-8")
 
 sys.path.insert(0, str(BUILD))
@@ -319,10 +320,37 @@ JS = r"""
     });
   }
 
+  // ordem de entrada: código na URL, código digitado, memória do navegador, quiz.
+  // A primeira venda de teste mostrou por que: quem compra no celular abre o e-mail no
+  // computador, e sem isto refaz as 23 etapas depois de ter pago.
+  function entrarCom(respostas) {
+    for (const k of Object.keys(resp)) delete resp[k];
+    Object.assign(resp, respostas);
+    const bloco = el("entrar-codigo");
+    if (bloco) bloco.hidden = true;
+    render(true);
+  }
+
+  el("codigo-usar").addEventListener("click", () => {
+    const lido = lerCodigo(MOTOR, el("codigo-campo").value);
+    if (!lido) { el("codigo-erro").hidden = false; return; }
+    salvarSessao(lido, MOTOR.pids, {});
+    entrarCom(lido);
+  });
+
+  const daUrl = new URLSearchParams(location.search).get("c")
+             || new URLSearchParams(location.hash.replace(/^#/, "?")).get("c");
+  const doLink = daUrl ? lerCodigo(MOTOR, daUrl) : null;
   const salvas = lerSessao(r => pidsExigidos(MOTOR, r));
-  if (salvas) {
+
+  if (doLink) {
+    salvarSessao(doLink, MOTOR.pids, {});
+    entrarCom(doLink);
+  } else if (salvas) {
     Object.assign(resp, salvas.resp);
     Object.assign(livre, salvas.livre);
+    const bloco = el("entrar-codigo");
+    if (bloco) bloco.hidden = true;
     render(true);
   } else {
     mostrar();
@@ -388,6 +416,14 @@ html = f"""<!doctype html>
     <div class="plano-barra"><i id="barra-fill"></i></div>
   </header>
 
+  <div class="entrar-codigo" id="entrar-codigo">
+    <p><b>Já respondeu no celular?</b> Cola aqui o código que apareceu no fim do diagnóstico
+       e o seu mapa abre sem refazer nada.</p>
+    <input id="codigo-campo" type="text" inputmode="latin" autocomplete="off"
+           placeholder="2 6 A K - 4 6 A K - 4 6 A K" maxlength="26">
+    <button type="button" class="btn btn-p" id="codigo-usar">Abrir com o meu código</button>
+    <p class="erro" id="codigo-erro" hidden>Esse código não abriu. Confere se copiou inteiro, ou responde abaixo que leva 2 minutos.</p>
+  </div>
   <form id="quiz">{perguntas_html}</form>
 
   <div id="plano" hidden>
@@ -422,7 +458,7 @@ html = f"""<!doctype html>
     </section>
   </div>
 </main>
-<script>const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{ESPELHO_JS}{SESSAO_JS}{JS}</script>
+<script>const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{ESPELHO_JS}{CODIGO_JS}{SESSAO_JS}{JS}</script>
 </body>
 </html>
 """

@@ -46,6 +46,7 @@ CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
 MOTOR_JS = (BUILD / "motor.js").read_text(encoding="utf-8")
 SESSAO_JS = (BUILD / "sessao.js").read_text(encoding="utf-8")
 ESPELHO_JS = (BUILD / "espelho.js").read_text(encoding="utf-8")
+CODIGO_JS = (BUILD / "codigo.js").read_text(encoding="utf-8")
 F = d["ferramentas"]
 
 
@@ -469,6 +470,16 @@ JS = """
 
       el("res-titulo").textContent = "A sua stack está pronta";
       el("res-perfil").textContent = `${area} · ${orc}. Identifiquei ${stack.length} ferramentas pra você.`;
+
+      // o código carrega as respostas: é o que evita refazer o quiz no outro aparelho,
+      // que foi o que aconteceu na primeira venda de teste
+      const codigo = gerarCodigo(MOTOR, resp);
+      if (codigo) {
+        el("res-codigo-valor").textContent = codigo;
+        el("res-codigo").hidden = false;
+        for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
+          if (!a.href.includes("c=")) a.href += (a.href.includes("?") ? "&" : "?") + "c=" + encodeURIComponent(codigo);
+      }
 
       el("res-stack").innerHTML = stack.map((s, i) => `
         <li class="oculto">
@@ -992,6 +1003,13 @@ html = f"""<!doctype html>
         <span class="selo-rosa">Seu resultado</span>
         <h3 id="res-titulo" tabindex="-1">Sua stack</h3>
         <p id="res-perfil"></p>
+        <div class="res-codigo" id="res-codigo" hidden>
+          <span class="res-codigo-rot">O seu código de acesso</span>
+          <code id="res-codigo-valor"></code>
+          <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
+          <p class="res-codigo-ajuda">Guarda este código. Ele abre o seu mapa em qualquer
+             aparelho, sem responder de novo.</p>
+        </div>
       </div>
       <ol class="res-stack" id="res-stack"></ol>
       <div class="res-corta" id="res-corta"></div>
@@ -1015,7 +1033,7 @@ html = f"""<!doctype html>
 
 <script>const DESTINO = {json.dumps(CAPTURA_URL)};
 const PROD = {json.dumps(V["nome"], ensure_ascii=False)};
-const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{ESPELHO_JS}{SESSAO_JS}{JS}</script>
+const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{ESPELHO_JS}{CODIGO_JS}{SESSAO_JS}{JS}</script>
 <!-- Medição: Web Analytics ligado no painel da Vercel. Se o script voltar a dar 404,
      é o toggle que caiu, não o caminho. -->
 <script defer src="/_vercel/insights/script.js"></script>

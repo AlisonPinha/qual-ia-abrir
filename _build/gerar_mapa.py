@@ -29,6 +29,7 @@ CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
 MOTOR_JS = (BUILD / "motor.js").read_text(encoding="utf-8")
 SESSAO_JS = (BUILD / "sessao.js").read_text(encoding="utf-8")
 ESPELHO_JS = (BUILD / "espelho.js").read_text(encoding="utf-8")
+CODIGO_JS = (BUILD / "codigo.js").read_text(encoding="utf-8")
 sys.path.insert(0, str(BUILD))
 from config import ANALITICO_URL  # noqa: E402
 import questionario  # noqa: E402
@@ -164,6 +165,12 @@ JS = r"""
     const [qArea, qOrc] = MOTOR.perfil;
     el("res-perfil").textContent =
       `${MOTOR.rotulos[qArea][resp[qArea]]} · ${MOTOR.rotulos[qOrc][resp[qOrc]]}.`;
+
+    const codigo = gerarCodigo(MOTOR, resp);
+    if (codigo) {
+      el("res-codigo-valor").textContent = codigo;
+      el("res-codigo").hidden = false;
+    }
 
     el("res-stack").innerHTML = stack.map((s, i) => `
       <li class="m-card">
@@ -384,10 +391,37 @@ JS = r"""
   });
 
   // veio do site no mesmo aparelho: não faz a pessoa responder tudo de novo
+  // ordem de entrada: código na URL, código digitado, memória do navegador, quiz.
+  // A primeira venda de teste mostrou por que: quem compra no celular abre o e-mail no
+  // computador, e sem isto refaz as 23 etapas depois de ter pago.
+  function entrarCom(respostas) {
+    for (const k of Object.keys(resp)) delete resp[k];
+    Object.assign(resp, respostas);
+    const bloco = el("entrar-codigo");
+    if (bloco) bloco.hidden = true;
+    render(true);
+  }
+
+  el("codigo-usar").addEventListener("click", () => {
+    const lido = lerCodigo(MOTOR, el("codigo-campo").value);
+    if (!lido) { el("codigo-erro").hidden = false; return; }
+    salvarSessao(lido, MOTOR.pids, {});
+    entrarCom(lido);
+  });
+
+  const daUrl = new URLSearchParams(location.search).get("c")
+             || new URLSearchParams(location.hash.replace(/^#/, "?")).get("c");
+  const doLink = daUrl ? lerCodigo(MOTOR, daUrl) : null;
   const salvas = lerSessao(r => pidsExigidos(MOTOR, r));
-  if (salvas) {
+
+  if (doLink) {
+    salvarSessao(doLink, MOTOR.pids, {});
+    entrarCom(doLink);
+  } else if (salvas) {
     Object.assign(resp, salvas.resp);
     Object.assign(livre, salvas.livre);
+    const bloco = el("entrar-codigo");
+    if (bloco) bloco.hidden = true;
     render(true);
   } else {
     mostrar();
@@ -464,6 +498,14 @@ html = f"""<!doctype html>
     <div class="mapa-barra"><i id="barra-fill"></i></div>
   </header>
 
+  <div class="entrar-codigo" id="entrar-codigo">
+    <p><b>Já respondeu no celular?</b> Cola aqui o código que apareceu no fim do diagnóstico
+       e o seu mapa abre sem refazer nada.</p>
+    <input id="codigo-campo" type="text" inputmode="latin" autocomplete="off"
+           placeholder="2 6 A K - 4 6 A K - 4 6 A K" maxlength="26">
+    <button type="button" class="btn btn-p" id="codigo-usar">Abrir com o meu código</button>
+    <p class="erro" id="codigo-erro" hidden>Esse código não abriu. Confere se copiou inteiro, ou responde abaixo que leva 2 minutos.</p>
+  </div>
   <form id="quiz">{perguntas_html}</form>
 
   <div id="resultado" role="region" aria-live="polite" aria-label="O seu mapa" hidden>
@@ -471,6 +513,12 @@ html = f"""<!doctype html>
       <span class="selo-rosa">Sua stack</span>
       <h3 id="res-titulo" tabindex="-1">Estas são as suas 3</h3>
       <p id="res-perfil"></p>
+      <div class="res-codigo" id="res-codigo" hidden>
+        <span class="res-codigo-rot">O seu código de acesso</span>
+        <code id="res-codigo-valor"></code>
+        <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
+        <p class="res-codigo-ajuda">Com ele você abre este mapa em qualquer aparelho, sem responder de novo.</p>
+      </div>
     </div>
     <p class="res-memoria" id="res-memoria" hidden>Montado com as respostas que você deu no
        site. Mudou alguma coisa? Refaz ali embaixo.</p>
@@ -483,7 +531,7 @@ html = f"""<!doctype html>
     <button type="button" class="refazer" id="refazer">Refazer com outras respostas</button>
   </div>
 </main>
-<script>const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{ESPELHO_JS}{SESSAO_JS}{JS}</script>
+<script>const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{ESPELHO_JS}{CODIGO_JS}{SESSAO_JS}{JS}</script>
 </body>
 </html>
 """
