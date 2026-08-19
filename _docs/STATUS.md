@@ -28,6 +28,25 @@ Fase 2 do plano: recuperação por WhatsApp (2.5), a VSL quando o Alison gravar 
 dos 7 dias como ponto de ascensão (2.7), que depende de existir um próximo produto, que é
 justamente o que a aba `presentes` vai dizer.
 
+### O que fechou no fim de 19/08
+
+**Back redirect (2.9).** O pop-up não existia no histórico: o voltar levava a pessoa para fora
+do site com o quiz pela metade. Agora o voltar fecha o pop-up, e com o quiz começado mostra
+**uma vez** onde ela parou. Quem insiste sai.
+
+**A memória parcial na LP, que o back redirect obrigou.** A retenção promete que nada se
+perde, e isso era falso: a LP só salvava no fim do quiz e não lia nada ao reabrir. Agora salva
+a cada clique e retoma na primeira pergunta sem resposta. **Promessa na tela é requisito de
+produto**, não copy.
+
+**One Belief (4.5).** A crença abre o hero das quatro LPs, com o mecanismo de cada variante, e
+aparece na tela pós-compra e nas duas entregas. Nas entregas ela vai **sem** o nome do
+mecanismo: `/mapa` e `/plano` são uma só para as quatro variantes, e citar "Regra das 3 IAs"
+contradiria quem comprou o "Método das 3 Abas". Falta o criativo e o e-mail, que não são meus.
+
+**Dois textos que mentiam**, achados de passagem: o hero e a seção do diagnóstico prometiam
+"cinco perguntas", e o quiz tem 19.
+
 ### O QA do quiz inteiro, em 19/08
 
 Duas perguntas do Alison: as perguntas são fáceis de entender, e dá para perceber que é preciso
