@@ -3020,6 +3020,10 @@
         "Em quanto tempo você quer isso resolvido?",
         [
           [
+            "Hoje, tenho uma tarefa esperando",
+            {}
+          ],
+          [
             "Essa semana",
             {}
           ],
