@@ -1,14 +1,70 @@
 {
   "ferramentas": {
-    "Claude":      { "logo": "claude.svg",     "url": "https://claude.ai",                      "oq": "Escrever, decidir e construir. O que menos estraga o seu texto." },
-    "Claude Code": { "logo": "claudecode.svg", "url": "https://claude.com/product/claude-code", "oq": "O Claude trabalhando dentro do seu projeto, não num chat solto." },
-    "ChatGPT":     { "logo": "chatgpt.svg",    "url": "https://chatgpt.com",                    "oq": "O mais versátil pra começar do zero e pra conversar por voz." },
-    "Gemini":      { "logo": "gemini.svg",     "url": "https://gemini.google.com",              "oq": "Engole PDF, vídeo e podcast inteiro sem reclamar do tamanho." },
-    "Perplexity":  { "logo": "perplexity.svg", "url": "https://www.perplexity.ai",              "oq": "Pesquisa com a fonte do lado, pra você poder conferir." },
-    "Grok":        { "logo": "grok.png",       "url": "https://grok.com",                       "oq": "Dentro do X, vê o que está sendo dito nesta hora." },
-    "Higgsfield":  { "logo": "higgsfield.svg", "url": "https://higgsfield.ai",                  "oq": "Imagem e vídeo no nível que anúncio exige." },
-    "Poppy AI":    { "logo": "poppy.png",      "url": "https://poppyai.com",                    "oq": "Roteiro e estrutura em cima das suas próprias referências." },
-    "Lovable":     { "logo": "lovable.png",    "url": "https://lovable.dev",                    "oq": "Do zero a um link no ar em minutos." }
+    "Claude": {
+      "logo": "claude.svg",
+      "url": "https://claude.ai",
+      "oq": "Escrever, decidir e construir. O que menos estraga o seu texto."
+    },
+    "Claude Code": {
+      "logo": "claudecode.svg",
+      "url": "https://claude.com/product/claude-code",
+      "oq": "O Claude trabalhando dentro do seu projeto, não num chat solto."
+    },
+    "ChatGPT": {
+      "logo": "chatgpt.svg",
+      "url": "https://chatgpt.com",
+      "oq": "O mais versátil pra começar do zero e pra conversar por voz."
+    },
+    "Gemini": {
+      "logo": "gemini.svg",
+      "url": "https://gemini.google.com",
+      "oq": "Engole PDF, vídeo e podcast inteiro sem reclamar do tamanho."
+    },
+    "Perplexity": {
+      "logo": "perplexity.svg",
+      "url": "https://www.perplexity.ai",
+      "oq": "Pesquisa com a fonte do lado, pra você poder conferir."
+    },
+    "Grok": {
+      "logo": "grok.png",
+      "url": "https://grok.com",
+      "oq": "Dentro do X, vê o que está sendo dito nesta hora."
+    },
+    "Higgsfield": {
+      "logo": "higgsfield.svg",
+      "url": "https://higgsfield.ai",
+      "oq": "Imagem e vídeo no nível que anúncio exige."
+    },
+    "Poppy AI": {
+      "logo": "poppy.png",
+      "url": "https://poppyai.com",
+      "oq": "Roteiro e estrutura em cima das suas próprias referências."
+    },
+    "Lovable": {
+      "logo": "lovable.png",
+      "url": "https://lovable.dev",
+      "oq": "Do zero a um link no ar em minutos."
+    },
+    "Gemini Notebook": {
+      "logo": "notebook.png",
+      "url": "https://notebook.google.com",
+      "oq": "Lê as suas fontes e responde só com o que está nelas."
+    },
+    "Gamma": {
+      "logo": "gamma.png",
+      "url": "https://gamma.app",
+      "oq": "Vira o texto que você já escreveu em apresentação apresentável."
+    },
+    "ElevenLabs": {
+      "logo": "elevenlabs.png",
+      "url": "https://elevenlabs.io",
+      "oq": "Voz que não parece robô para narrar o que você escreveu."
+    },
+    "n8n": {
+      "logo": "n8n.svg",
+      "url": "https://n8n.io",
+      "oq": "Liga as suas ferramentas e roda a tarefa repetida sem você."
+    }
   },
 
   "grupos": [
@@ -230,17 +286,53 @@
         "curto": "US$ 20/mês"
       },
       "Higgsfield": {
-        "custo": "cobra por crédito, entrada com 70 créditos/mês",
+        "custo": "Plus com 1.000 créditos por US$ 49/mês no anual; Ultra com 3.000 por US$ 129/mês",
         "faixa": 2,
-        "verificado": false,
-        "curto": "cobrado por crédito"
+        "verificado": true,
+        "curto": "a partir de US$ 49/mês"
       },
       "Poppy AI": {
         "custo": "US$ 399 por ano no Basic, sem teste",
         "faixa": 3,
         "verificado": true,
         "curto": "US$ 399 por ano"
+      },
+      "Gemini Notebook": {
+        "custo": "grátis na conta Google, com limite diário",
+        "faixa": 0,
+        "verificado": true,
+        "curto": "grátis"
+      },
+      "Gamma": {
+        "custo": "plano Free resolve o começo; Plus por R$ 30/mês no anual",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "tem plano grátis"
+      },
+      "ElevenLabs": {
+        "custo": "Free com 10 mil créditos; Starter US$ 6/mês e Creator US$ 22/mês",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "tem plano grátis"
+      },
+      "n8n": {
+        "custo": "grátis se você hospedar; Starter €20/mês na nuvem deles",
+        "faixa": 1,
+        "verificado": true,
+        "curto": "grátis se hospedar"
       }
+    },
+    "aberta": {
+      "c_tarefa": "Em uma linha: o que mais rouba o seu tempo na semana de conteúdo?",
+      "n_tarefa": "Em uma linha: o que mais consome o seu dia na operação?",
+      "v_tarefa": "Em uma linha: onde a sua venda trava?",
+      "e_tarefa": "Em uma linha: o que mais toma o seu tempo de estudo ou de aula?",
+      "t_tarefa": "Em uma linha: onde o seu tempo técnico vai embora?",
+      "tarefa": "Em uma linha: o que mais come o seu tempo hoje?",
+      "s_tarefa": "Em uma linha: o que mais toma o seu tempo fora do atendimento?",
+      "j_tarefa": "Em uma linha: onde o seu tempo jurídico vai embora?",
+      "f_tarefa": "Em uma linha: o que mais consome o seu fechamento?",
+      "p_tarefa": "Em uma linha: o que mais come tempo no seu projeto ou obra?"
     },
     "perguntas": [
       [
@@ -295,6 +387,40 @@
             }
           ],
           [
+            "Saúde e consultório",
+            {
+              "Claude": 3,
+              "Gemini": 2,
+              "Perplexity": 2,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Jurídico",
+            {
+              "Claude": 3,
+              "Gemini": 3,
+              "Perplexity": 2
+            }
+          ],
+          [
+            "Contábil e financeiro",
+            {
+              "Gemini": 3,
+              "Claude": 3,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Projeto e obra",
+            {
+              "Claude": 2,
+              "Gemini": 2,
+              "Higgsfield": 2,
+              "ChatGPT": 1
+            }
+          ],
+          [
             "Outra área",
             {
               "ChatGPT": 2,
@@ -306,58 +432,522 @@
         ]
       ],
       [
-        "tempo_ia",
-        "Há quanto tempo você usa IA no trabalho?",
+        "s_tarefa",
+        "Fora do atendimento, o que mais toma o seu tempo?",
         [
           [
-            "Comecei agora",
+            "Evoluir prontuário e escrever laudo",
             {
-              "ChatGPT": 1,
+              "Claude": 4
+            }
+          ],
+          [
+            "Estudar caso, artigo e protocolo",
+            {
+              "Perplexity": 4,
+              "Gemini": 2,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Responder paciente e organizar agenda",
+            {
+              "ChatGPT": 4,
+              "n8n": 2
+            }
+          ],
+          [
+            "Fazer conteúdo pra atrair paciente",
+            {
+              "Higgsfield": 3,
+              "Claude": 2,
+              "Poppy AI": 1,
+              "ElevenLabs": 2
+            }
+          ],
+          [
+            "Faturamento, convênio e planilha",
+            {
+              "Gemini": 4
+            }
+          ],
+          [
+            "Treinar e organizar a equipe",
+            {
+              "Claude": 3,
               "Gemini": 1
             }
           ],
           [
-            "Alguns meses",
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            5
+          ]
+        }
+      ],
+      [
+        "j_tarefa",
+        "Na rotina jurídica, onde o tempo vai embora?",
+        [
+          [
+            "Ler processo e peça longa",
             {
-              "ChatGPT": 1,
+              "Gemini": 4,
+              "Gemini Notebook": 7
+            }
+          ],
+          [
+            "Escrever petição e parecer",
+            {
+              "Claude": 4
+            }
+          ],
+          [
+            "Pesquisar jurisprudência e legislação",
+            {
+              "Perplexity": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Redigir e revisar contrato",
+            {
+              "Claude": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Explicar pro cliente sem juridiquês",
+            {
+              "ChatGPT": 4
+            }
+          ],
+          [
+            "Prazo, agenda e controle de processo",
+            {
+              "Gemini": 3,
               "Claude": 1
             }
           ],
           [
-            "Mais de um ano",
-            {
-              "Claude": 1,
-              "Perplexity": 1
-            }
+            "Nenhuma dessas, a minha é outra",
+            {}
           ]
-        ]
+        ],
+        {
+          "area": [
+            6
+          ]
+        }
       ],
       [
-        "quantas",
-        "Quantas ferramentas de IA você tem abertas hoje?",
+        "f_tarefa",
+        "No fechamento do mês, o que mais consome?",
         [
-          ["Nenhuma ainda", {}],
-          ["Uma só", {}],
-          ["Duas ou três", {}],
-          ["Perdi a conta", {}]
-        ]
+          [
+            "Conferir e cruzar planilha",
+            {
+              "Gemini": 4
+            }
+          ],
+          [
+            "Ler norma, instrução e legislação",
+            {
+              "Perplexity": 4,
+              "Gemini": 1,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Explicar o resultado pro cliente",
+            {
+              "Claude": 4
+            }
+          ],
+          [
+            "Responder cliente sobre imposto e guia",
+            {
+              "ChatGPT": 4
+            }
+          ],
+          [
+            "Montar relatório e apresentação",
+            {
+              "Gemini": 4,
+              "Claude": 1,
+              "Gamma": 7
+            }
+          ],
+          [
+            "Automatizar o que se repete todo mês",
+            {
+              "Claude Code": 3,
+              "Lovable": 1,
+              "n8n": 7
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            7
+          ]
+        }
       ],
       [
-        "gasto",
-        "Quanto você paga por mês hoje, somando tudo?",
+        "p_tarefa",
+        "No projeto e na obra, o que mais come tempo?",
         [
-          ["Nada, só uso o que é grátis", {}],
-          ["Até R$ 150", {}],
-          ["De R$ 150 a R$ 400", {}],
-          ["Mais de R$ 400", {}]
-        ]
+          [
+            "Orçamento e composição de custo",
+            {
+              "Gemini": 4,
+              "Claude": 1
+            }
+          ],
+          [
+            "Memorial, laudo e documento técnico",
+            {
+              "Claude": 4
+            }
+          ],
+          [
+            "Ler norma e projeto de terceiro",
+            {
+              "Gemini": 3,
+              "Perplexity": 2
+            }
+          ],
+          [
+            "Montar a proposta que o cliente vê",
+            {
+              "Gemini": 3,
+              "Claude": 2,
+              "Gamma": 7
+            }
+          ],
+          [
+            "Imagem pra vender a ideia antes de existir",
+            {
+              "Higgsfield": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Falar com cliente, fornecedor e equipe",
+            {
+              "ChatGPT": 4
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            8
+          ]
+        }
       ],
       [
-        "break1",
-        "A Regra das 3 IAs | O problema quase nunca é a IA, é abrir a errada para aquela tarefa. Escolher a certa é o que faz a resposta parar de voltar genérica. Vai até o fim e você sai daqui com as três ferramentas do seu caso, na ordem de assinar e com o prompt de cada uma.",
+        "c_tarefa",
+        "Na sua semana de conteúdo, o que mais rouba tempo?",
         [
-          ["Continuar →", {}]
-        ]
+          [
+            "Escrever roteiro e legenda",
+            {
+              "Claude": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Gravar e editar vídeo",
+            {
+              "Higgsfield": 3,
+              "Poppy AI": 2,
+              "Gemini": 1,
+              "ElevenLabs": 7
+            }
+          ],
+          [
+            "Criar imagem, capa e thumbnail",
+            {
+              "Higgsfield": 4,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Achar pauta que ainda não saturou",
+            {
+              "Perplexity": 3,
+              "Grok": 3
+            }
+          ],
+          [
+            "Entender por que um post foi e outro não",
+            {
+              "Poppy AI": 4,
+              "Claude": 2
+            }
+          ],
+          [
+            "Responder comentário e direct",
+            {
+              "ChatGPT": 3
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            0
+          ]
+        }
+      ],
+      [
+        "n_tarefa",
+        "O que mais consome o seu dia na operação?",
+        [
+          [
+            "Escrever proposta, contrato e e-mail",
+            {
+              "Claude": 4,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Olhar número e planilha pra decidir",
+            {
+              "Gemini": 4,
+              "Claude": 2
+            }
+          ],
+          [
+            "Pesquisar mercado, preço e concorrente",
+            {
+              "Perplexity": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Documentar processo e treinar equipe",
+            {
+              "Claude": 3,
+              "Gemini": 2,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Montar apresentação e relatório de reunião",
+            {
+              "Gemini": 4,
+              "Claude": 2,
+              "Gamma": 7
+            }
+          ],
+          [
+            "Apagar incêndio de sistema que ninguém cuida",
+            {
+              "Claude Code": 3,
+              "Lovable": 2,
+              "n8n": 7
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            1
+          ]
+        }
+      ],
+      [
+        "v_tarefa",
+        "Onde a sua venda trava hoje?",
+        [
+          [
+            "Achar e qualificar quem vale o tempo",
+            {
+              "Perplexity": 4,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Escrever a primeira mensagem sem parecer robô",
+            {
+              "Claude": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Responder objeção na hora, no WhatsApp",
+            {
+              "ChatGPT": 4,
+              "Claude": 2
+            }
+          ],
+          [
+            "Montar proposta e fazer follow-up",
+            {
+              "Claude": 3,
+              "ChatGPT": 2,
+              "Gemini": 1,
+              "Gamma": 3
+            }
+          ],
+          [
+            "Organizar o que foi conversado com cada um",
+            {
+              "Gemini": 3,
+              "Claude": 2,
+              "n8n": 3
+            }
+          ],
+          [
+            "Entender por que o cliente sumiu",
+            {
+              "Claude": 3,
+              "Perplexity": 2
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            2
+          ]
+        }
+      ],
+      [
+        "e_tarefa",
+        "O que mais toma o seu tempo de estudo ou de aula?",
+        [
+          [
+            "Ler material longo e denso",
+            {
+              "Gemini": 4,
+              "Gemini Notebook": 7
+            }
+          ],
+          [
+            "Preparar aula, slide e material",
+            {
+              "Gemini": 3,
+              "Claude": 3,
+              "Gemini Notebook": 3,
+              "Gamma": 3
+            }
+          ],
+          [
+            "Escrever trabalho, artigo ou relatório",
+            {
+              "Claude": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Corrigir e dar devolutiva",
+            {
+              "Claude": 3,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Achar fonte que dá pra citar",
+            {
+              "Perplexity": 4,
+              "Gemini": 1,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Explicar de um jeito que a pessoa entenda",
+            {
+              "ChatGPT": 3,
+              "Claude": 2
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            3
+          ]
+        }
+      ],
+      [
+        "t_tarefa",
+        "No trabalho técnico, onde o tempo vai embora?",
+        [
+          [
+            "Escrever código novo",
+            {
+              "Claude Code": 4
+            }
+          ],
+          [
+            "Entender código que não é meu",
+            {
+              "Claude Code": 4,
+              "Claude": 2
+            }
+          ],
+          [
+            "Caçar bug e corrigir",
+            {
+              "Claude Code": 4
+            }
+          ],
+          [
+            "Subir protótipo pra validar ideia",
+            {
+              "Lovable": 4,
+              "Claude Code": 2
+            }
+          ],
+          [
+            "Documentar e explicar pra quem não é técnico",
+            {
+              "Claude": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Pesquisar erro, biblioteca e documentação",
+            {
+              "Perplexity": 4
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            4
+          ]
+        }
       ],
       [
         "tarefa",
@@ -405,11 +995,889 @@
             "Construir site ou app",
             {
               "Claude Code": 4,
+              "Lovable": 3
+            }
+          ],
+          [
+            "Nenhuma dessas, a minha é outra",
+            {}
+          ]
+        ],
+        {
+          "area": [
+            9
+          ]
+        }
+      ],
+      [
+        "tempo_ia",
+        "Há quanto tempo você usa IA no trabalho?",
+        [
+          [
+            "Comecei agora",
+            {}
+          ],
+          [
+            "Alguns meses",
+            {}
+          ],
+          [
+            "Mais de um ano",
+            {}
+          ]
+        ]
+      ],
+      [
+        "quantas",
+        "Quantas ferramentas de IA você tem abertas hoje?",
+        [
+          [
+            "Nenhuma ainda",
+            {}
+          ],
+          [
+            "Uma só",
+            {}
+          ],
+          [
+            "Duas ou três",
+            {}
+          ],
+          [
+            "Perdi a conta",
+            {}
+          ]
+        ]
+      ],
+      [
+        "gasto",
+        "Quanto você paga por mês hoje, somando tudo?",
+        [
+          [
+            "Nada, só uso o que é grátis",
+            {}
+          ],
+          [
+            "Até R$ 150",
+            {}
+          ],
+          [
+            "De R$ 150 a R$ 400",
+            {}
+          ],
+          [
+            "Mais de R$ 400",
+            {}
+          ]
+        ]
+      ],
+      [
+        "break1",
+        "A Regra das 3 IAs | O problema quase nunca é a IA, é abrir a errada para aquela tarefa. Escolher a certa é o que faz a resposta parar de voltar genérica. Vai até o fim e você sai daqui com as três ferramentas do seu caso, na ordem de assinar e com o prompt de cada uma.",
+        [
+          [
+            "Continuar →",
+            {}
+          ]
+        ]
+      ],
+      [
+        "c_ideia",
+        "De onde sai a sua próxima ideia de post?",
+        [
+          [
+            "Do que eu vejo no feed na hora",
+            {
+              "Grok": 3,
+              "Perplexity": 1
+            }
+          ],
+          [
+            "De um banco de referências que eu guardo",
+            {
+              "Poppy AI": 4,
+              "Gemini Notebook": 2
+            }
+          ],
+          [
+            "Do que cliente e seguidor perguntam",
+            {
+              "Claude": 3,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Do improviso, não tenho fonte fixa",
+            {
+              "Perplexity": 2,
+              "Grok": 2,
+              "ChatGPT": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            0
+          ]
+        }
+      ],
+      [
+        "c_voz",
+        "Quando a IA escreve no seu lugar, sai com a sua voz?",
+        [
+          [
+            "Sai genérico, dá pra ver que é IA",
+            {
+              "Claude": 4,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Sai perto, mas eu reescrevo tudo",
+            {
+              "Claude": 3,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Já ensinei o meu jeito e sai bom",
+            {
+              "Claude": 2,
+              "Poppy AI": 2
+            }
+          ],
+          [
+            "Não deixo a IA escrever, só me ajuda a pensar",
+            {
+              "Claude": 2,
+              "ChatGPT": 2,
+              "ElevenLabs": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            0
+          ]
+        }
+      ],
+      [
+        "n_dados",
+        "Onde vivem os números do seu negócio?",
+        [
+          [
+            "Numa planilha que eu mesmo atualizo",
+            {
+              "Gemini": 3
+            }
+          ],
+          [
+            "Num sistema que exporta relatório",
+            {
+              "Gemini": 3,
+              "Claude": 2
+            }
+          ],
+          [
+            "Espalhados em vários lugares",
+            {
+              "Claude": 3,
+              "Gemini": 2,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Na minha cabeça e no extrato",
+            {
+              "Claude": 2,
+              "ChatGPT": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            1
+          ]
+        }
+      ],
+      [
+        "n_repete",
+        "Qual tarefa se repete quase igual toda semana?",
+        [
+          [
+            "Relatório pra cliente ou sócio",
+            {
+              "Gemini": 3,
+              "Claude": 2,
+              "n8n": 2
+            }
+          ],
+          [
+            "Orçamento e proposta",
+            {
+              "Claude": 4,
+              "ChatGPT": 1
+            }
+          ],
+          [
+            "Conteúdo e comunicação do negócio",
+            {
+              "ChatGPT": 2,
+              "Claude": 2,
+              "Higgsfield": 2,
+              "ElevenLabs": 7
+            }
+          ],
+          [
+            "Cobrar gente e conferir entrega",
+            {
+              "Claude": 2,
+              "ChatGPT": 2,
+              "n8n": 7
+            }
+          ],
+          [
+            "Nenhuma, toda semana é diferente",
+            {
+              "Claude": 2,
+              "Perplexity": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            1
+          ]
+        }
+      ],
+      [
+        "v_canal",
+        "Onde a conversa de venda acontece?",
+        [
+          [
+            "WhatsApp e direct",
+            {
+              "ChatGPT": 3
+            }
+          ],
+          [
+            "Reunião e ligação",
+            {
+              "Gemini": 3,
+              "Claude": 2
+            }
+          ],
+          [
+            "E-mail e proposta formal",
+            {
+              "Claude": 3,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Presencial, olho no olho",
+            {
+              "ChatGPT": 2,
+              "Claude": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            2
+          ]
+        }
+      ],
+      [
+        "v_pesquisa",
+        "Antes de falar com um cliente novo, você pesquisa sobre ele?",
+        [
+          [
+            "Sempre, e leva tempo demais",
+            {
+              "Perplexity": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Só quando a conta é grande",
+            {
+              "Perplexity": 3
+            }
+          ],
+          [
+            "Quase nunca, vou pelo feeling",
+            {
+              "Perplexity": 2,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Queria, mas não sei o que procurar",
+            {
+              "Perplexity": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            2
+          ]
+        }
+      ],
+      [
+        "e_fonte",
+        "O que acontece quando você pede fonte pra IA?",
+        [
+          [
+            "Ela inventa referência que não existe",
+            {
+              "Perplexity": 4,
+              "Gemini": 1,
+              "Gemini Notebook": 7
+            }
+          ],
+          [
+            "Ela acha, mas conferir demora",
+            {
+              "Perplexity": 3
+            }
+          ],
+          [
+            "Uso só o que a instituição indica",
+            {
+              "Gemini": 3,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Não uso fonte, o conteúdo é meu",
+            {
+              "Claude": 3,
+              "ChatGPT": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            3
+          ]
+        }
+      ],
+      [
+        "e_volume",
+        "Por semana, o material que você tem que dar conta é do tamanho de...",
+        [
+          [
+            "Alguns artigos",
+            {
+              "Perplexity": 3
+            }
+          ],
+          [
+            "Um livro ou uma apostila inteira",
+            {
+              "Gemini": 4,
+              "Gemini Notebook": 7
+            }
+          ],
+          [
+            "Várias aulas gravadas",
+            {
+              "Gemini": 3,
+              "Poppy AI": 2,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Não é volume, é dificuldade do conteúdo",
+            {
+              "Claude": 4,
+              "ChatGPT": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            3
+          ]
+        }
+      ],
+      [
+        "t_base",
+        "O código onde você mexe é...",
+        [
+          [
+            "Meu, começado do zero",
+            {
+              "Claude Code": 3,
+              "Lovable": 2
+            }
+          ],
+          [
+            "De um time, com histórico e review",
+            {
+              "Claude Code": 4
+            }
+          ],
+          [
+            "Legado que ninguém quer abrir",
+            {
+              "Claude Code": 4,
+              "Claude": 2
+            }
+          ],
+          [
+            "Não é código, é sistema e no-code",
+            {
               "Lovable": 3,
+              "ChatGPT": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            4
+          ]
+        }
+      ],
+      [
+        "t_entrega",
+        "O que você precisa entregar mais rápido?",
+        [
+          [
+            "Feature em produção",
+            {
+              "Claude Code": 4
+            }
+          ],
+          [
+            "Protótipo pra mostrar pro cliente",
+            {
+              "Lovable": 4
+            }
+          ],
+          [
+            "Análise ou parecer técnico",
+            {
+              "Claude": 4,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Automação interna que ninguém quer fazer",
+            {
+              "Claude Code": 3,
+              "Claude": 2,
+              "n8n": 7
+            }
+          ]
+        ],
+        {
+          "area": [
+            4
+          ]
+        }
+      ],
+      [
+        "o_saida",
+        "No fim do dia, o que você entrega?",
+        [
+          [
+            "Texto e documento",
+            {
+              "Claude": 4,
+              "ChatGPT": 1,
+              "Gamma": 2
+            }
+          ],
+          [
+            "Decisão e resposta pra alguém",
+            {
+              "Claude": 3,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Material visual",
+            {
+              "Higgsfield": 4,
+              "Gemini": 1,
+              "ElevenLabs": 2
+            }
+          ],
+          [
+            "Atendimento e serviço",
+            {
+              "ChatGPT": 3
+            }
+          ],
+          [
+            "Sistema, planilha ou ferramenta",
+            {
+              "Claude Code": 3,
+              "Gemini": 2,
+              "Lovable": 1,
+              "n8n": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            9
+          ]
+        }
+      ],
+      [
+        "o_contexto",
+        "O seu trabalho é mais de lidar com...",
+        [
+          [
+            "Gente",
+            {
+              "ChatGPT": 3,
+              "Claude": 2
+            }
+          ],
+          [
+            "Documento, norma e regra",
+            {
+              "Claude": 4,
+              "Gemini": 2,
+              "Gemini Notebook": 2
+            }
+          ],
+          [
+            "Número e sistema",
+            {
+              "Gemini": 3,
+              "Claude Code": 1
+            }
+          ],
+          [
+            "Coisa física, no mundo real",
+            {
+              "ChatGPT": 2,
+              "Gemini": 2,
+              "Perplexity": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            9
+          ]
+        }
+      ],
+      [
+        "s_registro",
+        "Como o registro do atendimento acontece hoje?",
+        [
+          [
+            "Digito durante ou logo depois da consulta",
+            {
+              "Claude": 3
+            }
+          ],
+          [
+            "Gravo e transcrevo depois",
+            {
+              "Gemini": 4,
+              "Claude": 1
+            }
+          ],
+          [
+            "No sistema da clínica, com campo fixo",
+            {
+              "Claude": 2,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Escrevo à mão e passo a limpo",
+            {
+              "ChatGPT": 3,
               "Claude": 1
             }
           ]
-        ]
+        ],
+        {
+          "area": [
+            5
+          ]
+        }
+      ],
+      [
+        "s_dado",
+        "E dado de paciente, entra na ferramenta?",
+        [
+          [
+            "Entra, e isso me preocupa",
+            {
+              "Claude": 3,
+              "Perplexity": 1
+            }
+          ],
+          [
+            "Só entra dado sem identificação",
+            {
+              "Claude": 2,
+              "Perplexity": 2
+            }
+          ],
+          [
+            "Nunca entra, uso só pra estudo e texto",
+            {
+              "Perplexity": 3,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Sinceramente, não sei o que pode",
+            {
+              "Claude": 2,
+              "Perplexity": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            5
+          ]
+        }
+      ],
+      [
+        "j_volume",
+        "O material de um processo seu costuma ser do tamanho de...",
+        [
+          [
+            "Poucas páginas",
+            {
+              "Claude": 3
+            }
+          ],
+          [
+            "Centenas de páginas",
+            {
+              "Gemini": 4,
+              "Gemini Notebook": 7
+            }
+          ],
+          [
+            "Áudio e vídeo de audiência",
+            {
+              "Gemini": 4,
+              "Claude": 1,
+              "Gemini Notebook": 3
+            }
+          ],
+          [
+            "Varia demais, nunca sei",
+            {
+              "Gemini": 2,
+              "Claude": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            6
+          ]
+        }
+      ],
+      [
+        "j_risco",
+        "O que mais te trava pra usar IA no jurídico?",
+        [
+          [
+            "Ela inventa jurisprudência que não existe",
+            {
+              "Perplexity": 4,
+              "Gemini": 1,
+              "Gemini Notebook": 7
+            }
+          ],
+          [
+            "Sigilo do cliente e dado sensível",
+            {
+              "Claude": 3,
+              "Perplexity": 1
+            }
+          ],
+          [
+            "O texto não sai com a minha técnica",
+            {
+              "Claude": 4
+            }
+          ],
+          [
+            "Nada, já uso todo dia",
+            {
+              "Claude": 2,
+              "Gemini": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            6
+          ]
+        }
+      ],
+      [
+        "f_origem",
+        "De onde vêm os números que você trata?",
+        [
+          [
+            "Do sistema contábil, em relatório",
+            {
+              "Gemini": 3,
+              "Claude": 1
+            }
+          ],
+          [
+            "Da planilha do cliente, cada uma de um jeito",
+            {
+              "Gemini": 3,
+              "Claude": 2
+            }
+          ],
+          [
+            "De PDF e extrato",
+            {
+              "Gemini": 4
+            }
+          ],
+          [
+            "Digitado na mão, um por um",
+            {
+              "Gemini": 2,
+              "Claude Code": 2,
+              "n8n": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            7
+          ]
+        }
+      ],
+      [
+        "f_carteira",
+        "Quantos clientes dependem de você todo mês?",
+        [
+          [
+            "Um ou dois",
+            {
+              "Claude": 3
+            }
+          ],
+          [
+            "Até dez",
+            {
+              "Claude": 2,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Dezenas",
+            {
+              "Gemini": 3,
+              "Claude": 1
+            }
+          ],
+          [
+            "Mais de cem",
+            {
+              "Gemini": 3,
+              "Claude Code": 2,
+              "n8n": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            7
+          ]
+        }
+      ],
+      [
+        "p_entrada",
+        "O que o cliente te manda pra você orçar?",
+        [
+          [
+            "Planta e projeto",
+            {
+              "Gemini": 4
+            }
+          ],
+          [
+            "Foto e medida no WhatsApp",
+            {
+              "ChatGPT": 3,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Só a ideia, na conversa",
+            {
+              "Claude": 3,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Cada um manda de um jeito",
+            {
+              "Claude": 2,
+              "Gemini": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            8
+          ]
+        }
+      ],
+      [
+        "p_visual",
+        "O quanto a sua venda depende de a pessoa ver antes?",
+        [
+          [
+            "Muito, sem imagem não fecha",
+            {
+              "Higgsfield": 4,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Ajuda, mas não é o que decide",
+            {
+              "Higgsfield": 2,
+              "Claude": 2
+            }
+          ],
+          [
+            "Nada, é decisão técnica",
+            {
+              "Claude": 3,
+              "Gemini": 1
+            }
+          ],
+          [
+            "Hoje eu mostro foto de obra antiga",
+            {
+              "Higgsfield": 3,
+              "Claude": 1
+            }
+          ]
+        ],
+        {
+          "area": [
+            8
+          ]
+        }
       ],
       [
         "generica",
@@ -417,54 +1885,92 @@
         [
           [
             "Refaço o prompt até sair algo",
-            {
-              "Claude": 1
-            }
+            {}
           ],
           [
             "Tento em outra ferramenta",
-            {
-              "Perplexity": 1
-            }
+            {}
           ],
-          ["Desisto e faço na mão", {}]
+          [
+            "Desisto e faço na mão",
+            {}
+          ]
         ]
       ],
       [
         "parada",
         "Você já assinou alguma ferramenta que não usou?",
         [
-          ["Nunca", {}],
-          ["Uma", {}],
-          ["Mais de uma", {}],
-          ["Prefiro nem contar", {}]
+          [
+            "Nunca",
+            {}
+          ],
+          [
+            "Uma",
+            {}
+          ],
+          [
+            "Mais de uma",
+            {}
+          ],
+          [
+            "Prefiro nem contar",
+            {}
+          ]
         ]
       ],
       [
         "refaz",
         "Quantas vezes você refaz o mesmo prompt até prestar?",
         [
-          ["Sai de primeira", {}],
-          ["Duas ou três", {}],
-          ["Cinco ou mais", {}],
-          ["Quase sempre desisto antes", {}]
+          [
+            "Sai de primeira",
+            {}
+          ],
+          [
+            "Duas ou três",
+            {}
+          ],
+          [
+            "Cinco ou mais",
+            {}
+          ],
+          [
+            "Quase sempre desisto antes",
+            {}
+          ]
         ]
       ],
       [
         "horas",
         "Quantas horas por semana isso te custa?",
         [
-          ["Menos de uma", {}],
-          ["De uma a três", {}],
-          ["De três a seis", {}],
-          ["Mais de seis", {}]
+          [
+            "Menos de uma",
+            {}
+          ],
+          [
+            "De uma a três",
+            {}
+          ],
+          [
+            "De três a seis",
+            {}
+          ],
+          [
+            "Mais de seis",
+            {}
+          ]
         ]
       ],
       [
         "break2",
         "Por que três, e não dez | Testei ferramenta por ferramenta em trabalho real, não em review. O que sobrou foi um trio por perfil: uma para pensar e escrever, uma para buscar e checar, uma para produzir. O resto é assinatura parada.",
         [
-          ["Continuar →", {}]
+          [
+            "Continuar →",
+            {}
+          ]
         ]
       ],
       [
@@ -509,9 +2015,18 @@
         "prazo",
         "Em quanto tempo você quer isso resolvido?",
         [
-          ["Essa semana", {}],
-          ["Neste mês", {}],
-          ["Sem pressa, quero fazer certo", {}]
+          [
+            "Essa semana",
+            {}
+          ],
+          [
+            "Neste mês",
+            {}
+          ],
+          [
+            "Sem pressa, quero fazer certo",
+            {}
+          ]
         ]
       ],
       [
@@ -520,17 +2035,11 @@
         [
           [
             "Dominar uma a fundo",
-            {
-              "Claude": 1,
-              "ChatGPT": 1
-            }
+            {}
           ],
           [
             "Saber trocar conforme a tarefa",
-            {
-              "Perplexity": 1,
-              "Gemini": 1
-            }
+            {}
           ]
         ]
       ],
@@ -573,6 +2082,53 @@
         ]
       ]
     ],
+    "recursos": {
+      "Claude": [
+        [
+          "Projects",
+          "Guarda o contexto entre conversas. Você para de recolar quem é você e o que já ficou decidido."
+        ],
+        [
+          "Cowork",
+          "Ele trabalha nos seus arquivos e devolve pronto para revisão, em vez de responder num chat. Pede plano pago."
+        ]
+      ],
+      "ChatGPT": [
+        [
+          "Modo de voz",
+          "A conversa por voz no deslocamento é onde ele ganha dos outros."
+        ],
+        [
+          "Deep research",
+          "Ele pesquisa sozinho em muitas fontes e devolve relatório, em vez de responder de cabeça."
+        ],
+        [
+          "Agent mode",
+          "Ele executa a tarefa no navegador em vez de te explicar como fazer. Nos planos Plus, Pro e Business."
+        ]
+      ],
+      "Gemini": [
+        [
+          "Deep Research",
+          "Varre centenas de páginas e monta o relatório. Com os apps conectados, alcança também o seu Gmail e Drive."
+        ],
+        [
+          "Canvas",
+          "Vira o relatório em página, quiz ou infográfico para compartilhar, sem sair dali."
+        ],
+        [
+          "Gems",
+          "Um assistente configurado por você para a tarefa que se repete, sem custo no app."
+        ]
+      ],
+      "Gemini Notebook": [
+        [
+          "Resumo em áudio",
+          "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
+        ]
+      ]
+    },
+    "recursos_conferidos": "19/08/2026",
     "comeco": {
       "Claude": [
         "Preenche as instruções do perfil antes do primeiro prompt: quem você é, o que faz e o que ele tem que parar de fazer.",
@@ -609,8 +2165,25 @@
       "Lovable": [
         "Serve pra mostrar uma ideia no ar rápido, não pra manter o produto depois.",
         "Monte uma página de captura para {sua oferta}, com um campo de e-mail e um botão só."
+      ],
+      "Gemini Notebook": [
+        "Sobe as fontes antes de perguntar qualquer coisa. Ele não responde do que não está ali dentro, e é justamente isso que você quer.",
+        "Usando só as fontes deste notebook: me dê os 5 pontos que aparecem em mais de uma delas, com a citação de onde saiu cada um. Depois aponte onde as fontes discordam entre si."
+      ],
+      "Gamma": [
+        "Cola o texto que você já tem em vez de pedir do zero: ele monta muito melhor em cima do seu conteúdo do que a partir de um tema solto.",
+        "Transforme este texto em uma apresentação de no máximo 8 slides. Um título por slide, no máximo 3 linhas por slide, e o número que sustenta cada argumento em destaque. Sem slide de agradecimento."
+      ],
+      "ElevenLabs": [
+        "Grava um minuto da sua própria voz e usa ela, em vez de escolher uma pronta da biblioteca. É a diferença entre o seu vídeo e o de todo mundo.",
+        "Cole o roteiro já quebrado para locução: frases de no máximo 12 palavras, uma por linha, e reticências no fim da frase onde você quer respiro. Frase longa é onde a voz sintética entrega que é sintética."
+      ],
+      "n8n": [
+        "Começa por UMA tarefa que você repete toda semana no mesmo horário, nunca pelo fluxo completo. O primeiro que roda sozinho é o que convence.",
+        "Monte o fluxo desta tarefa em passos numerados: qual é o gatilho, que dado entra em cada passo e o que sai no fim. A tarefa é {a que você repete toda semana}. Aponte onde ela pode falhar sem ninguém perceber."
       ]
     },
+    "gratis": "Começa hoje, é grátis",
     "ordem": [
       "Assina agora",
       "Nos próximos 30 dias",
@@ -711,29 +2284,29 @@
   },
   "upsell": {
     "nome": "Sua primeira semana pronta",
-    "rotulo": "Sua aula de boas-vindas",
+    "rotulo": "Antes de você abrir o mapa",
     "preco": "197",
     "credito": "67",
-    "promessa": "O diagnóstico diz o que usar. Isto aqui resolve o que fazer na segunda de manhã.",
+    "promessa": "O mapa diz quais são as suas 3. Aqui elas entram na sua semana e rodam em cima de um trabalho seu de verdade.",
     "entregaveis": [
       [
-        "Plano de 7 dias",
-        "Uma tarefa por dia, na ordem, com o resultado esperado de cada uma"
+        "A sua primeira semana, dia a dia",
+        "Sete tarefas de 20 minutos, na ordem. No sétimo dia as suas 3 estão rodando na sua rotina, não abertas em aba"
       ],
       [
-        "Prompts já preenchidos",
-        "Com o seu contexto do diagnóstico, não modelo em branco"
+        "Um trabalho seu, feito dentro",
+        "Você manda um material real, um texto, um processo ou um caso, e recebe ele já rodado na ferramenta certa. Não é modelo para preencher, é a sua primeira entrega pronta"
       ],
       [
-        "Revisão da sua stack",
-        "Quando uma ferramenta mudar de preço ou for superada, você recebe a troca"
+        "As suas 3 configuradas",
+        "O texto exato para colar nas instruções de cada uma, o que ligar e o que desligar"
       ],
       [
-        "Checklist de corte",
-        "O que cancelar primeiro e em que ordem, com a conta do que volta"
+        "Revisão quando mudar",
+        "Quando uma das suas 3 mudar de preço ou for superada, você recebe a troca e o motivo"
       ]
     ],
-    "razao_preco": "Fora desta tela o mesmo pacote sai por R$ 197 cheio, sem o crédito dos R$ 67.",
+    "razao_preco": "Fora desta tela o mesmo pacote sai por R$ 197 cheio, sem o crédito dos R$ 67 que você acabou de pagar.",
     "nota": "Pagamento único. Sem mensalidade. 7 dias de garantia."
   },
   "problema": [

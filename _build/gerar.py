@@ -30,6 +30,7 @@ INSTA = "https://instagram.com/aalisonaraujo"
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from config import CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO, PIXEL_META  # noqa: E402
 from config import VARIANTES  # noqa: E402
+import questionario  # noqa: E402
 
 # Variante do teste seco de nome chiclete: "" é o controle, na raiz.
 SLUG = sys.argv[1] if len(sys.argv) > 1 else ""
@@ -186,39 +187,16 @@ DG["crenca"] = V["crenca"]
 d["oferta"]["nome"] = V["nome"]
 # o break do One Belief carrega o nome do mecanismo
 DG["perguntas"] = [
-    (pid, titulo.replace("A Regra das 3 IAs", V["mecanismo"]), opc)
-    if pid == "break1" else (pid, titulo, opc)
-    for pid, titulo, opc in DG["perguntas"]
+    [p[0], p[1].replace("A Regra das 3 IAs", V["mecanismo"]), *p[2:]] if p[0] == "break1" else p
+    for p in DG["perguntas"]
 ]
 
 # As perguntas vão escritas no HTML (existem sem JavaScript). O JS só soma os pesos.
 # Passo com pid "break*" é uma tela de conteúdo, não pergunta: quebra o clique
 # automático de quem só vai batendo em "próximo". O título traz manchete e corpo
 # separados por " | ", e o botão único avança pelo mesmo caminho de uma opção.
-perguntas_html = []
-n_perguntas = sum(1 for pid, _t, _o in DG["perguntas"] if not pid.startswith("break"))
-n_pergunta = 0
-for i, (pid, titulo, opcoes) in enumerate(DG["perguntas"], start=1):
-    botoes = "".join(
-        f'<button type="button" class="opc" data-q="{escape(pid, quote=True)}" data-i="{j}">'
-        f'{escape(texto)}</button>'
-        for j, (texto, _pesos) in enumerate(opcoes)
-    )
-    if pid.startswith("break"):
-        manchete, _, corpo = titulo.partition(" | ")
-        perguntas_html.append(
-            f'<fieldset class="passo passo-break" data-passo="{i}" data-q="{escape(pid, quote=True)}">'
-            f'<legend>{escape(manchete)}</legend>'
-            f'<p class="break-corpo">{escape(corpo)}</p>'
-            f'<div class="opcoes">{botoes}</div></fieldset>'
-        )
-        continue
-    n_pergunta += 1
-    perguntas_html.append(
-        f'<fieldset class="passo" data-passo="{i}" data-q="{escape(pid, quote=True)}">'
-        f'<legend><span class="num">{n_pergunta} de {n_perguntas}</span>{escape(titulo)}</legend>'
-        f'<div class="opcoes">{botoes}</div></fieldset>'
-    )
+passos_html, regras, n_perguntas = questionario.montar(DG["perguntas"], DG["aberta"])
+perguntas_html = [passos_html]
 
 n_passos = len(DG["perguntas"]) + 1
 if CAPTURA_URL:
@@ -239,15 +217,18 @@ if CAPTURA_URL:
 
 # Dado que o motor consome no navegador: pesos, custo e o primeiro passo de cada ferramenta.
 motor = {
-    "pesos": {pid: [pesos for _t, pesos in opcoes] for pid, _tit, opcoes in DG["perguntas"]},
-    "rotulos": {pid: [texto for texto, _p in opcoes] for pid, _tit, opcoes in DG["perguntas"]},
+    "pesos": {p[0]: [pesos for _t, pesos in p[2]] for p in DG["perguntas"]},
+    "rotulos": {p[0]: [texto for texto, _p in p[2]] for p in DG["perguntas"]},
+    "se": regras,
+    "total": n_perguntas,
     "ordem": DG["ordem"],
+    "gratis": DG["gratis"],
     "cabem": DG["cabem"],
     "celular": DG["celular"],
     "perfil": DG["perfil"],
     "analitico": ANALITICO_URL,
     "origem": SLUG or "site",
-    "pids": [pid for pid, _t, _o in DG["perguntas"] if not pid.startswith("break")],
+    "pids": [p[0] for p in DG["perguntas"] if not p[0].startswith("break")],
     "ferramentas": {
         # só o que o teaser exibe. logo, url, descrição e custo completo são do produto
         n: {"curto": DG["acesso"][n]["curto"], "faixa": DG["acesso"][n]["faixa"]}
@@ -411,21 +392,33 @@ JS = """
   if (quiz) {
     const passos = [...quiz.querySelectorAll(".passo")];
     const resp = {};
+    const livre = {};        // o que a pessoa escreveu quando nenhuma opção era a dela
     let atual = 0;
+
+    // trilha por área: o passo que não é da área respondida não aparece nem conta
+    const vale = i => valePergunta(MOTOR, passos[i].dataset.q, resp);
+    const ehPergunta = i => MOTOR.pids.includes(passos[i].dataset.q);
 
     const mostrar = () => {
       passos.forEach((p, i) => { p.hidden = i !== atual; });
+      const fila = passos.map((_p, i) => i).filter(vale);
+      const pos = fila.indexOf(atual);
       // o passo atual conta como iniciado: barra vazia na pergunta 1 derruba a conclusão
-      el("barra-fill").style.width = ((atual + 0.4) / passos.length * 100) + "%";
+      el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
+      const num = passos[atual].querySelector(".num");
+      if (num && ehPergunta(atual))
+        num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + MOTOR.total;
     };
+
+    const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
 
     const calcular = () => calcularStack(MOTOR, resp);
 
     function render() {
       const { stack, corta } = calcular();
       // memória para o /mapa não pedir tudo de novo, e o anônimo para saber quem responde
-      salvarSessao(resp, MOTOR.pids);
-      enviarAnalitico(MOTOR.analitico, MOTOR.origem, MOTOR, resp, stack, corta);
+      salvarSessao(resp, MOTOR.pids, livre);
+      enviarAnalitico(MOTOR.analitico, MOTOR.origem, MOTOR, resp, stack, corta, livre);
       const [qArea, qOrc] = MOTOR.perfil;
       const area = MOTOR.rotulos[qArea][resp[qArea]];
       const orc = MOTOR.rotulos[qOrc][resp[qOrc]];
@@ -492,13 +485,44 @@ JS = """
       });
     }
 
+    // "nenhuma dessas": em vez de avançar, abre o campo. Ninguém é obrigado a escolher
+    // uma tarefa que não é a dele só para o quiz deixar passar.
+    const abrirCampo = (b) => {
+      const passo = b.closest(".passo");
+      const campo = passo.querySelector(".campo-aberto");
+      if (!campo || b !== b.parentNode.lastElementChild) {
+        if (campo) { campo.hidden = true; delete livre[passo.dataset.q]; }
+        return false;
+      }
+      campo.hidden = false;
+      campo.querySelector("input").focus();
+      campo.scrollIntoView({ block: "nearest", behavior: "smooth" });   // no celular nasce abaixo da dobra
+      return true;
+    };
+
     for (const b of quiz.querySelectorAll(".opc")) {
       b.addEventListener("click", () => {
         resp[b.dataset.q] = +b.dataset.i;
         for (const irmao of b.parentNode.children)
           irmao.setAttribute("aria-pressed", String(irmao === b));
-        atual++;
+        if (abrirCampo(b)) return;
+        proximo();
         if (atual < passos.length) mostrar(); else render();   // sem passo de contato, vai direto
+      });
+    }
+
+    for (const b of quiz.querySelectorAll(".btn-livre")) {
+      const campo = b.parentNode.querySelector("input");
+      const seguir = () => {
+        const texto = campo.value.trim();
+        if (texto) livre[campo.closest(".passo").dataset.q] = texto;
+        proximo();
+        if (atual < passos.length) mostrar(); else render();
+      };
+      b.addEventListener("click", seguir);
+      // sem isto o Enter submete o formulário e recarrega a página no meio do quiz
+      campo.addEventListener("keydown", e => {
+        if (e.key === "Enter") { e.preventDefault(); seguir(); }
       });
     }
 

@@ -1,6 +1,19 @@
 // Cálculo da stack. Injetado nas duas páginas (index e mapa) para que a versão
 // paga nunca devolva um resultado diferente do que o teaser mostrou.
 // Recebe o dicionário MOTOR e as respostas; não toca no DOM.
+
+// Trilha por área: a pergunta com regra só existe para quem respondeu aquela
+// área. Sem regra em MOTOR.se, a pergunta é do tronco e vale para todo mundo.
+function valePergunta(MOTOR, pid, resp) {
+  const se = MOTOR.se[pid];
+  return !se || Object.entries(se).every(([q, valores]) => valores.includes(resp[q]));
+}
+
+// As perguntas que esta pessoa precisa ter respondido, dadas as respostas dela.
+function pidsExigidos(MOTOR, resp) {
+  return MOTOR.pids.filter(pid => valePergunta(MOTOR, pid, resp));
+}
+
 function calcularStack(MOTOR, resp) {
   const pontos = {};
   for (const [q, i] of Object.entries(resp))
@@ -19,7 +32,10 @@ function calcularStack(MOTOR, resp) {
   const cabem = MOTOR.cabem[resp[MOTOR.perfil[1]] ?? 0];
   const stack = top.map((n, i) => ({
     nome: n,
-    quando: MOTOR.ordem[i < cabem ? 0 : (i === cabem ? 1 : 2)],
+    // "assina agora" numa ferramenta grátis derruba a credibilidade do mapa inteiro
+    quando: MOTOR.ferramentas[n].faixa === 0
+      ? MOTOR.gratis
+      : MOTOR.ordem[i < cabem ? 0 : (i === cabem ? 1 : 2)],
     ...MOTOR.ferramentas[n]
   }));
 

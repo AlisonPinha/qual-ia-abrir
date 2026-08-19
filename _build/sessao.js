@@ -10,10 +10,10 @@
 const SESSAO_CHAVE = "qia:resp";
 const SESSAO_DIAS = 30;
 
-function salvarSessao(resp, pids) {
+function salvarSessao(resp, pids, livre) {
   try {
     localStorage.setItem(SESSAO_CHAVE, JSON.stringify({
-      v: 1, resp, pids, ts: Date.now()
+      v: 1, resp, pids, livre: livre || {}, ts: Date.now()
     }));
   } catch (e) { /* modo privado ou storage cheio: seguir sem memória */ }
 }
@@ -21,15 +21,17 @@ function salvarSessao(resp, pids) {
 // Devolve as respostas salvas apenas se cobrirem TODAS as perguntas desta página.
 // Se o questionário mudou desde a última visita, ignora e deixa refazer: melhor
 // perguntar de novo do que montar a stack com pergunta que não existe mais.
-function lerSessao(pidsNecessarios) {
+// `exigidos` é função porque, com trilha por área, quais perguntas são obrigatórias
+// depende das próprias respostas salvas.
+function lerSessao(exigidos) {
   try {
     const bruto = localStorage.getItem(SESSAO_CHAVE);
     if (!bruto) return null;
     const d = JSON.parse(bruto);
     if (d.v !== 1) return null;
     if (Date.now() - d.ts > SESSAO_DIAS * 864e5) return null;
-    if (pidsNecessarios.some(p => !(p in d.resp))) return null;
-    return d.resp;
+    if (exigidos(d.resp).some(p => !(p in d.resp))) return null;
+    return { resp: d.resp, livre: d.livre || {} };
   } catch (e) { return null; }
 }
 
@@ -52,7 +54,7 @@ function origemTrafego() {
 // Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:
 // o que importa é gravar, não ler a resposta. Falha em silêncio de propósito,
 // porque analytics não pode quebrar a entrega.
-function enviarAnalitico(url, origem, MOTOR, resp, stack, corta) {
+function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
   if (!url) return;
   try {
     const respostas = {};
@@ -69,6 +71,9 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta) {
         origem,                                      // "site" ou "mapa"
         utm: origemTrafego(),                        // de onde a pessoa veio
         respostas,
+        // o que a pessoa escreveu quando nenhuma opção era a dela: é o que diz
+        // qual tarefa está faltando no quiz
+        descreveu: Object.values(livre || {}).join(" | "),
         stack: stack.map(s => s.nome),
         cortar: corta,
         ts: new Date().toISOString()
