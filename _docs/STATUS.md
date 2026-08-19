@@ -2,34 +2,37 @@
 
 ## Próxima sessão começa aqui
 
-**Publicado em 19/08/2026.** A produção roda o build desta sessão, com a camada de IA ligada.
-Conferido depois do deploy: a home em produção é byte a byte igual ao `public/index.html`
-local (mesmo md5), e `/api/mapa` responde 405 no GET e 200 no POST válido.
+**Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
+`DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
-### 1. ~~Ligar a chave e publicar~~ feito em 19/08
+**Estado em 19/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo, `/plano`
+com a entrega do upsell, quiz de 23 etapas, código de acesso e a primeira venda feita.
 
-`ANTHROPIC_API_KEY` está em **Production**. Em **Preview não entrou**: a CLI exige repositório
-Git conectado (`Project does not have a connected Git repository`) e este projeto deploya só
-por CLI. Preview continua caindo no 503, que é o fallback de texto fixo e não quebra nada.
+### O que fazer no começo da próxima sessão
 
-**O primeiro mapa foi lido inteiro**, como este arquivo mandava, e passou. Caso: conteúdo e
-redes sociais, roteiro e legenda, começou agora, celular, até R$ 150. Motor: Claude, ChatGPT e
-Higgsfield, cortando Poppy AI, Lovable e Gamma. Vieram os 8 blocos, a redação respeitou a
-stack e o corte, não citou preço nenhum e só usou recurso da lista (Projects no Claude, modo de
-voz no ChatGPT). Primeiro byte em 2,8s e stream completo em 41s, contra `maxDuration` de 60s.
+1. `for v in "" abas regra stack; do python3 _build/gerar.py $v; done`, mais
+   `gerar_mapa.py`, `gerar_plano.py` e `gerar_doc_quiz.py`. O `git status` tem que ficar limpo.
+2. `node _build/testar_motor.mjs`
+3. Se for publicar algo grande, `node run.js _build/regressao.js` de dentro da
+   `~/.claude/skills/playwright-skill`. Custa 1 chamada ao `/api/mapa` e 3 ao `/api/plano`.
 
-**Achado do primeiro mapa, ainda aberto:** o texto se referiu à pessoa no feminino ("as
-legendas que eu mesma escrevi") sem que o quiz pergunte gênero. Como o prompt é copiado pela
-pessoa na primeira pessoa, vale instruir neutralidade no `SISTEMA` do `api/mapa.mjs`.
+### O que está esperando o Alison
 
-**A chave ligada é descartável:** foi colada no chat, então trocar por outra do console e
-apagar esta. A troca exige redeploy, porque a function lê a variável no boot.
+- **Recolar o Apps Script** (`apps-script-captura.js`): colunas `trilha`, `descreveu` e `utm`
+- **Gravar a VSL** do upsell, roteiro no vault. As telas eu gravo com Playwright quando ele pedir
+- **Revisar a voz dos 7 dias**, que estão no ar em `/plano`
+- **Trocar a chave da API**, parado por decisão dele até acabar a fase de teste
 
-**Web Analytics** passou a servir `/_vercel/insights/script.js` depois deste deploy: o toggle
-só vale a partir do primeiro deploy seguinte.
+### O que eu pego em seguida
 
-**O código está no GitHub.** Os 9 commits que existiam só no disco foram enviados em 19/08:
-`main` está em `5bf6c6c` e a branch `feat/diagnostico-ramificado` também subiu.
+Fase 2 do plano: tela pós-compra com o upsell (2.3), CTA de ascensão dentro do `/mapa` (2.4),
+recuperação por WhatsApp (2.5) e o formulário do presente (2.8).
+
+### O que a primeira venda ensinou
+
+A compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de
+pagar. Nenhum QA meu pegava, porque eu sempre testava no mesmo navegador. Daí vieram o código
+de acesso e a memória parcial. **Ninguém aqui deve tratar "outro aparelho" como caso de borda.**
 
 ### 1b. A entrega, endurecida em 19/08
 
