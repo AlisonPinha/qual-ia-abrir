@@ -36,6 +36,19 @@ def montar(perguntas, aberta=None):
             f'{escape(texto)}</button>'
             for j, (texto, _pesos) in enumerate(opcoes)
         )
+        if pid == "break_espelho":
+            # a penúltima tela: carrega, repete de volta o que a pessoa respondeu e só
+            # então libera o resultado. Quem preenche a lista é o JS, que tem as respostas.
+            manchete, _, corpo = titulo.partition(" | ")
+            html.append(
+                f'<fieldset class="passo passo-break passo-espelho" data-passo="{i}"'
+                f' data-q="{escape(pid, quote=True)}">'
+                f'<legend>{escape(manchete)}</legend>'
+                f'<p class="break-corpo" id="espelho-status">{escape(corpo)}</p>'
+                f'<ul class="espelho" id="espelho-lista"></ul>'
+                f'<div class="opcoes">{botoes}</div></fieldset>'
+            )
+            continue
         if pid.startswith("break"):
             manchete, _, corpo = titulo.partition(" | ")
             html.append(
@@ -72,8 +85,15 @@ def total(perguntas):
     e outra duas, o contador "n de m" mentiria para metade das pessoas, e mentir no
     contador é o tipo de detalhe que faz abandonar o quiz na metade.
     """
-    tronco = sum(1 for p in perguntas if len(p) == 3 and not p[0].startswith("break"))
-    trilhas = Counter(json.dumps(p[3], sort_keys=True) for p in perguntas if len(p) > 3)
+    def perg(p):
+        return not p[0].startswith("break")
+
+    tronco = sum(1 for p in perguntas if len(p) == 3 and perg(p))
+    # condicional que não é de área (ex.: pergunta que só vale para quem já usa alguma
+    # ferramenta) entra no teto: quem responde tudo vê todas, e o contador é dinâmico
+    condicionais = sum(1 for p in perguntas if len(p) > 3 and "area" not in p[3] and perg(p))
+    trilhas = Counter(json.dumps(p[3], sort_keys=True)
+                      for p in perguntas if len(p) > 3 and "area" in p[3])
     if len(set(trilhas.values())) > 1:
         raise SystemExit(f"trilhas de tamanhos diferentes: {dict(trilhas)}")
-    return tronco + (max(trilhas.values()) if trilhas else 0)
+    return tronco + condicionais + (max(trilhas.values()) if trilhas else 0)

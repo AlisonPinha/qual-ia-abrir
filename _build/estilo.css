@@ -765,6 +765,24 @@ body.travado { overflow: hidden; }
 }
 .passo-break .opc { text-align: center; font-weight: 600; }
 
+/* o espelho: o que a pessoa respondeu, devolvido antes do resultado */
+.espelho { list-style: none; margin: 16px 0 2px; padding: 0; display: grid; gap: 7px; }
+.espelho li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+  padding: 10px 13px; border-radius: 11px;
+  border: 1px solid rgba(193, 131, 251, .18); background: rgba(193, 131, 251, .06);
+  animation: espelho-entra .32s ease both;
+}
+.espelho li:nth-child(2) { animation-delay: .1s; }
+.espelho li:nth-child(3) { animation-delay: .2s; }
+.espelho li:nth-child(4) { animation-delay: .3s; }
+.espelho li:nth-child(5) { animation-delay: .4s; }
+.espelho li:nth-child(6) { animation-delay: .5s; }
+.espelho-k { font-size: 13px; color: var(--cinza-min); }
+.espelho-v { font-size: 14px; font-weight: 600; text-align: right; }
+@keyframes espelho-entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .espelho li { animation: none; } }
+
 /* ---------- saída de quem não se viu em nenhuma opção ---------- */
 
 .campo-aberto[hidden] { display: none; }

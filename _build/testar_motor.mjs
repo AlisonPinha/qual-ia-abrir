@@ -23,7 +23,9 @@ for (const [pid, opcoes] of Object.entries(MOTOR.pesos))
 const [qArea] = MOTOR.perfil;
 const areas = MOTOR.rotulos[qArea].map((_r, i) => i);
 for (const a of areas) {
-  const exigidos = pidsExigidos(MOTOR, { [qArea]: a });
+  // "quantas: 1" liga as perguntas que só valem para quem já tem alguma ferramenta:
+  // é o caminho mais longo, que é o que MOTOR.total mede
+  const exigidos = pidsExigidos(MOTOR, { [qArea]: a, quantas: 1 });
   checar(exigidos.length === MOTOR.total,
     `área "${MOTOR.rotulos[qArea][a]}": ${exigidos.length} perguntas, o contador diz ${MOTOR.total}`);
   checar(exigidos.includes(qArea), `área ${a}: a pergunta de área sumiu da trilha`);

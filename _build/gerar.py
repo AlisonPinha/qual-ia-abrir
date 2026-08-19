@@ -45,6 +45,7 @@ d = json.loads((BUILD / "dados.json").read_text(encoding="utf-8"))
 CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
 MOTOR_JS = (BUILD / "motor.js").read_text(encoding="utf-8")
 SESSAO_JS = (BUILD / "sessao.js").read_text(encoding="utf-8")
+ESPELHO_JS = (BUILD / "espelho.js").read_text(encoding="utf-8")
 F = d["ferramentas"]
 
 
@@ -225,6 +226,8 @@ motor = {
     "gratis": DG["gratis"],
     "gratisPlano": DG["gratisPlano"],
     "curtoGratis": DG["curtoGratis"],
+    "espelho": DG["espelho"],
+    "espelhoPronto": DG["espelhoPronto"],
     "cabem": DG["cabem"],
     "teto": DG["teto"],
     "foco": DG["foco"],
@@ -406,15 +409,46 @@ JS = """
     const vale = i => valePergunta(MOTOR, passos[i].dataset.q, resp);
     const ehPergunta = i => MOTOR.pids.includes(passos[i].dataset.q);
 
+    // O teto é MOTOR.total, o caminho mais longo. Só desce quando a pessoa responde algo
+    // que exclui uma pergunta de vez: assim o contador nunca cresce no meio do quiz, que
+    // é o que assusta, e no máximo dá a boa notícia de que acabou antes.
+    const totalPerguntas = () => {
+      let n = MOTOR.total;
+      for (const p of passos) {
+        const q = p.dataset.q, se = MOTOR.se[q];
+        if (!se || "area" in se || !MOTOR.pids.includes(q)) continue;
+        const fora = Object.entries(se).some(([dep, vals]) => dep in resp && !vals.includes(resp[dep]));
+        if (fora) n--;
+      }
+      return n;
+    };
+
+    let espelhoPronto = false;
+    const prepararEspelho = () => {
+      if (espelhoPronto) return;
+      espelhoPronto = true;
+      pintarEspelho(MOTOR, resp, el("espelho-lista"));
+      const botao = passos[atual].querySelector(".opc");
+      const status = el("espelho-status");
+      // o botão nasce clicável no HTML: se o JS falhar, ninguém fica preso na tela
+      botao.disabled = true;
+      setTimeout(() => { status.textContent = MOTOR.espelhoPronto; botao.disabled = false; }, 1600);
+    };
+
     const mostrar = () => {
       passos.forEach((p, i) => { p.hidden = i !== atual; });
+      // a tela de espelho carrega, repete as respostas e só então libera o resultado
+      if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
       const fila = passos.map((_p, i) => i).filter(vale);
       const pos = fila.indexOf(atual);
       // o passo atual conta como iniciado: barra vazia na pergunta 1 derruba a conclusão
       el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
       const num = passos[atual].querySelector(".num");
       if (num && ehPergunta(atual))
-        num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + MOTOR.total;
+        // o total sai da fila, não de uma constante: com pergunta condicional, um número
+      // fixo mentiria para quem pula duas, e contador que mente faz abandonar o quiz
+      num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length
+                      + " de " + totalPerguntas();
     };
 
     const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
@@ -977,7 +1011,7 @@ html = f"""<!doctype html>
 
 <script>const DESTINO = {json.dumps(CAPTURA_URL)};
 const PROD = {json.dumps(V["nome"], ensure_ascii=False)};
-const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{SESSAO_JS}{JS}</script>
+const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{ESPELHO_JS}{SESSAO_JS}{JS}</script>
 <!-- Medição: Web Analytics ligado no painel da Vercel. Se o script voltar a dar 404,
      é o toggle que caiu, não o caminho. -->
 <script defer src="/_vercel/insights/script.js"></script>

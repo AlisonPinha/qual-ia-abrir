@@ -1086,7 +1086,14 @@
             "Mais de R$ 400",
             {}
           ]
-        ]
+        ],
+        {
+          "quantas": [
+            1,
+            2,
+            3
+          ]
+        }
       ],
       [
         "break1",
@@ -1934,7 +1941,14 @@
             "Prefiro nem contar",
             {}
           ]
-        ]
+        ],
+        {
+          "quantas": [
+            1,
+            2,
+            3
+          ]
+        }
       ],
       [
         "refaz",
@@ -2101,8 +2115,46 @@
             }
           ]
         ]
+      ],
+      [
+        "break_espelho",
+        "Montando o seu diagnóstico | Cruzando as suas respostas com as 13 ferramentas do catálogo.",
+        [
+          [
+            "Ver as minhas 3 IAs →",
+            {}
+          ]
+        ]
       ]
     ],
+    "_espelho": "O que a penúltima tela repete de volta para a pessoa antes do resultado. \"*tarefa\" é a pergunta de tarefa da trilha dela, que muda por área.",
+    "espelho": [
+      [
+        "area",
+        "No que trabalha"
+      ],
+      [
+        "*tarefa",
+        "O que mais come o seu tempo"
+      ],
+      [
+        "horas",
+        "Horas por semana nisso"
+      ],
+      [
+        "nivel",
+        "Como usa IA hoje"
+      ],
+      [
+        "orcamento",
+        "Pode investir por mês"
+      ],
+      [
+        "prazo",
+        "Quer resolver"
+      ]
+    ],
+    "espelhoPronto": "Pronto. Com base no que você respondeu, o seu mapa está montado.",
     "recursos": {
       "Claude": [
         [
