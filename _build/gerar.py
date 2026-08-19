@@ -438,6 +438,8 @@ JS = """
     };
 
     const mostrar = () => {
+      const btVoltar = el("quiz-voltar");
+      if (btVoltar) btVoltar.hidden = historico.length === 0;
       passos.forEach((p, i) => { p.hidden = i !== atual; });
       // a tela de espelho carrega, repete as respostas e só então libera o resultado
       if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
@@ -457,6 +459,18 @@ JS = """
     };
 
     const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
+    // Voltar existe porque resposta errada aqui não é hesitação, é defeito de entrega:
+    // a pessoa marca sem querer e recebe uma stack montada para outra realidade.
+    const historico = [];
+    const voltar = () => {
+      const anterior = historico.pop();
+      if (anterior === undefined) return;
+      atual = anterior;
+      delete resp[passos[atual].dataset.q];
+      limparOrfas(MOTOR, resp);
+      for (const b of passos[atual].querySelectorAll(".opc")) b.setAttribute("aria-pressed", "false");
+      mostrar();
+    };
 
     const calcular = () => calcularStack(MOTOR, resp);
 
@@ -568,7 +582,10 @@ JS = """
 
     for (const b of quiz.querySelectorAll(".opc")) {
       b.addEventListener("click", () => {
-        resp[b.dataset.q] = +b.dataset.i;
+        historico.push(atual);
+      resp[b.dataset.q] = +b.dataset.i;
+      // trocar a área depois de voltar derruba a trilha antiga
+      limparOrfas(MOTOR, resp);
         for (const irmao of b.parentNode.children)
           irmao.setAttribute("aria-pressed", String(irmao === b));
         if (abrirCampo(b)) return;
@@ -577,7 +594,9 @@ JS = """
       });
     }
 
-    for (const b of quiz.querySelectorAll(".btn-livre")) {
+    el("quiz-voltar").addEventListener("click", voltar);
+
+  for (const b of quiz.querySelectorAll(".btn-livre")) {
       const campo = b.parentNode.querySelector("input");
       const seguir = () => {
         const texto = campo.value.trim();
@@ -1007,7 +1026,7 @@ html = f"""<!doctype html>
   <div class="modal-corpo">
     <h2 id="modal-titulo" class="modal-h">Qual IA você deveria usar</h2>
     <p class="modal-porque" id="modal-porque">{escape(DG["porque"])}</p>
-    <form id="quiz" novalidate>{"".join(perguntas_html)}</form>
+    <form id="quiz" novalidate><button type="button" id="quiz-voltar" class="quiz-voltar" hidden aria-label="Voltar para a pergunta anterior">←</button>{"".join(perguntas_html)}</form>
 
     <div id="resultado" role="region" aria-live="polite" aria-label="Resultado do diagnóstico" hidden>
       <div class="res-topo">

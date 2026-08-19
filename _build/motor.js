@@ -14,6 +14,19 @@ function pidsExigidos(MOTOR, resp) {
   return MOTOR.pids.filter(pid => valePergunta(MOTOR, pid, resp));
 }
 
+// Trocar uma resposta pode derrubar as que dependiam dela: quem responde "Conteúdo",
+// anda cinco perguntas da trilha e volta para marcar "Jurídico" deixaria cinco respostas
+// órfãs, e a stack sairia calculada com pergunta que a pessoa não viu. Roda em laço porque
+// apagar uma pode invalidar outra.
+function limparOrfas(MOTOR, resp) {
+  for (let volta = 0; volta < 20; volta++) {
+    let mudou = false;
+    for (const pid of Object.keys(resp))
+      if (!valePergunta(MOTOR, pid, resp)) { delete resp[pid]; mudou = true; }
+    if (!mudou) return;
+  }
+}
+
 function calcularStack(MOTOR, resp) {
   const pontos = {};
   for (const [q, i] of Object.entries(resp))

@@ -777,6 +777,17 @@ body.travado { overflow: hidden; }
   border: 1px solid rgba(193,131,251,.25); background: rgba(193,131,251,.06); }
 .completando-aviso[hidden] { display: none; }
 
+/* voltar: discreto de propósito, o funil anda para a frente */
+.quiz-voltar {
+  position: absolute; top: -6px; left: -4px; z-index: 2;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: transparent; border: 1px solid rgba(255,255,255,.14);
+  color: var(--cinza-claro); font-size: 16px; line-height: 1; cursor: pointer;
+}
+.quiz-voltar:hover { border-color: rgba(193,131,251,.5); color: #fff; }
+.quiz-voltar[hidden] { display: none; }
+#quiz { position: relative; }
+
 /* código de acesso: leva as respostas para outro aparelho */
 .res-codigo { margin: 14px 0 4px; padding: 13px 15px; border-radius: 13px;
   border: 1px dashed rgba(193,131,251,.45); background: rgba(193,131,251,.07); }
