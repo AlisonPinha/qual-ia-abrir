@@ -1667,6 +1667,11 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
 
   const IA_CHAVE = "qia:ia";
   const TEM_PRECO = /R\$|US\$|\d+\s*(d[óo]lares|reais)/i;
+  // "eu mesmo" e "eu mesma" marcam o gênero de quem copia o prompt como se tivesse escrito.
+  // A regra 7 do SISTEMA já proíbe e mesmo assim escapou em produção, dentro de um PROMPT:
+  // instrução não é garantia, então o corte aqui é determinístico, igual ao do preço.
+  // Fica só o que é inequívoco: "sozinho" costuma ser a ferramenta, não a pessoa.
+  const MARCA_GENERO = /\beu mesm[oa]\b/i;
   // A conexão pode cair e mesmo assim o navegador dar a leitura por encerrada. Por isso
   // "terminou" não é o stream fechar, é o último bloco ter chegado: sem isso, um prompt
   // cortado no meio ficaria na tela com cara de pronto, e é ele que a pessoa copia.
@@ -1698,6 +1703,13 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
     // preço só existe onde o produto escreveu: se o modelo inventar valor, o bloco
     // inteiro é descartado e fica o texto de fábrica
     if (a.fixo === undefined && TEM_PRECO.test(texto)) { a.travado = true; return; }
+    // marca de gênero trava até o prompt, que é onde ela mais dói: volta o de fábrica
+    if (MARCA_GENERO.test(texto)) {
+      a.travado = true;
+      if (a.fixo !== undefined) { a.no.textContent = a.fixo; if (a.botao) a.botao.disabled = false; }
+      else { a.no.textContent = ""; (a.caixa || a.no).hidden = true; }
+      return;
+    }
     a.no.textContent = texto;
     (a.caixa || a.no).hidden = !texto;
     if (a.botao) a.botao.disabled = !fechado;

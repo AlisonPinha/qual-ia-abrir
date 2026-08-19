@@ -71,6 +71,26 @@ interceptado, para não sujar a planilha):
 | 2 | 15/15 | A seta do CTA de ascensão quebrava sozinha na segunda linha |
 | 3 | 16/16 | Aprovado |
 
+### O que a regressão em produção pegou, e que não era da minha mudança
+
+A rodada contra produção deu **24 de 25**, e a única falha foi na entrega paga, não nas peças
+novas: o modelo escreveu, dentro de um `PROMPT` que a pessoa copia, *"roteiros que eu mesmo
+público publiquei"*. Marca de gênero masculino, e ainda com uma palavra sobrando.
+
+A regra 7 do `SISTEMA` já proíbe isso com todas as letras, inclusive citando "eu mesmo".
+**Instrução não é garantia**, então entrou um corte determinístico no cliente, igual ao que já
+existia para preço: bloco que traz `eu mesmo` ou `eu mesma` volta ao texto de fábrica, e isso
+agora vale também para os prompts, que o guarda de preço não cobria. Fica só o que é
+inequívoco: "sozinho" quase sempre é a ferramenta ("ele roda sozinho"), não a pessoa.
+
+**Conferido com stream simulado** por `page.route`, do mesmo jeito que o retry foi conferido:
+uma resposta com os oito blocos, o `PROMPT1` contendo "eu mesmo". O prompt volta ao de fábrica,
+o botão de copiar continua servível e os outros sete blocos sobrevivem. O regex da regressão
+também foi ajustado: ele acusava "ele pesquisa sozinho" como defeito, o que é falso alarme.
+
+**O preço dessa proteção:** quando ela dispara, o prompt de fábrica tem lacuna do tipo
+`{sua profissão}`. Genérico é pior que personalizado, e melhor que errado.
+
 **Dois defeitos que só o print pegou, e o porquê:** `hidden` não esconde elemento cujo CSS
 declara `display` (é o caso de `.btn`), então o botão continuava lá depois de enviado; e o
 `entrar-codigo` só sumia em quem entrava por código ou memória, nunca em quem respondia o quiz

@@ -120,7 +120,9 @@ async function responderTudo(page, escopo) {
     return {
       cheios: vals.filter(v => v.length > 40).length,
       lacunas: vals.some(v => /\{[^}]+\}/.test(v)),
-      genero: /\b(eu mesma|eu mesmo|sozinh[ao])\b/i.test(vals.join(' ')),
+      // só o que marca quem fala: "ele roda sozinho" é a ferramenta, e acusar isso
+      // como defeito faz a bateria mentir
+      genero: /\beu mesm[oa]\b|\beu\b[^.]{0,14}\bsozinh[oa]\b|\bcansad[oa]\b/i.test(vals.join(' ')),
       codigo: document.getElementById('res-codigo-valor')?.textContent || '',
     };
   });
