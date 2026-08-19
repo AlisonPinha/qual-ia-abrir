@@ -429,15 +429,51 @@ JS = """
   const quiz = el("quiz");
   const modal = el("modal");
   if (modal) {
+    // O pop-up não existia no histórico: um gesto de voltar no meio do quiz levava a pessoa
+    // para fora do site, com metade das respostas dadas. Empilhando um estado, o voltar passa
+    // a fechar o pop-up, que é o que qualquer pessoa espera de um modal no celular.
+    let noHistorico = false;
     const abrir = e => {
       e.preventDefault();
       modal.showModal();
       px("ViewContent");
       document.body.classList.add("travado");
+      if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();
     };
     for (const b of document.querySelectorAll(".abre-diag")) b.addEventListener("click", abrir);
+    // quem já respondeu parte e voltou não recomeça do zero: o quiz retoma na primeira
+    // pergunta sem resposta, e quem já tinha terminado cai direto no resultado
+    window.__retomar = () => {};
+    for (const b of document.querySelectorAll(".abre-diag"))
+      b.addEventListener("click", () => window.__retomar());
     el("fecha").addEventListener("click", () => modal.close());
+
+    // Voltar com o quiz começado mostra o que a pessoa perde, uma vez só. Quem insiste sai:
+    // segurar duas vezes deixa de ser retenção e vira sequestro do botão do navegador.
+    let jaSegurou = false;
+    window.addEventListener("popstate", () => {
+      noHistorico = false;
+      if (!modal.open) return;
+      const ret = el("retencao");
+      const comecou = document.querySelector("#quiz .passo:not([hidden])")?.dataset.q !== "area"
+                   || !el("resultado").hidden;
+      if (!ret || jaSegurou || !comecou) { modal.close(); return; }
+      jaSegurou = true;
+      const pronto = !el("resultado").hidden;
+      el("retencao-titulo").textContent = pronto
+        ? "O seu diagnóstico já está pronto"
+        : "Falta pouco pro seu mapa";
+      const contador = window.__contador || "";
+      el("retencao-txt").textContent = pronto
+        ? "As suas 3 já foram calculadas. Sair agora não apaga nada: as respostas ficam neste aparelho."
+        : (contador ? "Você já respondeu " + contador + ". " : "")
+          + "Sair agora não apaga nada: as respostas ficam neste aparelho.";
+      el("retencao-fica").textContent = pronto ? "Ver o meu resultado" : "Continuar de onde parei";
+      ret.hidden = false;
+      history.pushState({ diag: 1 }, "", location.href);
+      noHistorico = true;
+    });
     modal.addEventListener("close", () => document.body.classList.remove("travado"));
     // clique no fundo fecha, igual ao que todo mundo espera de modal
     modal.addEventListener("click", e => { if (e.target === modal) modal.close(); });
@@ -492,11 +528,14 @@ JS = """
       // o passo atual conta como iniciado: barra vazia na pergunta 1 derruba a conclusão
       el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
       const num = passos[atual].querySelector(".num");
-      if (num && ehPergunta(atual))
-        // o total sai da fila, não de uma constante: com pergunta condicional, um número
-      // fixo mentiria para quem pula duas, e contador que mente faz abandonar o quiz
-      num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length
-                      + " de " + totalPerguntas();
+      // o total sai da fila, não de uma constante: com pergunta condicional, um número fixo
+      // mentiria para quem pula duas, e contador que mente faz abandonar o quiz
+      if (num && ehPergunta(atual)) {
+        num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length
+                        + " de " + totalPerguntas();
+        // guardado porque o break não tem contador, e a retenção do voltar precisa dele
+        window.__contador = num.textContent;
+      }
     };
 
     const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
@@ -627,6 +666,9 @@ JS = """
       resp[b.dataset.q] = +b.dataset.i;
       // trocar a área depois de voltar derruba a trilha antiga
       limparOrfas(MOTOR, resp);
+      // guarda a cada resposta, não só no fim: quem fecha no meio do quiz perdia tudo, e a
+      // retenção do voltar promete justamente que não perde
+      salvarSessao(resp, MOTOR.pids, livre, MOTOR);
         for (const irmao of b.parentNode.children)
           irmao.setAttribute("aria-pressed", String(irmao === b));
         if (abrirCampo(b)) return;
@@ -636,6 +678,25 @@ JS = """
     }
 
     el("quiz-voltar").addEventListener("click", voltar);
+
+    // retomada: aplica o que já foi respondido neste aparelho e anda até o que falta
+    let jaRetomou = false;
+    window.__retomar = () => {
+      if (jaRetomou) return;
+      const salvas = lerSessao(r => pidsExigidos(MOTOR, r), MOTOR);
+      if (!salvas) return;
+      jaRetomou = true;
+      Object.assign(resp, salvas.resp);
+      Object.assign(livre, salvas.livre);
+      for (const b of quiz.querySelectorAll(".opc"))
+        if (resp[b.dataset.q] === +b.dataset.i) b.setAttribute("aria-pressed", "true");
+      if (salvas.completa) { render(); return; }
+      atual = -1;
+      do { atual++; } while (atual < passos.length
+                             && (!vale(atual) || (MOTOR.pids.includes(passos[atual].dataset.q)
+                                                  && passos[atual].dataset.q in resp)));
+      if (atual < passos.length) mostrar(); else render();
+    };
 
   for (const b of quiz.querySelectorAll(".btn-livre")) {
       const campo = b.parentNode.querySelector("input");
@@ -652,7 +713,13 @@ JS = """
       });
     }
 
-    el("refazer").addEventListener("click", () => {
+    const ret = el("retencao");
+  if (ret) {
+    el("retencao-fica").addEventListener("click", () => { ret.hidden = true; });
+    el("retencao-sai").addEventListener("click", () => { ret.hidden = true; modal.close(); });
+  }
+
+  el("refazer").addEventListener("click", () => {
       for (const k of Object.keys(resp)) delete resp[k];
       for (const b of quiz.querySelectorAll(".opc")) b.setAttribute("aria-pressed", "false");
       atual = 0;
@@ -1070,6 +1137,12 @@ html = f"""<!doctype html>
   <div class="barra" aria-hidden="true"><span id="barra-fill"></span></div>
 
   <div class="modal-corpo">
+    <div class="retencao" id="retencao" hidden>
+      <h3 id="retencao-titulo"></h3>
+      <p id="retencao-txt"></p>
+      <button type="button" class="btn-cta" id="retencao-fica">Continuar de onde parei</button>
+      <button type="button" class="retencao-sai" id="retencao-sai">Sair mesmo assim</button>
+    </div>
     <h2 id="modal-titulo" class="modal-h">Qual IA você deveria usar</h2>
     <p class="modal-porque" id="modal-porque">{escape(DG["porque"])}</p>
     <form id="quiz" novalidate><button type="button" id="quiz-voltar" class="quiz-voltar" hidden aria-label="Voltar para a pergunta anterior">←</button>{"".join(perguntas_html)}</form>

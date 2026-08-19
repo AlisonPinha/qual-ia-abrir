@@ -831,6 +831,21 @@ body.travado { overflow: hidden; }
 .res-codigo code { font-size: 19px; font-weight: 700; letter-spacing: .07em; font-family: ui-monospace, monospace; }
 .res-codigo .m-copiar { margin-left: 10px; }
 .res-codigo-ajuda { font-size: 12.5px; color: var(--cinza-min); margin: 8px 0 0; line-height: 1.5; }
+/* retenção do voltar: aparece uma vez, por cima do quiz, e some se a pessoa insistir */
+.retencao[hidden] { display: none; }
+.retencao {
+  margin: 0 0 20px; padding: 20px; border-radius: 18px;
+  border: 1px solid rgba(193, 131, 251, .34); background: rgba(193, 131, 251, .07);
+}
+.retencao h3 { margin: 0 0 8px; font-size: 19px; line-height: 1.25; }
+.retencao p { margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: #ded9ea; }
+.retencao .btn-cta { display: flex; width: 100%; justify-content: center; }
+.retencao-sai {
+  display: block; width: 100%; margin-top: 10px; padding: 12px; cursor: pointer;
+  border: 0; background: none; color: var(--cinza-min); font-family: inherit; font-size: 13.5px;
+  text-decoration: underline;
+}
+
 /* o CTA logo abaixo do resultado: o de baixo continua, este existe para quem já decidiu
    não ter que rolar a tela inteira atrás do botão */
 .res-cta-topo { margin: 20px 0 4px; }
