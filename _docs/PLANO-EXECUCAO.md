@@ -35,7 +35,7 @@ Ordem por impacto medido, não por esforço. Os itens 1.1 a 1.4 saíram da audit
 | 1.2 | ~~**`orcamento` decide de verdade**, com a opção "Nada, quero só o que é grátis"~~ **feito 19/08** | Hoje a faixa escolhida não muda nada, num produto que vende custo real. E o catálogo tem 4 ferramentas gratuitas que nunca são priorizadas | Claude | Duas pessoas com orçamentos opostos recebem stacks diferentes, medido no `testar_motor.mjs` |
 | 1.3 | ~~**Endurecer o `onde`**~~ **feito 19/08** | Quem responde "no celular" recebe Lovable como "assina agora". O peso atual é de 1 ponto, insuficiente | Claude | Nenhuma combinação com celular devolve Lovable, Claude Code ou n8n na primeira camada |
 | 1.4 | ~~**Pular o que não faz sentido para iniciante**~~ **feito 19/08** | Quem diz "nenhuma ferramenta" ainda recebe "já assinou alguma que não usou?". Sai junto com 1.1 e 1.5 porque as três mexem no contador "n de m", que hoje assume trilhas de tamanho fixo | Claude | As duas perguntas somem quando `quantas` = "Nenhuma ainda", sem o contador mentir |
-| 1.5 | **De 18 para ~30 etapas** | O funil campeão deles tinha 37; o piso citado é 30. Com 1.1 feito, faltam duas perguntas por trilha e mais um break | Claude | 30 etapas por pessoa, sem pergunta de enchimento: toda nova ou vota, ou aparece no espelho |
+| 1.5 | ~~**De 18 para 23 etapas**~~ **feito 19/08** | Seguiu a Frente 6 do plano do vault, não invenção: entrou a pergunta 10 (`custo_parado`) e as duas que faltavam em cada trilha, fechando as 5 do bloco ramificado. **Parou em 23, não em 30**, porque as 30 a 50 do playbook contam as duas mini VSLs, e o produto foi decidido sem vídeo | Claude | 23 etapas para quem usa IA, 20 para quem nunca usou, e nenhuma pergunta de enchimento |
 | 1.6 | ~~**Reason why na abertura**~~ **feito 19/08**. A escassez foi descartada | O porquê está na primeira tela e some depois dela. **A escassez não entra:** o playbook pede escassez sob o botão, mas o projeto proíbe inventar escassez em produto digital sem limite real, e não existe limite real aqui. Entre o playbook e a regra do Alison, vale a regra | Claude | Reason why no ar, sem alterar a simplicidade da etapa 1 |
 | 1.7 | ~~**`estilo` passa a valer**~~ **feito 19/08** | Quem diz "prefiro dominar uma a fundo" recebe três ferramentas igual | Claude | A composição muda entre as duas respostas |
 
@@ -60,6 +60,24 @@ fazer dentro da ferramenta que a pessoa já tem.
 **Também entrou:** quem responde "só o que é grátis" recebe a porta gratuita da ferramenta certa
 ("Começa hoje, de graça · depois, US$ 20/mês") em vez de uma data para assinar, e a stack nunca
 volta com menos de três, porque o filtro do bolso podia esvaziar o ranking.
+
+### O que o bloco de fluxo mudou
+
+| | Antes | Depois |
+|---|---|---|
+| Etapas por pessoa | 19 | **23** (20 para quem nunca usou IA) |
+| Perguntas | 16 | 19, sendo 5 por trilha |
+| Breaks | 2 | 3 |
+| Mapas só das 4 generalistas | 63,3% | **37,4%**, melhor que os 49,4% de antes de tudo |
+| Gamma | 4,1% | 19,3% |
+| n8n | 3,8% | 12,3% |
+| ElevenLabs | 3,0% | 10,3% |
+
+As duas perguntas novas de cada trilha são sempre as mesmas dimensões, com as opções
+escritas para a área: **o que precisa sair pronto** (é o que decide Gamma, ElevenLabs e
+Higgsfield, e o quiz não perguntava em quase nenhuma trilha) e **o quanto aquilo se repete
+igual** (é o que decide o n8n). Foi isso que devolveu a diferenciação perdida no bloco do
+motor, sem inventar relevância: a pessoa é quem diz que precisa entregar apresentação.
 
 **Regra que vale para a fase inteira:** rodar `node _build/testar_motor.mjs` antes e depois de
 cada mudança de peso, e registrar o efeito na distribuição. Peso mexido às cegas é como o

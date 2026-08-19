@@ -1904,6 +1904,695 @@
         }
       ],
       [
+        "c_entrega",
+        "Qual peça te dá mais trabalho para entregar pronta?",
+        [
+          [
+            "Vídeo editado",
+            {
+              "Higgsfield": 7,
+              "ElevenLabs": 3
+            }
+          ],
+          [
+            "Carrossel e imagem",
+            {
+              "Higgsfield": 7,
+              "Gamma": 2
+            }
+          ],
+          [
+            "Texto longo, roteiro ou newsletter",
+            {
+              "Claude": 5,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Narração e áudio",
+            {
+              "ElevenLabs": 7
+            }
+          ],
+          [
+            "Apresentação para marca ou cliente",
+            {
+              "Gamma": 7
+            }
+          ]
+        ],
+        {
+          "area": [
+            0
+          ]
+        }
+      ],
+      [
+        "c_ritmo",
+        "Com que frequência você publica?",
+        [
+          [
+            "Todo dia",
+            {
+              "n8n": 5,
+              "ChatGPT": 3
+            }
+          ],
+          [
+            "Umas três vezes por semana",
+            {
+              "ChatGPT": 2,
+              "Claude": 2
+            }
+          ],
+          [
+            "Uma vez por semana",
+            {
+              "Claude": 3
+            }
+          ],
+          [
+            "Quando dá, sem ritmo fixo",
+            {
+              "Claude": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            0
+          ]
+        }
+      ],
+      [
+        "n_entrega",
+        "O que precisa sair pronto para cliente ou sócio ver?",
+        [
+          [
+            "Apresentação e relatório visual",
+            {
+              "Gamma": 7
+            }
+          ],
+          [
+            "Proposta e contrato",
+            {
+              "Claude": 5
+            }
+          ],
+          [
+            "Planilha e número consolidado",
+            {
+              "Gemini": 5
+            }
+          ],
+          [
+            "Mensagem e e-mail do dia a dia",
+            {
+              "ChatGPT": 4
+            }
+          ]
+        ],
+        {
+          "area": [
+            1
+          ]
+        }
+      ],
+      [
+        "n_ritmo",
+        "Quanto da sua operação é a mesma coisa toda semana?",
+        [
+          [
+            "Quase tudo, muda só o nome do cliente",
+            {
+              "n8n": 7
+            }
+          ],
+          [
+            "Metade",
+            {
+              "n8n": 4,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Pouca coisa, cada semana é diferente",
+            {
+              "Claude": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            1
+          ]
+        }
+      ],
+      [
+        "v_entrega",
+        "O que você manda para o cliente decidir?",
+        [
+          [
+            "Proposta ou apresentação",
+            {
+              "Gamma": 7
+            }
+          ],
+          [
+            "Mensagem escrita",
+            {
+              "ChatGPT": 4,
+              "Claude": 3
+            }
+          ],
+          [
+            "Áudio",
+            {
+              "ElevenLabs": 7
+            }
+          ],
+          [
+            "Planilha com preço e condição",
+            {
+              "Gemini": 5
+            }
+          ]
+        ],
+        {
+          "area": [
+            2
+          ]
+        }
+      ],
+      [
+        "v_ritmo",
+        "Quantas conversas novas você abre por semana?",
+        [
+          [
+            "Mais de 30",
+            {
+              "n8n": 7
+            }
+          ],
+          [
+            "Entre 10 e 30",
+            {
+              "n8n": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Menos de 10",
+            {
+              "Claude": 3,
+              "Perplexity": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            2
+          ]
+        }
+      ],
+      [
+        "e_entrega",
+        "O que você precisa produzir no fim?",
+        [
+          [
+            "Aula ou apresentação",
+            {
+              "Gamma": 7
+            }
+          ],
+          [
+            "Resumo e fichamento",
+            {
+              "Gemini Notebook": 5,
+              "Claude": 2
+            }
+          ],
+          [
+            "Texto autoral, artigo ou TCC",
+            {
+              "Claude": 5
+            }
+          ],
+          [
+            "Exercício, prova ou correção",
+            {
+              "ChatGPT": 4
+            }
+          ]
+        ],
+        {
+          "area": [
+            3
+          ]
+        }
+      ],
+      [
+        "e_ritmo",
+        "Você prefere consumir o material lendo ou ouvindo?",
+        [
+          [
+            "Lendo",
+            {
+              "Gemini Notebook": 3,
+              "Claude": 2
+            }
+          ],
+          [
+            "Ouvindo, aproveito o deslocamento",
+            {
+              "Gemini Notebook": 5,
+              "ElevenLabs": 4
+            }
+          ],
+          [
+            "Tanto faz, o que for mais rápido",
+            {
+              "Perplexity": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            3
+          ]
+        }
+      ],
+      [
+        "t_entrega_2",
+        "Fora código, o que você ainda precisa entregar?",
+        [
+          [
+            "Tela ou protótipo que dá para clicar",
+            {
+              "Lovable": 7
+            }
+          ],
+          [
+            "Documentação e explicação para outra equipe",
+            {
+              "Claude": 5,
+              "Gamma": 3
+            }
+          ],
+          [
+            "Integração entre sistemas",
+            {
+              "n8n": 7
+            }
+          ],
+          [
+            "Só código, o resto não é comigo",
+            {
+              "Claude Code": 4
+            }
+          ]
+        ],
+        {
+          "area": [
+            4
+          ]
+        }
+      ],
+      [
+        "t_ritmo",
+        "Quanto do seu trabalho é tarefa repetida?",
+        [
+          [
+            "Muita coisa, é sempre o mesmo caminho",
+            {
+              "n8n": 7
+            }
+          ],
+          [
+            "Alguma coisa",
+            {
+              "n8n": 3,
+              "Claude Code": 2
+            }
+          ],
+          [
+            "Quase nada, cada problema é novo",
+            {
+              "Claude": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            4
+          ]
+        }
+      ],
+      [
+        "s_entrega",
+        "O que precisa sair pronto fora do atendimento?",
+        [
+          [
+            "Laudo, evolução e documento clínico",
+            {
+              "Claude": 5
+            }
+          ],
+          [
+            "Material de orientação para o paciente",
+            {
+              "Gamma": 7
+            }
+          ],
+          [
+            "Áudio de orientação",
+            {
+              "ElevenLabs": 7
+            }
+          ],
+          [
+            "Resumo de artigo e protocolo",
+            {
+              "Gemini Notebook": 5
+            }
+          ]
+        ],
+        {
+          "area": [
+            5
+          ]
+        }
+      ],
+      [
+        "s_ritmo",
+        "Quanto do que você escreve fora do atendimento se repete?",
+        [
+          [
+            "Quase tudo, muda só o paciente",
+            {
+              "n8n": 5,
+              "Claude": 3
+            }
+          ],
+          [
+            "Metade",
+            {
+              "Claude": 3
+            }
+          ],
+          [
+            "Cada caso é bem diferente",
+            {
+              "Claude": 4
+            }
+          ]
+        ],
+        {
+          "area": [
+            5
+          ]
+        }
+      ],
+      [
+        "j_entrega",
+        "O que precisa sair pronto no fim?",
+        [
+          [
+            "Petição e peça processual",
+            {
+              "Claude": 7
+            }
+          ],
+          [
+            "Parecer e memorando",
+            {
+              "Claude": 5
+            }
+          ],
+          [
+            "Resumo do caso para o cliente entender",
+            {
+              "Gamma": 5,
+              "Claude": 2
+            }
+          ],
+          [
+            "Contrato e minuta",
+            {
+              "Claude": 5
+            }
+          ]
+        ],
+        {
+          "area": [
+            6
+          ]
+        }
+      ],
+      [
+        "j_ritmo",
+        "Quanto das suas peças nasce de um modelo parecido?",
+        [
+          [
+            "Quase todas",
+            {
+              "n8n": 4,
+              "Claude": 4
+            }
+          ],
+          [
+            "Metade",
+            {
+              "Claude": 3
+            }
+          ],
+          [
+            "Cada caso do zero",
+            {
+              "Claude": 4,
+              "Gemini Notebook": 2
+            }
+          ]
+        ],
+        {
+          "area": [
+            6
+          ]
+        }
+      ],
+      [
+        "f_entrega",
+        "O que o cliente recebe de você no fim do mês?",
+        [
+          [
+            "Relatório visual",
+            {
+              "Gamma": 7
+            }
+          ],
+          [
+            "Planilha e demonstrativo",
+            {
+              "Gemini": 5
+            }
+          ],
+          [
+            "Explicação escrita do que aconteceu",
+            {
+              "Claude": 4,
+              "ChatGPT": 2
+            }
+          ],
+          [
+            "Guia, obrigação e prazo",
+            {
+              "ChatGPT": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            7
+          ]
+        }
+      ],
+      [
+        "f_ritmo",
+        "Quanto do fechamento é igual todo mês?",
+        [
+          [
+            "Quase tudo",
+            {
+              "n8n": 7
+            }
+          ],
+          [
+            "Metade",
+            {
+              "n8n": 4
+            }
+          ],
+          [
+            "Muda bastante de mês para mês",
+            {
+              "Gemini": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            7
+          ]
+        }
+      ],
+      [
+        "p_entrega",
+        "O que o cliente precisa ver para aprovar?",
+        [
+          [
+            "Imagem ou render do resultado",
+            {
+              "Higgsfield": 7
+            }
+          ],
+          [
+            "Proposta e apresentação",
+            {
+              "Gamma": 7
+            }
+          ],
+          [
+            "Planilha de orçamento",
+            {
+              "Gemini": 5
+            }
+          ],
+          [
+            "Vídeo do projeto",
+            {
+              "Higgsfield": 7
+            }
+          ]
+        ],
+        {
+          "area": [
+            8
+          ]
+        }
+      ],
+      [
+        "p_ritmo",
+        "Quanto do seu orçamento se repete entre projetos?",
+        [
+          [
+            "Quase tudo, muda a metragem",
+            {
+              "n8n": 7
+            }
+          ],
+          [
+            "Metade",
+            {
+              "n8n": 3,
+              "Gemini": 2
+            }
+          ],
+          [
+            "Cada projeto é um caso",
+            {
+              "Claude": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            8
+          ]
+        }
+      ],
+      [
+        "o_entrega",
+        "Em que formato o seu trabalho chega em quem recebe?",
+        [
+          [
+            "Documento ou texto",
+            {
+              "Claude": 4
+            }
+          ],
+          [
+            "Apresentação",
+            {
+              "Gamma": 7
+            }
+          ],
+          [
+            "Planilha e número",
+            {
+              "Gemini": 5
+            }
+          ],
+          [
+            "Áudio ou vídeo",
+            {
+              "ElevenLabs": 5,
+              "Higgsfield": 4
+            }
+          ],
+          [
+            "Conversa, não vira arquivo",
+            {
+              "ChatGPT": 4
+            }
+          ]
+        ],
+        {
+          "area": [
+            9
+          ]
+        }
+      ],
+      [
+        "o_ritmo",
+        "Quanto do seu trabalho se repete quase igual?",
+        [
+          [
+            "Quase tudo",
+            {
+              "n8n": 7
+            }
+          ],
+          [
+            "Metade",
+            {
+              "n8n": 3
+            }
+          ],
+          [
+            "Quase nada",
+            {
+              "Claude": 3
+            }
+          ]
+        ],
+        {
+          "area": [
+            9
+          ]
+        }
+      ],
+      [
+        "break3",
+        "Nenhuma entrou por indicação | As 13 ferramentas do catálogo foram testadas em trabalho real, com o preço conferido no site oficial de cada uma. As três que você vai receber saem dessas 13, não de um ranking da internet.",
+        [
+          [
+            "Continuar →",
+            {}
+          ]
+        ]
+      ],
+      [
         "generica",
         "Quando a resposta volta genérica, o que você faz?",
         [
@@ -1993,6 +2682,39 @@
             {}
           ]
         ]
+      ],
+      [
+        "custo_parado",
+        "Somando tudo, quanto já foi para ferramenta que você não usou?",
+        [
+          [
+            "Nada, usei tudo que assinei",
+            {}
+          ],
+          [
+            "Uns R$ 100 no total",
+            {}
+          ],
+          [
+            "Uns R$ 500",
+            {}
+          ],
+          [
+            "Mais de R$ 1.000",
+            {}
+          ],
+          [
+            "Prefiro não fazer essa conta",
+            {}
+          ]
+        ],
+        {
+          "quantas": [
+            1,
+            2,
+            3
+          ]
+        }
       ],
       [
         "break2",
@@ -2142,8 +2864,8 @@
         "Horas por semana nisso"
       ],
       [
-        "nivel",
-        "Como usa IA hoje"
+        "custo_parado",
+        "Já foi embora em ferramenta parada"
       ],
       [
         "orcamento",
