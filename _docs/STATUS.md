@@ -79,10 +79,13 @@ Rodado no navegador, em mobile (390x844), nas quatro variantes, sem finalizar co
    `ViewContent` nem `InitiateCheckout`. Desliga no painel do pixel, se incomodar.
 2. **O checkout destaca o parcelamento**: "12 X de R$ 6,92", com "R$ 67,00 à vista" ao lado.
    Existe ainda uma "Taxa de serviço" de R$ 0,99 no resumo, que fecha em "Total 12x de R$ 7,00".
-3. **PicPay está ativo na tela de pagamento.** Isso torna concreto o risco já anotado aqui: o
-   gatilho `fbPicpayPurchaseTrigger` dispara `Purchase` ao gerar a cobrança, não no pagamento,
-   e a interface da Cakto não expõe esse toggle. Cobrança PicPay gerada e não paga vira venda
-   falsa no Events Manager.
+3. ~~**PicPay ativo na tela de pagamento**~~ **desativado em 19/08, nos quatro produtos.**
+   Como a Cakto não expõe o toggle do `fbPicpayPurchaseTrigger`, que dispara `Purchase` ao
+   gerar a cobrança em vez de no pagamento, a saída foi tirar o método: Produtos → o produto →
+   Configurações → Métodos de pagamento → clicar no card do PicPay → Salvar Produto. Conferido
+   nas quatro páginas públicas de checkout: sobraram **PIX, Cartão, Apple Pay e Google Pay**.
+   O `fbNubankPurchaseTrigger` continua ligado e agora é inócuo, porque não existe método
+   Nubank na lista da Cakto.
 
 ### 2. Colar o Apps Script de novo
 
