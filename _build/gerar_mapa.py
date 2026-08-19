@@ -52,6 +52,7 @@ motor = {
     "gratisPlano": DG["gratisPlano"],
     "curtoGratis": DG["curtoGratis"],
     "espelho": DG["espelho"],
+    "mudaram": DG["mudaram"],
     "espelhoPronto": DG["espelhoPronto"],
     "cabem": DG["cabem"],
     "teto": DG["teto"],
@@ -106,6 +107,16 @@ JS = r"""
 
   // trilha por área: o passo que não é da área respondida não aparece nem conta
   const vale = i => valePergunta(MOTOR, passos[i].dataset.q, resp);
+  // completando: veio memória parcial, então pergunta só o que falta e corta os breaks,
+  // que são conteúdo de convencimento para quem está respondendo a primeira vez
+  let completando = false;
+  let faltavam = 0;   // quantas faltavam quando ela chegou, para o contador não travar em 1
+  const precisa = i => {
+    const q = passos[i].dataset.q;
+    if (!vale(i)) return false;
+    if (MOTOR.pids.includes(q)) return !(q in resp);
+    return !(completando && /^break\d/.test(q));
+  };
   const ehPergunta = i => MOTOR.pids.includes(passos[i].dataset.q);
 
   // O teto é MOTOR.total, o caminho mais longo. Só desce quando a pessoa responde algo
@@ -138,25 +149,27 @@ JS = r"""
     passos.forEach((p, i) => { p.hidden = i !== atual; });
     // a tela de espelho carrega, repete as respostas e só então libera o resultado
     if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
-    const fila = passos.map((_p, i) => i).filter(vale);
+    const fila = passos.map((_p, i) => i).filter(precisa);
     const pos = fila.indexOf(atual);
     el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
     const num = passos[atual].querySelector(".num");
     if (num && ehPergunta(atual))
       // o total sai da fila, não de uma constante: com pergunta condicional, um número
       // fixo mentiria para quem pula duas, e contador que mente faz abandonar o quiz
-      num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length
-                      + " de " + totalPerguntas();
+      // completando, a pergunta respondida sai da fila, então a posição vem do que já saiu
+      num.textContent = completando
+        ? (faltavam - fila.filter(ehPergunta).length + 1) + " de " + faltavam
+        : fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + totalPerguntas();
   };
 
-  const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
+  const proximo = () => { do { atual++; } while (atual < passos.length && !precisa(atual)); };
 
   const esc = s => String(s).replace(/[&<>"]/g, c =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   function render(daMemoria) {
     const { stack, corta } = calcularStack(MOTOR, resp);
-    if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre);
+    if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre, MOTOR);
     enviarAnalitico(MOTOR.analitico, "mapa", MOTOR, resp, stack, corta, livre);
     el("res-memoria").hidden = !daMemoria;
     if (daMemoria) el("mapa-sub").textContent =
@@ -415,24 +428,35 @@ JS = r"""
   el("codigo-usar").addEventListener("click", () => {
     const lido = lerCodigo(MOTOR, el("codigo-campo").value);
     if (!lido) { el("codigo-erro").hidden = false; return; }
-    salvarSessao(lido, MOTOR.pids, {});
+    salvarSessao(lido, MOTOR.pids, {}, MOTOR);
     entrarCom(lido);
   });
 
   const daUrl = new URLSearchParams(location.search).get("c")
              || new URLSearchParams(location.hash.replace(/^#/, "?")).get("c");
   const doLink = daUrl ? lerCodigo(MOTOR, daUrl) : null;
-  const salvas = lerSessao(r => pidsExigidos(MOTOR, r));
+  const salvas = lerSessao(r => pidsExigidos(MOTOR, r), MOTOR);
 
   if (doLink) {
-    salvarSessao(doLink, MOTOR.pids, {});
+    salvarSessao(doLink, MOTOR.pids, {}, MOTOR);
     entrarCom(doLink);
-  } else if (salvas) {
+  } else if (salvas && salvas.completa) {
     Object.assign(resp, salvas.resp);
     Object.assign(livre, salvas.livre);
     const bloco = el("entrar-codigo");
     if (bloco) bloco.hidden = true;
     render(true);
+  } else if (salvas) {
+    // memória parcial: aproveita o que já foi respondido e pergunta só o que falta
+    Object.assign(resp, salvas.resp);
+    Object.assign(livre, salvas.livre);
+    completando = true;
+    faltavam = passos.filter((_p, i) => precisa(i) && MOTOR.pids.includes(passos[i].dataset.q)).length;
+    const aviso = el("completando-aviso");
+    if (aviso) aviso.hidden = false;
+    atual = -1;
+    proximo();
+    if (atual < passos.length) mostrar(); else render(false);
   } else {
     mostrar();
   }
@@ -516,6 +540,8 @@ html = f"""<!doctype html>
     <button type="button" class="btn btn-p" id="codigo-usar">Abrir com o meu código</button>
     <p class="erro" id="codigo-erro" hidden>Esse código não abriu. Confere se copiou inteiro, ou responde abaixo que leva 2 minutos.</p>
   </div>
+  <p class="completando-aviso" id="completando-aviso" hidden>O diagnóstico ganhou perguntas novas desde
+     que você respondeu. As suas respostas continuam aqui: falta só o que é novo.</p>
   <form id="quiz">{perguntas_html}</form>
 
   <div id="resultado" role="region" aria-live="polite" aria-label="O seu mapa" hidden>

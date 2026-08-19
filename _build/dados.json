@@ -2849,6 +2849,10 @@
         ]
       ]
     ],
+    "_mudaram": "Perguntas cujas OPÇÕES mudaram desde a memória sem assinatura (v1). Só elas são descartadas de quem respondeu antes; o resto é aproveitado. Esvaziar quando não houver mais memória v1 viva, uns 30 dias depois.",
+    "mudaram": [
+      "orcamento"
+    ],
     "_espelho": "O que a penúltima tela repete de volta para a pessoa antes do resultado. \"*tarefa\" é a pergunta de tarefa da trilha dela, que muda por área.",
     "espelho": [
       [

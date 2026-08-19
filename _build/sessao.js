@@ -10,10 +10,22 @@
 const SESSAO_CHAVE = "qia:resp";
 const SESSAO_DIAS = 30;
 
-function salvarSessao(resp, pids, livre) {
+// Assinatura das opções de uma pergunta. Sem isto, uma resposta guardada com o
+// questionário antigo continuaria "válida" depois de a gente inserir uma opção nova, e o
+// índice 0 do orçamento, que era "Até R$ 150", passaria a significar "só o que é grátis".
+function assinaturaPergunta(rotulos) {
+  let h = 5381;
+  for (const r of rotulos) for (let i = 0; i < r.length; i++) h = ((h * 33) ^ r.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+function salvarSessao(resp, pids, livre, MOTOR) {
   try {
+    const sig = {};
+    if (MOTOR) for (const pid of Object.keys(resp))
+      if (MOTOR.rotulos[pid]) sig[pid] = assinaturaPergunta(MOTOR.rotulos[pid]);
     localStorage.setItem(SESSAO_CHAVE, JSON.stringify({
-      v: 1, resp, pids, livre: livre || {}, ts: Date.now()
+      v: 2, resp, pids, livre: livre || {}, sig, ts: Date.now()
     }));
   } catch (e) { /* modo privado ou storage cheio: seguir sem memória */ }
 }
@@ -23,15 +35,33 @@ function salvarSessao(resp, pids, livre) {
 // perguntar de novo do que montar a stack com pergunta que não existe mais.
 // `exigidos` é função porque, com trilha por área, quais perguntas são obrigatórias
 // depende das próprias respostas salvas.
-function lerSessao(exigidos) {
+// Devolve o que dá para aproveitar, não tudo ou nada. Quando o questionário muda, quem já
+// respondeu completa só o que falta em vez de recomeçar: na primeira venda, a compradora
+// refez as 23 etapas por causa disso, e depois refaria de novo a cada mudança nossa.
+// `completa` diz se as respostas cobrem tudo o que o motor exige agora.
+function lerSessao(exigidos, MOTOR) {
   try {
     const bruto = localStorage.getItem(SESSAO_CHAVE);
     if (!bruto) return null;
     const d = JSON.parse(bruto);
-    if (d.v !== 1) return null;
+    if (d.v !== 1 && d.v !== 2) return null;
     if (Date.now() - d.ts > SESSAO_DIAS * 864e5) return null;
-    if (exigidos(d.resp).some(p => !(p in d.resp))) return null;
-    return { resp: d.resp, livre: d.livre || {} };
+
+    const resp = {};
+    for (const [pid, i] of Object.entries(d.resp || {})) {
+      const rotulos = MOTOR && MOTOR.rotulos[pid];
+      if (!rotulos) continue;                       // pergunta que não existe mais
+      if (!Number.isInteger(i) || i >= rotulos.length) continue;
+      // sem assinatura (memória da versão 1) as opções podem ter mudado por baixo:
+      // só aproveita o que ainda bate exatamente
+      if (d.v === 2 && d.sig && d.sig[pid] !== assinaturaPergunta(rotulos)) continue;
+      // memória sem assinatura: aproveita tudo, menos as perguntas que a gente sabe que
+      // tiveram as opções mexidas desde então
+      if (d.v === 1 && (MOTOR.mudaram || []).includes(pid)) continue;
+      resp[pid] = i;
+    }
+    if (!Object.keys(resp).length) return null;
+    return { resp, livre: d.livre || {}, completa: exigidos(resp).every(p => p in resp) };
   } catch (e) { return null; }
 }
 

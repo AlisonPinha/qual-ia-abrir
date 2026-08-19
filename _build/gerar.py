@@ -228,6 +228,7 @@ motor = {
     "gratisPlano": DG["gratisPlano"],
     "curtoGratis": DG["curtoGratis"],
     "espelho": DG["espelho"],
+    "mudaram": DG["mudaram"],
     "espelhoPronto": DG["espelhoPronto"],
     "cabem": DG["cabem"],
     "teto": DG["teto"],
@@ -462,7 +463,7 @@ JS = """
     function render() {
       const { stack, corta } = calcular();
       // memória para o /mapa não pedir tudo de novo, e o anônimo para saber quem responde
-      salvarSessao(resp, MOTOR.pids, livre);
+      salvarSessao(resp, MOTOR.pids, livre, MOTOR);
       enviarAnalitico(MOTOR.analitico, MOTOR.origem, MOTOR, resp, stack, corta, livre);
       const [qArea, qOrc] = MOTOR.perfil;
       const area = MOTOR.rotulos[qArea][resp[qArea]];

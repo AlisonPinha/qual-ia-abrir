@@ -50,6 +50,7 @@ motor = {
     "gratisPlano": DG["gratisPlano"],
     "curtoGratis": DG["curtoGratis"],
     "espelho": DG["espelho"],
+    "mudaram": DG["mudaram"],
     "espelhoPronto": DG["espelhoPronto"],
     "cabem": DG["cabem"],
     "teto": DG["teto"],
@@ -87,6 +88,15 @@ JS = r"""
   let atual = 0;
 
   const vale = i => valePergunta(MOTOR, passos[i].dataset.q, resp);
+  // completando: veio memória parcial, então pergunta só o que falta e corta os breaks,
+  // que são conteúdo de convencimento para quem está respondendo a primeira vez
+  let completando = false;
+  const precisa = i => {
+    const q = passos[i].dataset.q;
+    if (!vale(i)) return false;
+    if (MOTOR.pids.includes(q)) return !(q in resp);
+    return !(completando && /^break\d/.test(q));
+  };
   const ehPergunta = i => MOTOR.pids.includes(passos[i].dataset.q);
 
   const totalPerguntas = () => {
@@ -114,15 +124,18 @@ JS = r"""
   const mostrar = () => {
     passos.forEach((p, i) => { p.hidden = i !== atual; });
     if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
-    const fila = passos.map((_p, i) => i).filter(vale);
+    const fila = passos.map((_p, i) => i).filter(precisa);
     const pos = fila.indexOf(atual);
     el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
     const num = passos[atual].querySelector(".num");
     if (num && ehPergunta(atual))
-      num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + totalPerguntas();
+      // completando, a pergunta respondida sai da fila, então a posição vem do que já saiu
+      num.textContent = completando
+        ? (faltavam - fila.filter(ehPergunta).length + 1) + " de " + faltavam
+        : fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + totalPerguntas();
   };
 
-  const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
+  const proximo = () => { do { atual++; } while (atual < passos.length && !precisa(atual)); };
 
   // ---------- a semana ----------
   let stackAtual = null;
@@ -140,7 +153,7 @@ JS = r"""
   function render(daMemoria) {
     const { stack, corta } = calcularStack(MOTOR, resp);
     stackAtual = stack;
-    if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre);
+    if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre, MOTOR);
     enviarAnalitico(MOTOR.analitico, "plano", MOTOR, resp, stack, corta, livre);
 
     const [qArea] = MOTOR.perfil;
@@ -334,24 +347,35 @@ JS = r"""
   el("codigo-usar").addEventListener("click", () => {
     const lido = lerCodigo(MOTOR, el("codigo-campo").value);
     if (!lido) { el("codigo-erro").hidden = false; return; }
-    salvarSessao(lido, MOTOR.pids, {});
+    salvarSessao(lido, MOTOR.pids, {}, MOTOR);
     entrarCom(lido);
   });
 
   const daUrl = new URLSearchParams(location.search).get("c")
              || new URLSearchParams(location.hash.replace(/^#/, "?")).get("c");
   const doLink = daUrl ? lerCodigo(MOTOR, daUrl) : null;
-  const salvas = lerSessao(r => pidsExigidos(MOTOR, r));
+  const salvas = lerSessao(r => pidsExigidos(MOTOR, r), MOTOR);
 
   if (doLink) {
-    salvarSessao(doLink, MOTOR.pids, {});
+    salvarSessao(doLink, MOTOR.pids, {}, MOTOR);
     entrarCom(doLink);
-  } else if (salvas) {
+  } else if (salvas && salvas.completa) {
     Object.assign(resp, salvas.resp);
     Object.assign(livre, salvas.livre);
     const bloco = el("entrar-codigo");
     if (bloco) bloco.hidden = true;
     render(true);
+  } else if (salvas) {
+    // memória parcial: aproveita o que já foi respondido e pergunta só o que falta
+    Object.assign(resp, salvas.resp);
+    Object.assign(livre, salvas.livre);
+    completando = true;
+    faltavam = passos.filter((_p, i) => precisa(i) && MOTOR.pids.includes(passos[i].dataset.q)).length;
+    const aviso = el("completando-aviso");
+    if (aviso) aviso.hidden = false;
+    atual = -1;
+    proximo();
+    if (atual < passos.length) mostrar(); else render(false);
   } else {
     mostrar();
   }
@@ -424,6 +448,8 @@ html = f"""<!doctype html>
     <button type="button" class="btn btn-p" id="codigo-usar">Abrir com o meu código</button>
     <p class="erro" id="codigo-erro" hidden>Esse código não abriu. Confere se copiou inteiro, ou responde abaixo que leva 2 minutos.</p>
   </div>
+  <p class="completando-aviso" id="completando-aviso" hidden>O diagnóstico ganhou perguntas novas desde
+     que você respondeu. As suas respostas continuam aqui: falta só o que é novo.</p>
   <form id="quiz">{perguntas_html}</form>
 
   <div id="plano" hidden>

@@ -772,6 +772,11 @@ body.travado { overflow: hidden; }
 }
 .modal-porque[hidden] { display: none; }
 
+.completando-aviso { margin: 0 0 16px; padding: 12px 14px; border-radius: 12px; font-size: 14px;
+  line-height: 1.55; color: var(--cinza-claro);
+  border: 1px solid rgba(193,131,251,.25); background: rgba(193,131,251,.06); }
+.completando-aviso[hidden] { display: none; }
+
 /* código de acesso: leva as respostas para outro aparelho */
 .res-codigo { margin: 14px 0 4px; padding: 13px 15px; border-radius: 13px;
   border: 1px dashed rgba(193,131,251,.45); background: rgba(193,131,251,.07); }
