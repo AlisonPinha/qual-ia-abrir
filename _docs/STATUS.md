@@ -54,6 +54,36 @@ resposta truncada simulada por `page.route`: dispara a segunda chamada e preench
 em 150s" com o bloco preenchido na tela. Medir stream longo pede polling explícito com
 `evaluate`.
 
+### 1c. O caminho do lead, percorrido em 19/08
+
+Rodado no navegador, em mobile (390x844), nas quatro variantes, sem finalizar compra:
+
+| Etapa | Resultado |
+|---|---|
+| LP carrega com UTM | `PageView` dispara |
+| CTA abre o pop-up | `ViewContent` com o `content_name` da variante, que é como o teste de nome se lê |
+| Quiz, 18 passos | Sem erro de console em nenhuma das quatro |
+| Resultado | Teaser correto: custo à vista, nome e logo ocultos |
+| Link de compra | O da própria variante nas quatro, com a UTM anexada |
+| Clique | `InitiateCheckout` dispara e abre em aba nova (`target="_blank"`) |
+| Checkout | Produto certo nos quatro, R$ 67,00, e a UTM sobrevive até lá |
+
+**A correção da entrega vale para as quatro variantes**, porque `/mapa` é uma página só e
+`/api/mapa` é uma function só. As LPs não chamam a IA: nenhuma das quatro referencia
+`/api/mapa`, já que a redação só existe depois da compra.
+
+**Três achados que não são defeito, mas devem ser sabidos:**
+
+1. **`SubscribedButtonClick`**: o pixel dispara um por clique de botão, 18 numa sessão de
+   quiz. É rastreamento automático nativo do Meta, não vem do código, e não polui `PageView`,
+   `ViewContent` nem `InitiateCheckout`. Desliga no painel do pixel, se incomodar.
+2. **O checkout destaca o parcelamento**: "12 X de R$ 6,92", com "R$ 67,00 à vista" ao lado.
+   Existe ainda uma "Taxa de serviço" de R$ 0,99 no resumo, que fecha em "Total 12x de R$ 7,00".
+3. **PicPay está ativo na tela de pagamento.** Isso torna concreto o risco já anotado aqui: o
+   gatilho `fbPicpayPurchaseTrigger` dispara `Purchase` ao gerar a cobrança, não no pagamento,
+   e a interface da Cakto não expõe esse toggle. Cobrança PicPay gerada e não paga vira venda
+   falsa no Events Manager.
+
 ### 2. Colar o Apps Script de novo
 
 `_docs/apps-script-captura.js` ganhou três colunas: `trilha` (as perguntas de trilha não têm
