@@ -205,12 +205,14 @@ R$ 67, `Método das 3 Abas`, pago às 11h58), e o Meta aceitou. **Duas coisas qu
 diz:** a venda saiu da variante **abas**, e veio **sem UTM nenhuma**, o que bate com não existir
 tráfego pago.
 
-**Como conferir que o evento chegou, sem esperar o relatório.** A visão geral do dataset demora
-para mostrar evento de servidor: depois de meia hora ela ainda listava só os quatro do
-navegador. Quem responde na hora é **Eventos de teste → canal Site**, que mostrou as três
-compras enviadas como **`Compra · Processado · Servidor`**, uma delas marcada pelo próprio Meta
-como **`Desduplicado`**, que é a prova de que o `event_id` está fazendo o trabalho dele. O
-`/stats` da Graph API também não serve para isso: ele não trouxe os eventos de servidor.
+**O relatório demora, e isso quase virou diagnóstico errado.** Depois de meia hora, nem a visão
+geral do dataset nem o `/stats` da Graph API mostravam o `Purchase`, e a leitura fácil seria
+"não chegou". Era atraso: cerca de uma hora depois, o `/stats` passou a trazer **`Purchase: 1`**,
+que é a venda de 19/08 recuperada. **Quem responde na hora é Eventos de teste → canal Site**,
+que mostrou as compras de teste como `Compra · Processado · Servidor`, uma delas marcada pelo
+próprio Meta como **`Desduplicado`**, prova de que o `event_id` faz o trabalho dele. A regra que
+fica: para evento de servidor, conferir pela aba de teste na hora e pelo relatório só no dia
+seguinte.
 
 **O que ainda não foi provado, e só a próxima venda prova:** que o `purchase_approved` de uma
 compra de verdade chega com os campos esperados. O que já está provado é que a Cakto alcança o
@@ -280,6 +282,13 @@ congelada acima.
 **Ordem obrigatória, e vale para toda mudança de payload:** o Apps Script vai primeiro. O
 `doPost` manda todo tipo desconhecido para `gravarLead`, então publicar o front antes faria
 cada beacon virar linha na aba `leads`.
+
+**E isso aconteceu, com o meu próprio teste.** Na primeira rodada do QA, um contexto do
+navegador ficou sem a interceptação e um beacon real saiu para o Apps Script, que ainda era a
+versão 2 e não conhecia o tipo `funil`: virou uma linha vazia na aba `leads`, com o JSON no
+`bruto`. Achada na revisão do fim da sessão e apagada. **A lição vale para qualquer teste que
+toque endpoint de produção:** interceptar em UM contexto não basta, tem que ser em todos, e
+conferir depois se vazou é parte do teste.
 
 **Risco conhecido:** conta gratuita do Apps Script tem 90 minutos de execução por dia. Cada
 sinal gasta cerca de um segundo, o que dá umas 5.000 gravações diárias. Com tráfego pago

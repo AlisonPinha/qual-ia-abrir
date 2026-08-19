@@ -75,7 +75,9 @@ linha de quem concluiu fica congelada, e só o horário do último sinal avança
 
 **A ordem que não pode inverter, e vale para qualquer mudança de payload:** o Apps Script vai
 primeiro. O `doPost` manda todo tipo desconhecido para `gravarLead`, então publicar o front
-antes faria cada beacon virar linha na aba `leads`.
+antes faria cada beacon virar linha na aba `leads`. **Isso chegou a acontecer:** na primeira
+rodada do QA um contexto do navegador ficou sem interceptação, um beacon real saiu e virou
+linha vazia na aba `leads`. Achado na revisão do fim da sessão e apagado.
 
 **Risco conhecido:** conta gratuita do Apps Script tem 90 minutos de execução por dia, o que dá
 umas 5.000 gravações. Com tráfego pago grande o teto aparece, e aí a saída é gravar em outro
@@ -94,9 +96,9 @@ lugar, não cortar a medição.
 | Não provado ainda | uma venda real ponta a ponta, que só a próxima compra mostra |
 
 **Onde conferir se o evento chegou:** em **Eventos de teste → canal Site**, que responde na hora
-e mostrou `Compra · Processado · Servidor`, uma marcada como `Desduplicado`. A visão geral do
-dataset e o `/stats` da Graph API **não** mostram evento de servidor de imediato: depois de meia
-hora ainda listavam só os quatro do navegador.
+e mostrou `Compra · Processado · Servidor`, uma marcada como `Desduplicado`. O relatório demora:
+meia hora depois do envio, nem a visão geral nem o `/stats` mostravam nada, e cerca de uma hora
+depois o `/stats` trouxe **`Purchase: 1`**. Não confundir atraso com evento perdido.
 
 **A armadilha do botão "Testar":** ele manda um `purchase_approved` de verdade, e sem guarda um
 clique viraria venda de mentira no pixel para sempre. O endpoint ignora o id e o e-mail do
