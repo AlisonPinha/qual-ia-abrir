@@ -91,6 +91,9 @@ motor_api = {k: v for k, v in motor.items() if k != "analitico"}
 motor_api["titulos"] = {p[0]: p[1] for p in DG["perguntas"]}
 motor_api["aviso_custo"] = DG["aviso_custo"]
 motor_api["aberta"] = DG["aberta"]
+# a /api/plano precisa do esqueleto da semana: o mesmo dado que a página usa
+motor_api["dias"] = d["semana"]["dias"]
+motor_api["recursos"] = DG["recursos"]
 
 JS = r"""
   const el = id => document.getElementById(id);

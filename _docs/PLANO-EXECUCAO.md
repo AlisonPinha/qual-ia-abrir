@@ -92,14 +92,29 @@ barato. Hoje não há para onde subir.
 
 | # | Tarefa | Quem | Depende | Critério de pronto |
 |---|---|---|---|---|
-| 2.1 | **Conteúdo da primeira semana** (os 7 dias) | Claude estrutura, Alison revisa a voz | nada | Os sete dias existem, saem do mesmo motor e não repetem o que o `/mapa` já entrega |
-| 2.2 | **Página `/plano`**, a entrega do upsell | Claude | 2.1 | A página existe, entrega os 4 blocos e roda no material que a pessoa cola |
+| 2.1 | ~~**Conteúdo da primeira semana** (os 7 dias)~~ **feito 19/08**, falta a revisão de voz do Alison | Claude estrutura, Alison revisa a voz | nada | Os sete dias saem do mesmo motor e não repetem o `/mapa` |
+| 2.2 | ~~**Página `/plano`**, a entrega do upsell~~ **feito 19/08** | Claude | 2.1 | No ar em `/plano`, com os 4 blocos e o material rodando de verdade |
 | 2.3 | **Tela pós-compra** com o upsell a R$ 130 (crédito de R$ 67 abatido) | Claude | 2.2 | Sai no fluxo real de quem compra, e o crédito bate |
 | 2.4 | **CTA de ascensão dentro do `/mapa`** | Claude | 2.2 | Existe um caminho do produto de entrada para o upsell fora do checkout, porque 80% paga no Pix e não volta |
 | 2.5 | **Recuperação por WhatsApp** | Claude no n8n | 0.1 | Mensagem sai para quem gerou cobrança e não pagou |
 | 2.6 | **VSL do upsell** (decisão revista em 19/08: o Alison vai gravar) | Alison grava rosto e voz, Claude grava as telas | 2.2 | O roteiro de 1min45 já está escrito no vault. **Ordem obrigatória: a página existe antes da gravação das telas**, porque o bloco de 0:48 promete "você manda e recebe rodado" e é o único insubstituível do roteiro |
 | 2.7 | **Cada um dos 7 dias vira ponto de ascensão** | Claude | 2.2 e existir um próximo produto | "Trate a entrega do seu produto como um funil de vendas pro próximo". Os quatro pontos deles, em ordem: WhatsApp, e-mail, banner e descrição de cada aula. Aqui cada dia é uma aula |
 | 2.8 | **Formulário do presente na pós-compra** | Claude | 0.1 | "Você vai ganhar um presente, qual você quer?" O mais votado vira o próximo produto. É como eles descobrem o que vender depois, e resolve o problema de não sabermos o que vem depois do upsell |
+
+### O achado que destravou a página, e que vale para o produto inteiro
+
+Os modos que pediam formato com marcador voltavam **vazios**, de forma reprodutível. O log da
+function deu o diagnóstico: `stop_reason: max_tokens`, um bloco de conteúdo só e zero caractere
+de texto. **O modelo estava gastando o orçamento inteiro raciocinando e parava antes de
+escrever.** Com `thinking: { type: "disabled" }` os três modos passaram a responder em 10 a 14
+segundos, contra 24 a 47 antes, e o mesmo remédio foi aplicado no `/api/mapa`, que caiu de 34 a
+44 segundos para 27 a 33.
+
+Junto entrou uma proteção nos dois: o parser aceita qualquer delta que traga texto, em vez de
+exigir `text_delta`. Amarrar no tipo do bloco é o que fazia a resposta sair vazia em silêncio.
+
+**Medido na página:** 7 dias escritos em 13s, 3 configurações em 14s, o material da pessoa
+voltando rodado em 5s, console limpo.
 
 **Não ligar o upsell no funil antes de 2.2 existir.** Vender e não entregar é reembolso e
 queima a autoridade, que é o ativo do produto.

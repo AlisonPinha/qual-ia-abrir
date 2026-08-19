@@ -1,0 +1,1509 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A sua primeira semana · Qual IA Usar?</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0c0a10">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<style>/* Qual IA abrir: sistema visual modelado na LP meuassessor.com
+   (Poppins, dark navy alternando com bege, gradiente roxo→rosa nas palavras-chave) */
+
+:root {
+  --roxo: #c183fb;
+  --rosa: #e27bb7;
+  --grad: linear-gradient(96deg, #c183fb 0%, #e27bb7 100%);
+  --dark: #0c0a10;
+  --dark-2: #14111c;
+  --dark-3: #1a1a2e;
+  --claro: #f5f0eb;
+  --claro-2: #ffffff;
+  --tinta: #1a1f36;
+  --tinta-2: #4a5568;
+  --cinza: #6b7280;
+  --cinza-claro: #9ca3af;
+  --cinza-min: #8b8798;   /* piso de 4,5:1 para texto pequeno sobre fundo escuro */
+  --roxo-escuro: #7c3aed; /* o roxo claro não passa de 2,7:1 sobre card branco */
+  --linha: rgba(255, 255, 255, 0.08);
+  --linha-clara: #e5e7eb;
+  --r: 20px;
+  --r-g: 28px;
+  --max: 1200px;
+  --pad: clamp(20px, 5vw, 40px);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--dark);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+.env { max-width: var(--max); margin: 0 auto; padding-inline: var(--pad); }
+
+.g { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* ---------- nav ---------- */
+
+.nav {
+  position: fixed; inset: 12px 0 auto; z-index: 60;
+  display: flex; justify-content: center; pointer-events: none;
+}
+.nav-in {
+  pointer-events: auto;
+  width: min(var(--max), calc(100% - 2 * var(--pad)));
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 10px 10px 22px;
+  border: 1px solid var(--linha); border-radius: 999px;
+  background: rgba(14, 11, 20, .72);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+}
+.marca { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+.marca .bolha {
+  width: 26px; height: 26px; border-radius: 8px; background: var(--grad);
+  display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #12101a;
+}
+.nav-links { display: flex; gap: 26px; margin-left: auto; font-size: 14px; color: var(--cinza-claro); }
+.nav-links a:hover { color: #fff; }
+.btn-nav {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px; border-radius: 999px; font-size: 14px; font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, .18); color: #fff; white-space: nowrap;
+}
+.btn-nav:hover { background: rgba(255, 255, 255, .08); }
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-in { margin-inline: auto; justify-content: space-between; padding-left: 18px; }
+  .btn-nav { margin-left: auto; padding: 10px 16px; font-size: 13px; }
+}
+
+/* ---------- hero ---------- */
+
+.hero { position: relative; padding: 148px 0 84px; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; top: -240px; left: 50%; transform: translateX(-50%);
+  width: 1100px; height: 700px; pointer-events: none;
+  background: radial-gradient(circle, rgba(193, 131, 251, .18) 0%, rgba(226, 123, 183, .07) 42%, transparent 68%);
+}
+.hero .env { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 9px 18px; border-radius: 999px; font-size: 13px; font-weight: 500;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .04); color: #e8e6ef;
+}
+.badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--roxo); box-shadow: 0 0 0 4px rgba(193, 131, 251, .2); }
+
+h1 {
+  margin: 26px 0 0; font-size: clamp(35px, 4.6vw, 58px); line-height: 1.07;
+  font-weight: 700; letter-spacing: -.035em; text-wrap: balance;
+}
+.hero .tese { margin: 22px 0 0; max-width: 30em; font-size: clamp(15px, 1.5vw, 17.5px); line-height: 1.62; color: #b9b6c4; }
+
+.acoes { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 17px 30px; border-radius: 14px; font-size: 15.5px; font-weight: 600;
+  font-family: inherit; cursor: pointer; border: 1px solid rgba(255, 255, 255, .16);
+  background: rgba(255, 255, 255, .05); color: #fff; transition: transform .18s, background .18s;
+}
+.btn:hover { background: rgba(255, 255, 255, .1); transform: translateY(-1px); }
+.btn-p { background: var(--grad); border: 0; color: #14111c; }
+.btn-p:hover { filter: brightness(1.06); }
+
+.bullets { margin: 26px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13.5px; color: #9d9aa9; }
+.bullets li { display: flex; align-items: center; gap: 8px; }
+.bullets li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--rosa); }
+
+/* mockup de celular: proporção, ilha, barra de status e home indicator do iPhone */
+.fone {
+  position: relative; width: 302px; aspect-ratio: 9 / 19; margin-inline: auto;
+  padding: 11px; border-radius: 54px;
+  background: linear-gradient(150deg, #4a4757 0%, #23212c 26%, #2b2935 62%, #454252 100%);
+  box-shadow: 0 44px 96px rgba(0, 0, 0, .66), 0 0 0 1px rgba(255, 255, 255, .07),
+              inset 0 0 0 1px rgba(255, 255, 255, .09);
+}
+.fone-tela {
+  position: relative; height: 100%; display: flex; flex-direction: column;
+  border-radius: 44px; overflow: hidden;
+}
+.ilha {
+  position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
+  width: 78px; height: 23px; border-radius: 999px; background: #000; z-index: 4;
+}
+.status {
+  flex: none; display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 22px 0; font-size: 12.5px; font-weight: 600; color: #fff;
+}
+.status .hora { letter-spacing: -.01em; }
+.status .sinais { display: flex; align-items: center; gap: 5px; }
+
+/* conversa: WhatsApp claro dentro do aparelho, igual à referência */
+.zap {
+  background: #efe7de;
+  /* fonte do sistema: com Poppins o mockup não lê como WhatsApp */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -.01em;
+}
+.status-claro { color: #000; padding-bottom: 4px; background: #f7f7f7; font-weight: 590; }
+
+.zap-topo {
+  flex: none; display: flex; align-items: center; gap: 9px;
+  padding: 7px 12px 9px; background: #f7f7f7; border-bottom: .5px solid rgba(0, 0, 0, .16);
+}
+.zap-topo .volta { flex: none; margin-right: 2px; }
+.zap-ava {
+  width: 33px; height: 33px; flex: none; border-radius: 50%; background: var(--grad);
+  display: grid; place-items: center; font-size: 15px; font-weight: 700; color: #fff;
+  box-shadow: 0 0 0 2px #f7f7f7, 0 0 0 3.6px #25d366;   /* anel de status, como no app */
+}
+.zap-quem { flex: 1; min-width: 0; font-size: 16px; font-weight: 590; color: #000; letter-spacing: -.02em; }
+.zap-ico { flex: none; margin-left: 3px; }
+
+.zap-corpo {
+  position: relative; flex: 1; min-height: 0; padding: 9px 10px 5px;
+  /* ancorado embaixo: o histórico sai pelo topo, como numa conversa de verdade */
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 5px;
+  background-color: #efe7de;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='190' viewBox='0 0 190 190'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='.045' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M18 22c4-5 10-5 14 0s10 5 14 0'/%3E%3Ccircle cx='150' cy='30' r='8'/%3E%3Cpath d='M146 30l3 3 6-7'/%3E%3Cpath d='M96 16v14M89 23h14'/%3E%3Cpath d='M28 78a9 9 0 1 1 9 9h-9z'/%3E%3Cpath d='M116 70h20v14h-12l-5 5v-5h-3z'/%3E%3Cpath d='M62 112c5-6 13-6 18 0'/%3E%3Ccircle cx='71' cy='104' r='4'/%3E%3Cpath d='M158 106l6 6 6-6M164 98v14'/%3E%3Cpath d='M22 140h16v12H30l-4 4v-4h-4z'/%3E%3Cpath d='M96 148a8 8 0 1 0 8-8'/%3E%3Cpath d='M138 160h18M147 152v16'/%3E%3Cpath d='M52 40l5 5 9-10'/%3E%3Ccircle cx='128' cy='128' r='7'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 190px 190px;
+  overflow: hidden;
+}
+.zap-dia {
+  align-self: center; margin-bottom: 3px; margin-top: 4px; padding: 5px 12px; border-radius: 8px;
+  background: rgba(255, 255, 255, .88); box-shadow: 0 1px .5px rgba(0, 0, 0, .1);
+  font-size: 10px; font-weight: 590; letter-spacing: .02em; color: #8e8e93; text-transform: uppercase;
+}
+
+.msg {
+  position: relative; max-width: 82%; padding: 6px 9px 15px; border-radius: 16px;
+  font-size: 13px; line-height: 1.37; color: #000;
+  box-shadow: 0 1px .5px rgba(0, 0, 0, .13);
+  opacity: 0; animation: msg-entra .34s ease forwards;
+}
+.msg b { font-weight: 600; }
+.msg.eu { align-self: flex-end; background: #e7ffdb; border-bottom-right-radius: 5px; }
+.msg.ele { align-self: flex-start; background: #fff; border-bottom-left-radius: 5px; }
+/* o bico só na última de cada bloco, como no app */
+.msg.eu::after, .msg.ele::after {
+  content: ""; position: absolute; bottom: 0; width: 12px; height: 17px;
+}
+.msg.eu::after {
+  right: -6px;
+  background: radial-gradient(circle at 0 0, transparent 12px, #e7ffdb 12px);
+}
+.msg.ele::after {
+  left: -6px;
+  background: radial-gradient(circle at 100% 0, transparent 12px, #fff 12px);
+}
+.msg .hr {
+  position: absolute; right: 9px; bottom: 3px;
+  display: flex; align-items: center; gap: 3px; font-size: 10px; color: #8e8e93;
+}
+.msg .hr b { color: #34b7f1; font-size: 10.5px; letter-spacing: -2px; }
+@keyframes msg-entra { from { opacity: 0; transform: translateY(7px) scale(.97); } to { opacity: 1; transform: none; } }
+
+.zap-botoes {
+  align-self: flex-start; width: 84%; display: grid; gap: 4px;
+  opacity: 0; animation: msg-entra .34s ease forwards;
+}
+.zap-botoes span {
+  padding: 8px; border-radius: 8px; background: #fff; text-align: center;
+  font-size: 12px; font-weight: 500; color: #0b7cb8;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+}
+.zap-botoes span:first-child { color: #0b7cb8; font-weight: 600; }
+
+.zap-stack {
+  display: flex; align-items: center; gap: 8px; margin: 8px 0 0; padding: 8px 9px;
+  border-radius: 7px; background: rgba(0, 0, 0, .04); font-size: 11.5px;
+}
+.zap-stack img { width: 24px; height: 24px; border-radius: 7px; flex: none; }
+.zap-stack b { font-weight: 600; }
+.zap-stack i { font-style: normal; color: #667781; font-size: 10.5px; line-height: 1.3; }
+.zap-prompt {
+  display: block; margin: 7px 0 0; padding: 9px 10px; border-radius: 7px;
+  background: #f0f2f5; border-left: 3px solid #25d366;
+  font-size: 11px; line-height: 1.45; color: #3b4a54;
+}
+.zap-prompt i {
+  display: block; margin-bottom: 4px; font-style: normal; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: #667781;
+}
+.zap-corta {
+  display: block; margin: 7px 0 0; padding-left: 9px; border-left: 2px solid #e27bb7;
+  font-size: 11.5px; line-height: 1.4; color: #667781;
+}
+
+.b1 { animation-delay: .3s; }
+.b2 { animation-delay: 1s; }
+.b3 { animation-delay: 1.7s; }
+.b4 { animation-delay: 2.3s; }
+
+.zap-input {
+  flex: none; display: flex; align-items: center; gap: 9px;
+  padding: 7px 9px 20px; background: #f7f7f7; color: #8e8e93;
+  border-top: .5px solid rgba(0, 0, 0, .16);
+}
+.zap-input .mais, .zap-cam, .zap-mic { flex: none; }
+.zap-input .campo {
+  flex: 1; min-width: 0; height: 33px; display: flex; align-items: center; justify-content: flex-end;
+  padding: 0 10px; border-radius: 999px; background: #fff; border: .5px solid rgba(0, 0, 0, .14);
+}
+
+.indicador {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 104px; height: 5px; border-radius: 99px; background: rgba(0, 0, 0, .27); z-index: 3;
+}
+
+@media (max-width: 900px) {
+  .hero { padding: 118px 0 60px; }
+  .hero .env { grid-template-columns: 1fr; gap: 40px; }
+  .fone { width: min(292px, 84%); }
+  /* o aparelho encolhe no mobile, a conversa tem que encolher com ele */
+  .zap-corpo { padding: 8px 8px 4px; gap: 5px; }
+  .msg { font-size: 11.5px; padding: 6px 9px 15px; }
+  .zap-botoes span { padding: 7px; font-size: 11px; }
+  .zap-stack { padding: 7px 8px; font-size: 10.5px; }
+  .zap-stack img { width: 19px; height: 19px; }
+  .zap-corta { font-size: 10.5px; }
+  .zap-topo { padding: 7px 11px 9px; }
+  .zap-input { padding: 7px 10px 19px; }
+}
+
+/* ---------- marquee de números ---------- */
+
+.faixa { border-block: 1px solid var(--linha); background: rgba(255, 255, 255, .015); padding: 18px 0; overflow: hidden; }
+.faixa-in { display: flex; gap: 44px; width: max-content; animation: correr 34s linear infinite; }
+.faixa:hover .faixa-in { animation-play-state: paused; }
+@keyframes correr { to { transform: translateX(-50%); } }
+.faixa span { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: #a5a2b0; white-space: nowrap; }
+.faixa span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--roxo); }
+.faixa b { color: #fff; font-weight: 600; }
+
+/* ---------- seção genérica ---------- */
+
+.sec { padding: clamp(64px, 9vw, 104px) 0; }
+.sec-claro { background: var(--claro); color: var(--tinta); }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 9px; padding: 9px 18px;
+  border-radius: 999px; font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .04); color: #d8d5e2;
+}
+.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--rosa); }
+.sec-claro .eyebrow { border-color: rgba(0, 0, 0, .08); background: #fff; color: var(--tinta-2); }
+
+.cabeca { text-align: center; max-width: 760px; margin-inline: auto; }
+.cabeca h2 {
+  margin: 22px 0 0; font-size: clamp(29px, 4.2vw, 50px); line-height: 1.12;
+  font-weight: 700; letter-spacing: -.03em;
+}
+.cabeca p { margin: 18px auto 0; max-width: 52ch; font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.62; color: #a9a6b5; }
+.sec-claro .cabeca p { color: var(--tinta-2); }
+
+/* ---------- as cinco (cards de personagem) ---------- */
+
+.cinco-grid { margin-top: 50px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.p-card {
+  padding: 30px 22px; text-align: center; border-radius: var(--r-g);
+  border: 1px solid var(--linha); background: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));
+  transition: transform .2s, border-color .2s;
+}
+.p-card:hover { transform: translateY(-4px); border-color: rgba(193, 131, 251, .4); }
+.p-n {
+  display: grid; place-items: center; width: 34px; height: 34px; margin: 0 auto 16px;
+  border-radius: 11px; background: rgba(193, 131, 251, .14); color: var(--roxo);
+  font-size: 14px; font-weight: 700;
+}
+.p-card .nome { display: block; font-size: 17px; font-weight: 600; }
+.p-card .txt { display: block; margin-top: 14px; font-size: 13.5px; line-height: 1.58; color: #a29fae; }
+@media (max-width: 900px) { .cinco-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .cinco-grid { grid-template-columns: 1fr; } }
+
+/* ---------- banner CTA ---------- */
+
+.banner {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+  padding: clamp(32px, 4vw, 52px); border-radius: var(--r-g);
+  background: linear-gradient(112deg, #17141f 0%, #241d33 58%, #2d2038 100%);
+}
+.banner::after {
+  content: ""; position: absolute; right: -80px; top: -80px; width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(193, 131, 251, .22), transparent 62%);
+}
+.banner .b-txt { position: relative; flex: 1 1 340px; }
+.banner h3 { margin: 0; font-size: clamp(24px, 3vw, 36px); line-height: 1.16; font-weight: 700; letter-spacing: -.025em; color: #fff; }
+.banner p { margin: 12px 0 0; font-size: 15px; color: #b3b0c0; }
+.banner .btn { position: relative; }
+
+/* ---------- grid das nove ferramentas ---------- */
+
+/* 9 ferramentas fecham exatamente em 3x3: em 5 colunas sobrava um buraco na 2a linha */
+.ferr-grid { margin: 48px auto 0; max-width: 760px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.f-card {
+  display: flex; flex-direction: column; align-items: center; gap: 13px;
+  padding: 24px 18px; border-radius: var(--r-g); text-align: center;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .03);
+  transition: transform .2s, border-color .2s, background .2s;
+}
+.f-card:hover { transform: translateY(-3px); background: rgba(255, 255, 255, .06); border-color: rgba(193, 131, 251, .35); }
+.f-card img { width: 42px; height: 42px; border-radius: 12px; }
+.f-card .nome { font-size: 15px; font-weight: 600; }
+@media (max-width: 520px) { .ferr-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ---------- órbita de categorias ---------- */
+
+.orbita { position: relative; margin: 46px auto 0; width: 100%; max-width: 1000px; aspect-ratio: 2 / 1; }
+
+/* teia de fundo: anéis concêntricos, raios até cada pílula e nós ao longo deles */
+.teia { position: absolute; inset: 0; width: 100%; height: 100%; }
+.teia .t-linhas line { stroke: rgba(26, 31, 54, .13); stroke-width: 1; stroke-dasharray: 3 5; }
+.teia .t-aneis circle, .teia .t-aneis ellipse {
+  fill: none; stroke: rgba(26, 31, 54, .1); stroke-width: 1; vector-effect: non-scaling-stroke;
+}
+.teia .t-aneis .externo { stroke-dasharray: 4 7; stroke: rgba(26, 31, 54, .13); }
+.teia .t-nos circle { fill: rgba(193, 131, 251, .55); }
+
+.orbes { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+.orbe {
+  position: absolute; transform: translate(-50%, -50%); z-index: 2;
+  display: flex; align-items: center; gap: 10px; padding: 12px 17px; border-radius: 999px;
+  background: #fff; box-shadow: 0 12px 30px rgba(26, 31, 54, .1), 0 1px 2px rgba(0, 0, 0, .05);
+  font-size: 14.5px; font-weight: 500; color: var(--tinta); white-space: nowrap;
+  transition: transform .22s, box-shadow .22s;
+}
+.orbe:hover { transform: translate(-50%, -50%) scale(1.035); box-shadow: 0 18px 40px rgba(26, 31, 54, .16); }
+.orbe-ico {
+  width: 30px; height: 30px; flex: none; border-radius: 9px;
+  display: grid; place-items: center; background: rgba(193, 131, 251, .15); color: #7c3aed;
+}
+.orbe .n {
+  padding: 2px 8px; border-radius: 999px; background: rgba(26, 31, 54, .06);
+  font-size: 11.5px; font-weight: 700; color: var(--tinta-2);
+}
+.orbe .seta { color: #b9b4c4; font-size: 17px; line-height: 1; }
+
+.orbita-nucleo {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 3;
+  width: 66px; height: 66px; border-radius: 50%; display: grid; place-items: center;
+  background: #fff; color: #7c3aed;
+  box-shadow: 0 10px 30px rgba(26, 31, 54, .14), 0 0 0 1px rgba(26, 31, 54, .05);
+  animation: pulsa 3.6s ease-in-out infinite;
+}
+@keyframes pulsa {
+  0%, 100% { box-shadow: 0 10px 30px rgba(26, 31, 54, .14), 0 0 0 0 rgba(193, 131, 251, .35); }
+  55%      { box-shadow: 0 10px 30px rgba(26, 31, 54, .14), 0 0 0 18px rgba(193, 131, 251, 0); }
+}
+
+/* abaixo de 900px a órbita vira lista: pílula posicionada por ângulo não cabe em tela estreita */
+@media (max-width: 900px) {
+  .orbita { aspect-ratio: auto; max-width: 420px; margin-top: 34px; }
+  .teia, .orbita-nucleo { display: none; }
+  .orbes { position: static; display: grid; gap: 10px; }
+  .orbe { position: static; transform: none; width: 100%; white-space: normal; }
+  .orbe:hover { transform: none; }
+  .orbe .seta { margin-left: auto; }
+}
+
+/* ---------- prova social ---------- */
+
+.stats {
+  margin-top: 50px; display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--linha); border-radius: var(--r-g); overflow: hidden;
+  background: rgba(255, 255, 255, .022);
+}
+.stat { padding: 32px 24px; text-align: center; border-right: 1px solid var(--linha); }
+.stat:last-child { border-right: 0; }
+.stat .rot { font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--cinza-min); }
+.stat .n { display: block; margin: 12px 0 8px; font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; letter-spacing: -.03em; }
+.stat .sub { font-size: 12.5px; line-height: 1.5; color: #918e9e; }
+@media (max-width: 860px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(2) { border-right: 0; }
+  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--linha); }
+}
+@media (max-width: 460px) {
+  .stats { grid-template-columns: 1fr; }
+  .stat { border-right: 0; border-bottom: 1px solid var(--linha); }
+}
+
+.nota { margin: 30px auto 0; max-width: 62ch; text-align: center; font-size: 13px; line-height: 1.6; color: var(--cinza-min); }
+
+/* ---------- botões e selos da oferta ---------- */
+
+.captura-card {
+  margin: 48px auto 0; max-width: 620px; border-radius: var(--r-g); overflow: hidden;
+  background: linear-gradient(168deg, #fdf3fa 0%, #f7f0fb 46%, #fff 100%);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, .16);
+}
+.captura-topo { padding: clamp(28px, 4vw, 44px); text-align: center; }
+.captura-topo h3 { margin: 18px 0 0; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.2; font-weight: 700; letter-spacing: -.025em; color: var(--tinta); }
+.captura-topo p { margin: 14px auto 0; max-width: 44ch; font-size: 14.5px; line-height: 1.6; color: var(--tinta-2); }
+.selo-rosa {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 15px; border-radius: 999px;
+  background: rgba(226, 123, 183, .12); color: #b0407f; font-size: 11.5px; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase;
+}
+.selo-rosa::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #e27bb7; }
+
+.form { margin: 26px 0 0; display: flex; flex-direction: column; gap: 10px; }
+.form input {
+  width: 100%; padding: 16px 20px; border-radius: 14px; border: 1px solid #e8dfe9;
+  background: #fff; font-family: inherit; font-size: 15.5px; color: var(--tinta);
+}
+.form input::placeholder { color: #a9a2b2; }
+.form input:focus { outline: 2px solid rgba(193, 131, 251, .5); outline-offset: 1px; border-color: transparent; }
+.btn-cta {
+  padding: 17px 26px; border: 0; border-radius: 14px; cursor: pointer;
+  background: linear-gradient(96deg, #e2429b, #c183fb); color: #fff;
+  font-family: inherit; font-size: 16px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-cta:hover { filter: brightness(1.06); }
+.btn-cta:disabled { opacity: .6; cursor: default; filter: none; }
+.form-aviso { margin: 12px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--cinza); text-align: center; }
+.form-aviso[data-erro] { color: #c02626; }
+.form-aviso[data-ok] { color: #16794c; font-weight: 600; }
+.garantias { margin: 16px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; font-size: 12px; color: var(--cinza); }
+.garantias span { display: flex; align-items: center; gap: 6px; }
+
+/* ---------- faq ---------- */
+
+.faq { margin: 46px auto 0; max-width: 820px; display: grid; gap: 10px; }
+.faq details {
+  border: 1px solid var(--linha); border-radius: var(--r); background: rgba(255, 255, 255, .025);
+  transition: border-color .2s;
+}
+.faq details[open] { border-color: rgba(193, 131, 251, .35); background: rgba(255, 255, 255, .045); }
+.faq summary {
+  display: flex; align-items: center; gap: 16px; padding: 21px 24px; cursor: pointer;
+  font-size: 15.5px; font-weight: 500; list-style: none;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+"; margin-left: auto; width: 30px; height: 30px; flex: none; border-radius: 50%;
+  border: 1px solid var(--linha); display: grid; place-items: center; font-size: 17px; color: var(--roxo);
+}
+.faq details[open] summary::after { content: "−"; }
+.faq p { margin: 0; padding: 0 24px 24px; font-size: 14.5px; line-height: 1.68; color: #a29fae; }
+
+/* ---------- fecho ---------- */
+
+.fecho-card {
+  padding: clamp(34px, 5vw, 62px); border-radius: var(--r-g); text-align: center;
+  border: 1px solid var(--linha); background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .012));
+}
+.fecho-card h2 { margin: 0; font-size: clamp(25px, 3.4vw, 40px); line-height: 1.14; font-weight: 700; letter-spacing: -.03em; }
+.fecho-card p { margin: 20px auto 0; max-width: 58ch; font-size: 15px; line-height: 1.68; color: #a9a6b5; }
+.fecho-card .acoes { justify-content: center; }
+
+.rodape { border-top: 1px solid var(--linha); padding: 52px 0 30px; }
+.rodape-topo { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; }
+.rodape-marca .marca { font-size: 16px; }
+.rodape-marca p { margin: 16px 0 0; max-width: 44ch; font-size: 13.5px; line-height: 1.6; color: var(--cinza-min); }
+.rodape-selos { margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.rodape-selos span {
+  padding: 6px 13px; border-radius: 999px; font-size: 11.5px; color: #c5c2d0;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .03);
+}
+.rodape-col { display: flex; flex-direction: column; gap: 11px; font-size: 13.5px; }
+.rodape-col b { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+.rodape-col a { color: var(--cinza-min); }
+.rodape-col a:hover { color: #fff; }
+.rodape-base {
+  margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--linha);
+  display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: space-between;
+  font-size: 12px; color: var(--cinza-min);
+}
+.fecho-card .selo-rosa { margin-bottom: 20px; }
+.fecho-nota { margin-top: 18px !important; font-size: 13px; color: var(--cinza-min); }
+@media (max-width: 760px) {
+  .rodape-topo { grid-template-columns: 1fr; gap: 30px; }
+}
+
+/* ---------- utilidades ---------- */
+
+.pula {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  padding: 12px 18px; background: #fff; color: #14111c; border-radius: 0 0 12px 0;
+}
+.pula:focus { left: 0; }
+
+/* ---------- diagnóstico ---------- */
+
+.diag-sec { background: var(--dark-2); }
+.diag { position: relative; max-width: 720px; margin: 46px auto 0; }
+
+.barra { height: 3px; border-radius: 99px; background: rgba(255, 255, 255, .08); overflow: hidden; }
+.barra span { display: block; height: 100%; width: 0; background: var(--grad); transition: width .35s ease; }
+
+.passo { border: 0; margin: 0; padding: 30px 0 0; }
+.passo[hidden] { display: none; }
+.passo legend {
+  padding: 0; font-size: clamp(20px, 2.6vw, 28px); font-weight: 600;
+  letter-spacing: -.02em; line-height: 1.28;
+}
+.passo .num {
+  display: block; margin-bottom: 12px; font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--roxo);
+}
+.opcoes { margin-top: 22px; display: grid; gap: 10px; }
+.opc {
+  width: 100%; text-align: left; padding: 17px 21px; border-radius: 15px; cursor: pointer;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .035); color: #e9e7f0;
+  font-family: inherit; font-size: 15.5px; transition: .16s;
+}
+.opc:hover { background: rgba(255, 255, 255, .08); border-color: rgba(193, 131, 251, .45); transform: translateX(2px); }
+.opc[aria-pressed="true"] { background: var(--grad); border-color: transparent; color: #14111c; font-weight: 600; }
+
+/* resultado */
+#resultado[hidden] { display: none; }
+.res-topo { padding: 34px 0 4px; text-align: center; }
+.res-topo h3 { margin: 16px 0 0; font-size: clamp(23px, 3vw, 33px); font-weight: 700; letter-spacing: -.025em; line-height: 1.18; }
+.res-topo p { margin: 12px 0 0; font-size: 14.5px; color: #a29fae; }
+
+.res-stack { margin: 26px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; counter-reset: s; }
+.res-stack li {
+  padding: 22px; border-radius: var(--r); border: 1px solid var(--linha);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .015));
+}
+.res-cab { display: flex; align-items: center; gap: 13px; }
+.res-cab img { width: 38px; height: 38px; border-radius: 11px; flex: none; }
+.res-nome { display: block; font-size: 17px; font-weight: 600; }
+.res-nome:hover { color: var(--roxo); }
+.res-quando { display: block; margin-top: 3px; font-size: 12px; color: var(--rosa); }
+.res-n {
+  margin-left: auto; width: 27px; height: 27px; flex: none; border-radius: 50%;
+  display: grid; place-items: center; font-size: 12.5px; font-weight: 700;
+  background: rgba(193, 131, 251, .15); color: var(--roxo);
+}
+.res-oq { margin: 14px 0 0; font-size: 14px; line-height: 1.55; color: #a8a5b4; }
+
+.res-corta {
+  margin: 16px 0 0; padding: 17px 20px; border-radius: 15px; font-size: 14px; line-height: 1.7;
+  border: 1px dashed rgba(226, 123, 183, .35); background: rgba(226, 123, 183, .05); color: #c9c6d4;
+}
+.res-corta b { color: #fff; }
+.res-corta .pq { color: #8b8898; font-size: 12.5px; }
+
+.res-oferta {
+  margin: 16px 0 0; padding: clamp(24px, 3.4vw, 36px); border-radius: var(--r-g); text-align: center;
+  background: linear-gradient(168deg, #fdf3fa 0%, #f7f0fb 48%, #fff 100%); color: var(--tinta);
+}
+.res-oferta h4 { margin: 0; font-size: clamp(19px, 2.3vw, 25px); font-weight: 700; letter-spacing: -.02em; }
+.res-oferta p { margin: 12px auto 0; max-width: 46ch; font-size: 14.5px; line-height: 1.6; color: var(--tinta-2); }
+.res-oferta .btn-cta { margin-top: 22px; }
+.res-oferta .form-aviso { color: var(--cinza); }
+
+.refazer {
+  display: block; margin: 20px auto 0; padding: 11px 20px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--linha); background: none; color: #918e9e; font-family: inherit; font-size: 13px;
+}
+.refazer:hover { color: #fff; border-color: rgba(255, 255, 255, .25); }
+
+.diag-nota { margin: 22px 0 0; font-size: 12px; line-height: 1.55; color: var(--cinza-min); text-align: center; }
+
+/* ---------- modal do diagnóstico ---------- */
+
+body.travado { overflow: hidden; }
+
+.diag-chamada { margin: 44px auto 0; max-width: 620px; text-align: center; }
+.diag-passos {
+  margin: 0 0 28px; padding: 0; list-style: none;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.diag-passos li {
+  display: flex; align-items: center; gap: 9px; padding: 11px 18px; border-radius: 999px;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .035);
+  font-size: 13.5px; color: #c5c2d0;
+}
+.diag-passos b {
+  width: 20px; height: 20px; flex: none; border-radius: 50%; background: var(--grad);
+  display: grid; place-items: center; font-size: 11px; color: #14111c;
+}
+.diag-chamada .btn { font-size: 16.5px; padding: 19px 34px; }
+.diag-chamada .diag-nota { margin-top: 20px; }
+
+.modal {
+  width: min(660px, calc(100vw - 32px)); max-height: min(880px, calc(100vh - 32px));
+  padding: 0; border: 1px solid rgba(255, 255, 255, .1); border-radius: var(--r-g);
+  background: var(--dark-2); color: #fff;
+  box-shadow: 0 50px 120px rgba(0, 0, 0, .7);
+  flex-direction: column; overflow: hidden;
+}
+/* sem esta linha o display:flex sobrescreve o display:none nativo do dialog fechado,
+   e o formulário aparece solto na página antes do JS carregar */
+.modal[open] { display: flex; }
+.modal::backdrop { background: rgba(6, 5, 9, .8); backdrop-filter: blur(6px); }
+.modal[open] { animation: modal-entra .26s ease; }
+@keyframes modal-entra { from { opacity: 0; transform: translateY(14px) scale(.985); } }
+
+.modal-topo {
+  flex: none; display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px 14px;
+}
+.modal-marca { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; color: #d6d3e0; }
+.modal-marca .bolha {
+  width: 24px; height: 24px; border-radius: 8px; background: var(--grad);
+  display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #12101a;
+}
+.fecha {
+  width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 21px; line-height: 1;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .04); color: #b8b5c4;
+  font-family: inherit;
+}
+.fecha:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+.modal .barra { flex: none; margin: 0 20px; }
+.modal-corpo { flex: 1; min-height: 0; overflow-y: auto; padding: 0 clamp(20px, 4vw, 34px) clamp(24px, 4vw, 32px); }
+/* rótulo, não manchete: quem tem que dominar a tela é a pergunta */
+.modal-h {
+  margin: 20px 0 0; font-size: 11.5px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--cinza-min);
+}
+.modal .passo { padding: 14px 0 0; }
+.modal .passo .num { margin-bottom: 9px; }
+.modal .passo legend { font-size: clamp(18px, 2.2vw, 23px); }
+.modal .res-topo { padding: 26px 0 4px; }
+
+@media (max-width: 620px) {
+  .modal { width: 100vw; max-width: 100vw; max-height: 100vh; height: 100vh; border-radius: 0; border: 0; }
+  .diag-passos { flex-direction: column; align-items: stretch; }
+  .diag-passos li { justify-content: flex-start; }
+  .diag-chamada .btn { width: 100%; justify-content: center; }
+}
+
+/* ---------- oferta ---------- */
+
+.para-quem { margin: 44px auto 0; max-width: 860px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pq-card { padding: 22px 24px; border-radius: var(--r); background: #fff; box-shadow: 0 8px 24px rgba(0, 0, 0, .06); }
+.pq-card b { display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 700; color: var(--tinta); }
+.pq-card b::before {
+  width: 21px; height: 21px; flex: none; border-radius: 50%; display: grid; place-items: center;
+  font-size: 12px; color: #fff;
+}
+.pq-card.sim b::before { content: "✓"; background: #16794c; }
+.pq-card.nao b::before { content: "×"; background: #b04040; }
+.pq-card p { margin: 11px 0 0; font-size: 14px; line-height: 1.6; color: var(--tinta-2); }
+@media (max-width: 700px) { .para-quem { grid-template-columns: 1fr; } }
+
+.oferta-card {
+  margin: 24px auto 0; max-width: 640px; border-radius: var(--r-g); overflow: hidden;
+  background: linear-gradient(168deg, #fdf3fa 0%, #f7f0fb 46%, #fff 100%);
+  box-shadow: 0 34px 78px rgba(0, 0, 0, .18);
+}
+.oferta-topo { padding: clamp(28px, 4vw, 42px); text-align: center; }
+.preco { margin: 20px 0 26px; }
+.preco .de, .preco-inline .de { display: block; font-size: 13.5px; color: var(--cinza); text-decoration: line-through; }
+.preco .valor, .preco-inline .valor {
+  display: block; margin-top: 2px; font-size: clamp(50px, 8vw, 74px); font-weight: 700;
+  letter-spacing: -.04em; line-height: 1; color: var(--tinta);
+}
+.preco .valor b, .preco-inline .valor b { font-size: .38em; font-weight: 600; vertical-align: super; margin-right: 4px; }
+.preco .unico { display: block; margin-top: 8px; font-size: 13.5px; color: var(--tinta-2); }
+.preco-inline { margin: 18px 0 20px; }
+.preco-inline .valor { font-size: clamp(40px, 6vw, 56px); }
+
+.entregaveis { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+.entregaveis li { padding: 14px 16px; border-radius: 13px; background: rgba(193, 131, 251, .07); text-align: left; }
+.entregaveis b { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--tinta); }
+.entregaveis b::before {
+  content: "✓"; width: 19px; height: 19px; flex: none; border-radius: 50%;
+  background: var(--grad); color: #fff; font-size: 10px; display: grid; place-items: center;
+}
+.entregaveis span { display: block; margin-top: 6px; padding-left: 29px; font-size: 13px; line-height: 1.5; color: var(--cinza); }
+
+
+/* teaser do resultado: silhueta em vez do nome e da descrição da ferramenta */
+.res-stack li.oculto { position: relative; }
+.res-logo-off {
+  width: 38px; height: 38px; flex: none; border-radius: 11px;
+  background: linear-gradient(135deg, rgba(193,131,251,.28), rgba(226,123,183,.18));
+}
+.res-nome-off {
+  display: block; width: 118px; height: 15px; border-radius: 5px;
+  background: linear-gradient(90deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+}
+.res-vazio {
+  display: block; margin-top: 14px; height: 9px; border-radius: 5px; width: 74%;
+  background: linear-gradient(90deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
+}
+
+/* ---------- inclusos da oferta (2 colunas, como na referência) ---------- */
+
+.inclusos { border-top: 1px solid rgba(0, 0, 0, .06); padding: 24px clamp(20px, 3vw, 32px) 32px; }
+.inclusos-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.inclusos .rot { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-2); }
+.selo-verde {
+  padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  background: rgba(22, 121, 76, .1); color: #16794c;
+}
+.entregaveis { margin: 18px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.entregaveis li {
+  padding: 13px 15px; border-radius: 13px; text-align: left;
+  background: rgba(255, 255, 255, .7); border: 1px solid rgba(26, 31, 54, .07);
+}
+.entregaveis b { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; font-weight: 600; line-height: 1.35; color: var(--tinta); }
+.entregaveis b::before {
+  content: "✓"; width: 18px; height: 18px; flex: none; margin-top: 1px; border-radius: 50%;
+  background: rgba(226, 123, 183, .18); color: #b0407f; font-size: 10px; font-weight: 700;
+  display: grid; place-items: center;
+}
+.entregaveis span { display: block; margin-top: 5px; padding-left: 27px; font-size: 12px; line-height: 1.4; color: var(--cinza); }
+@media (max-width: 560px) { .entregaveis { grid-template-columns: 1fr; } }
+
+/* ---------- break: tela de conteúdo entre blocos de pergunta ---------- */
+
+.passo-break legend { color: var(--roxo); }
+.passo-break .break-corpo {
+  margin: 14px 0 0; font-size: 15.5px; line-height: 1.65; color: #a29fae;
+}
+.passo-break .opc { text-align: center; font-weight: 600; }
+
+/* por que responder: a justificativa da personalização, só na primeira tela */
+.modal-porque {
+  margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: var(--cinza-min);
+  padding-left: 12px; border-left: 2px solid rgba(193, 131, 251, .4);
+}
+.modal-porque[hidden] { display: none; }
+
+/* o espelho: o que a pessoa respondeu, devolvido antes do resultado */
+.espelho { list-style: none; margin: 16px 0 2px; padding: 0; display: grid; gap: 7px; }
+.espelho li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+  padding: 10px 13px; border-radius: 11px;
+  border: 1px solid rgba(193, 131, 251, .18); background: rgba(193, 131, 251, .06);
+  animation: espelho-entra .32s ease both;
+}
+.espelho li:nth-child(2) { animation-delay: .1s; }
+.espelho li:nth-child(3) { animation-delay: .2s; }
+.espelho li:nth-child(4) { animation-delay: .3s; }
+.espelho li:nth-child(5) { animation-delay: .4s; }
+.espelho li:nth-child(6) { animation-delay: .5s; }
+.espelho-k { font-size: 13px; color: var(--cinza-min); }
+.espelho-v { font-size: 14px; font-weight: 600; text-align: right; }
+@keyframes espelho-entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .espelho li { animation: none; } }
+
+/* ---------- saída de quem não se viu em nenhuma opção ---------- */
+
+.campo-aberto[hidden] { display: none; }
+.campo-aberto {
+  margin-top: 14px; padding: 16px 18px; border-radius: 15px;
+  border: 1px solid rgba(193, 131, 251, .35); background: rgba(193, 131, 251, .07);
+}
+.campo-aberto label {
+  display: block; font-size: 13.5px; line-height: 1.5; color: #ded9ea;
+}
+.campo-aberto input {
+  display: block; width: 100%; margin-top: 10px; padding: 14px 16px; border-radius: 13px;
+  border: 1px solid var(--linha); background: rgba(0, 0, 0, .25); color: #fff;
+  font-family: inherit; font-size: 16px;
+}
+.campo-aberto input::placeholder { color: #77748a; }
+.campo-aberto input:focus { outline: none; border-color: rgba(193, 131, 251, .6); }
+.btn-livre {
+  width: 100%; margin-top: 12px; padding: 14px 18px; border-radius: 13px; cursor: pointer;
+  border: none; background: var(--grad); color: #14111c;
+  font-family: inherit; font-size: 15px; font-weight: 600;
+}
+
+/* ---------- passo de contato do diagnóstico ---------- */
+
+.passo-lead .lead-sub { margin: 14px 0 0; font-size: 14px; line-height: 1.6; color: #a29fae; }
+.campo-lead {
+  display: block; margin-top: 16px; font-size: 12px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--cinza-min);
+}
+.campo-lead input {
+  display: block; width: 100%; margin-top: 7px; padding: 15px 18px; border-radius: 14px;
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .04); color: #fff;
+  font-family: inherit; font-size: 16px; letter-spacing: normal; text-transform: none;
+}
+.campo-lead input::placeholder { color: #77748a; }
+.campo-lead input:focus { outline: none; border-color: rgba(193, 131, 251, .55); background: rgba(255, 255, 255, .07); }
+.passo-lead .btn-cta { width: 100%; margin-top: 20px; }
+.passo-lead .form-aviso { margin-top: 12px; text-align: center; }
+
+/* notificação push, remetente e chips: o que a referência tem e faltava */
+.push {
+  position: absolute; left: 10px; right: 10px; top: 8px; z-index: 2;
+  display: flex; align-items: flex-start; gap: 9px; padding: 9px 11px;
+  border-radius: 17px; background: rgba(255, 255, 255, .93);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .13); backdrop-filter: blur(10px);
+  opacity: 0; animation: msg-entra .4s ease forwards;
+}
+.push-ico {
+  width: 30px; height: 30px; flex: none; border-radius: 8px; background: var(--grad);
+  display: grid; place-items: center; font-size: 15px; font-weight: 700; color: #fff;
+}
+.push-txt { flex: 1; min-width: 0; font-size: 12px; line-height: 1.3; color: #000; }
+.push-txt b { font-weight: 590; }
+.push-txt i { float: right; font-style: normal; font-size: 10.5px; color: #8e8e93; }
+.push-txt span { display: block; margin-top: 1px; color: #3c3c43; }
+
+.msg .quem { display: flex; align-items: center; gap: 5px; margin-bottom: 4px; font-size: 11.5px; }
+.msg .quem .av {
+  width: 19px; height: 19px; flex: none; border-radius: 50%; background: var(--grad);
+  display: grid; place-items: center; font-size: 10px; font-weight: 700; color: #fff;
+}
+.msg .quem b { font-weight: 590; color: #1f7a4d; }
+.msg .quem .ver {
+  width: 13px; height: 13px; border-radius: 50%; background: #34b7f1; color: #fff;
+  font-size: 8px; display: grid; place-items: center;
+}
+.msg .quem i { font-style: normal; color: #8e8e93; font-size: 10.5px; }
+
+.chips-zap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; opacity: 0; animation: msg-entra .34s ease forwards; }
+.chips-zap span {
+  padding: 5px 11px; border-radius: 999px; font-size: 11px; color: #1f7a4d;
+  background: rgba(37, 211, 102, .1); border: .5px solid rgba(31, 122, 77, .3);
+}
+.push { animation-delay: .2s; }
+.b5 { animation-delay: 2.9s; }
+
+/* ---------- a conta do erro ---------- */
+
+.conta { max-width: 720px; margin: 46px auto 0; }
+.conta-lista { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.conta-lista li, .conta-fecho {
+  display: flex; align-items: center; gap: 18px; padding: 19px 22px; border-radius: var(--r);
+  border: 1px solid var(--linha); background: rgba(255, 255, 255, .025);
+}
+.c-txt { flex: 1; font-size: 15px; line-height: 1.45; color: #b8b5c4; }
+.c-val { flex: none; font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: #e58aa8; text-align: right; }
+.c-val i { display: block; font-style: normal; font-size: 11px; font-weight: 500; color: #8b8798; letter-spacing: 0; }
+.conta-fecho {
+  margin-top: 14px; border-color: rgba(193, 131, 251, .45);
+  background: linear-gradient(96deg, rgba(193, 131, 251, .14), rgba(226, 123, 183, .1));
+}
+.conta-fecho .c-txt b { font-size: 17px; font-weight: 700; color: #fff; }
+.conta-fecho .c-val { font-size: 30px; color: #fff; }
+.conta-remate { margin: 26px auto 0; max-width: 46ch; text-align: center; font-size: 16px; line-height: 1.55; color: #fff; font-weight: 500; }
+.conta .acoes { margin-top: 24px; }
+.conta-rodape { margin: 18px 0 0; text-align: center; font-size: 12px; color: var(--cinza-min); }
+@media (max-width: 600px) {
+  .conta-lista li, .conta-fecho { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .c-val { text-align: left; }
+}
+
+/* ---------- casos de uso ---------- */
+
+.sec-cor {
+  background: linear-gradient(158deg, #a855f7 0%, #c183fb 34%, #d97bb9 72%, #e27bb7 100%);
+  color: #fff;
+}
+.sec-cor .eyebrow { border-color: rgba(255, 255, 255, .3); background: rgba(255, 255, 255, .16); color: #fff; }
+.sec-cor .cabeca h2 { color: #fff; }
+.sec-cor .cabeca p { color: rgba(255, 255, 255, .88); }
+.sec-cor .cabeca p b { color: #fff; }
+
+.casos { margin: 46px auto 0; max-width: 1000px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.caso {
+  padding: 26px; border-radius: var(--r-g); background: #fff; color: var(--tinta);
+  box-shadow: 0 16px 40px rgba(76, 29, 110, .16);
+}
+.caso-tag {
+  display: inline-block; padding: 5px 12px; border-radius: 999px;
+  background: rgba(193, 131, 251, .14); color: #7c3aed;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+}
+.caso h3 { margin: 14px 0 0; font-size: clamp(18px, 2vw, 22px); line-height: 1.25; font-weight: 700; letter-spacing: -.02em; }
+
+.audio {
+  display: flex; align-items: center; gap: 11px; margin: 18px 0 0; padding: 11px 14px;
+  border-radius: 14px; background: #f6f3fa;
+}
+.audio .play { color: #7c3aed; font-size: 12px; }
+.audio .onda { flex: 1; display: flex; align-items: center; gap: 2.5px; height: 26px; }
+.audio .onda i { display: block; width: 2.5px; border-radius: 2px; background: rgba(124, 58, 237, .45); }
+.audio .onda i:nth-child(-n+7) { background: #7c3aed; }
+.audio .dur { font-size: 11.5px; color: #565d6b; font-variant-numeric: tabular-nums; }
+.caso-fala { margin: 12px 0 0; font-size: 13.5px; line-height: 1.5; font-style: italic; color: var(--tinta-2); }
+
+.caso-resp { margin: 18px 0 0; padding: 15px 16px; border-radius: 14px; background: #faf7fd; border: 1px dashed rgba(124, 58, 237, .3); }
+.linha-r { display: flex; align-items: center; gap: 10px; }
+.linha-r + .linha-r { margin-top: 9px; }
+.linha-r b { flex: none; font-size: 11.5px; font-weight: 700; color: var(--tinta-2); }
+.linha-r i {
+  flex: 1; height: 9px; border-radius: 5px;
+  background: linear-gradient(90deg, rgba(124, 58, 237, .3), rgba(226, 123, 183, .18));
+}
+.linha-r i.i2 { background: linear-gradient(90deg, rgba(124, 58, 237, .22), rgba(226, 123, 183, .12)); }
+.selo-mapa { display: block; margin-top: 12px; font-size: 11px; font-weight: 600; color: #7c3aed; }
+
+.outros-pedidos {
+  margin: 26px auto 0; max-width: 900px; display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 9px;
+}
+.outros-pedidos span {
+  padding: 9px 16px; border-radius: 999px; font-size: 13px; color: #fff;
+  background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .26);
+}
+.sec-cor .btn-p { background: #fff; color: #7c3aed; }
+.sec-cor .btn-p:hover { background: #f6f0ff; }
+@media (max-width: 820px) { .casos { grid-template-columns: 1fr; } }
+
+.plano-wrap { max-width: 760px; margin: 0 auto; padding: 26px 18px 80px; }
+.plano-topo h1 { font-size: 30px; line-height: 1.15; margin: 10px 0 6px; }
+#plano-perfil { color: var(--cinza-claro); font-size: 14px; margin: 0 0 18px; }
+.plano-barra { height: 4px; border-radius: 3px; background: rgba(255,255,255,.08); overflow: hidden; margin-top: 14px; }
+.plano-barra i { display: block; height: 100%; width: 0; background: var(--roxo); transition: width .25s ease; }
+
+.bloco { margin: 34px 0 0; }
+.bloco > h2 { font-size: 20px; margin: 0 0 4px; }
+.bloco > p.sub { color: var(--cinza-min); font-size: 14px; margin: 0 0 16px; }
+
+#dias { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.dia { border: 1px solid rgba(255,255,255,.09); border-radius: 15px; padding: 16px 17px; background: rgba(255,255,255,.02); }
+.dia-cab { display: flex; align-items: baseline; gap: 10px; }
+.dia-n { font-size: 12px; font-weight: 700; color: var(--roxo); letter-spacing: .04em; text-transform: uppercase; }
+.dia h3 { font-size: 17px; margin: 0; }
+.dia-obj { color: var(--cinza-claro); font-size: 14px; margin: 7px 0 10px; }
+.dia-tarefa, .dia-entrega { font-size: 14.5px; line-height: 1.6; margin: 6px 0; }
+.dia-tarefa b, .dia-entrega b { color: #fff; }
+.dia-ia { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,.12);
+  font-size: 14.5px; line-height: 1.65; color: #d7d3e0; white-space: pre-wrap; }
+
+#config { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.cfg { border: 1px solid rgba(255,255,255,.09); border-radius: 15px; padding: 15px 16px; }
+.cfg-cab { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.cfg-quando { margin-left: auto; font-size: 12px; color: var(--cinza-min); }
+.cfg-texto { white-space: pre-wrap; font-size: 13.5px; line-height: 1.6; margin: 0 0 10px;
+  background: rgba(0,0,0,.28); border-radius: 11px; padding: 13px 14px; font-family: ui-monospace, monospace; }
+
+#material { width: 100%; min-height: 170px; border-radius: 13px; padding: 14px;
+  background: rgba(0,0,0,.3); color: #fff; border: 1px solid rgba(255,255,255,.14);
+  font-size: 14.5px; line-height: 1.6; resize: vertical; }
+#material-rodar { margin-top: 12px; }
+#material-saida { white-space: pre-wrap; margin-top: 16px; padding: 16px;
+  border-radius: 13px; background: rgba(193,131,251,.07);
+  border: 1px solid rgba(193,131,251,.22); font-size: 14.5px; line-height: 1.7; }
+.plano-escrevendo { font-size: 13px; color: var(--roxo); margin: 10px 0 0; }
+</style>
+</head>
+<body>
+<main class="plano-wrap">
+  <header class="plano-topo">
+    <span class="selo-rosa">Acesso liberado</span>
+    <h1>Sete tarefas de 20 minutos. No sétimo dia as suas 3 estão na sua rotina, não abertas em aba.</h1>
+    <p id="plano-perfil"></p>
+    <div class="plano-barra"><i id="barra-fill"></i></div>
+  </header>
+
+  <form id="quiz"><fieldset class="passo" data-passo="1" data-q="area"><legend><span class="num"></span>No que você trabalha?</legend><div class="opcoes"><button type="button" class="opc" data-q="area" data-i="0">Conteúdo e redes sociais</button><button type="button" class="opc" data-q="area" data-i="1">Negócio próprio ou gestão</button><button type="button" class="opc" data-q="area" data-i="2">Vendas e atendimento</button><button type="button" class="opc" data-q="area" data-i="3">Estudos ou docência</button><button type="button" class="opc" data-q="area" data-i="4">Técnico e desenvolvimento</button><button type="button" class="opc" data-q="area" data-i="5">Saúde e consultório</button><button type="button" class="opc" data-q="area" data-i="6">Jurídico</button><button type="button" class="opc" data-q="area" data-i="7">Contábil e financeiro</button><button type="button" class="opc" data-q="area" data-i="8">Projeto e obra</button><button type="button" class="opc" data-q="area" data-i="9">Outra área</button></div></fieldset><fieldset class="passo" data-passo="2" data-q="s_tarefa"><legend><span class="num"></span>Fora do atendimento, o que mais toma o seu tempo?</legend><div class="opcoes"><button type="button" class="opc" data-q="s_tarefa" data-i="0">Evoluir prontuário e escrever laudo</button><button type="button" class="opc" data-q="s_tarefa" data-i="1">Estudar caso, artigo e protocolo</button><button type="button" class="opc" data-q="s_tarefa" data-i="2">Responder paciente e organizar agenda</button><button type="button" class="opc" data-q="s_tarefa" data-i="3">Fazer conteúdo pra atrair paciente</button><button type="button" class="opc" data-q="s_tarefa" data-i="4">Faturamento, convênio e planilha</button><button type="button" class="opc" data-q="s_tarefa" data-i="5">Treinar e organizar a equipe</button><button type="button" class="opc" data-q="s_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-s_tarefa">Em uma linha: o que mais toma o seu tempo fora do atendimento?</label><input id="livre-s_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="3" data-q="j_tarefa"><legend><span class="num"></span>Na rotina jurídica, onde o tempo vai embora?</legend><div class="opcoes"><button type="button" class="opc" data-q="j_tarefa" data-i="0">Ler processo e peça longa</button><button type="button" class="opc" data-q="j_tarefa" data-i="1">Escrever petição e parecer</button><button type="button" class="opc" data-q="j_tarefa" data-i="2">Pesquisar jurisprudência e legislação</button><button type="button" class="opc" data-q="j_tarefa" data-i="3">Redigir e revisar contrato</button><button type="button" class="opc" data-q="j_tarefa" data-i="4">Explicar pro cliente sem juridiquês</button><button type="button" class="opc" data-q="j_tarefa" data-i="5">Prazo, agenda e controle de processo</button><button type="button" class="opc" data-q="j_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-j_tarefa">Em uma linha: onde o seu tempo jurídico vai embora?</label><input id="livre-j_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="4" data-q="f_tarefa"><legend><span class="num"></span>No fechamento do mês, o que mais consome?</legend><div class="opcoes"><button type="button" class="opc" data-q="f_tarefa" data-i="0">Conferir e cruzar planilha</button><button type="button" class="opc" data-q="f_tarefa" data-i="1">Ler norma, instrução e legislação</button><button type="button" class="opc" data-q="f_tarefa" data-i="2">Explicar o resultado pro cliente</button><button type="button" class="opc" data-q="f_tarefa" data-i="3">Responder cliente sobre imposto e guia</button><button type="button" class="opc" data-q="f_tarefa" data-i="4">Montar relatório e apresentação</button><button type="button" class="opc" data-q="f_tarefa" data-i="5">Automatizar o que se repete todo mês</button><button type="button" class="opc" data-q="f_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-f_tarefa">Em uma linha: o que mais consome o seu fechamento?</label><input id="livre-f_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="5" data-q="p_tarefa"><legend><span class="num"></span>No projeto e na obra, o que mais come tempo?</legend><div class="opcoes"><button type="button" class="opc" data-q="p_tarefa" data-i="0">Orçamento e composição de custo</button><button type="button" class="opc" data-q="p_tarefa" data-i="1">Memorial, laudo e documento técnico</button><button type="button" class="opc" data-q="p_tarefa" data-i="2">Ler norma e projeto de terceiro</button><button type="button" class="opc" data-q="p_tarefa" data-i="3">Montar a proposta que o cliente vê</button><button type="button" class="opc" data-q="p_tarefa" data-i="4">Imagem pra vender a ideia antes de existir</button><button type="button" class="opc" data-q="p_tarefa" data-i="5">Falar com cliente, fornecedor e equipe</button><button type="button" class="opc" data-q="p_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-p_tarefa">Em uma linha: o que mais come tempo no seu projeto ou obra?</label><input id="livre-p_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="6" data-q="c_tarefa"><legend><span class="num"></span>Na sua semana de conteúdo, o que mais rouba tempo?</legend><div class="opcoes"><button type="button" class="opc" data-q="c_tarefa" data-i="0">Escrever roteiro e legenda</button><button type="button" class="opc" data-q="c_tarefa" data-i="1">Gravar e editar vídeo</button><button type="button" class="opc" data-q="c_tarefa" data-i="2">Criar imagem, capa e thumbnail</button><button type="button" class="opc" data-q="c_tarefa" data-i="3">Achar pauta que ainda não saturou</button><button type="button" class="opc" data-q="c_tarefa" data-i="4">Entender por que um post foi e outro não</button><button type="button" class="opc" data-q="c_tarefa" data-i="5">Responder comentário e direct</button><button type="button" class="opc" data-q="c_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-c_tarefa">Em uma linha: o que mais rouba o seu tempo na semana de conteúdo?</label><input id="livre-c_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="7" data-q="n_tarefa"><legend><span class="num"></span>O que mais consome o seu dia na operação?</legend><div class="opcoes"><button type="button" class="opc" data-q="n_tarefa" data-i="0">Escrever proposta, contrato e e-mail</button><button type="button" class="opc" data-q="n_tarefa" data-i="1">Olhar número e planilha pra decidir</button><button type="button" class="opc" data-q="n_tarefa" data-i="2">Pesquisar mercado, preço e concorrente</button><button type="button" class="opc" data-q="n_tarefa" data-i="3">Documentar processo e treinar equipe</button><button type="button" class="opc" data-q="n_tarefa" data-i="4">Montar apresentação e relatório de reunião</button><button type="button" class="opc" data-q="n_tarefa" data-i="5">Apagar incêndio de sistema que ninguém cuida</button><button type="button" class="opc" data-q="n_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-n_tarefa">Em uma linha: o que mais consome o seu dia na operação?</label><input id="livre-n_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="8" data-q="v_tarefa"><legend><span class="num"></span>Onde a sua venda trava hoje?</legend><div class="opcoes"><button type="button" class="opc" data-q="v_tarefa" data-i="0">Achar e qualificar quem vale o tempo</button><button type="button" class="opc" data-q="v_tarefa" data-i="1">Escrever a primeira mensagem sem parecer robô</button><button type="button" class="opc" data-q="v_tarefa" data-i="2">Responder objeção na hora, no WhatsApp</button><button type="button" class="opc" data-q="v_tarefa" data-i="3">Montar proposta e fazer follow-up</button><button type="button" class="opc" data-q="v_tarefa" data-i="4">Organizar o que foi conversado com cada um</button><button type="button" class="opc" data-q="v_tarefa" data-i="5">Entender por que o cliente sumiu</button><button type="button" class="opc" data-q="v_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-v_tarefa">Em uma linha: onde a sua venda trava?</label><input id="livre-v_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="9" data-q="e_tarefa"><legend><span class="num"></span>O que mais toma o seu tempo de estudo ou de aula?</legend><div class="opcoes"><button type="button" class="opc" data-q="e_tarefa" data-i="0">Ler material longo e denso</button><button type="button" class="opc" data-q="e_tarefa" data-i="1">Preparar aula, slide e material</button><button type="button" class="opc" data-q="e_tarefa" data-i="2">Escrever trabalho, artigo ou relatório</button><button type="button" class="opc" data-q="e_tarefa" data-i="3">Corrigir e dar devolutiva</button><button type="button" class="opc" data-q="e_tarefa" data-i="4">Achar fonte que dá pra citar</button><button type="button" class="opc" data-q="e_tarefa" data-i="5">Explicar de um jeito que a pessoa entenda</button><button type="button" class="opc" data-q="e_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-e_tarefa">Em uma linha: o que mais toma o seu tempo de estudo ou de aula?</label><input id="livre-e_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="10" data-q="t_tarefa"><legend><span class="num"></span>No trabalho técnico, onde o tempo vai embora?</legend><div class="opcoes"><button type="button" class="opc" data-q="t_tarefa" data-i="0">Escrever código novo</button><button type="button" class="opc" data-q="t_tarefa" data-i="1">Entender código que não é meu</button><button type="button" class="opc" data-q="t_tarefa" data-i="2">Caçar bug e corrigir</button><button type="button" class="opc" data-q="t_tarefa" data-i="3">Subir protótipo pra validar ideia</button><button type="button" class="opc" data-q="t_tarefa" data-i="4">Documentar e explicar pra quem não é técnico</button><button type="button" class="opc" data-q="t_tarefa" data-i="5">Pesquisar erro, biblioteca e documentação</button><button type="button" class="opc" data-q="t_tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-t_tarefa">Em uma linha: onde o seu tempo técnico vai embora?</label><input id="livre-t_tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="11" data-q="tarefa"><legend><span class="num"></span>O que mais come o seu tempo hoje?</legend><div class="opcoes"><button type="button" class="opc" data-q="tarefa" data-i="0">Escrever</button><button type="button" class="opc" data-q="tarefa" data-i="1">Pesquisar e entender material longo</button><button type="button" class="opc" data-q="tarefa" data-i="2">Criar imagem e vídeo</button><button type="button" class="opc" data-q="tarefa" data-i="3">Organizar e decidir</button><button type="button" class="opc" data-q="tarefa" data-i="4">Montar apresentação e relatório</button><button type="button" class="opc" data-q="tarefa" data-i="5">Construir site ou app</button><button type="button" class="opc" data-q="tarefa" data-i="6">Nenhuma dessas, a minha é outra</button></div><div class="campo-aberto" hidden><label for="livre-tarefa">Em uma linha: o que mais come o seu tempo hoje?</label><input id="livre-tarefa" type="text" maxlength="120" autocomplete="off" placeholder="Escreve com as suas palavras"><button type="button" class="btn-livre">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="12" data-q="tempo_ia"><legend><span class="num"></span>Há quanto tempo você usa IA no trabalho?</legend><div class="opcoes"><button type="button" class="opc" data-q="tempo_ia" data-i="0">Comecei agora</button><button type="button" class="opc" data-q="tempo_ia" data-i="1">Alguns meses</button><button type="button" class="opc" data-q="tempo_ia" data-i="2">Mais de um ano</button></div></fieldset><fieldset class="passo" data-passo="13" data-q="quantas"><legend><span class="num"></span>Quantas ferramentas de IA você tem abertas hoje?</legend><div class="opcoes"><button type="button" class="opc" data-q="quantas" data-i="0">Nenhuma ainda</button><button type="button" class="opc" data-q="quantas" data-i="1">Uma só</button><button type="button" class="opc" data-q="quantas" data-i="2">Duas ou três</button><button type="button" class="opc" data-q="quantas" data-i="3">Perdi a conta</button></div></fieldset><fieldset class="passo" data-passo="14" data-q="gasto"><legend><span class="num"></span>Quanto você paga por mês hoje, somando tudo?</legend><div class="opcoes"><button type="button" class="opc" data-q="gasto" data-i="0">Nada, só uso o que é grátis</button><button type="button" class="opc" data-q="gasto" data-i="1">Até R$ 150</button><button type="button" class="opc" data-q="gasto" data-i="2">De R$ 150 a R$ 400</button><button type="button" class="opc" data-q="gasto" data-i="3">Mais de R$ 400</button></div></fieldset><fieldset class="passo passo-break" data-passo="15" data-q="break1"><legend>A Regra das 3 IAs</legend><p class="break-corpo">O problema quase nunca é a IA, é abrir a errada para aquela tarefa. Escolher a certa é o que faz a resposta parar de voltar genérica. Vai até o fim e você sai daqui com as três ferramentas do seu caso, na ordem de assinar e com o prompt de cada uma.</p><div class="opcoes"><button type="button" class="opc" data-q="break1" data-i="0">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="16" data-q="c_ideia"><legend><span class="num"></span>De onde sai a sua próxima ideia de post?</legend><div class="opcoes"><button type="button" class="opc" data-q="c_ideia" data-i="0">Do que eu vejo no feed na hora</button><button type="button" class="opc" data-q="c_ideia" data-i="1">De um banco de referências que eu guardo</button><button type="button" class="opc" data-q="c_ideia" data-i="2">Do que cliente e seguidor perguntam</button><button type="button" class="opc" data-q="c_ideia" data-i="3">Do improviso, não tenho fonte fixa</button></div></fieldset><fieldset class="passo" data-passo="17" data-q="c_voz"><legend><span class="num"></span>Quando a IA escreve no seu lugar, sai com a sua voz?</legend><div class="opcoes"><button type="button" class="opc" data-q="c_voz" data-i="0">Sai genérico, dá pra ver que é IA</button><button type="button" class="opc" data-q="c_voz" data-i="1">Sai perto, mas eu reescrevo tudo</button><button type="button" class="opc" data-q="c_voz" data-i="2">Já ensinei o meu jeito e sai bom</button><button type="button" class="opc" data-q="c_voz" data-i="3">Não deixo a IA escrever, só me ajuda a pensar</button></div></fieldset><fieldset class="passo" data-passo="18" data-q="n_dados"><legend><span class="num"></span>Onde vivem os números do seu negócio?</legend><div class="opcoes"><button type="button" class="opc" data-q="n_dados" data-i="0">Numa planilha que eu mesmo atualizo</button><button type="button" class="opc" data-q="n_dados" data-i="1">Num sistema que exporta relatório</button><button type="button" class="opc" data-q="n_dados" data-i="2">Espalhados em vários lugares</button><button type="button" class="opc" data-q="n_dados" data-i="3">Na minha cabeça e no extrato</button></div></fieldset><fieldset class="passo" data-passo="19" data-q="n_repete"><legend><span class="num"></span>Qual tarefa se repete quase igual toda semana?</legend><div class="opcoes"><button type="button" class="opc" data-q="n_repete" data-i="0">Relatório pra cliente ou sócio</button><button type="button" class="opc" data-q="n_repete" data-i="1">Orçamento e proposta</button><button type="button" class="opc" data-q="n_repete" data-i="2">Conteúdo e comunicação do negócio</button><button type="button" class="opc" data-q="n_repete" data-i="3">Cobrar gente e conferir entrega</button><button type="button" class="opc" data-q="n_repete" data-i="4">Nenhuma, toda semana é diferente</button></div></fieldset><fieldset class="passo" data-passo="20" data-q="v_canal"><legend><span class="num"></span>Onde a conversa de venda acontece?</legend><div class="opcoes"><button type="button" class="opc" data-q="v_canal" data-i="0">WhatsApp e direct</button><button type="button" class="opc" data-q="v_canal" data-i="1">Reunião e ligação</button><button type="button" class="opc" data-q="v_canal" data-i="2">E-mail e proposta formal</button><button type="button" class="opc" data-q="v_canal" data-i="3">Presencial, olho no olho</button></div></fieldset><fieldset class="passo" data-passo="21" data-q="v_pesquisa"><legend><span class="num"></span>Antes de falar com um cliente novo, você pesquisa sobre ele?</legend><div class="opcoes"><button type="button" class="opc" data-q="v_pesquisa" data-i="0">Sempre, e leva tempo demais</button><button type="button" class="opc" data-q="v_pesquisa" data-i="1">Só quando a conta é grande</button><button type="button" class="opc" data-q="v_pesquisa" data-i="2">Quase nunca, vou pelo feeling</button><button type="button" class="opc" data-q="v_pesquisa" data-i="3">Queria, mas não sei o que procurar</button></div></fieldset><fieldset class="passo" data-passo="22" data-q="e_fonte"><legend><span class="num"></span>O que acontece quando você pede fonte pra IA?</legend><div class="opcoes"><button type="button" class="opc" data-q="e_fonte" data-i="0">Ela inventa referência que não existe</button><button type="button" class="opc" data-q="e_fonte" data-i="1">Ela acha, mas conferir demora</button><button type="button" class="opc" data-q="e_fonte" data-i="2">Uso só o que a instituição indica</button><button type="button" class="opc" data-q="e_fonte" data-i="3">Não uso fonte, o conteúdo é meu</button></div></fieldset><fieldset class="passo" data-passo="23" data-q="e_volume"><legend><span class="num"></span>Por semana, o material que você tem que dar conta é do tamanho de...</legend><div class="opcoes"><button type="button" class="opc" data-q="e_volume" data-i="0">Alguns artigos</button><button type="button" class="opc" data-q="e_volume" data-i="1">Um livro ou uma apostila inteira</button><button type="button" class="opc" data-q="e_volume" data-i="2">Várias aulas gravadas</button><button type="button" class="opc" data-q="e_volume" data-i="3">Não é volume, é dificuldade do conteúdo</button></div></fieldset><fieldset class="passo" data-passo="24" data-q="t_base"><legend><span class="num"></span>O código onde você mexe é...</legend><div class="opcoes"><button type="button" class="opc" data-q="t_base" data-i="0">Meu, começado do zero</button><button type="button" class="opc" data-q="t_base" data-i="1">De um time, com histórico e review</button><button type="button" class="opc" data-q="t_base" data-i="2">Legado que ninguém quer abrir</button><button type="button" class="opc" data-q="t_base" data-i="3">Não é código, é sistema e no-code</button></div></fieldset><fieldset class="passo" data-passo="25" data-q="t_entrega"><legend><span class="num"></span>O que você precisa entregar mais rápido?</legend><div class="opcoes"><button type="button" class="opc" data-q="t_entrega" data-i="0">Feature em produção</button><button type="button" class="opc" data-q="t_entrega" data-i="1">Protótipo pra mostrar pro cliente</button><button type="button" class="opc" data-q="t_entrega" data-i="2">Análise ou parecer técnico</button><button type="button" class="opc" data-q="t_entrega" data-i="3">Automação interna que ninguém quer fazer</button></div></fieldset><fieldset class="passo" data-passo="26" data-q="o_saida"><legend><span class="num"></span>No fim do dia, o que você entrega?</legend><div class="opcoes"><button type="button" class="opc" data-q="o_saida" data-i="0">Texto e documento</button><button type="button" class="opc" data-q="o_saida" data-i="1">Decisão e resposta pra alguém</button><button type="button" class="opc" data-q="o_saida" data-i="2">Material visual</button><button type="button" class="opc" data-q="o_saida" data-i="3">Atendimento e serviço</button><button type="button" class="opc" data-q="o_saida" data-i="4">Sistema, planilha ou ferramenta</button></div></fieldset><fieldset class="passo" data-passo="27" data-q="o_contexto"><legend><span class="num"></span>O seu trabalho é mais de lidar com...</legend><div class="opcoes"><button type="button" class="opc" data-q="o_contexto" data-i="0">Gente</button><button type="button" class="opc" data-q="o_contexto" data-i="1">Documento, norma e regra</button><button type="button" class="opc" data-q="o_contexto" data-i="2">Número e sistema</button><button type="button" class="opc" data-q="o_contexto" data-i="3">Coisa física, no mundo real</button></div></fieldset><fieldset class="passo" data-passo="28" data-q="s_registro"><legend><span class="num"></span>Como o registro do atendimento acontece hoje?</legend><div class="opcoes"><button type="button" class="opc" data-q="s_registro" data-i="0">Digito durante ou logo depois da consulta</button><button type="button" class="opc" data-q="s_registro" data-i="1">Gravo e transcrevo depois</button><button type="button" class="opc" data-q="s_registro" data-i="2">No sistema da clínica, com campo fixo</button><button type="button" class="opc" data-q="s_registro" data-i="3">Escrevo à mão e passo a limpo</button></div></fieldset><fieldset class="passo" data-passo="29" data-q="s_dado"><legend><span class="num"></span>E dado de paciente, entra na ferramenta?</legend><div class="opcoes"><button type="button" class="opc" data-q="s_dado" data-i="0">Entra, e isso me preocupa</button><button type="button" class="opc" data-q="s_dado" data-i="1">Só entra dado sem identificação</button><button type="button" class="opc" data-q="s_dado" data-i="2">Nunca entra, uso só pra estudo e texto</button><button type="button" class="opc" data-q="s_dado" data-i="3">Sinceramente, não sei o que pode</button></div></fieldset><fieldset class="passo" data-passo="30" data-q="j_volume"><legend><span class="num"></span>O material de um processo seu costuma ser do tamanho de...</legend><div class="opcoes"><button type="button" class="opc" data-q="j_volume" data-i="0">Poucas páginas</button><button type="button" class="opc" data-q="j_volume" data-i="1">Centenas de páginas</button><button type="button" class="opc" data-q="j_volume" data-i="2">Áudio e vídeo de audiência</button><button type="button" class="opc" data-q="j_volume" data-i="3">Varia demais, nunca sei</button></div></fieldset><fieldset class="passo" data-passo="31" data-q="j_risco"><legend><span class="num"></span>O que mais te trava pra usar IA no jurídico?</legend><div class="opcoes"><button type="button" class="opc" data-q="j_risco" data-i="0">Ela inventa jurisprudência que não existe</button><button type="button" class="opc" data-q="j_risco" data-i="1">Sigilo do cliente e dado sensível</button><button type="button" class="opc" data-q="j_risco" data-i="2">O texto não sai com a minha técnica</button><button type="button" class="opc" data-q="j_risco" data-i="3">Nada, já uso todo dia</button></div></fieldset><fieldset class="passo" data-passo="32" data-q="f_origem"><legend><span class="num"></span>De onde vêm os números que você trata?</legend><div class="opcoes"><button type="button" class="opc" data-q="f_origem" data-i="0">Do sistema contábil, em relatório</button><button type="button" class="opc" data-q="f_origem" data-i="1">Da planilha do cliente, cada uma de um jeito</button><button type="button" class="opc" data-q="f_origem" data-i="2">De PDF e extrato</button><button type="button" class="opc" data-q="f_origem" data-i="3">Digitado na mão, um por um</button></div></fieldset><fieldset class="passo" data-passo="33" data-q="f_carteira"><legend><span class="num"></span>Quantos clientes dependem de você todo mês?</legend><div class="opcoes"><button type="button" class="opc" data-q="f_carteira" data-i="0">Um ou dois</button><button type="button" class="opc" data-q="f_carteira" data-i="1">Até dez</button><button type="button" class="opc" data-q="f_carteira" data-i="2">Dezenas</button><button type="button" class="opc" data-q="f_carteira" data-i="3">Mais de cem</button></div></fieldset><fieldset class="passo" data-passo="34" data-q="p_entrada"><legend><span class="num"></span>O que o cliente te manda pra você orçar?</legend><div class="opcoes"><button type="button" class="opc" data-q="p_entrada" data-i="0">Planta e projeto</button><button type="button" class="opc" data-q="p_entrada" data-i="1">Foto e medida no WhatsApp</button><button type="button" class="opc" data-q="p_entrada" data-i="2">Só a ideia, na conversa</button><button type="button" class="opc" data-q="p_entrada" data-i="3">Cada um manda de um jeito</button></div></fieldset><fieldset class="passo" data-passo="35" data-q="p_visual"><legend><span class="num"></span>O quanto a sua venda depende de a pessoa ver antes?</legend><div class="opcoes"><button type="button" class="opc" data-q="p_visual" data-i="0">Muito, sem imagem não fecha</button><button type="button" class="opc" data-q="p_visual" data-i="1">Ajuda, mas não é o que decide</button><button type="button" class="opc" data-q="p_visual" data-i="2">Nada, é decisão técnica</button><button type="button" class="opc" data-q="p_visual" data-i="3">Hoje eu mostro foto de obra antiga</button></div></fieldset><fieldset class="passo" data-passo="36" data-q="c_entrega"><legend><span class="num"></span>Qual peça te dá mais trabalho para entregar pronta?</legend><div class="opcoes"><button type="button" class="opc" data-q="c_entrega" data-i="0">Vídeo editado</button><button type="button" class="opc" data-q="c_entrega" data-i="1">Carrossel e imagem</button><button type="button" class="opc" data-q="c_entrega" data-i="2">Texto longo, roteiro ou newsletter</button><button type="button" class="opc" data-q="c_entrega" data-i="3">Narração e áudio</button><button type="button" class="opc" data-q="c_entrega" data-i="4">Apresentação para marca ou cliente</button></div></fieldset><fieldset class="passo" data-passo="37" data-q="c_ritmo"><legend><span class="num"></span>Com que frequência você publica?</legend><div class="opcoes"><button type="button" class="opc" data-q="c_ritmo" data-i="0">Todo dia</button><button type="button" class="opc" data-q="c_ritmo" data-i="1">Umas três vezes por semana</button><button type="button" class="opc" data-q="c_ritmo" data-i="2">Uma vez por semana</button><button type="button" class="opc" data-q="c_ritmo" data-i="3">Quando dá, sem ritmo fixo</button></div></fieldset><fieldset class="passo" data-passo="38" data-q="n_entrega"><legend><span class="num"></span>O que precisa sair pronto para cliente ou sócio ver?</legend><div class="opcoes"><button type="button" class="opc" data-q="n_entrega" data-i="0">Apresentação e relatório visual</button><button type="button" class="opc" data-q="n_entrega" data-i="1">Proposta e contrato</button><button type="button" class="opc" data-q="n_entrega" data-i="2">Planilha e número consolidado</button><button type="button" class="opc" data-q="n_entrega" data-i="3">Mensagem e e-mail do dia a dia</button></div></fieldset><fieldset class="passo" data-passo="39" data-q="n_ritmo"><legend><span class="num"></span>Quanto da sua operação é a mesma coisa toda semana?</legend><div class="opcoes"><button type="button" class="opc" data-q="n_ritmo" data-i="0">Quase tudo, muda só o nome do cliente</button><button type="button" class="opc" data-q="n_ritmo" data-i="1">Metade</button><button type="button" class="opc" data-q="n_ritmo" data-i="2">Pouca coisa, cada semana é diferente</button></div></fieldset><fieldset class="passo" data-passo="40" data-q="v_entrega"><legend><span class="num"></span>O que você manda para o cliente decidir?</legend><div class="opcoes"><button type="button" class="opc" data-q="v_entrega" data-i="0">Proposta ou apresentação</button><button type="button" class="opc" data-q="v_entrega" data-i="1">Mensagem escrita</button><button type="button" class="opc" data-q="v_entrega" data-i="2">Áudio</button><button type="button" class="opc" data-q="v_entrega" data-i="3">Planilha com preço e condição</button></div></fieldset><fieldset class="passo" data-passo="41" data-q="v_ritmo"><legend><span class="num"></span>Quantas conversas novas você abre por semana?</legend><div class="opcoes"><button type="button" class="opc" data-q="v_ritmo" data-i="0">Mais de 30</button><button type="button" class="opc" data-q="v_ritmo" data-i="1">Entre 10 e 30</button><button type="button" class="opc" data-q="v_ritmo" data-i="2">Menos de 10</button></div></fieldset><fieldset class="passo" data-passo="42" data-q="e_entrega"><legend><span class="num"></span>O que você precisa produzir no fim?</legend><div class="opcoes"><button type="button" class="opc" data-q="e_entrega" data-i="0">Aula ou apresentação</button><button type="button" class="opc" data-q="e_entrega" data-i="1">Resumo e fichamento</button><button type="button" class="opc" data-q="e_entrega" data-i="2">Texto autoral, artigo ou TCC</button><button type="button" class="opc" data-q="e_entrega" data-i="3">Exercício, prova ou correção</button></div></fieldset><fieldset class="passo" data-passo="43" data-q="e_ritmo"><legend><span class="num"></span>Você prefere consumir o material lendo ou ouvindo?</legend><div class="opcoes"><button type="button" class="opc" data-q="e_ritmo" data-i="0">Lendo</button><button type="button" class="opc" data-q="e_ritmo" data-i="1">Ouvindo, aproveito o deslocamento</button><button type="button" class="opc" data-q="e_ritmo" data-i="2">Tanto faz, o que for mais rápido</button></div></fieldset><fieldset class="passo" data-passo="44" data-q="t_entrega_2"><legend><span class="num"></span>Fora código, o que você ainda precisa entregar?</legend><div class="opcoes"><button type="button" class="opc" data-q="t_entrega_2" data-i="0">Tela ou protótipo que dá para clicar</button><button type="button" class="opc" data-q="t_entrega_2" data-i="1">Documentação e explicação para outra equipe</button><button type="button" class="opc" data-q="t_entrega_2" data-i="2">Integração entre sistemas</button><button type="button" class="opc" data-q="t_entrega_2" data-i="3">Só código, o resto não é comigo</button></div></fieldset><fieldset class="passo" data-passo="45" data-q="t_ritmo"><legend><span class="num"></span>Quanto do seu trabalho é tarefa repetida?</legend><div class="opcoes"><button type="button" class="opc" data-q="t_ritmo" data-i="0">Muita coisa, é sempre o mesmo caminho</button><button type="button" class="opc" data-q="t_ritmo" data-i="1">Alguma coisa</button><button type="button" class="opc" data-q="t_ritmo" data-i="2">Quase nada, cada problema é novo</button></div></fieldset><fieldset class="passo" data-passo="46" data-q="s_entrega"><legend><span class="num"></span>O que precisa sair pronto fora do atendimento?</legend><div class="opcoes"><button type="button" class="opc" data-q="s_entrega" data-i="0">Laudo, evolução e documento clínico</button><button type="button" class="opc" data-q="s_entrega" data-i="1">Material de orientação para o paciente</button><button type="button" class="opc" data-q="s_entrega" data-i="2">Áudio de orientação</button><button type="button" class="opc" data-q="s_entrega" data-i="3">Resumo de artigo e protocolo</button></div></fieldset><fieldset class="passo" data-passo="47" data-q="s_ritmo"><legend><span class="num"></span>Quanto do que você escreve fora do atendimento se repete?</legend><div class="opcoes"><button type="button" class="opc" data-q="s_ritmo" data-i="0">Quase tudo, muda só o paciente</button><button type="button" class="opc" data-q="s_ritmo" data-i="1">Metade</button><button type="button" class="opc" data-q="s_ritmo" data-i="2">Cada caso é bem diferente</button></div></fieldset><fieldset class="passo" data-passo="48" data-q="j_entrega"><legend><span class="num"></span>O que precisa sair pronto no fim?</legend><div class="opcoes"><button type="button" class="opc" data-q="j_entrega" data-i="0">Petição e peça processual</button><button type="button" class="opc" data-q="j_entrega" data-i="1">Parecer e memorando</button><button type="button" class="opc" data-q="j_entrega" data-i="2">Resumo do caso para o cliente entender</button><button type="button" class="opc" data-q="j_entrega" data-i="3">Contrato e minuta</button></div></fieldset><fieldset class="passo" data-passo="49" data-q="j_ritmo"><legend><span class="num"></span>Quanto das suas peças nasce de um modelo parecido?</legend><div class="opcoes"><button type="button" class="opc" data-q="j_ritmo" data-i="0">Quase todas</button><button type="button" class="opc" data-q="j_ritmo" data-i="1">Metade</button><button type="button" class="opc" data-q="j_ritmo" data-i="2">Cada caso do zero</button></div></fieldset><fieldset class="passo" data-passo="50" data-q="f_entrega"><legend><span class="num"></span>O que o cliente recebe de você no fim do mês?</legend><div class="opcoes"><button type="button" class="opc" data-q="f_entrega" data-i="0">Relatório visual</button><button type="button" class="opc" data-q="f_entrega" data-i="1">Planilha e demonstrativo</button><button type="button" class="opc" data-q="f_entrega" data-i="2">Explicação escrita do que aconteceu</button><button type="button" class="opc" data-q="f_entrega" data-i="3">Guia, obrigação e prazo</button></div></fieldset><fieldset class="passo" data-passo="51" data-q="f_ritmo"><legend><span class="num"></span>Quanto do fechamento é igual todo mês?</legend><div class="opcoes"><button type="button" class="opc" data-q="f_ritmo" data-i="0">Quase tudo</button><button type="button" class="opc" data-q="f_ritmo" data-i="1">Metade</button><button type="button" class="opc" data-q="f_ritmo" data-i="2">Muda bastante de mês para mês</button></div></fieldset><fieldset class="passo" data-passo="52" data-q="p_entrega"><legend><span class="num"></span>O que o cliente precisa ver para aprovar?</legend><div class="opcoes"><button type="button" class="opc" data-q="p_entrega" data-i="0">Imagem ou render do resultado</button><button type="button" class="opc" data-q="p_entrega" data-i="1">Proposta e apresentação</button><button type="button" class="opc" data-q="p_entrega" data-i="2">Planilha de orçamento</button><button type="button" class="opc" data-q="p_entrega" data-i="3">Vídeo do projeto</button></div></fieldset><fieldset class="passo" data-passo="53" data-q="p_ritmo"><legend><span class="num"></span>Quanto do seu orçamento se repete entre projetos?</legend><div class="opcoes"><button type="button" class="opc" data-q="p_ritmo" data-i="0">Quase tudo, muda a metragem</button><button type="button" class="opc" data-q="p_ritmo" data-i="1">Metade</button><button type="button" class="opc" data-q="p_ritmo" data-i="2">Cada projeto é um caso</button></div></fieldset><fieldset class="passo" data-passo="54" data-q="o_entrega"><legend><span class="num"></span>Em que formato o seu trabalho chega em quem recebe?</legend><div class="opcoes"><button type="button" class="opc" data-q="o_entrega" data-i="0">Documento ou texto</button><button type="button" class="opc" data-q="o_entrega" data-i="1">Apresentação</button><button type="button" class="opc" data-q="o_entrega" data-i="2">Planilha e número</button><button type="button" class="opc" data-q="o_entrega" data-i="3">Áudio ou vídeo</button><button type="button" class="opc" data-q="o_entrega" data-i="4">Conversa, não vira arquivo</button></div></fieldset><fieldset class="passo" data-passo="55" data-q="o_ritmo"><legend><span class="num"></span>Quanto do seu trabalho se repete quase igual?</legend><div class="opcoes"><button type="button" class="opc" data-q="o_ritmo" data-i="0">Quase tudo</button><button type="button" class="opc" data-q="o_ritmo" data-i="1">Metade</button><button type="button" class="opc" data-q="o_ritmo" data-i="2">Quase nada</button></div></fieldset><fieldset class="passo passo-break" data-passo="56" data-q="break3"><legend>Nenhuma entrou por indicação</legend><p class="break-corpo">As 13 ferramentas do catálogo foram testadas em trabalho real, com o preço conferido no site oficial de cada uma. As três que você vai receber saem dessas 13, não de um ranking da internet.</p><div class="opcoes"><button type="button" class="opc" data-q="break3" data-i="0">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="57" data-q="generica"><legend><span class="num"></span>Quando a resposta volta genérica, o que você faz?</legend><div class="opcoes"><button type="button" class="opc" data-q="generica" data-i="0">Refaço o prompt até sair algo</button><button type="button" class="opc" data-q="generica" data-i="1">Tento em outra ferramenta</button><button type="button" class="opc" data-q="generica" data-i="2">Desisto e faço na mão</button></div></fieldset><fieldset class="passo" data-passo="58" data-q="parada"><legend><span class="num"></span>Você já assinou alguma ferramenta que não usou?</legend><div class="opcoes"><button type="button" class="opc" data-q="parada" data-i="0">Nunca</button><button type="button" class="opc" data-q="parada" data-i="1">Uma</button><button type="button" class="opc" data-q="parada" data-i="2">Mais de uma</button><button type="button" class="opc" data-q="parada" data-i="3">Prefiro nem contar</button></div></fieldset><fieldset class="passo" data-passo="59" data-q="refaz"><legend><span class="num"></span>Quantas vezes você refaz o mesmo prompt até prestar?</legend><div class="opcoes"><button type="button" class="opc" data-q="refaz" data-i="0">Sai de primeira</button><button type="button" class="opc" data-q="refaz" data-i="1">Duas ou três</button><button type="button" class="opc" data-q="refaz" data-i="2">Cinco ou mais</button><button type="button" class="opc" data-q="refaz" data-i="3">Quase sempre desisto antes</button></div></fieldset><fieldset class="passo" data-passo="60" data-q="horas"><legend><span class="num"></span>Quantas horas por semana isso te custa?</legend><div class="opcoes"><button type="button" class="opc" data-q="horas" data-i="0">Menos de uma</button><button type="button" class="opc" data-q="horas" data-i="1">De uma a três</button><button type="button" class="opc" data-q="horas" data-i="2">De três a seis</button><button type="button" class="opc" data-q="horas" data-i="3">Mais de seis</button></div></fieldset><fieldset class="passo" data-passo="61" data-q="custo_parado"><legend><span class="num"></span>Somando tudo, quanto já foi para ferramenta que você não usou?</legend><div class="opcoes"><button type="button" class="opc" data-q="custo_parado" data-i="0">Nada, usei tudo que assinei</button><button type="button" class="opc" data-q="custo_parado" data-i="1">Uns R$ 100 no total</button><button type="button" class="opc" data-q="custo_parado" data-i="2">Uns R$ 500</button><button type="button" class="opc" data-q="custo_parado" data-i="3">Mais de R$ 1.000</button><button type="button" class="opc" data-q="custo_parado" data-i="4">Prefiro não fazer essa conta</button></div></fieldset><fieldset class="passo passo-break" data-passo="62" data-q="break2"><legend>Por que três, e não dez</legend><p class="break-corpo">Testei ferramenta por ferramenta em trabalho real, não em review. O que sobrou foi um trio por perfil: uma para pensar e escrever, uma para buscar e checar, uma para produzir. O resto é assinatura parada.</p><div class="opcoes"><button type="button" class="opc" data-q="break2" data-i="0">Continuar →</button></div></fieldset><fieldset class="passo" data-passo="63" data-q="nivel"><legend><span class="num"></span>Como você usa IA hoje?</legend><div class="opcoes"><button type="button" class="opc" data-q="nivel" data-i="0">Quase nunca abro</button><button type="button" class="opc" data-q="nivel" data-i="1">Abro um chat de vez em quando</button><button type="button" class="opc" data-q="nivel" data-i="2">Uso todo dia, mas sem método</button><button type="button" class="opc" data-q="nivel" data-i="3">Uso pra trabalhar e quero avançar</button></div></fieldset><fieldset class="passo" data-passo="64" data-q="prazo"><legend><span class="num"></span>Em quanto tempo você quer isso resolvido?</legend><div class="opcoes"><button type="button" class="opc" data-q="prazo" data-i="0">Essa semana</button><button type="button" class="opc" data-q="prazo" data-i="1">Neste mês</button><button type="button" class="opc" data-q="prazo" data-i="2">Sem pressa, quero fazer certo</button></div></fieldset><fieldset class="passo" data-passo="65" data-q="estilo"><legend><span class="num"></span>Você prefere dominar uma ferramenta ou saber trocar entre várias?</legend><div class="opcoes"><button type="button" class="opc" data-q="estilo" data-i="0">Dominar uma a fundo</button><button type="button" class="opc" data-q="estilo" data-i="1">Saber trocar conforme a tarefa</button></div></fieldset><fieldset class="passo" data-passo="66" data-q="orcamento"><legend><span class="num"></span>Quanto você pode investir por mês em ferramenta?</legend><div class="opcoes"><button type="button" class="opc" data-q="orcamento" data-i="0">Nada, quero só o que é grátis</button><button type="button" class="opc" data-q="orcamento" data-i="1">Até R$ 150, uma assinatura</button><button type="button" class="opc" data-q="orcamento" data-i="2">De R$ 150 a R$ 400, duas ou três</button><button type="button" class="opc" data-q="orcamento" data-i="3">Acima de R$ 400, sem restrição</button></div></fieldset><fieldset class="passo" data-passo="67" data-q="onde"><legend><span class="num"></span>Onde você trabalha na maior parte do tempo?</legend><div class="opcoes"><button type="button" class="opc" data-q="onde" data-i="0">No celular</button><button type="button" class="opc" data-q="onde" data-i="1">No computador</button></div></fieldset><fieldset class="passo passo-break passo-espelho" data-passo="68" data-q="break_espelho"><legend>Montando o seu diagnóstico</legend><p class="break-corpo" id="espelho-status">Cruzando as suas respostas com as 13 ferramentas do catálogo.</p><ul class="espelho" id="espelho-lista"></ul><div class="opcoes"><button type="button" class="opc" data-q="break_espelho" data-i="0">Ver as minhas 3 IAs →</button></div></fieldset></form>
+
+  <div id="plano" hidden>
+    <p class="plano-escrevendo" id="plano-escrevendo" hidden>Escrevendo a sua semana...</p>
+
+    <section class="bloco">
+      <h2>Os seus 7 dias</h2>
+      <p class="sub">Vinte minutos por dia, na ordem. Cada dia entrega uma coisa que fica.</p>
+      <ol id="dias"></ol>
+    </section>
+
+    <section class="bloco">
+      <h2>Um trabalho seu, rodado aqui</h2>
+      <p class="sub">Cola um material real: um texto, um processo, um caso, um orçamento.
+        Ele volta rodado dentro da <b id="material-alvo"></b>, que é a primeira da sua stack.
+        Não é modelo para preencher.</p>
+      <textarea id="material" placeholder="Cola aqui o seu material" maxlength="18000"></textarea>
+      <button type="button" class="btn btn-p" id="material-rodar">Rodar na ferramenta certa</button>
+      <div id="material-saida" hidden></div>
+      <button type="button" class="m-copiar" id="material-copiar" hidden>Copiar o resultado</button>
+    </section>
+
+    <section class="bloco">
+      <h2>As suas 3 configuradas</h2>
+      <p class="sub">O texto exato para colar nas instruções de cada uma, escrito para o seu caso.</p>
+      <ol id="config"></ol>
+    </section>
+
+    <section class="bloco">
+      <h2>Revisão quando mudar</h2>
+      <p class="sub">Quando uma das suas 3 mudar de preço ou for superada, você recebe a troca e o motivo</p>
+    </section>
+  </div>
+</main>
+<script>const MOTOR = {"pesos":{"area":[{"Higgsfield":3,"Poppy AI":3,"ChatGPT":2,"Claude":2,"Gemini":1},{"Claude":3,"ChatGPT":2,"Perplexity":2,"Gemini":2,"Claude Code":1},{"Claude":3,"ChatGPT":3,"Perplexity":1,"Gemini":1},{"Gemini":3,"Perplexity":3,"ChatGPT":2,"Claude":1},{"Claude Code":4,"Claude":2,"Lovable":2,"ChatGPT":1},{"Claude":3,"Gemini":2,"Perplexity":2,"ChatGPT":2},{"Claude":3,"Gemini":3,"Perplexity":2},{"Gemini":3,"Claude":3,"ChatGPT":1},{"Claude":2,"Gemini":2,"Higgsfield":2,"ChatGPT":1},{"ChatGPT":2,"Claude":2,"Gemini":2,"Perplexity":1}],"s_tarefa":[{"Claude":4},{"Perplexity":4,"Gemini":2,"Gemini Notebook":3},{"ChatGPT":4,"n8n":2},{"Higgsfield":3,"Claude":2,"Poppy AI":1,"ElevenLabs":2},{"Gemini":4},{"Claude":3,"Gemini":1},{}],"j_tarefa":[{"Gemini":4,"Gemini Notebook":7},{"Claude":4},{"Perplexity":4,"Gemini":1},{"Claude":4,"Gemini":1},{"ChatGPT":4},{"Gemini":3,"Claude":1},{}],"f_tarefa":[{"Gemini":4},{"Perplexity":4,"Gemini":1,"Gemini Notebook":3},{"Claude":4},{"ChatGPT":4},{"Gemini":4,"Claude":1,"Gamma":7},{"Claude Code":3,"Lovable":1,"n8n":7},{}],"p_tarefa":[{"Gemini":4,"Claude":1},{"Claude":4},{"Gemini":3,"Perplexity":2},{"Gemini":3,"Claude":2,"Gamma":7},{"Higgsfield":4,"Gemini":1},{"ChatGPT":4},{}],"c_tarefa":[{"Claude":4,"ChatGPT":2},{"Higgsfield":3,"Poppy AI":2,"Gemini":1,"ElevenLabs":7},{"Higgsfield":4,"Gemini":2},{"Perplexity":3,"Grok":3},{"Poppy AI":4,"Claude":2},{"ChatGPT":3},{}],"n_tarefa":[{"Claude":4,"ChatGPT":1},{"Gemini":4,"Claude":2},{"Perplexity":4,"Gemini":1},{"Claude":3,"Gemini":2,"ChatGPT":1},{"Gemini":4,"Claude":2,"Gamma":7},{"Claude Code":3,"Lovable":2,"n8n":7},{}],"v_tarefa":[{"Perplexity":4,"ChatGPT":1},{"Claude":4,"ChatGPT":2},{"ChatGPT":4,"Claude":2},{"Claude":3,"ChatGPT":2,"Gemini":1,"Gamma":3},{"Gemini":3,"Claude":2,"n8n":3},{"Claude":3,"Perplexity":2},{}],"e_tarefa":[{"Gemini":4,"Gemini Notebook":7},{"Gemini":3,"Claude":3,"Gemini Notebook":3,"Gamma":3},{"Claude":4,"Gemini":1},{"Claude":3,"Gemini":2},{"Perplexity":4,"Gemini":1,"Gemini Notebook":3},{"ChatGPT":3,"Claude":2},{}],"t_tarefa":[{"Claude Code":4},{"Claude Code":4,"Claude":2},{"Claude Code":4},{"Lovable":4,"Claude Code":2},{"Claude":4,"ChatGPT":2},{"Perplexity":4},{}],"tarefa":[{"Claude":4,"ChatGPT":2,"Gemini":1},{"Perplexity":4,"Gemini":3,"Grok":1},{"Higgsfield":4,"Gemini":2},{"Claude":3,"ChatGPT":3},{"Gemini":4,"Claude":2,"ChatGPT":1},{"Claude Code":4,"Lovable":3},{}],"tempo_ia":[{},{},{}],"quantas":[{},{},{},{}],"gasto":[{},{},{},{}],"break1":[{}],"c_ideia":[{"Grok":3,"Perplexity":1},{"Poppy AI":4,"Gemini Notebook":2},{"Claude":3,"ChatGPT":2},{"Perplexity":2,"Grok":2,"ChatGPT":1}],"c_voz":[{"Claude":4,"ChatGPT":1},{"Claude":3,"ChatGPT":1},{"Claude":2,"Poppy AI":2},{"Claude":2,"ChatGPT":2,"ElevenLabs":1}],"n_dados":[{"Gemini":3},{"Gemini":3,"Claude":2},{"Claude":3,"Gemini":2,"Gemini Notebook":3},{"Claude":2,"ChatGPT":2}],"n_repete":[{"Gemini":3,"Claude":2,"n8n":2},{"Claude":4,"ChatGPT":1},{"ChatGPT":2,"Claude":2,"Higgsfield":2,"ElevenLabs":7},{"Claude":2,"ChatGPT":2,"n8n":7},{"Claude":2,"Perplexity":2}],"v_canal":[{"ChatGPT":3},{"Gemini":3,"Claude":2},{"Claude":3,"Gemini":1},{"ChatGPT":2,"Claude":2}],"v_pesquisa":[{"Perplexity":4,"Gemini":1},{"Perplexity":3},{"Perplexity":2,"ChatGPT":2},{"Perplexity":3}],"e_fonte":[{"Perplexity":4,"Gemini":1,"Gemini Notebook":7},{"Perplexity":3},{"Gemini":3,"Gemini Notebook":3},{"Claude":3,"ChatGPT":1}],"e_volume":[{"Perplexity":3},{"Gemini":4,"Gemini Notebook":7},{"Gemini":3,"Poppy AI":2,"Gemini Notebook":3},{"Claude":4,"ChatGPT":1}],"t_base":[{"Claude Code":3,"Lovable":2},{"Claude Code":4},{"Claude Code":4,"Claude":2},{"Lovable":3,"ChatGPT":2}],"t_entrega":[{"Claude Code":4},{"Lovable":4},{"Claude":4,"Gemini":2},{"Claude Code":3,"Claude":2,"n8n":7}],"o_saida":[{"Claude":4,"ChatGPT":1,"Gamma":2},{"Claude":3,"ChatGPT":2},{"Higgsfield":4,"Gemini":1,"ElevenLabs":2},{"ChatGPT":3},{"Claude Code":3,"Gemini":2,"Lovable":1,"n8n":2}],"o_contexto":[{"ChatGPT":3,"Claude":2},{"Claude":4,"Gemini":2,"Gemini Notebook":2},{"Gemini":3,"Claude Code":1},{"ChatGPT":2,"Gemini":2,"Perplexity":1}],"s_registro":[{"Claude":3},{"Gemini":4,"Claude":1},{"Claude":2,"Gemini":2},{"ChatGPT":3,"Claude":1}],"s_dado":[{"Claude":3,"Perplexity":1},{"Claude":2,"Perplexity":2},{"Perplexity":3,"Gemini":1},{"Claude":2,"Perplexity":2}],"j_volume":[{"Claude":3},{"Gemini":4,"Gemini Notebook":7},{"Gemini":4,"Claude":1,"Gemini Notebook":3},{"Gemini":2,"Claude":2}],"j_risco":[{"Perplexity":4,"Gemini":1,"Gemini Notebook":7},{"Claude":3,"Perplexity":1},{"Claude":4},{"Claude":2,"Gemini":2}],"f_origem":[{"Gemini":3,"Claude":1},{"Gemini":3,"Claude":2},{"Gemini":4},{"Gemini":2,"Claude Code":2,"n8n":3}],"f_carteira":[{"Claude":3},{"Claude":2,"Gemini":2},{"Gemini":3,"Claude":1},{"Gemini":3,"Claude Code":2,"n8n":3}],"p_entrada":[{"Gemini":4},{"ChatGPT":3,"Gemini":2},{"Claude":3,"ChatGPT":2},{"Claude":2,"Gemini":2}],"p_visual":[{"Higgsfield":4,"Gemini":1},{"Higgsfield":2,"Claude":2},{"Claude":3,"Gemini":1},{"Higgsfield":3,"Claude":1}],"c_entrega":[{"Higgsfield":7,"ElevenLabs":3},{"Higgsfield":7,"Gamma":2},{"Claude":5,"ChatGPT":2},{"ElevenLabs":7},{"Gamma":7}],"c_ritmo":[{"n8n":5,"ChatGPT":3},{"ChatGPT":2,"Claude":2},{"Claude":3},{"Claude":2}],"n_entrega":[{"Gamma":7},{"Claude":5},{"Gemini":5},{"ChatGPT":4}],"n_ritmo":[{"n8n":7},{"n8n":4,"Gemini":2},{"Claude":3}],"v_entrega":[{"Gamma":7},{"ChatGPT":4,"Claude":3},{"ElevenLabs":7},{"Gemini":5}],"v_ritmo":[{"n8n":7},{"n8n":4,"ChatGPT":2},{"Claude":3,"Perplexity":2}],"e_entrega":[{"Gamma":7},{"Gemini Notebook":5,"Claude":2},{"Claude":5},{"ChatGPT":4}],"e_ritmo":[{"Gemini Notebook":3,"Claude":2},{"Gemini Notebook":5,"ElevenLabs":4},{"Perplexity":2}],"t_entrega_2":[{"Lovable":7},{"Claude":5,"Gamma":3},{"n8n":7},{"Claude Code":4}],"t_ritmo":[{"n8n":7},{"n8n":3,"Claude Code":2},{"Claude":3}],"s_entrega":[{"Claude":5},{"Gamma":7},{"ElevenLabs":7},{"Gemini Notebook":5}],"s_ritmo":[{"n8n":5,"Claude":3},{"Claude":3},{"Claude":4}],"j_entrega":[{"Claude":7},{"Claude":5},{"Gamma":5,"Claude":2},{"Claude":5}],"j_ritmo":[{"n8n":4,"Claude":4},{"Claude":3},{"Claude":4,"Gemini Notebook":2}],"f_entrega":[{"Gamma":7},{"Gemini":5},{"Claude":4,"ChatGPT":2},{"ChatGPT":3}],"f_ritmo":[{"n8n":7},{"n8n":4},{"Gemini":3}],"p_entrega":[{"Higgsfield":7},{"Gamma":7},{"Gemini":5},{"Higgsfield":7}],"p_ritmo":[{"n8n":7},{"n8n":3,"Gemini":2},{"Claude":3}],"o_entrega":[{"Claude":4},{"Gamma":7},{"Gemini":5},{"ElevenLabs":5,"Higgsfield":4},{"ChatGPT":4}],"o_ritmo":[{"n8n":7},{"n8n":3},{"Claude":3}],"break3":[{}],"generica":[{},{},{}],"parada":[{},{},{},{}],"refaz":[{},{},{},{}],"horas":[{},{},{},{}],"custo_parado":[{},{},{},{},{}],"break2":[{}],"nivel":[{"ChatGPT":2,"Gemini":1},{"ChatGPT":1,"Claude":1,"Gemini":1},{"Claude":2,"Perplexity":1,"Higgsfield":1},{"Claude Code":2,"Claude":2,"Higgsfield":1,"Poppy AI":1}],"prazo":[{},{},{}],"estilo":[{},{}],"orcamento":[{},{},{},{}],"onde":[{"ChatGPT":1,"Gemini":1},{"Claude":1,"Claude Code":1}],"break_espelho":[{}]},"rotulos":{"area":["Conteúdo e redes sociais","Negócio próprio ou gestão","Vendas e atendimento","Estudos ou docência","Técnico e desenvolvimento","Saúde e consultório","Jurídico","Contábil e financeiro","Projeto e obra","Outra área"],"s_tarefa":["Evoluir prontuário e escrever laudo","Estudar caso, artigo e protocolo","Responder paciente e organizar agenda","Fazer conteúdo pra atrair paciente","Faturamento, convênio e planilha","Treinar e organizar a equipe","Nenhuma dessas, a minha é outra"],"j_tarefa":["Ler processo e peça longa","Escrever petição e parecer","Pesquisar jurisprudência e legislação","Redigir e revisar contrato","Explicar pro cliente sem juridiquês","Prazo, agenda e controle de processo","Nenhuma dessas, a minha é outra"],"f_tarefa":["Conferir e cruzar planilha","Ler norma, instrução e legislação","Explicar o resultado pro cliente","Responder cliente sobre imposto e guia","Montar relatório e apresentação","Automatizar o que se repete todo mês","Nenhuma dessas, a minha é outra"],"p_tarefa":["Orçamento e composição de custo","Memorial, laudo e documento técnico","Ler norma e projeto de terceiro","Montar a proposta que o cliente vê","Imagem pra vender a ideia antes de existir","Falar com cliente, fornecedor e equipe","Nenhuma dessas, a minha é outra"],"c_tarefa":["Escrever roteiro e legenda","Gravar e editar vídeo","Criar imagem, capa e thumbnail","Achar pauta que ainda não saturou","Entender por que um post foi e outro não","Responder comentário e direct","Nenhuma dessas, a minha é outra"],"n_tarefa":["Escrever proposta, contrato e e-mail","Olhar número e planilha pra decidir","Pesquisar mercado, preço e concorrente","Documentar processo e treinar equipe","Montar apresentação e relatório de reunião","Apagar incêndio de sistema que ninguém cuida","Nenhuma dessas, a minha é outra"],"v_tarefa":["Achar e qualificar quem vale o tempo","Escrever a primeira mensagem sem parecer robô","Responder objeção na hora, no WhatsApp","Montar proposta e fazer follow-up","Organizar o que foi conversado com cada um","Entender por que o cliente sumiu","Nenhuma dessas, a minha é outra"],"e_tarefa":["Ler material longo e denso","Preparar aula, slide e material","Escrever trabalho, artigo ou relatório","Corrigir e dar devolutiva","Achar fonte que dá pra citar","Explicar de um jeito que a pessoa entenda","Nenhuma dessas, a minha é outra"],"t_tarefa":["Escrever código novo","Entender código que não é meu","Caçar bug e corrigir","Subir protótipo pra validar ideia","Documentar e explicar pra quem não é técnico","Pesquisar erro, biblioteca e documentação","Nenhuma dessas, a minha é outra"],"tarefa":["Escrever","Pesquisar e entender material longo","Criar imagem e vídeo","Organizar e decidir","Montar apresentação e relatório","Construir site ou app","Nenhuma dessas, a minha é outra"],"tempo_ia":["Comecei agora","Alguns meses","Mais de um ano"],"quantas":["Nenhuma ainda","Uma só","Duas ou três","Perdi a conta"],"gasto":["Nada, só uso o que é grátis","Até R$ 150","De R$ 150 a R$ 400","Mais de R$ 400"],"break1":["Continuar →"],"c_ideia":["Do que eu vejo no feed na hora","De um banco de referências que eu guardo","Do que cliente e seguidor perguntam","Do improviso, não tenho fonte fixa"],"c_voz":["Sai genérico, dá pra ver que é IA","Sai perto, mas eu reescrevo tudo","Já ensinei o meu jeito e sai bom","Não deixo a IA escrever, só me ajuda a pensar"],"n_dados":["Numa planilha que eu mesmo atualizo","Num sistema que exporta relatório","Espalhados em vários lugares","Na minha cabeça e no extrato"],"n_repete":["Relatório pra cliente ou sócio","Orçamento e proposta","Conteúdo e comunicação do negócio","Cobrar gente e conferir entrega","Nenhuma, toda semana é diferente"],"v_canal":["WhatsApp e direct","Reunião e ligação","E-mail e proposta formal","Presencial, olho no olho"],"v_pesquisa":["Sempre, e leva tempo demais","Só quando a conta é grande","Quase nunca, vou pelo feeling","Queria, mas não sei o que procurar"],"e_fonte":["Ela inventa referência que não existe","Ela acha, mas conferir demora","Uso só o que a instituição indica","Não uso fonte, o conteúdo é meu"],"e_volume":["Alguns artigos","Um livro ou uma apostila inteira","Várias aulas gravadas","Não é volume, é dificuldade do conteúdo"],"t_base":["Meu, começado do zero","De um time, com histórico e review","Legado que ninguém quer abrir","Não é código, é sistema e no-code"],"t_entrega":["Feature em produção","Protótipo pra mostrar pro cliente","Análise ou parecer técnico","Automação interna que ninguém quer fazer"],"o_saida":["Texto e documento","Decisão e resposta pra alguém","Material visual","Atendimento e serviço","Sistema, planilha ou ferramenta"],"o_contexto":["Gente","Documento, norma e regra","Número e sistema","Coisa física, no mundo real"],"s_registro":["Digito durante ou logo depois da consulta","Gravo e transcrevo depois","No sistema da clínica, com campo fixo","Escrevo à mão e passo a limpo"],"s_dado":["Entra, e isso me preocupa","Só entra dado sem identificação","Nunca entra, uso só pra estudo e texto","Sinceramente, não sei o que pode"],"j_volume":["Poucas páginas","Centenas de páginas","Áudio e vídeo de audiência","Varia demais, nunca sei"],"j_risco":["Ela inventa jurisprudência que não existe","Sigilo do cliente e dado sensível","O texto não sai com a minha técnica","Nada, já uso todo dia"],"f_origem":["Do sistema contábil, em relatório","Da planilha do cliente, cada uma de um jeito","De PDF e extrato","Digitado na mão, um por um"],"f_carteira":["Um ou dois","Até dez","Dezenas","Mais de cem"],"p_entrada":["Planta e projeto","Foto e medida no WhatsApp","Só a ideia, na conversa","Cada um manda de um jeito"],"p_visual":["Muito, sem imagem não fecha","Ajuda, mas não é o que decide","Nada, é decisão técnica","Hoje eu mostro foto de obra antiga"],"c_entrega":["Vídeo editado","Carrossel e imagem","Texto longo, roteiro ou newsletter","Narração e áudio","Apresentação para marca ou cliente"],"c_ritmo":["Todo dia","Umas três vezes por semana","Uma vez por semana","Quando dá, sem ritmo fixo"],"n_entrega":["Apresentação e relatório visual","Proposta e contrato","Planilha e número consolidado","Mensagem e e-mail do dia a dia"],"n_ritmo":["Quase tudo, muda só o nome do cliente","Metade","Pouca coisa, cada semana é diferente"],"v_entrega":["Proposta ou apresentação","Mensagem escrita","Áudio","Planilha com preço e condição"],"v_ritmo":["Mais de 30","Entre 10 e 30","Menos de 10"],"e_entrega":["Aula ou apresentação","Resumo e fichamento","Texto autoral, artigo ou TCC","Exercício, prova ou correção"],"e_ritmo":["Lendo","Ouvindo, aproveito o deslocamento","Tanto faz, o que for mais rápido"],"t_entrega_2":["Tela ou protótipo que dá para clicar","Documentação e explicação para outra equipe","Integração entre sistemas","Só código, o resto não é comigo"],"t_ritmo":["Muita coisa, é sempre o mesmo caminho","Alguma coisa","Quase nada, cada problema é novo"],"s_entrega":["Laudo, evolução e documento clínico","Material de orientação para o paciente","Áudio de orientação","Resumo de artigo e protocolo"],"s_ritmo":["Quase tudo, muda só o paciente","Metade","Cada caso é bem diferente"],"j_entrega":["Petição e peça processual","Parecer e memorando","Resumo do caso para o cliente entender","Contrato e minuta"],"j_ritmo":["Quase todas","Metade","Cada caso do zero"],"f_entrega":["Relatório visual","Planilha e demonstrativo","Explicação escrita do que aconteceu","Guia, obrigação e prazo"],"f_ritmo":["Quase tudo","Metade","Muda bastante de mês para mês"],"p_entrega":["Imagem ou render do resultado","Proposta e apresentação","Planilha de orçamento","Vídeo do projeto"],"p_ritmo":["Quase tudo, muda a metragem","Metade","Cada projeto é um caso"],"o_entrega":["Documento ou texto","Apresentação","Planilha e número","Áudio ou vídeo","Conversa, não vira arquivo"],"o_ritmo":["Quase tudo","Metade","Quase nada"],"break3":["Continuar →"],"generica":["Refaço o prompt até sair algo","Tento em outra ferramenta","Desisto e faço na mão"],"parada":["Nunca","Uma","Mais de uma","Prefiro nem contar"],"refaz":["Sai de primeira","Duas ou três","Cinco ou mais","Quase sempre desisto antes"],"horas":["Menos de uma","De uma a três","De três a seis","Mais de seis"],"custo_parado":["Nada, usei tudo que assinei","Uns R$ 100 no total","Uns R$ 500","Mais de R$ 1.000","Prefiro não fazer essa conta"],"break2":["Continuar →"],"nivel":["Quase nunca abro","Abro um chat de vez em quando","Uso todo dia, mas sem método","Uso pra trabalhar e quero avançar"],"prazo":["Essa semana","Neste mês","Sem pressa, quero fazer certo"],"estilo":["Dominar uma a fundo","Saber trocar conforme a tarefa"],"orcamento":["Nada, quero só o que é grátis","Até R$ 150, uma assinatura","De R$ 150 a R$ 400, duas ou três","Acima de R$ 400, sem restrição"],"onde":["No celular","No computador"],"break_espelho":["Ver as minhas 3 IAs →"]},"titulos":{"area":"No que você trabalha?","s_tarefa":"Fora do atendimento, o que mais toma o seu tempo?","j_tarefa":"Na rotina jurídica, onde o tempo vai embora?","f_tarefa":"No fechamento do mês, o que mais consome?","p_tarefa":"No projeto e na obra, o que mais come tempo?","c_tarefa":"Na sua semana de conteúdo, o que mais rouba tempo?","n_tarefa":"O que mais consome o seu dia na operação?","v_tarefa":"Onde a sua venda trava hoje?","e_tarefa":"O que mais toma o seu tempo de estudo ou de aula?","t_tarefa":"No trabalho técnico, onde o tempo vai embora?","tarefa":"O que mais come o seu tempo hoje?","tempo_ia":"Há quanto tempo você usa IA no trabalho?","quantas":"Quantas ferramentas de IA você tem abertas hoje?","gasto":"Quanto você paga por mês hoje, somando tudo?","break1":"A Regra das 3 IAs | O problema quase nunca é a IA, é abrir a errada para aquela tarefa. Escolher a certa é o que faz a resposta parar de voltar genérica. Vai até o fim e você sai daqui com as três ferramentas do seu caso, na ordem de assinar e com o prompt de cada uma.","c_ideia":"De onde sai a sua próxima ideia de post?","c_voz":"Quando a IA escreve no seu lugar, sai com a sua voz?","n_dados":"Onde vivem os números do seu negócio?","n_repete":"Qual tarefa se repete quase igual toda semana?","v_canal":"Onde a conversa de venda acontece?","v_pesquisa":"Antes de falar com um cliente novo, você pesquisa sobre ele?","e_fonte":"O que acontece quando você pede fonte pra IA?","e_volume":"Por semana, o material que você tem que dar conta é do tamanho de...","t_base":"O código onde você mexe é...","t_entrega":"O que você precisa entregar mais rápido?","o_saida":"No fim do dia, o que você entrega?","o_contexto":"O seu trabalho é mais de lidar com...","s_registro":"Como o registro do atendimento acontece hoje?","s_dado":"E dado de paciente, entra na ferramenta?","j_volume":"O material de um processo seu costuma ser do tamanho de...","j_risco":"O que mais te trava pra usar IA no jurídico?","f_origem":"De onde vêm os números que você trata?","f_carteira":"Quantos clientes dependem de você todo mês?","p_entrada":"O que o cliente te manda pra você orçar?","p_visual":"O quanto a sua venda depende de a pessoa ver antes?","c_entrega":"Qual peça te dá mais trabalho para entregar pronta?","c_ritmo":"Com que frequência você publica?","n_entrega":"O que precisa sair pronto para cliente ou sócio ver?","n_ritmo":"Quanto da sua operação é a mesma coisa toda semana?","v_entrega":"O que você manda para o cliente decidir?","v_ritmo":"Quantas conversas novas você abre por semana?","e_entrega":"O que você precisa produzir no fim?","e_ritmo":"Você prefere consumir o material lendo ou ouvindo?","t_entrega_2":"Fora código, o que você ainda precisa entregar?","t_ritmo":"Quanto do seu trabalho é tarefa repetida?","s_entrega":"O que precisa sair pronto fora do atendimento?","s_ritmo":"Quanto do que você escreve fora do atendimento se repete?","j_entrega":"O que precisa sair pronto no fim?","j_ritmo":"Quanto das suas peças nasce de um modelo parecido?","f_entrega":"O que o cliente recebe de você no fim do mês?","f_ritmo":"Quanto do fechamento é igual todo mês?","p_entrega":"O que o cliente precisa ver para aprovar?","p_ritmo":"Quanto do seu orçamento se repete entre projetos?","o_entrega":"Em que formato o seu trabalho chega em quem recebe?","o_ritmo":"Quanto do seu trabalho se repete quase igual?","break3":"Nenhuma entrou por indicação | As 13 ferramentas do catálogo foram testadas em trabalho real, com o preço conferido no site oficial de cada uma. As três que você vai receber saem dessas 13, não de um ranking da internet.","generica":"Quando a resposta volta genérica, o que você faz?","parada":"Você já assinou alguma ferramenta que não usou?","refaz":"Quantas vezes você refaz o mesmo prompt até prestar?","horas":"Quantas horas por semana isso te custa?","custo_parado":"Somando tudo, quanto já foi para ferramenta que você não usou?","break2":"Por que três, e não dez | Testei ferramenta por ferramenta em trabalho real, não em review. O que sobrou foi um trio por perfil: uma para pensar e escrever, uma para buscar e checar, uma para produzir. O resto é assinatura parada.","nivel":"Como você usa IA hoje?","prazo":"Em quanto tempo você quer isso resolvido?","estilo":"Você prefere dominar uma ferramenta ou saber trocar entre várias?","orcamento":"Quanto você pode investir por mês em ferramenta?","onde":"Onde você trabalha na maior parte do tempo?","break_espelho":"Montando o seu diagnóstico | Cruzando as suas respostas com as 13 ferramentas do catálogo."},"se":{"s_tarefa":{"area":[5]},"j_tarefa":{"area":[6]},"f_tarefa":{"area":[7]},"p_tarefa":{"area":[8]},"c_tarefa":{"area":[0]},"n_tarefa":{"area":[1]},"v_tarefa":{"area":[2]},"e_tarefa":{"area":[3]},"t_tarefa":{"area":[4]},"tarefa":{"area":[9]},"gasto":{"quantas":[1,2,3]},"c_ideia":{"area":[0]},"c_voz":{"area":[0]},"n_dados":{"area":[1]},"n_repete":{"area":[1]},"v_canal":{"area":[2]},"v_pesquisa":{"area":[2]},"e_fonte":{"area":[3]},"e_volume":{"area":[3]},"t_base":{"area":[4]},"t_entrega":{"area":[4]},"o_saida":{"area":[9]},"o_contexto":{"area":[9]},"s_registro":{"area":[5]},"s_dado":{"area":[5]},"j_volume":{"area":[6]},"j_risco":{"area":[6]},"f_origem":{"area":[7]},"f_carteira":{"area":[7]},"p_entrada":{"area":[8]},"p_visual":{"area":[8]},"c_entrega":{"area":[0]},"c_ritmo":{"area":[0]},"n_entrega":{"area":[1]},"n_ritmo":{"area":[1]},"v_entrega":{"area":[2]},"v_ritmo":{"area":[2]},"e_entrega":{"area":[3]},"e_ritmo":{"area":[3]},"t_entrega_2":{"area":[4]},"t_ritmo":{"area":[4]},"s_entrega":{"area":[5]},"s_ritmo":{"area":[5]},"j_entrega":{"area":[6]},"j_ritmo":{"area":[6]},"f_entrega":{"area":[7]},"f_ritmo":{"area":[7]},"p_entrega":{"area":[8]},"p_ritmo":{"area":[8]},"o_entrega":{"area":[9]},"o_ritmo":{"area":[9]},"parada":{"quantas":[1,2,3]},"custo_parado":{"quantas":[1,2,3]}},"total":19,"ordem":["Assina agora","Nos próximos 30 dias","Só quando escalar"],"gratis":"Começa hoje, é grátis","gratisPlano":"Começa hoje, de graça","curtoGratis":"depois, {custo}","espelho":[["area","No que trabalha"],["*tarefa","O que mais come o seu tempo"],["horas","Horas por semana nisso"],["custo_parado","Já foi embora em ferramenta parada"],["orcamento","Pode investir por mês"],["prazo","Quer resolver"]],"espelhoPronto":"Pronto. Com base no que você respondeu, o seu mapa está montado.","cabem":[0,1,3,3],"teto":[-1,1,2,3],"foco":["estilo",0],"celular":["onde",0],"semCelular":["Claude Code","Lovable","n8n"],"perfil":["area","orcamento"],"analitico":"https://script.google.com/macros/s/AKfycbzY1PYcR4EC_AUXE3zASDVd7UWySYdltrwg1IX1RqjbZFGccNxf2fiDo0-b5jnMLMVqLA/exec","pids":["area","s_tarefa","j_tarefa","f_tarefa","p_tarefa","c_tarefa","n_tarefa","v_tarefa","e_tarefa","t_tarefa","tarefa","tempo_ia","quantas","gasto","c_ideia","c_voz","n_dados","n_repete","v_canal","v_pesquisa","e_fonte","e_volume","t_base","t_entrega","o_saida","o_contexto","s_registro","s_dado","j_volume","j_risco","f_origem","f_carteira","p_entrada","p_visual","c_entrega","c_ritmo","n_entrega","n_ritmo","v_entrega","v_ritmo","e_entrega","e_ritmo","t_entrega_2","t_ritmo","s_entrega","s_ritmo","j_entrega","j_ritmo","f_entrega","f_ritmo","p_entrega","p_ritmo","o_entrega","o_ritmo","generica","parada","refaz","horas","custo_parado","nivel","prazo","estilo","orcamento","onde"],"dias":[{"n":1,"titulo":"Ensina para a {F1} quem é você","ferramenta":"F1","objetivo":"A principal para de responder genérico.","tarefa":"Colar nas instruções permanentes da {F1} o texto que vem pronto aqui, junto de três trabalhos seus de verdade.","entrega":"A {F1} configurada, respondendo dentro do seu contexto e não do contexto de ninguém."},{"n":2,"titulo":"A primeira entrega de verdade","ferramenta":"F1","objetivo":"Tirar da sua semana uma tarefa que existe, não um teste.","tarefa":"Colar aqui um trabalho seu de verdade, um texto, um caso ou um processo que já existe. Ele volta rodado dentro da {F1}, com o resultado pronto para você usar hoje.","entrega":"A sua primeira entrega feita, não um modelo para preencher. É o que separa este plano do mapa que você já tem."},{"n":3,"titulo":"O recurso que quase ninguém usa","ferramenta":"F1","objetivo":"Sair do chat e usar o que a ferramenta tem de verdade.","tarefa":"Ligar o recurso que o seu mapa aponta dentro da {F1} e refazer a tarefa de ontem com ele.","entrega":"A mesma tarefa, com menos tempo e menos correção."},{"n":4,"titulo":"Abre a segunda aba","ferramenta":"F2","objetivo":"A {F2} entra para o que a {F1} não faz bem.","tarefa":"Configurar a {F2} do mesmo jeito do dia 1 e rodar nela a tarefa que a {F1} devolveu pior.","entrega":"A segunda configurada, e a prova de que ela existe por um motivo."},{"n":5,"titulo":"A regra da troca","ferramenta":"todas","objetivo":"Saber qual abrir sem parar para pensar.","tarefa":"Escrever uma linha por tarefa da sua semana dizendo qual das três abre. É a Regra das 3 IAs virando rotina.","entrega":"Uma tabela de bolso: tarefa de um lado, ferramenta do outro."},{"n":6,"titulo":"O corte","ferramenta":"todas","objetivo":"Parar de pagar pelo que não entrou na sua semana.","tarefa":"Revisar o que o seu mapa mandou cortar e decidir o que cancelar, o que adiar e o que nunca assinar.","entrega":"O seu gasto de IA recalculado, com o número na mão."},{"n":7,"titulo":"A semana que se repete sozinha","ferramenta":"F3","objetivo":"Transformar o que funcionou em rotina.","tarefa":"Escolher a tarefa que mais se repete e deixar ela pronta para a semana que vem, com a {F3} ou com o que o seu mapa indicou para repetição.","entrega":"A sua semana escrita, com as três no lugar e a próxima já encaminhada."}],"ferramentas":{"Claude":{"curto":"US$ 20/mês","faixa":1,"free":true,"generalista":true,"logo":"claude.svg","url":"https://claude.ai","oq":"Escrever, decidir e construir. O que menos estraga o seu texto.","custo":"US$ 20/mês no Pro","recursos":[["Projects","Guarda o contexto entre conversas. Você para de recolar quem é você e o que já ficou decidido."],["Cowork","Ele trabalha nos seus arquivos e devolve pronto para revisão, em vez de responder num chat. Pede plano pago."]]},"Claude Code":{"curto":"sem custo extra","faixa":1,"free":false,"generalista":false,"logo":"claudecode.svg","url":"https://claude.com/product/claude-code","oq":"O Claude trabalhando dentro do seu projeto, não num chat solto.","custo":"já vem no Pro ou no Max do Claude","recursos":[]},"ChatGPT":{"curto":"US$ 20/mês","faixa":1,"free":true,"generalista":true,"logo":"chatgpt.svg","url":"https://chatgpt.com","oq":"O mais versátil pra começar do zero e pra conversar por voz.","custo":"US$ 20/mês no Plus","recursos":[["Modo de voz","A conversa por voz no deslocamento é onde ele ganha dos outros."],["Deep research","Ele pesquisa sozinho em muitas fontes e devolve relatório, em vez de responder de cabeça."],["Agent mode","Ele executa a tarefa no navegador em vez de te explicar como fazer. Nos planos Plus, Pro e Business."]]},"Gemini":{"curto":"US$ 19,99/mês","faixa":1,"free":true,"generalista":true,"logo":"gemini.svg","url":"https://gemini.google.com","oq":"Engole PDF, vídeo e podcast inteiro sem reclamar do tamanho.","custo":"US$ 19,99/mês no Google AI Pro","recursos":[["Deep Research","Varre centenas de páginas e monta o relatório. Com os apps conectados, alcança também o seu Gmail e Drive."],["Canvas","Vira o relatório em página, quiz ou infográfico para compartilhar, sem sair dali."],["Gems","Um assistente configurado por você para a tarefa que se repete, sem custo no app."]]},"Perplexity":{"curto":"US$ 20/mês","faixa":1,"free":true,"generalista":true,"logo":"perplexity.svg","url":"https://www.perplexity.ai","oq":"Pesquisa com a fonte do lado, pra você poder conferir.","custo":"US$ 20/mês no Pro","recursos":[]},"Grok":{"curto":"US$ 10 a 30/mês","faixa":1,"free":true,"generalista":false,"logo":"grok.png","url":"https://grok.com","oq":"Dentro do X, vê o que está sendo dito nesta hora.","custo":"US$ 10 a 30/mês, ou US$ 8 pelo X","recursos":[]},"Higgsfield":{"curto":"a partir de US$ 49/mês","faixa":2,"free":false,"generalista":false,"logo":"higgsfield.svg","url":"https://higgsfield.ai","oq":"Imagem e vídeo no nível que anúncio exige.","custo":"Plus com 1.000 créditos por US$ 49/mês no anual; Ultra com 3.000 por US$ 129/mês","recursos":[]},"Poppy AI":{"curto":"US$ 399 por ano","faixa":3,"free":false,"generalista":false,"logo":"poppy.png","url":"https://poppyai.com","oq":"Roteiro e estrutura em cima das suas próprias referências.","custo":"US$ 399 por ano no Basic, sem teste","recursos":[]},"Lovable":{"curto":"US$ 20/mês","faixa":1,"free":true,"generalista":false,"logo":"lovable.png","url":"https://lovable.dev","oq":"Do zero a um link no ar em minutos.","custo":"US$ 20/mês no Starter","recursos":[]},"Gemini Notebook":{"curto":"grátis","faixa":0,"free":true,"generalista":false,"logo":"notebook.png","url":"https://notebook.google.com","oq":"Lê as suas fontes e responde só com o que está nelas.","custo":"grátis na conta Google, com limite diário","recursos":[["Resumo em áudio","Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."]]},"Gamma":{"curto":"tem plano grátis","faixa":1,"free":true,"generalista":false,"logo":"gamma.png","url":"https://gamma.app","oq":"Vira o texto que você já escreveu em apresentação apresentável.","custo":"plano Free resolve o começo; Plus por R$ 30/mês no anual","recursos":[]},"ElevenLabs":{"curto":"tem plano grátis","faixa":1,"free":true,"generalista":false,"logo":"elevenlabs.png","url":"https://elevenlabs.io","oq":"Voz que não parece robô para narrar o que você escreveu.","custo":"Free com 10 mil créditos; Starter US$ 6/mês e Creator US$ 22/mês","recursos":[]},"n8n":{"curto":"grátis se hospedar","faixa":1,"free":true,"generalista":false,"logo":"n8n.svg","url":"https://n8n.io","oq":"Liga as suas ferramentas e roda a tarefa repetida sem você.","custo":"grátis se você hospedar; Starter €20/mês na nuvem deles","recursos":[]}}};// Cálculo da stack. Injetado nas duas páginas (index e mapa) para que a versão
+// paga nunca devolva um resultado diferente do que o teaser mostrou.
+// Recebe o dicionário MOTOR e as respostas; não toca no DOM.
+
+// Trilha por área: a pergunta com regra só existe para quem respondeu aquela
+// área. Sem regra em MOTOR.se, a pergunta é do tronco e vale para todo mundo.
+function valePergunta(MOTOR, pid, resp) {
+  const se = MOTOR.se[pid];
+  return !se || Object.entries(se).every(([q, valores]) => valores.includes(resp[q]));
+}
+
+// As perguntas que esta pessoa precisa ter respondido, dadas as respostas dela.
+function pidsExigidos(MOTOR, resp) {
+  return MOTOR.pids.filter(pid => valePergunta(MOTOR, pid, resp));
+}
+
+function calcularStack(MOTOR, resp) {
+  const pontos = {};
+  for (const [q, i] of Object.entries(resp))
+    for (const [ferr, p] of Object.entries(MOTOR.pesos[q][i] || {}))
+      pontos[ferr] = (pontos[ferr] || 0) + p;
+
+  // no celular não adianta mandar assinar o que só roda no computador
+  const [qCel, iCel] = MOTOR.celular;
+  const noCelular = resp[qCel] === iCel;
+  const soNoComputador = n => noCelular && MOTOR.semCelular.includes(n);
+  for (const n of MOTOR.semCelular) if (noCelular) delete pontos[n];
+
+  // O orçamento declarado tira da mesa o que não cabe nele. Teto -1 é "só o que tem
+  // camada gratuita de verdade". Mandar assinar US$ 49 quem acabou de dizer que tem
+  // R$ 150 é recomendação que ninguém executa, e o mapa perde a autoridade inteira.
+  const iOrc = resp[MOTOR.perfil[1]] ?? 1;
+  const teto = MOTOR.teto[iOrc];
+  const cabeNoBolso = n => teto < 0 ? MOTOR.ferramentas[n].free : MOTOR.ferramentas[n].faixa <= teto;
+  for (const n of Object.keys(pontos)) if (!cabeNoBolso(n)) delete pontos[n];
+
+  const ranking = Object.entries(pontos).sort((a, b) => b[1] - a[1]);
+  const top = ranking.slice(0, 3).map(([n]) => n);
+
+  // A promessa é de três. Quando o filtro do bolso ou do aparelho tira gente demais,
+  // completa na ordem do catálogo, que começa pelas generalistas: entregar duas
+  // ferramentas a quem comprou um mapa de três é quebrar o produto para consertar o motor.
+  const elegivel = n => cabeNoBolso(n) && !soNoComputador(n);
+  // Especialista antes de generalista: quem paga por um mapa não paga para ouvir
+  // "usa ChatGPT e Claude". Quando o bolso é curto, quem entra são as especialistas
+  // que resolvem de graça o que generalista nenhuma faz: slide, voz, automação, fonte.
+  const fallback = Object.keys(MOTOR.ferramentas)
+    .filter(n => !top.includes(n) && elegivel(n))
+    .sort((a, b) => (MOTOR.ferramentas[a].generalista ? 1 : 0) - (MOTOR.ferramentas[b].generalista ? 1 : 0));
+  for (const n of fallback) {
+    if (top.length >= 3) break;
+    top.push(n);
+  }
+
+  // quantas entram já, conforme o orçamento declarado
+  let cabem = MOTOR.cabem[iOrc];
+  // quem prefere dominar uma a fundo não recebe três para abrir na mesma semana
+  const [qFoco, iFoco] = MOTOR.foco;
+  if (resp[qFoco] === iFoco) cabem = Math.min(cabem, 1);
+  const stack = top.map((n, i) => {
+    const f = MOTOR.ferramentas[n];
+    // quem declarou que não vai pagar nada precisa da porta de entrada gratuita da
+    // ferramenta certa, não de uma data para assinar
+    const pelaGratuita = teto < 0 && f.free && f.faixa !== 0;
+    return {
+      nome: n,
+      // "assina agora" numa ferramenta grátis derruba a credibilidade do mapa inteiro
+      quando: f.faixa === 0 ? MOTOR.gratis
+        : pelaGratuita ? MOTOR.gratisPlano
+        : MOTOR.ordem[i < cabem ? 0 : (i === cabem ? 1 : 2)],
+      ...f,
+      // dizer "plano grátis" ao lado de "US$ 20/mês" se contradiz na mesma linha
+      // o teaser já disse "de graça": aqui vai o que custa se ela quiser mais, que é
+      // a promessa de custo real do produto
+      ...(pelaGratuita ? { curto: MOTOR.curtoGratis.replace("{custo}", f.curto) } : {})
+    };
+  });
+
+  // Claude Code vem dentro do plano do Claude: uma assinatura só, um momento só
+  const cc = stack.find(s => s.nome === "Claude Code");
+  const cl = stack.find(s => s.nome === "Claude");
+  if (cc && cl) {
+    const antes = MOTOR.ordem.indexOf(cc.quando) <= MOTOR.ordem.indexOf(cl.quando) ? cc.quando : cl.quando;
+    cc.quando = cl.quando = antes;
+  }
+
+  // o corte: o que a pessoa provavelmente ia assinar por hype e não precisa agora
+  const corta = Object.keys(MOTOR.ferramentas)
+    .filter(n => !top.includes(n))
+    .filter(n => !soNoComputador(n))
+    .sort((a, b) => (MOTOR.ferramentas[b].faixa - MOTOR.ferramentas[a].faixa)
+                 || ((pontos[a] || 0) - (pontos[b] || 0)))
+    .slice(0, 3);
+
+  return { stack, corta };
+}
+// A penúltima tela do quiz: repete de volta o que a pessoa respondeu, antes de revelar
+// o resultado. Injetado nas duas páginas pelo mesmo motivo do motor.js: o site e a
+// entrega paga não podem divergir.
+//
+// É isto que faz a pergunta que não vota no motor deixar de ser atrito. Ela some hoje
+// sem deixar rastro; aqui ela volta como prova de que o diagnóstico é sobre esta pessoa.
+
+// Só rótulo de opção entra: o texto livre que a pessoa escreveu fica de fora, porque
+// aqui ele seria eco do que ela digitou, e não prova de que alguém leu.
+function montarEspelho(MOTOR, resp) {
+  return MOTOR.espelho.flatMap(([pid, rotulo]) => {
+    const alvo = pid === "*tarefa"
+      ? Object.keys(resp).find(q => /(^|_)tarefa$/.test(q))
+      : pid;
+    if (!alvo || !(alvo in resp) || !MOTOR.rotulos[alvo]) return [];
+    const valor = MOTOR.rotulos[alvo][resp[alvo]];
+    return valor ? [[rotulo, valor]] : [];
+  });
+}
+
+function pintarEspelho(MOTOR, resp, lista) {
+  lista.textContent = "";
+  for (const [rotulo, valor] of montarEspelho(MOTOR, resp)) {
+    const li = document.createElement("li");
+    const k = document.createElement("span");
+    k.className = "espelho-k";
+    k.textContent = rotulo;
+    const v = document.createElement("span");
+    v.className = "espelho-v";
+    v.textContent = valor;
+    li.append(k, v);
+    lista.appendChild(li);
+  }
+}
+// Memória do diagnóstico e envio anônimo. Compartilhado pelo site e pela entrega paga.
+//
+// Memória: as respostas ficam no navegador para o comprador não ter que refazer o
+// diagnóstico dentro do /mapa. Só vale no mesmo aparelho; em outro, o mapa pergunta
+// de novo, que é o comportamento normal.
+//
+// Anônimo: nem nome nem WhatsApp saem daqui. Só o que foi respondido e o que o motor
+// recomendou, para saber qual perfil responde e onde as pessoas abandonam.
+
+const SESSAO_CHAVE = "qia:resp";
+const SESSAO_DIAS = 30;
+
+function salvarSessao(resp, pids, livre) {
+  try {
+    localStorage.setItem(SESSAO_CHAVE, JSON.stringify({
+      v: 1, resp, pids, livre: livre || {}, ts: Date.now()
+    }));
+  } catch (e) { /* modo privado ou storage cheio: seguir sem memória */ }
+}
+
+// Devolve as respostas salvas apenas se cobrirem TODAS as perguntas desta página.
+// Se o questionário mudou desde a última visita, ignora e deixa refazer: melhor
+// perguntar de novo do que montar a stack com pergunta que não existe mais.
+// `exigidos` é função porque, com trilha por área, quais perguntas são obrigatórias
+// depende das próprias respostas salvas.
+function lerSessao(exigidos) {
+  try {
+    const bruto = localStorage.getItem(SESSAO_CHAVE);
+    if (!bruto) return null;
+    const d = JSON.parse(bruto);
+    if (d.v !== 1) return null;
+    if (Date.now() - d.ts > SESSAO_DIAS * 864e5) return null;
+    if (exigidos(d.resp).some(p => !(p in d.resp))) return null;
+    return { resp: d.resp, livre: d.livre || {} };
+  } catch (e) { return null; }
+}
+
+function limparSessao() {
+  try { localStorage.removeItem(SESSAO_CHAVE); } catch (e) {}
+}
+
+// Origem do tráfego: o que veio na URL, guardado para a compra que acontece dias
+// depois não aparecer como direta. Last touch: parâmetro novo passa a valer.
+const ORIGEM_CHAVE = "qia:org";
+
+function origemTrafego() {
+  const agora = location.search.slice(1);
+  try {
+    if (agora) localStorage.setItem(ORIGEM_CHAVE, agora);
+    return agora || localStorage.getItem(ORIGEM_CHAVE) || "";
+  } catch (e) { return agora; }        // modo privado: vale só a visita atual
+}
+
+// Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:
+// o que importa é gravar, não ler a resposta. Falha em silêncio de propósito,
+// porque analytics não pode quebrar a entrega.
+function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
+  if (!url) return;
+  try {
+    const respostas = {};
+    for (const [q, i] of Object.entries(resp)) {
+      if (q.startsWith("break")) continue;          // o break não é resposta
+      respostas[q] = MOTOR.rotulos[q][i];
+    }
+    fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        tipo: "diagnostico",
+        origem,                                      // "site" ou "mapa"
+        utm: origemTrafego(),                        // de onde a pessoa veio
+        respostas,
+        // o que a pessoa escreveu quando nenhuma opção era a dela: é o que diz
+        // qual tarefa está faltando no quiz
+        descreveu: Object.values(livre || {}).join(" | "),
+        stack: stack.map(s => s.nome),
+        cortar: corta,
+        ts: new Date().toISOString()
+      })
+    }).catch(() => {});
+  } catch (e) { /* nunca atrapalhar o resultado */ }
+}
+
+  const el = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+  const quiz = el("quiz");
+  const passos = [...quiz.querySelectorAll(".passo")];
+  const resp = {};
+  const livre = {};
+  let atual = 0;
+
+  const vale = i => valePergunta(MOTOR, passos[i].dataset.q, resp);
+  const ehPergunta = i => MOTOR.pids.includes(passos[i].dataset.q);
+
+  const totalPerguntas = () => {
+    let n = MOTOR.total;
+    for (const p of passos) {
+      const q = p.dataset.q, se = MOTOR.se[q];
+      if (!se || "area" in se || !MOTOR.pids.includes(q)) continue;
+      const fora = Object.entries(se).some(([dep, vals]) => dep in resp && !vals.includes(resp[dep]));
+      if (fora) n--;
+    }
+    return n;
+  };
+
+  let espelhoPronto = false;
+  const prepararEspelho = () => {
+    if (espelhoPronto) return;
+    espelhoPronto = true;
+    pintarEspelho(MOTOR, resp, el("espelho-lista"));
+    const botao = passos[atual].querySelector(".opc");
+    const status = el("espelho-status");
+    botao.disabled = true;
+    setTimeout(() => { status.textContent = MOTOR.espelhoPronto; botao.disabled = false; }, 1600);
+  };
+
+  const mostrar = () => {
+    passos.forEach((p, i) => { p.hidden = i !== atual; });
+    if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
+    const fila = passos.map((_p, i) => i).filter(vale);
+    const pos = fila.indexOf(atual);
+    el("barra-fill").style.width = ((pos + 0.4) / fila.length * 100) + "%";
+    const num = passos[atual].querySelector(".num");
+    if (num && ehPergunta(atual))
+      num.textContent = fila.filter(i => i <= atual && ehPergunta(i)).length + " de " + totalPerguntas();
+  };
+
+  const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
+
+  // ---------- a semana ----------
+  let stackAtual = null;
+
+  function preencher(texto, stack) {
+    const alvo = Object.keys(resp).find(q => /(^|_)tarefa$/.test(q));
+    const tarefa = alvo ? MOTOR.rotulos[alvo][resp[alvo]].toLowerCase() : "a tarefa que mais te toma tempo";
+    return texto
+      .replace(/\{F1\}/g, stack[0] ? stack[0].nome : "")
+      .replace(/\{F2\}/g, stack[1] ? stack[1].nome : "")
+      .replace(/\{F3\}/g, stack[2] ? stack[2].nome : "")
+      .replace(/\{tarefa\}/g, tarefa);
+  }
+
+  function render(daMemoria) {
+    const { stack, corta } = calcularStack(MOTOR, resp);
+    stackAtual = stack;
+    if (!daMemoria) salvarSessao(resp, MOTOR.pids, livre);
+    enviarAnalitico(MOTOR.analitico, "plano", MOTOR, resp, stack, corta, livre);
+
+    const [qArea] = MOTOR.perfil;
+    el("plano-perfil").textContent =
+      `${MOTOR.rotulos[qArea][resp[qArea]]} · ${stack.map(s => s.nome).join(", ")}`;
+
+    el("dias").innerHTML = MOTOR.dias.map(dia => `
+      <li class="dia" id="dia${dia.n}">
+        <div class="dia-cab">
+          <span class="dia-n">Dia ${dia.n}</span>
+          <h3>${esc(preencher(dia.titulo, stack))}</h3>
+        </div>
+        <p class="dia-obj">${esc(preencher(dia.objetivo, stack))}</p>
+        <p class="dia-tarefa"><b>O que fazer hoje:</b> ${esc(preencher(dia.tarefa, stack))}</p>
+        <p class="dia-entrega"><b>No fim do dia você tem:</b> ${esc(preencher(dia.entrega, stack))}</p>
+        <div class="dia-ia" id="dia-ia-${dia.n}" hidden></div>
+      </li>`).join("");
+
+    el("config").innerHTML = stack.map((s, i) => `
+      <li class="cfg">
+        <div class="cfg-cab">
+          <img class="m-logo" src="/logos/${esc(s.logo)}" alt="" width="30" height="30">
+          <b>${esc(s.nome)}</b>
+          <span class="cfg-quando">${esc(s.quando)}</span>
+        </div>
+        <pre class="cfg-texto" id="cfg${i}">O texto de configuração desta é escrito para o seu caso quando a página carrega.</pre>
+        <button type="button" class="m-copiar" data-alvo="cfg${i}">Copiar</button>
+      </li>`).join("");
+
+    el("material-alvo").textContent = stack[0] ? stack[0].nome : "";
+    el("quiz").hidden = true;
+    el("plano").hidden = false;
+    redigir();
+  }
+
+  // ---------- a IA escreve por cima do esqueleto, conforme o ADR-0001 ----------
+  // Duas chamadas em vez de uma: juntas, os sete dias e as três configurações não cabem
+  // nos 60s da function, e o stream morria no meio do quarto dia.
+  async function redigir() {
+    const aviso = el("plano-escrevendo");
+    aviso.hidden = false;
+    aviso.textContent = "Escrevendo a sua semana...";
+    await pedir("semana");
+    aviso.textContent = "Escrevendo a configuração das suas 3...";
+    await pedir("config");
+    aviso.hidden = true;
+  }
+
+  async function pedir(modo) {
+    const ctrl = new AbortController();
+    const relogio = setTimeout(() => ctrl.abort(), 75000);
+    try {
+      const r = await fetch("/api/plano", {
+        method: "POST", signal: ctrl.signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ modo, resp, livre }),
+      });
+      if (r.status === 429 || r.status === 503 || !r.ok || !r.body) return;
+      const leitor = r.body.getReader();
+      const dec = new TextDecoder();
+      let buffer = "";
+      for (;;) {
+        const { done, value } = await leitor.read();
+        if (done) break;
+        buffer += dec.decode(value, { stream: true });
+        aplicarSemana(buffer);
+      }
+      aplicarSemana(buffer);
+    } catch (e) {
+      /* o esqueleto já está na tela: a semana não depende da IA para existir */
+    } finally {
+      clearTimeout(relogio);
+    }
+  }
+
+  function aplicarSemana(buffer) {
+    const partes = buffer.split(/\[\[([A-Z]+\d?)\]\]/);
+    for (let i = 1; i < partes.length; i += 2) {
+      const nome = partes[i], texto = (partes[i + 1] || "").trim();
+      if (!texto) continue;
+      const dia = nome.match(/^DIA(\d)$/);
+      if (dia) {
+        const no = el("dia-ia-" + dia[1]);
+        if (no) { no.textContent = texto; no.hidden = false; }
+      }
+      const cfg = nome.match(/^CFG(\d)$/);
+      if (cfg) {
+        const no = el("cfg" + (Number(cfg[1]) - 1));
+        if (no) no.textContent = texto;
+      }
+    }
+  }
+
+  // ---------- o trabalho da pessoa, rodado dentro da ferramenta certa ----------
+  el("material-rodar").addEventListener("click", async () => {
+    const campo = el("material");
+    const texto = campo.value.trim();
+    const saida = el("material-saida");
+    const botao = el("material-rodar");
+    if (texto.length < 80) {
+      saida.textContent = "Cola um trabalho seu de verdade, com pelo menos umas linhas: é em cima dele que a ferramenta vai rodar.";
+      saida.hidden = false;
+      return;
+    }
+    botao.disabled = true;
+    botao.textContent = "Rodando...";
+    saida.textContent = "";
+    saida.hidden = false;
+    const ctrl = new AbortController();
+    const relogio = setTimeout(() => ctrl.abort(), 90000);
+    try {
+      const r = await fetch("/api/plano", {
+        method: "POST", signal: ctrl.signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ modo: "rodar", resp, livre, material: texto.slice(0, 18000) }),
+      });
+      if (!r.ok || !r.body) throw new Error(r.status);
+      const leitor = r.body.getReader();
+      const dec = new TextDecoder();
+      for (;;) {
+        const { done, value } = await leitor.read();
+        if (done) break;
+        saida.textContent += dec.decode(value, { stream: true });
+      }
+      el("material-copiar").hidden = false;
+    } catch (e) {
+      saida.textContent = "Não deu para rodar agora. Tenta de novo em alguns minutos: o seu material continua aqui.";
+    } finally {
+      clearTimeout(relogio);
+      botao.disabled = false;
+      botao.textContent = "Rodar na ferramenta certa";
+    }
+  });
+
+  // ---------- copiar ----------
+  document.addEventListener("click", e => {
+    const b = e.target.closest(".m-copiar, #material-copiar");
+    if (!b) return;
+    const alvo = b.id === "material-copiar" ? el("material-saida") : el(b.dataset.alvo);
+    navigator.clipboard.writeText(alvo.textContent).then(() => {
+      const antes = b.textContent;
+      b.textContent = "Copiado";
+      setTimeout(() => { b.textContent = antes; }, 1400);
+    });
+  });
+
+  // ---------- quiz, para quem chega sem memória ----------
+  const abrirCampo = (b) => {
+    const passo = b.closest(".passo");
+    const campo = passo.querySelector(".campo-aberto");
+    if (!campo || b !== b.parentNode.lastElementChild) {
+      if (campo) { campo.hidden = true; delete livre[passo.dataset.q]; }
+      return false;
+    }
+    campo.hidden = false;
+    campo.querySelector("input").focus();
+    return true;
+  };
+
+  for (const b of quiz.querySelectorAll(".opc")) {
+    b.addEventListener("click", () => {
+      resp[b.dataset.q] = +b.dataset.i;
+      for (const irmao of b.parentNode.children)
+        irmao.setAttribute("aria-pressed", String(irmao === b));
+      if (abrirCampo(b)) return;
+      proximo();
+      if (atual < passos.length) mostrar(); else render(false);
+    });
+  }
+  for (const b of quiz.querySelectorAll(".btn-livre")) {
+    b.addEventListener("click", () => {
+      const passo = b.closest(".passo");
+      const texto = passo.querySelector("input").value.trim();
+      if (texto) livre[passo.dataset.q] = texto.slice(0, 120);
+      proximo();
+      if (atual < passos.length) mostrar(); else render(false);
+    });
+  }
+
+  const salvas = lerSessao(r => pidsExigidos(MOTOR, r));
+  if (salvas) {
+    Object.assign(resp, salvas.resp);
+    Object.assign(livre, salvas.livre);
+    render(true);
+  } else {
+    mostrar();
+  }
+</script>
+</body>
+</html>

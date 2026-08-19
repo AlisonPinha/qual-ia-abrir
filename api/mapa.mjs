@@ -185,6 +185,10 @@ export default {
       body: JSON.stringify({
         model: MODELO,
         max_tokens: 3000,       // 8 blocos, com folga: resposta cortada no teto vira fallback
+        // Sem isto o modelo gasta o orçamento raciocinando e pode parar por max_tokens antes
+        // de escrever, o que deixa o mapa inteiro no texto de fábrica. Medido no /api/plano:
+        // com o raciocínio ligado a resposta saía vazia e demorava três vezes mais.
+        thinking: { type: "disabled" },
         stream: true,
         // o catálogo e as regras são idênticos em toda chamada: cacheados, saem de graça
         system: [{ type: "text", text: SISTEMA, cache_control: { type: "ephemeral" } }],
@@ -205,8 +209,11 @@ export default {
           if (!linha.startsWith("data:")) continue;
           try {
             const ev = JSON.parse(linha.slice(5));
-            if (ev.type === "content_block_delta" && ev.delta?.type === "text_delta")
-              saida.enqueue(new TextEncoder().encode(ev.delta.text));
+            // qualquer delta com texto serve: amarrar em "text_delta" deixa a resposta
+            // sair vazia quando o modelo usa outro tipo de bloco
+            const pedacoTexto = ev.delta?.text ?? ev.content_block?.text;
+            if (typeof pedacoTexto === "string" && pedacoTexto)
+              saida.enqueue(new TextEncoder().encode(pedacoTexto));
           } catch { /* evento partido ou de controle: não é texto */ }
         }
       },
