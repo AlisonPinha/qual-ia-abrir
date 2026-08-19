@@ -856,8 +856,9 @@ html = f"""<!doctype html>
     <div class="cabeca">
       <span class="eyebrow">Serve pra qualquer pedido</span>
       <h2>Você fala do seu jeito.<br>O mapa responde as duas.</h2>
-      <p>Qual ferramenta abrir <b>e</b> o prompt exato pra pedir. Consultório, escritório,
-         fechamento do mês ou aquela tarefa da sua vida que você vem empurrando.</p>
+      <p>Qual ferramenta abrir <b>e</b> o prompt exato pra pedir. Vale pro consultório, pro
+         escritório e pro fechamento do mês, e vale igual pra passagem, a hospedagem e a
+         compra que você adia há semanas. <b>Não é só trabalho.</b></p>
     </div>
     <div class="casos">{casos}</div>
     <div class="outros-pedidos">{outros}</div>
