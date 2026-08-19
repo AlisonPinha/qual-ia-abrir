@@ -28,6 +28,47 @@ Fase 2 do plano: recuperação por WhatsApp (2.5), a VSL quando o Alison gravar 
 dos 7 dias como ponto de ascensão (2.7), que depende de existir um próximo produto, que é
 justamente o que a aba `presentes` vai dizer.
 
+### O QA do quiz inteiro, em 19/08
+
+Duas perguntas do Alison: as perguntas são fáceis de entender, e dá para perceber que é preciso
+comprar no fim?
+
+**O botão de compra estava abaixo da dobra, e ninguém tinha medido.** No fim do quiz:
+
+| Aparelho | O botão ficava |
+|---|---|
+| iPhone 14 (390x844) | 582px abaixo da dobra |
+| Android pequeno (360x640) | 815px abaixo da dobra |
+| Desktop (1280x900) | 415px abaixo da dobra |
+
+É a correção pontual 2 da Frente 6 do playbook ("teve funil que não vendia só porque o botão
+caía abaixo da dobra"), e era o item 1.8 da fila. **O que empurrava:** o bloco do código de
+acesso, com 200px, no meio do caminho entre o resultado e a oferta. Ele serve a quem já
+decidiu, não a quem está decidindo.
+
+O fecho foi reordenado: o CTA sobe para logo abaixo do resultado, com o preço e uma linha do
+que vem junto, e o código de acesso desce para depois da oferta, com o texto reescrito para
+quem **não** vai comprar agora. Medido de novo: aparece sem rolar nos três aparelhos.
+
+**Oito correções de clareza nas perguntas:**
+
+| O que estava | Por que confundia |
+|---|---|
+| "Há quanto tempo você usa IA **no trabalho**?" e "Onde você **trabalha** na maior parte do tempo?" | perguntava de trabalho para quem tinha acabado de dizer que é vida pessoal |
+| "Na minha vida pessoal, fora do trabalho" | única frase em primeira pessoa entre dez substantivos |
+| "...é do tamanho de..." com a opção "Não é volume, é dificuldade" | a opção quebrava a frase da pergunta |
+| "Quantas horas por semana **isso** te custa?" | "isso" sem antecedente claro |
+| "Você já assinou alguma ferramenta que não usou?" com opções "Nunca / Uma / Mais de uma" | pergunta de sim ou não com opções de quantidade |
+
+**E duas perguntas que não faziam sentido para iniciante viraram condicionais:** quem responde
+"Nenhuma ainda" não recebe mais "quando a resposta volta genérica" nem "quantas vezes você
+refaz o prompt". **Quem nunca usou IA agora responde 14 perguntas em vez de 19**, e o contador
+fecha certo nos dois caminhos (14 de 14 e 19 de 19).
+
+**O que o playbook cobria disso:** só o botão acima da dobra (Frente 6, correção 2). Sobre
+clareza das perguntas ele não diz nada; o mais próximo é "não existe funil longo, existe funil
+entediante".
+
 ### Vida pessoal virou trilha, em 19/08
 
 A LP passou a falar com quem quer IA fora do trabalho (hospedagem, comparação de preço,
