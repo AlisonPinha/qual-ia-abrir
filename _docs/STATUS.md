@@ -90,7 +90,13 @@ lugar, não cortar a medição.
 | Webhook na Cakto | `Purchase para o Meta (CAPI)`, ativo, nos 5 produtos, evento "Compra aprovada", disparo **Agrupado** |
 | `CAKTO_WEBHOOK_SECRET` | é o UUID que **a Cakto gera**, não o que a gente digita |
 | Provado em produção | a Cakto entrega no endpoint (2 envios, 1 entregue, 258ms) e o Meta responde `events_received: 1` |
+| Venda de 19/08 | recuperada à mão: o webhook só dispara em evento novo, e a CAPI aceita evento de até 7 dias. Pedido `6XF4ljB`, R$ 67, variante **abas**, sem UTM nenhuma |
 | Não provado ainda | uma venda real ponta a ponta, que só a próxima compra mostra |
+
+**Onde conferir se o evento chegou:** em **Eventos de teste → canal Site**, que responde na hora
+e mostrou `Compra · Processado · Servidor`, uma marcada como `Desduplicado`. A visão geral do
+dataset e o `/stats` da Graph API **não** mostram evento de servidor de imediato: depois de meia
+hora ainda listavam só os quatro do navegador.
 
 **A armadilha do botão "Testar":** ele manda um `purchase_approved` de verdade, e sem guarda um
 clique viraria venda de mentira no pixel para sempre. O endpoint ignora o id e o e-mail do

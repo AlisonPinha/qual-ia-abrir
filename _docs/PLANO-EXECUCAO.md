@@ -198,7 +198,21 @@ erro faria a Cakto reenviar o mesmo problema, e quem tem que gritar é o log.
 | A chave secreta é a que você digita | A Cakto **descarta** e gera um UUID próprio ao salvar. O endpoint recusou o primeiro teste com 401 por causa disso, e o certo é copiar o valor dela depois de salvar |
 | O botão "Testar" do painel é inofensivo | Ele manda um `purchase_approved` de verdade. Sem guarda, um clique vira venda de mentira no pixel para sempre. O endpoint ignora o id e o e-mail do exemplo do painel |
 
-**O que ainda não foi provado, e só uma venda real prova:** que o `purchase_approved` de uma
+**A venda de 19/08 foi recuperada à mão.** O webhook só dispara em evento novo, então a única
+venda que existe ficaria de fora para sempre. A API de Conversões aceita evento com até 7 dias,
+e ela era do mesmo dia: o `Purchase` foi enviado com os dados reais do painel (pedido `6XF4ljB`,
+R$ 67, `Método das 3 Abas`, pago às 11h58), e o Meta aceitou. **Duas coisas que esse dado já
+diz:** a venda saiu da variante **abas**, e veio **sem UTM nenhuma**, o que bate com não existir
+tráfego pago.
+
+**Como conferir que o evento chegou, sem esperar o relatório.** A visão geral do dataset demora
+para mostrar evento de servidor: depois de meia hora ela ainda listava só os quatro do
+navegador. Quem responde na hora é **Eventos de teste → canal Site**, que mostrou as três
+compras enviadas como **`Compra · Processado · Servidor`**, uma delas marcada pelo próprio Meta
+como **`Desduplicado`**, que é a prova de que o `event_id` está fazendo o trabalho dele. O
+`/stats` da Graph API também não serve para isso: ele não trouxe os eventos de servidor.
+
+**O que ainda não foi provado, e só a próxima venda prova:** que o `purchase_approved` de uma
 compra de verdade chega com os campos esperados. O que já está provado é que a Cakto alcança o
 endpoint (2 envios, 1 entregue com 258ms; o que falhou foi o primeiro teste, antes de alinhar o
 segredo) e que o Meta aceita o payload que o endpoint monta.
