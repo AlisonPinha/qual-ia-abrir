@@ -47,8 +47,13 @@ motor = {
     "total": n_perguntas,
     "ordem": DG["ordem"],
     "gratis": DG["gratis"],
+    "gratisPlano": DG["gratisPlano"],
+    "curtoGratis": DG["curtoGratis"],
     "cabem": DG["cabem"],
+    "teto": DG["teto"],
+    "foco": DG["foco"],
     "celular": DG["celular"],
+    "semCelular": DG["semCelular"],
     "perfil": DG["perfil"],
     "analitico": ANALITICO_URL,
     "pids": [p[0] for p in DG["perguntas"] if not p[0].startswith("break")],
@@ -56,6 +61,8 @@ motor = {
         n: {
             "curto": DG["acesso"][n]["curto"],
             "faixa": DG["acesso"][n]["faixa"],
+            "free": DG["acesso"][n]["free"],
+            "generalista": DG["acesso"][n].get("generalista", False),
             # o que o index esconde:
             "logo": F[n]["logo"],
             "url": F[n]["url"],

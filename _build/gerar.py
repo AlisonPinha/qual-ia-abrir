@@ -223,15 +223,22 @@ motor = {
     "total": n_perguntas,
     "ordem": DG["ordem"],
     "gratis": DG["gratis"],
+    "gratisPlano": DG["gratisPlano"],
+    "curtoGratis": DG["curtoGratis"],
     "cabem": DG["cabem"],
+    "teto": DG["teto"],
+    "foco": DG["foco"],
     "celular": DG["celular"],
+    "semCelular": DG["semCelular"],
     "perfil": DG["perfil"],
     "analitico": ANALITICO_URL,
     "origem": SLUG or "site",
     "pids": [p[0] for p in DG["perguntas"] if not p[0].startswith("break")],
     "ferramentas": {
         # só o que o teaser exibe. logo, url, descrição e custo completo são do produto
-        n: {"curto": DG["acesso"][n]["curto"], "faixa": DG["acesso"][n]["faixa"]}
+        n: {"curto": DG["acesso"][n]["curto"], "faixa": DG["acesso"][n]["faixa"],
+            "free": DG["acesso"][n]["free"],
+            "generalista": DG["acesso"][n].get("generalista", False)}
         for n in F
     },
 }

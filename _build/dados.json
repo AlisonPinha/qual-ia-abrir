@@ -246,78 +246,95 @@
       "Claude": {
         "custo": "US$ 20/mês no Pro",
         "faixa": 1,
+        "free": true,
+        "generalista": true,
         "verificado": true,
         "curto": "US$ 20/mês"
       },
       "Claude Code": {
         "custo": "já vem no Pro ou no Max do Claude",
         "faixa": 1,
+        "free": false,
         "verificado": true,
         "curto": "sem custo extra"
       },
       "ChatGPT": {
         "custo": "US$ 20/mês no Plus",
         "faixa": 1,
+        "free": true,
+        "generalista": true,
         "verificado": true,
         "curto": "US$ 20/mês"
       },
       "Gemini": {
         "custo": "US$ 19,99/mês no Google AI Pro",
         "faixa": 1,
+        "free": true,
+        "generalista": true,
         "verificado": true,
         "curto": "US$ 19,99/mês"
       },
       "Perplexity": {
         "custo": "US$ 20/mês no Pro",
         "faixa": 1,
+        "free": true,
+        "generalista": true,
         "verificado": true,
         "curto": "US$ 20/mês"
       },
       "Grok": {
         "custo": "US$ 10 a 30/mês, ou US$ 8 pelo X",
         "faixa": 1,
+        "free": true,
         "verificado": true,
         "curto": "US$ 10 a 30/mês"
       },
       "Lovable": {
         "custo": "US$ 20/mês no Starter",
         "faixa": 1,
+        "free": true,
         "verificado": true,
         "curto": "US$ 20/mês"
       },
       "Higgsfield": {
         "custo": "Plus com 1.000 créditos por US$ 49/mês no anual; Ultra com 3.000 por US$ 129/mês",
         "faixa": 2,
+        "free": false,
         "verificado": true,
         "curto": "a partir de US$ 49/mês"
       },
       "Poppy AI": {
         "custo": "US$ 399 por ano no Basic, sem teste",
         "faixa": 3,
+        "free": false,
         "verificado": true,
         "curto": "US$ 399 por ano"
       },
       "Gemini Notebook": {
         "custo": "grátis na conta Google, com limite diário",
         "faixa": 0,
+        "free": true,
         "verificado": true,
         "curto": "grátis"
       },
       "Gamma": {
         "custo": "plano Free resolve o começo; Plus por R$ 30/mês no anual",
         "faixa": 1,
+        "free": true,
         "verificado": true,
         "curto": "tem plano grátis"
       },
       "ElevenLabs": {
         "custo": "Free com 10 mil créditos; Starter US$ 6/mês e Creator US$ 22/mês",
         "faixa": 1,
+        "free": true,
         "verificado": true,
         "curto": "tem plano grátis"
       },
       "n8n": {
         "custo": "grátis se você hospedar; Starter €20/mês na nuvem deles",
         "faixa": 1,
+        "free": true,
         "verificado": true,
         "curto": "grátis se hospedar"
       }
@@ -2048,6 +2065,10 @@
         "Quanto você pode investir por mês em ferramenta?",
         [
           [
+            "Nada, quero só o que é grátis",
+            {}
+          ],
+          [
             "Até R$ 150, uma assinatura",
             {}
           ],
@@ -2184,6 +2205,8 @@
       ]
     },
     "gratis": "Começa hoje, é grátis",
+    "gratisPlano": "Começa hoje, de graça",
+    "curtoGratis": "depois, {custo}",
     "ordem": [
       "Assina agora",
       "Nos próximos 30 dias",
@@ -2191,9 +2214,28 @@
     ],
     "_regras": "Estes três campos existem para o motor não depender da ordem das perguntas.",
     "cabem": [
+      0,
       1,
       3,
       3
+    ],
+    "_teto": "Faixa máxima de custo que cada faixa de orçamento aceita. -1 = só o que tem camada gratuita de verdade. Sem isso, quem declara R$ 150 recebia Higgsfield a US$ 49 e Poppy AI a US$ 399/ano.",
+    "teto": [
+      -1,
+      1,
+      2,
+      3
+    ],
+    "_foco": "Quem prefere dominar uma ferramenta a fundo recebe uma só na primeira camada, mesmo com orçamento folgado.",
+    "foco": [
+      "estilo",
+      0
+    ],
+    "_semCelular": "Não roda no telefone: não adianta mandar quem trabalha no celular assinar.",
+    "semCelular": [
+      "Claude Code",
+      "Lovable",
+      "n8n"
     ],
     "celular": [
       "onde",
