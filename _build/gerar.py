@@ -793,9 +793,9 @@ html = f"""<!doctype html>
       <h1>Pare de assinar IA<br>que você <span class="g">não usa.</span></h1>
       <!-- o H1 tem 2 linhas por desenho: se mudar a copy, confira a quebra em 1440 e em 390 -->
       <p class="tese">
-        Responde 5 perguntas e receba a sua stack: as 3 ferramentas certas pro seu trabalho e
-        orçamento, na ordem de assinar, <b>com o prompt exato de cada uma</b>. Ferramenta certa
-        com prompt errado devolve resposta genérica.
+        <b class="crenca">{escape(DG["crenca"])}</b>
+        Responde o diagnóstico e recebe a sua stack: as 3 certas pro seu trabalho e orçamento,
+        na ordem de assinar, <b>com o prompt exato de cada uma</b>.
       </p>
       <div class="acoes">
         <a class="btn btn-p abre-diag" href="#diagnostico">Descobrir a minha stack →</a>

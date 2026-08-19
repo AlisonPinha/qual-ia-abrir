@@ -458,6 +458,7 @@ html = f"""<!doctype html>
   <header class="plano-topo">
     <span class="selo-rosa">Acesso liberado</span>
     <h1>{SEM["promessa"]}</h1>
+    <p class="crenca crenca-solta">{DG["crencaCurta"]}</p>
     <p id="plano-perfil"></p>
     <div class="plano-barra"><i id="barra-fill"></i></div>
   </header>

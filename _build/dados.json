@@ -241,6 +241,8 @@
   "diagnostico": {
     "mecanismo": "Regra das 3 IAs",
     "crenca": "Escolher a IA certa para cada tarefa é a chave para a IA finalmente devolver resposta útil, e isso é possível através da Regra das 3 IAs.",
+    "_crencaCurta": "A mesma crença sem o nome do mecanismo. As páginas de entrega são uma só para as quatro variantes do teste de nome: citar 'Regra das 3 IAs' ali contradiria quem comprou o 'Método das 3 Abas'.",
+    "crencaCurta": "Escolher a IA certa para cada tarefa é o que faz a resposta parar de voltar genérica.",
     "aviso_custo": "Valores conferidos em 18/08/2026. Ferramenta de IA cobra em dólar, então o valor em real muda com o câmbio.",
     "acesso": {
       "Claude": {

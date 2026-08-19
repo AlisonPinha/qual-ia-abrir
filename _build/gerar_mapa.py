@@ -127,7 +127,8 @@ if CHECKOUT_UPSELL:
   <section class="oto" id="oto" hidden aria-labelledby="oto-titulo">
     <span class="selo-rosa">{escape(UP["rotulo"])}</span>
     <h2 id="oto-titulo" tabindex="-1">{escape(UP["nome"])}</h2>
-    <p class="oto-promessa">{escape(UP["promessa"])}</p>
+    <p class="oto-promessa"><b class="crenca">{escape(DG["crencaCurta"])}</b>
+       {escape(UP["promessa"])}</p>
     <ul class="oto-lista">{_itens}</ul>
     <div class="oto-conta">
       {_conta(_r1, f'R$ {UP["preco"]}')}
@@ -771,6 +772,7 @@ html = f"""<!doctype html>
   <header class="mapa-topo">
     <span class="selo-rosa">Acesso liberado</span>
     <h1>O seu mapa</h1>
+    <p class="crenca crenca-solta">{escape(DG["crencaCurta"])}</p>
     <p id="mapa-sub">Responde de novo, com calma. Desta vez vem tudo: o custo real de cada uma,
        o primeiro passo e o prompt pronto para copiar.</p>
     <div class="mapa-barra"><i id="barra-fill"></i></div>

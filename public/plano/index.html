@@ -840,6 +840,11 @@ body.travado { overflow: hidden; }
 .res-codigo code { font-size: 19px; font-weight: 700; letter-spacing: .07em; font-family: ui-monospace, monospace; }
 .res-codigo .m-copiar { margin-left: 10px; }
 .res-codigo-ajuda { font-size: 12.5px; color: var(--cinza-min); margin: 8px 0 0; line-height: 1.5; }
+/* One Belief: a mesma crença no hero, na entrega e no upsell. Nas páginas de entrega ela vai
+   sem o nome do mecanismo, porque elas servem as quatro variantes do teste de nome */
+.crenca { color: #fff; font-weight: 600; }
+.crenca-solta { margin: 10px 0 0; font-size: 14.5px; line-height: 1.55; }
+
 /* retenção do voltar: aparece uma vez, por cima do quiz, e some se a pessoa insistir */
 .retencao[hidden] { display: none; }
 .retencao {
@@ -1090,6 +1095,7 @@ body.travado { overflow: hidden; }
   <header class="plano-topo">
     <span class="selo-rosa">Acesso liberado</span>
     <h1>Sete tarefas de 20 minutos. No sétimo dia as suas 3 estão na sua rotina, não abertas em aba.</h1>
+    <p class="crenca crenca-solta">Escolher a IA certa para cada tarefa é o que faz a resposta parar de voltar genérica.</p>
     <p id="plano-perfil"></p>
     <div class="plano-barra"><i id="barra-fill"></i></div>
   </header>

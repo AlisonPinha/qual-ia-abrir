@@ -840,6 +840,11 @@ body.travado { overflow: hidden; }
 .res-codigo code { font-size: 19px; font-weight: 700; letter-spacing: .07em; font-family: ui-monospace, monospace; }
 .res-codigo .m-copiar { margin-left: 10px; }
 .res-codigo-ajuda { font-size: 12.5px; color: var(--cinza-min); margin: 8px 0 0; line-height: 1.5; }
+/* One Belief: a mesma crença no hero, na entrega e no upsell. Nas páginas de entrega ela vai
+   sem o nome do mecanismo, porque elas servem as quatro variantes do teste de nome */
+.crenca { color: #fff; font-weight: 600; }
+.crenca-solta { margin: 10px 0 0; font-size: 14.5px; line-height: 1.55; }
+
 /* retenção do voltar: aparece uma vez, por cima do quiz, e some se a pessoa insistir */
 .retencao[hidden] { display: none; }
 .retencao {
@@ -1151,6 +1156,7 @@ body.travado { overflow: hidden; }
   <header class="mapa-topo">
     <span class="selo-rosa">Acesso liberado</span>
     <h1>O seu mapa</h1>
+    <p class="crenca crenca-solta">Escolher a IA certa para cada tarefa é o que faz a resposta parar de voltar genérica.</p>
     <p id="mapa-sub">Responde de novo, com calma. Desta vez vem tudo: o custo real de cada uma,
        o primeiro passo e o prompt pronto para copiar.</p>
     <div class="mapa-barra"><i id="barra-fill"></i></div>
@@ -1172,7 +1178,8 @@ body.travado { overflow: hidden; }
   <section class="oto" id="oto" hidden aria-labelledby="oto-titulo">
     <span class="selo-rosa">Antes de você abrir o mapa</span>
     <h2 id="oto-titulo" tabindex="-1">Sua primeira semana pronta</h2>
-    <p class="oto-promessa">O mapa diz quais são as suas 3. Aqui elas entram na sua semana e rodam em cima de um trabalho seu de verdade.</p>
+    <p class="oto-promessa"><b class="crenca">Escolher a IA certa para cada tarefa é o que faz a resposta parar de voltar genérica.</b>
+       O mapa diz quais são as suas 3. Aqui elas entram na sua semana e rodam em cima de um trabalho seu de verdade.</p>
     <ul class="oto-lista"><li><b>A sua primeira semana, dia a dia</b><span>Sete tarefas de 20 minutos, na ordem. No sétimo dia as suas 3 estão rodando na sua rotina, não abertas em aba</span></li><li><b>Um trabalho seu, feito dentro</b><span>Você manda um material real, um texto, um processo ou um caso, e recebe ele já rodado na ferramenta certa. Não é modelo para preencher, é a sua primeira entrega pronta</span></li><li><b>As suas 3 configuradas</b><span>O texto exato para colar nas instruções de cada uma, o que ligar e o que desligar</span></li><li><b>Revisão quando mudar</b><span>Quando uma das suas 3 mudar de preço ou for superada, você recebe a troca e o motivo</span></li></ul>
     <div class="oto-conta">
       <span class=""><i>Pacote completo</i><b>R$ 197</b></span>
