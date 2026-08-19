@@ -46,18 +46,18 @@ function doPost(e) {
 /** Anônimo: nem nome nem WhatsApp entram aqui, de propósito. */
 function gravarDiagnostico(d, bruto) {
   const aba = abaOu(ABA_DIAG, ['recebido em', 'origem'].concat(PERGUNTAS)
-                              .concat(['stack', 'cortar', 'bruto']));
+                              .concat(['stack', 'cortar', 'bruto', 'utm']));
   const r = d.respostas || {};
   aba.appendRow(
     [new Date(), d.origem || '']
       .concat(PERGUNTAS.map(p => r[p] || ''))
-      .concat([(d.stack || []).join(', '), (d.cortar || []).join(', '), bruto])
+      .concat([(d.stack || []).join(', '), (d.cortar || []).join(', '), bruto, d.utm || ''])
   );
 }
 
 function gravarLead(d, bruto) {
   const aba = abaOu(ABA_LEADS, ['recebido em', 'nome', 'whatsapp'].concat(PERGUNTAS)
-                               .concat(['stack', 'cortar', 'bruto']));
+                               .concat(['stack', 'cortar', 'bruto', 'utm']));
   const r = d.respostas || {};
   aba.appendRow(
     [new Date(),

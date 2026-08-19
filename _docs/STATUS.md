@@ -205,7 +205,7 @@ Build: `python3 _build/gerar.py && python3 _build/gerar_mapa.py && vercel deploy
 | 3 | **Compra de teste** | Cakto | Nunca foi feita. Agora que a entrega por e-mail aponta para o `/mapa`, é a única forma de confirmar que o e-mail chega e se a Cakto repassa parâmetros na URL (de que depende o cruzamento em outro aparelho) |
 | 4 | **Custo do Higgsfield** | `dados.json` → `diagnostico.acesso` | Único não conferido, e agora aparece **dentro do produto pago** |
 | 5 | **`CAPTURA_URL` vazia** | `_build/config.py` | O passo de nome e WhatsApp não aparece. Menos urgente que o item 1, porque o anônimo já responde as perguntas de produto |
-| 6 | **Web Analytics** | painel da Vercel | Precisa do toggle; sem ele o script comentado dá 404 |
+| 6 | ~~**Web Analytics**~~ ligado em 19/08 | painel da Vercel | Plano Hobby: 50 mil eventos/mês, **a quebra por UTM é paga** (Web Analytics Plus). Origem do tráfego se lê em Referrers aqui, e por UTM no Events Manager e na planilha |
 | 7 | **Ramificação do diagnóstico** | motor JS | Perguntas diferentes por área. É o que falta para a personalização ser real, e a maior mudança estrutural restante |
 | 8 | **Seção de autoridade** | seção `#prova` | Decisão do Alison sobre quais credenciais vão para o ar |
 | 9 | ~~**Domínio próprio**~~ resolvido em 18/08 | Vercel | `diagnostico.noahai.com.br`, verificado no Meta |
@@ -259,6 +259,26 @@ não batiam) estava errada e foi substituída.
 **Ressalva:** a Cakto é a mais nova da lista e tem reclamações de bloqueio de conta no
 Reclame Aqui. O índice de solução não foi verificado, o site bloqueia leitura automatizada.
 
+## Origem do tráfego, ligada em 19/08
+
+A UTM que vem na URL é lida uma vez por `origemTrafego()` (`_build/sessao.js`), guardada em
+`localStorage` sob `qia:org` e usada em dois lugares: vai no payload anônimo para a planilha e
+decora os links do checkout. Regra de last touch: parâmetro novo sobrescreve o antigo, e
+visitante sem parâmetro nenhum não ganha query suja no link.
+
+Onde ler cada etapa do funil por origem:
+
+| Etapa | Onde ler | Como |
+|---|---|---|
+| Visita | Vercel Analytics → Referrers | O YouTube web aparece; no app o referrer some, e aí o Pixel cobre |
+| Visita com UTM | Events Manager → PageView | Filtro pela URL do evento, que já carrega a query |
+| Diagnóstico completo | Planilha, aba `diagnosticos` | Coluna `utm`, e o JSON da coluna `bruto` como reserva |
+| Checkout aberto | Events Manager → InitiateCheckout | Disparado na LP, com a URL de origem |
+| Venda | Cakto | **Não confirmado.** A UTM chega na URL do checkout; se ela grava, só a compra de teste (pendência 3) diz |
+
+Para a coluna `utm` aparecer com título na planilha, recolar `_docs/apps-script-captura.js` no
+Apps Script. Sem recolar nada se perde: o valor continua indo dentro da coluna `bruto`.
+
 ## Próximo passo sugerido
 
-Ligar `ANALITICO_URL` e fazer uma compra de teste. O produto está vendendo sem medir nada.
+Fazer a compra de teste. É o que falta para fechar o funil de ponta a ponta.

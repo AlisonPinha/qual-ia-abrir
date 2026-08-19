@@ -384,8 +384,12 @@ JS = """
 
   // Meta: PROD é o nome da variante, e é ele que separa o teste no Events Manager.
   const px = ev => window.fbq && fbq("track", ev, {content_name: PROD});
-  for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
+  // a origem viaja junto para a Cakto: sem ela toda venda aparece como direta
+  const origem = origemTrafego();
+  for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
+    if (origem) a.href += (a.href.includes("?") ? "&" : "?") + origem;
     a.addEventListener("click", () => px("InitiateCheckout"));
+  }
 
   // diagnóstico: soma os pesos das respostas e devolve as 3 ferramentas com a ordem de compra
   const quiz = el("quiz");
@@ -943,9 +947,9 @@ html = f"""<!doctype html>
 <script>const DESTINO = {json.dumps(CAPTURA_URL)};
 const PROD = {json.dumps(V["nome"], ensure_ascii=False)};
 const MOTOR = {json.dumps(motor, ensure_ascii=False, separators=(",", ":"))};{MOTOR_JS}{SESSAO_JS}{JS}</script>
-<!-- Medição: ative "Web Analytics" no painel da Vercel e descomente a linha abaixo.
-     Sem o toggle o script responde 404 e suja o console. -->
-<!-- <script defer src="/_vercel/insights/script.js"></script> -->
+<!-- Medição: Web Analytics ligado no painel da Vercel. Se o script voltar a dar 404,
+     é o toggle que caiu, não o caminho. -->
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
 """

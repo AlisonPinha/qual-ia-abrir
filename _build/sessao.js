@@ -37,6 +37,18 @@ function limparSessao() {
   try { localStorage.removeItem(SESSAO_CHAVE); } catch (e) {}
 }
 
+// Origem do tráfego: o que veio na URL, guardado para a compra que acontece dias
+// depois não aparecer como direta. Last touch: parâmetro novo passa a valer.
+const ORIGEM_CHAVE = "qia:org";
+
+function origemTrafego() {
+  const agora = location.search.slice(1);
+  try {
+    if (agora) localStorage.setItem(ORIGEM_CHAVE, agora);
+    return agora || localStorage.getItem(ORIGEM_CHAVE) || "";
+  } catch (e) { return agora; }        // modo privado: vale só a visita atual
+}
+
 // Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:
 // o que importa é gravar, não ler a resposta. Falha em silêncio de propósito,
 // porque analytics não pode quebrar a entrega.
@@ -55,6 +67,7 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta) {
       body: JSON.stringify({
         tipo: "diagnostico",
         origem,                                      // "site" ou "mapa"
+        utm: origemTrafego(),                        // de onde a pessoa veio
         respostas,
         stack: stack.map(s => s.nome),
         cortar: corta,
