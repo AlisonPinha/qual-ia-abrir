@@ -422,7 +422,28 @@ JS = """
   const origem = origemTrafego();
   for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
     if (origem) a.href += (a.href.includes("?") ? "&" : "?") + origem;
-    a.addEventListener("click", () => px("InitiateCheckout"));
+    a.addEventListener("click", () => {
+      px("InitiateCheckout");
+      // O checkout abre em outra aba, então esta continua viva. É aqui que o código deixa de
+      // ser convite para adiar e vira entrega: a decisão de comprar já foi tomada, e o que
+      // vem a seguir é o problema do aparelho, que a compra de 19/08 revelou. A Cakto entrega
+      // por e-mail com link fixo, e sem o código quem paga no celular e lê no computador
+      // responde as 19 perguntas de novo.
+      const bloco = el("pos-clique");
+      if (!bloco || !window.__codigo) return;
+      // debaixo do botão que ela clicou, e não onde o HTML o deixou: os dois botões de
+      // compra ficam longe um do outro, e o código tem que aparecer onde o olho está
+      a.insertAdjacentElement("afterend", bloco);
+      el("pos-clique-valor").textContent = window.__codigo;
+      const zap = el("pos-clique-zap");
+      if (zap && !zap.href) {
+        zap.href = "https://wa.me/?text=" + encodeURIComponent(
+          "O meu diagnóstico do " + PROD + ": " + window.__codigo
+          + ". O link abre direto no meu resultado, em qualquer aparelho: "
+          + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo));
+      }
+      bloco.hidden = false;
+    });
   }
 
   // diagnóstico: soma os pesos das respostas e devolve as 3 ferramentas com a ordem de compra
@@ -785,7 +806,7 @@ JS = """
     });
     // o botão de copiar existia no HTML sem nenhum listener nesta página: clicar não copiava
     // nada e ainda assim parecia ter copiado
-    for (const b of ret.querySelectorAll(".m-copiar[data-alvo]")) {
+    for (const b of document.querySelectorAll(".m-copiar[data-alvo]")) {
       b.addEventListener("click", async () => {
         try { await navigator.clipboard.writeText(el(b.dataset.alvo).textContent); }
         catch (e) { return; }
@@ -1308,6 +1329,14 @@ html = f"""<!doctype html>
         </div>
         {botao_compra}
         <p class="form-aviso">{aviso_compra}</p>
+      </div>
+      <div class="res-codigo" id="pos-clique" hidden>
+        <span class="res-codigo-rot">Abrimos o checkout na outra aba</span>
+        <code id="pos-clique-valor"></code>
+        <button type="button" class="m-copiar" data-alvo="pos-clique-valor">Copiar</button>
+        <a class="m-copiar" id="pos-clique-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
+        <p class="res-codigo-ajuda">Guarde este código: é ele que abre o seu mapa em qualquer
+           aparelho, se você pagar no celular e for ler no computador.</p>
       </div>
       <button type="button" class="refazer" id="refazer">Refazer o diagnóstico</button>
     </div>

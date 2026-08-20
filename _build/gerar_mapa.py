@@ -280,15 +280,21 @@ JS = r"""
     if (codigo) {
       el("res-codigo-valor").textContent = codigo;
       el("res-codigo").hidden = false;
-      // o código só serve se ela conseguir levar para o outro aparelho, e o WhatsApp é o
-      // único app que ela tem nos dois. O link vai junto com o código dentro: no outro
-      // aparelho é um toque, sem digitar nada
+      // O WhatsApp é o único app que a pessoa tem nos dois aparelhos, então é por ele que o
+      // mapa sai daqui. Vai o mapa em si, não só a chave dele: as três na ordem, o custo de
+      // cada uma, o que cortar e o link com o código dentro, que abre o resto sem digitar
+      // nada. O prompt e o passo a passo ficam de fora de propósito: não cabem numa mensagem
+      // e são o que a pessoa vem buscar na página.
       const zap = el("res-codigo-zap");
       if (zap) {
-        const texto = "O meu código do Qual IA Usar: " + codigo
-          + ". Para abrir o mapa em qualquer aparelho, e o link já vai com ele dentro: "
+        const texto = "O meu mapa de IA, do Qual IA Usar\n\n"
+          + stack.map((s, i) => `${i + 1}. ${s.nome} (${s.custo})`).join("\n")
+          + (corta.length ? "\n\nO que não assinar agora: " + corta.join(", ") : "")
+          + "\n\nO mapa completo, com o primeiro passo e o prompt pronto de cada uma, abre "
+          + "em qualquer aparelho por aqui:\n"
           + location.origin + "/mapa?c=" + encodeURIComponent(codigo);
         zap.href = "https://wa.me/?text=" + encodeURIComponent(texto);
+        zap.textContent = "Mandar no meu WhatsApp";
       }
     }
 
