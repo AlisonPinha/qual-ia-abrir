@@ -188,7 +188,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 
 | Resposta | Favorece |
 |---|---|
-| Conteúdo e redes sociais | Higgsfield +3, Poppy AI +3, ChatGPT +2, Claude +2, Gemini +1 |
+| Conteúdo e redes sociais | Higgsfield +3, ChatGPT +2, Claude +2, Gemini +1 |
 | Negócio próprio ou gestão | Claude +3, ChatGPT +2, Perplexity +2, Gemini +2, Claude Code +1 |
 | Vendas e atendimento | Claude +3, ChatGPT +3, Perplexity +1, Gemini +1 |
 | Estudos ou docência | Gemini +3, Perplexity +3, ChatGPT +2, Claude +1 |
@@ -207,7 +207,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Evoluir prontuário e escrever laudo | Claude +4 |
 | Estudar caso, artigo e protocolo | Perplexity +4, Gemini Notebook +3, Gemini +2 |
 | Responder paciente e organizar agenda | ChatGPT +4, n8n +2 |
-| Fazer conteúdo pra atrair paciente | Higgsfield +3, Claude +2, ElevenLabs +2, Poppy AI +1 |
+| Fazer conteúdo pra atrair paciente | Higgsfield +3, Claude +2, ElevenLabs +2 |
 | Faturamento, convênio e planilha | Gemini +4 |
 | Treinar e organizar a equipe | Claude +3, Gemini +1 |
 | Nenhuma dessas, a minha é outra | não vota |
@@ -253,10 +253,10 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Resposta | Favorece |
 |---|---|
 | Escrever roteiro e legenda | Claude +4, ChatGPT +2 |
-| Gravar e editar vídeo | ElevenLabs +7, Higgsfield +3, Poppy AI +2, Gemini +1 |
+| Gravar e editar vídeo | ElevenLabs +7, Higgsfield +3, Gemini +1 |
 | Criar imagem, capa e thumbnail | Higgsfield +4, Gemini +3 |
 | Achar pauta que ainda não saturou | Perplexity +3, Grok +3 |
-| Entender por que um post foi e outro não | Poppy AI +4, Claude +2 |
+| Entender por que um post foi e outro não | Claude +2 |
 | Responder comentário e direct | ChatGPT +3 |
 | Nenhuma dessas, a minha é outra | não vota |
 
@@ -337,7 +337,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Resposta | Favorece |
 |---|---|
 | Do que eu vejo no feed na hora | Grok +3, Perplexity +1 |
-| De um banco de referências que eu guardo | Poppy AI +4, Gemini Notebook +2 |
+| De um banco de referências que eu guardo | Gemini Notebook +2 |
 | Do que cliente e seguidor perguntam | Claude +3, ChatGPT +2 |
 | Do improviso, não tenho fonte fixa | Perplexity +2, Grok +2, ChatGPT +1 |
 
@@ -347,7 +347,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 |---|---|
 | Sai genérico, dá pra ver que é IA | Claude +4, ChatGPT +1 |
 | Sai perto, mas eu reescrevo tudo | Claude +3, ChatGPT +1 |
-| Já ensinei o meu jeito e sai bom | Claude +2, Poppy AI +2 |
+| Já ensinei o meu jeito e sai bom | Claude +2 |
 | Não deixo a IA escrever, só me ajuda a pensar | Claude +2, ChatGPT +2, ElevenLabs +1 |
 
 ### `n_dados` Onde vivem os números do seu negócio?
@@ -402,7 +402,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 |---|---|
 | Alguns artigos | Perplexity +3 |
 | Um livro ou uma apostila inteira | Gemini Notebook +7, Gemini +4 |
-| Várias aulas gravadas | Gemini +3, Gemini Notebook +3, Poppy AI +2 |
+| Várias aulas gravadas | Gemini +3, Gemini Notebook +3 |
 | Não é volume, é dificuldade do conteúdo | Claude +4, ChatGPT +1 |
 
 ### `t_base` O código onde você mexe é...
@@ -733,7 +733,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Quase nunca abro | ChatGPT +2, Gemini +1 |
 | Abro um chat de vez em quando | ChatGPT +1, Claude +1, Gemini +1 |
 | Uso todo dia, mas sem método | Claude +2, Perplexity +1, Higgsfield +1 |
-| Uso pra trabalhar e quero avançar | Claude Code +2, Claude +2, Higgsfield +1, Poppy AI +1 |
+| Uso pra trabalhar e quero avançar | Claude Code +2, Claude +2, Higgsfield +1 |
 
 ### `onde` Onde você usa IA na maior parte do tempo?
 

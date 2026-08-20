@@ -35,11 +35,6 @@
       "url": "https://higgsfield.ai",
       "oq": "Imagem e vídeo no nível que anúncio exige."
     },
-    "Poppy AI": {
-      "logo": "poppy.png",
-      "url": "https://poppyai.com",
-      "oq": "Roteiro e estrutura em cima das suas próprias referências."
-    },
     "Lovable": {
       "logo": "lovable.png",
       "url": "https://lovable.dev",
@@ -205,12 +200,6 @@
           "Gemini",
           "Monta o deck inteiro a partir de um tema.",
           false
-        ],
-        [
-          "Roteiro e estrutura de conteúdo",
-          "Poppy AI",
-          "Trabalha em cima das suas referências, não do nada.",
-          false
         ]
       ]
     ],
@@ -323,15 +312,6 @@
         "vitoria": "imagem no nível do anúncio",
         "mes": 78
       },
-      "Poppy AI": {
-        "custo": "R$ 2.068 por ano no Basic, sem teste",
-        "faixa": 3,
-        "free": false,
-        "verificado": true,
-        "curto": "R$ 2.068 por ano",
-        "vitoria": "estrutura das suas referências",
-        "mes": 173
-      },
       "Gemini Notebook": {
         "custo": "grátis na conta Google, com limite diário",
         "faixa": 0,
@@ -391,7 +371,6 @@
             "Conteúdo e redes sociais",
             {
               "Higgsfield": 3,
-              "Poppy AI": 3,
               "ChatGPT": 2,
               "Claude": 2,
               "Gemini": 1
@@ -517,7 +496,6 @@
             {
               "Higgsfield": 3,
               "Claude": 2,
-              "Poppy AI": 1,
               "ElevenLabs": 2
             }
           ],
@@ -728,7 +706,6 @@
             "Gravar e editar vídeo",
             {
               "Higgsfield": 3,
-              "Poppy AI": 2,
               "Gemini": 1,
               "ElevenLabs": 7
             }
@@ -750,7 +727,6 @@
           [
             "Entender por que um post foi e outro não",
             {
-              "Poppy AI": 4,
               "Claude": 2
             }
           ],
@@ -1216,7 +1192,6 @@
           [
             "De um banco de referências que eu guardo",
             {
-              "Poppy AI": 4,
               "Gemini Notebook": 2
             }
           ],
@@ -1263,8 +1238,7 @@
           [
             "Já ensinei o meu jeito e sai bom",
             {
-              "Claude": 2,
-              "Poppy AI": 2
+              "Claude": 2
             }
           ],
           [
@@ -1506,7 +1480,6 @@
             "Várias aulas gravadas",
             {
               "Gemini": 3,
-              "Poppy AI": 2,
               "Gemini Notebook": 3
             }
           ],
@@ -3039,8 +3012,7 @@
             {
               "Claude Code": 2,
               "Claude": 2,
-              "Higgsfield": 1,
-              "Poppy AI": 1
+              "Higgsfield": 1
             }
           ]
         ]
@@ -3361,10 +3333,6 @@
         "Começa pelo modelo mais barato pra testar a cena, e só sobe o modelo quando a composição já está certa.",
         "Foto de produto: {produto} sobre superfície de concreto, luz lateral dura, fundo neutro, lente 50mm."
       ],
-      "Poppy AI": [
-        "É a mais cara da lista e cobra o ano inteiro de uma vez. Só entra depois que o seu conteúdo já dá retorno.",
-        "Analise estas 5 referências que subi e me diga a estrutura que as três de melhor desempenho têm em comum."
-      ],
       "Lovable": [
         "Serve pra mostrar uma ideia no ar rápido, não pra manter o produto depois.",
         "Monte uma página de captura para {sua oferta}, com um campo de e-mail e um botão só."
@@ -3401,7 +3369,7 @@
       3,
       3
     ],
-    "_teto": "Faixa máxima de custo que cada faixa de orçamento aceita. -1 = só o que tem camada gratuita de verdade. Sem isso, quem declara R$ 150 recebia Higgsfield a R$ 254/mês e Poppy AI a R$ 2.068/ano.",
+    "_teto": "Faixa máxima de custo que cada faixa de orçamento aceita. -1 = só o que tem camada gratuita de verdade. Sem isso, quem declara R$ 150 recebia o Higgsfield no plano de R$ 254/mês.",
     "teto": [
       -1,
       1,

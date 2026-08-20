@@ -82,6 +82,24 @@ Ou seja, o valor que o produto já dizia estava certo, e aplicar o agregador ter
 tela em 37% num item correto. **É o argumento mais forte a favor da régua de só escrever o que
 veio da fonte oficial.**
 
+### A Poppy AI saiu do catálogo, e as 12 restantes têm bloco "por dentro"
+
+**Decisão do Alison em 20/08.** O motivo que pesa mais não é o preço, é que ela **tirou o valor
+do site em 03/08 e passou a vender por demo agendada**: o produto afirmava "R$ 2.068 por ano" e
+mandava a pessoa procurar um número que ela não encontraria, dentro de um produto cuja promessa
+é justamente saber o custo real.
+
+**Medido antes de tirar:** os 1,2% dela se redistribuem sem abrir buraco. ChatGPT +0,5pp,
+Higgsfield +0,3pp, o resto se dilui. Ninguém fica sem stack e nenhuma pergunta fica sem
+resposta, então **não existia vaga a repor**, e repor por repor violaria a régua de só entrar o
+que o Alison usa de verdade.
+
+Saíram 3 blocos (ficha, custo e primeiro passo), 8 pesos e 1 tarefa do catálogo público. Zero
+referência restou no produto.
+
+**O catálogo agora tem 12 ferramentas, e as 12 têm o bloco "Dentro dela, o que quase ninguém
+usa".** Eram 4 de 13 no começo do dia.
+
 ### O Perplexity ganhou o bloco "por dentro", em 20/08
 
 **Por que ele primeiro:** aparece em **27,6%** das stacks e era a ferramenta com maior presença
