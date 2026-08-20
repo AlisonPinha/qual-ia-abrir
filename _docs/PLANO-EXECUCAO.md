@@ -420,7 +420,7 @@ decisão do Alison, não minha.
 | 4.6 | ~~**Uso pessoal: decidir com dado**~~ **antecipado em 19/08, por decisão do Alison** | Claude | nada | A trilha de vida pessoal entrou antes do dado, porque a LP passou a prometer uso pessoal e o quiz não atendia. A coluna `descreveu` continua sendo o canal para saber o que falta dentro dela |
 | 4.8 | ~~**Captura de contato**~~ **entrou em 20/08, na SAÍDA e não no quiz** | Claude | nada | **O playbook joga contra, e isso foi conferido em 19/08.** Ele não pede nome (o "com o nome dela" era erro da nossa nota) e mede que **prolongar a primeira etapa converteu menos em dois nichos**, com queda de 1% a 2% por etapa. O contato que a operação de referência usa vem de quem gerou cobrança, não do quiz. Se um dia entrar, entra **depois do resultado** e como variante A/B. **Foi o que aconteceu:** o pedido de nome e WhatsApp mora na segunda tela da saída, só para quem já viu o resultado e confirmou que está indo embora. O quiz não ganhou etapa nenhuma, e a `CAPTURA_URL` continua vazia |
 | 4.9 | ~~**Cupom pela URL**~~ **feito 20/08** | Claude | nada | `?cupom=X` na LP vira `coupon=X` no checkout, que é o nome que a Cakto entende. Guardado 7 dias com prazo explícito, aviso na tela por botão, some quando vence. **Falta criar o cupom no painel da Cakto**: sem ele o parâmetro viaja e a plataforma ignora. 13 de 13 no QA |
-| 4.10 | **Downsell, no lugar da escada de recuperação** | Alison decide | 2.5 | A escada do playbook (anual → desconto → mensal → primeiro mês por R$ 1) é de assinatura, e o produto é pagamento único. O equivalente aqui é um degrau abaixo do upsell, e isso é decisão de produto, não de execução |
+| 4.10 | **Downsell de R$ 47** | Claude | o produto criado na Cakto | A escada do playbook (anual → desconto → mensal → primeiro mês por R$ 1) é de assinatura, e o produto é pagamento único. O equivalente aqui é um degrau abaixo do upsell. **Decidido em 20/08:** entrega **só os 7 dias**, sem o material rodado e sem a configuração das 3, por **R$ 47**, para quem recusa o upsell na tela pós-compra. A fronteira do playbook fica de pé, porque o upsell é o que roda no material dela. **Começado e revertido no mesmo dia, por escolha de prioridade:** o desenho está aqui embaixo |
 | 4.7 | **World wide** | Claude | 3.3 | Duplicar o funil, filtrar português e excluir o Brasil. O playbook estima meia hora de trabalho e ROI alto nos primeiros dias. Só depois de o funil provar que converte aqui |
 
 ---
@@ -454,6 +454,23 @@ de 19/08, que segundo o Alison gostou. É dela que sai a primeira frase verdadei
 
 **Como colar quando chegar:** `prova.depoimentos` recebe pares `["Quem é", "a frase"]`, e o
 build faz o resto. Nome da ferramenta não entra na frase, para não furar o paywall.
+
+## O downsell, desenhado em 20/08 e ainda não construído
+
+**Decisões tomadas:** entrega só os 7 dias, por R$ 47, para quem clica em pular o upsell.
+
+**Como construir, quando voltar:**
+1. `CHECKOUT_DOWNSELL` e `PRECO_DOWNSELL` no `config.py`, vazios desligando a tela, como as
+   outras constantes de deploy.
+2. `python3 _build/gerar_plano.py semana` → `public/semana/index.html`, com os blocos do
+   material, da configuração e da revisão omitidos **no gerador**, do mesmo jeito que o
+   paywall da LP: o que não é do produto não chega ao navegador. O JS da variante também para
+   de chamar `pedir("config")`, então custa uma chamada de modelo por acesso em vez de duas.
+3. A tela do downsell no `#oto-pular` do `/mapa`, que hoje só abre o mapa.
+4. Produto na Cakto a R$ 47, com entrega apontando para `/semana`.
+
+**A ressalva que continua valendo:** o upsell de R$ 130 nunca foi oferecido a ninguém de
+verdade. Construir o degrau de baixo antes de medir o de cima é otimizar no escuro.
 
 ## Dívidas e riscos conhecidos
 
