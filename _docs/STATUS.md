@@ -19,6 +19,22 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### O Lovable: bloco novo, e o catálogo errava o nome do plano
+
+Quinto da fila, também por agente. O valor estava desatualizado (R$ 104 contra os R$ 130 que os
+US$ 25 dão hoje) e, pior, **o catálogo mandava procurar um plano "Starter" que não existe**: o
+plano é o **Pro**. Os dois corrigidos com fonte oficial dupla.
+
+**Os três recursos são todos do plano gratuito, de propósito:** editar clicando no elemento da
+tela e descrevendo em português, o **Lovable Cloud** com banco, login e e-mail já ligados, e a
+**cópia do código no seu GitHub**, que existe até no grátis e é o seguro contra ficar preso na
+plataforma. Domínio próprio, tirar a marca d'água e editar código são do Pro, e ficaram fora
+pelo motivo de sempre.
+
+**Efeito colateral medido:** com o Lovable a R$ 130, os casos em que "cortar a mais cara já paga
+o mapa" seria falsa subiram de 10 para **38 em 587.776**. A guarda `maiorCorte >= MOTOR.preco`
+continua segurando todos, então nada mentiroso chega à tela.
+
 ### O Claude Code ganhou o bloco, e o custo dele estava incompleto
 
 Quarto da fila. **Pesquisado por agente dedicado**, a pedido do Alison, que sugeriu paralelizar

@@ -306,13 +306,13 @@
         "mes": 52
       },
       "Lovable": {
-        "custo": "R$ 104/mês no Starter",
+        "custo": "R$ 130/mês no Pro, com 100 créditos por mês",
         "faixa": 1,
         "free": true,
         "verificado": true,
-        "curto": "R$ 104/mês",
+        "curto": "R$ 130/mês",
         "vitoria": "a ideia no ar sem programador",
-        "mes": 104
+        "mes": 130
       },
       "Higgsfield": {
         "custo": "Plus com 1.000 créditos por R$ 254/mês no anual; Ultra com 3.000 por R$ 669/mês",
@@ -3216,6 +3216,20 @@
         [
           "Resumo em áudio",
           "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
+        ]
+      ],
+      "Lovable": [
+        [
+          "Editar pelo preview",
+          "Clica no elemento na tela e descreve a mudança em português, em vez de explicar onde fica."
+        ],
+        [
+          "Lovable Cloud",
+          "Banco, login de usuário e envio de e-mail já vêm ligados: você pede no chat e não configura nada."
+        ],
+        [
+          "Cópia no seu GitHub",
+          "Manda o código para a sua própria conta, inclusive no plano grátis. É o seguro contra ficar preso."
         ]
       ],
       "Claude Code": [
