@@ -126,8 +126,6 @@ JS = r"""
 
   const mostrar = () => {
     abriuQuiz = true;          // a partir daqui existe quiz na tela, e existe abandono
-    const btVoltar = el("quiz-voltar");
-    if (btVoltar) btVoltar.hidden = historico.length === 0;
     passos.forEach((p, i) => { p.hidden = i !== atual; });
     if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
     const fila = passos.map((_p, i) => i).filter(precisa);
@@ -145,19 +143,6 @@ JS = r"""
   };
 
   const proximo = () => { do { atual++; } while (atual < passos.length && !precisa(atual)); };
-  // Voltar existe porque resposta errada aqui não é hesitação, é defeito de entrega:
-  // a pessoa marca sem querer e recebe uma stack montada para outra realidade.
-  const historico = [];
-  const voltar = () => {
-    const anterior = historico.pop();
-    if (anterior === undefined) return;
-    atual = anterior;
-    delete resp[passos[atual].dataset.q];
-    limparOrfas(MOTOR, resp);
-    for (const b of passos[atual].querySelectorAll(".opc")) b.setAttribute("aria-pressed", "false");
-    mostrar();
-  };
-
   // ---------- a semana ----------
   let stackAtual = null;
 
@@ -337,7 +322,6 @@ JS = r"""
 
   for (const b of quiz.querySelectorAll(".opc")) {
     b.addEventListener("click", () => {
-      historico.push(atual);
       resp[b.dataset.q] = +b.dataset.i;
       // trocar a área depois de voltar derruba a trilha antiga
       limparOrfas(MOTOR, resp);
@@ -348,8 +332,6 @@ JS = r"""
       if (atual < passos.length) mostrar(); else render(false);
     });
   }
-  el("quiz-voltar").addEventListener("click", voltar);
-
   for (const b of quiz.querySelectorAll(".btn-livre")) {
     b.addEventListener("click", () => {
       const passo = b.closest(".passo");
@@ -500,7 +482,7 @@ html = f"""<!doctype html>
   </div>
   <p class="completando-aviso" id="completando-aviso" hidden>O diagnóstico ganhou perguntas novas desde
      que você respondeu. As suas respostas continuam aqui: falta só o que é novo.</p>
-  <form id="quiz"><button type="button" id="quiz-voltar" class="quiz-voltar" hidden aria-label="Voltar para a pergunta anterior">←</button>{perguntas_html}</form>
+  <form id="quiz">{perguntas_html}</form>
 
   <div id="plano" hidden>
     <p class="plano-escrevendo" id="plano-escrevendo" hidden>Escrevendo a sua semana...</p>

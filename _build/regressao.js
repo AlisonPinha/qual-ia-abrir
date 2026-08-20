@@ -53,38 +53,50 @@ async function responderTudo(page, escopo) {
   await p1.waitForTimeout(900);
   const lp = await p1.evaluate(() => ({
     titulo: document.getElementById('res-titulo')?.textContent?.trim(),
-    codigo: document.getElementById('res-codigo-valor')?.textContent || '',
-    zap: document.getElementById('res-codigo-zap')?.href || '',
+    codigoNaOferta: !!document.getElementById('res-codigo'),
     checkout: document.querySelector('a[href*="pay.cakto"]')?.href || '',
     silhueta: document.querySelectorAll('#res-stack .oculto').length,
   }));
   ok('LP: quiz completa', cliques >= 14, `${cliques} cliques`);
   ok('LP: resultado aparece', /stack/i.test(lp.titulo || ''), lp.titulo);
   ok('LP: teaser em silhueta', lp.silhueta === 3, `${lp.silhueta} cards ocultos`);
-  ok('LP: código gerado', /^[0-9A-Z-]{8,}$/.test(lp.codigo), lp.codigo);
-  ok('LP: botão do WhatsApp com link', /wa\.me/.test(lp.zap) && /mapa\?c=/.test(decodeURIComponent(lp.zap)));
+  // o código ao lado do preço convidava a adiar a compra: ele só aparece para quem sai
+  ok('LP: código fora da oferta', lp.codigoNaOferta === false);
   ok('LP: checkout leva UTM e código', /utm_source=regressao/.test(lp.checkout) && /[?&]c=/.test(lp.checkout));
 
-  // ---------- 2. voltar e limpeza de trilha ----------
+  // ---------- 2. saída: a retenção é onde o código de acesso vive agora ----------
   const c2 = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const p2 = await c2.newPage();
-  p2.on('pageerror', e => erros.push('voltar: ' + e.message));
+  p2.on('pageerror', e => erros.push('saída: ' + e.message));
   await p2.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
   await p2.locator('.abre-diag').first().click();
   await p2.waitForTimeout(400);
-  const escondidoNoInicio = await p2.evaluate(() => document.getElementById('quiz-voltar')?.hidden);
+  // quem sai no meio não tem código, porque o código é o quiz inteiro codificado
   for (let i = 0; i < 3; i++) { await p2.locator('#modal .passo:not([hidden]) .opc').first().click(); await p2.waitForTimeout(110); }
-  for (let i = 0; i < 3; i++) { await p2.locator('#quiz-voltar').click(); await p2.waitForTimeout(130); }
-  const voltouAoInicio = await p2.evaluate(() => document.querySelector('#modal .passo:not([hidden])')?.dataset.q);
-  const nOpc = await p2.locator('#modal .passo:not([hidden]) .opc').count();
-  await p2.locator('#modal .passo:not([hidden]) .opc').nth(nOpc - 1).click();
-  await p2.waitForTimeout(200);
-  const trilhaNova = await p2.evaluate(() => document.querySelector('#modal .passo:not([hidden])')?.dataset.q);
-  ok('voltar: escondido na 1ª pergunta', escondidoNoInicio === true);
-  ok('voltar: volta até o início', voltouAoInicio === 'area', voltouAoInicio);
-  // a última opção da primeira pergunta é a vida pessoal desde 19/08: trocar a área tem que
-  // derrubar a trilha antiga e abrir a dela, senão a pessoa responde perguntas de outra vida
-  ok('voltar: trocar área troca a trilha', trilhaNova === 'l_tarefa', trilhaNova);
+  await p2.goBack();
+  await p2.waitForTimeout(400);
+  const meio = await p2.evaluate(() => ({
+    retencao: !document.getElementById('retencao').hidden,
+    codigo: !document.getElementById('ret-codigo').hidden,
+  }));
+  ok('saída no meio: retenção aparece', meio.retencao === true);
+  ok('saída no meio: sem código para guardar', meio.codigo === false);
+
+  // com o quiz inteiro respondido, a mesma tela entrega o código
+  await p2.locator('#retencao-fica').click();
+  await responderTudo(p2, '#modal');
+  await p2.waitForTimeout(900);
+  await p2.goBack();
+  await p2.waitForTimeout(400);
+  const fim = await p2.evaluate(() => ({
+    titulo: document.getElementById('retencao-titulo')?.textContent || '',
+    visivel: !document.getElementById('ret-codigo').hidden,
+    codigo: document.getElementById('ret-codigo-valor')?.textContent || '',
+    zap: document.getElementById('ret-codigo-zap')?.href || '',
+  }));
+  ok('saída com quiz pronto: código aparece', fim.visivel === true && /^[0-9A-Z-]{8,}$/.test(fim.codigo), fim.codigo);
+  ok('saída: WhatsApp com link e código', /wa\.me/.test(fim.zap) && /mapa\?c=/.test(decodeURIComponent(fim.zap)));
+  ok('saída: fala de diagnóstico pronto', /pronto/i.test(fim.titulo), fim.titulo);
 
   // ---------- 3. /mapa: entrega com IA ----------
   const c3 = await browser.newContext({ viewport: { width: 390, height: 844 } });

@@ -455,16 +455,20 @@ JS = """
 
     // Voltar com o quiz começado mostra o que a pessoa perde, uma vez só. Quem insiste sai:
     // segurar duas vezes deixa de ser retenção e vira sequestro do botão do navegador.
-    let jaSegurou = false;
+    // Uma vez em cada momento, porém, e não uma vez na vida: a tela do meio do quiz segura,
+    // e a do fim entrega o código de acesso. Quem já tinha sido segurado na pergunta 5
+    // ficava sem o código ao sair no resultado, que é justamente quem mais precisa dele.
+    const jaSegurou = { meio: false, pronto: false };
     window.addEventListener("popstate", () => {
       noHistorico = false;
       if (!modal.open) return;
       const ret = el("retencao");
-      const comecou = document.querySelector("#quiz .passo:not([hidden])")?.dataset.q !== "area"
-                   || !el("resultado").hidden;
-      if (!ret || jaSegurou || !comecou) { modal.close(); return; }
-      jaSegurou = true;
       const pronto = !el("resultado").hidden;
+      const comecou = document.querySelector("#quiz .passo:not([hidden])")?.dataset.q !== "area"
+                   || pronto;
+      const momento = pronto ? "pronto" : "meio";
+      if (!ret || jaSegurou[momento] || !comecou) { modal.close(); return; }
+      jaSegurou[momento] = true;
       el("retencao-titulo").textContent = pronto
         ? "O seu diagnóstico já está pronto"
         : "Falta pouco pro seu mapa";
@@ -474,7 +478,23 @@ JS = """
         : (contador ? "Você já respondeu " + contador + ". " : "")
           + "Sair agora não apaga nada: as respostas ficam neste aparelho.";
       el("retencao-fica").textContent = pronto ? "Ver o meu resultado" : "Continuar de onde parei";
+      // o código só existe com o quiz inteiro respondido, então quem sai no meio não tem o
+      // que guardar: para essa pessoa a memória deste aparelho já é a rede de segurança.
+      // O WhatsApp é o único app que ela tem nos dois aparelhos, e o link vai com o código
+      // dentro: do outro lado é um toque, sem digitar nada
+      const codigoBloco = el("ret-codigo");
+      if (codigoBloco && pronto && window.__codigo) {
+        el("ret-codigo-valor").textContent = window.__codigo;
+        el("ret-codigo-zap").href = "https://wa.me/?text=" + encodeURIComponent(
+          "O meu código do Qual IA Usar: " + window.__codigo
+          + ". Para abrir o mapa em qualquer aparelho, e o link já vai com ele dentro: "
+          + location.origin + "/mapa?c=" + encodeURIComponent(window.__codigo));
+        codigoBloco.hidden = false;
+      }
       ret.hidden = false;
+      // quem rolou o resultado estava com o topo do pop-up fora da tela, e a retenção nasce
+      // lá em cima: sem isto ela aparecia para o código e não para a pessoa
+      ret.scrollIntoView({ block: "start" });
       history.pushState({ diag: 1 }, "", location.href);
       noHistorico = true;
     });
@@ -520,8 +540,6 @@ JS = """
     };
 
     const mostrar = () => {
-      const btVoltar = el("quiz-voltar");
-      if (btVoltar) btVoltar.hidden = historico.length === 0;
       passos.forEach((p, i) => { p.hidden = i !== atual; });
       // a tela de espelho carrega, repete as respostas e só então libera o resultado
       if (passos[atual].dataset.q === "break_espelho") prepararEspelho();
@@ -544,20 +562,6 @@ JS = """
     };
 
     const proximo = () => { do { atual++; } while (atual < passos.length && !vale(atual)); };
-    // Voltar existe porque resposta errada aqui não é hesitação, é defeito de entrega:
-    // a pessoa marca sem querer e recebe uma stack montada para outra realidade.
-    const historico = [];
-    const voltar = () => {
-      const anterior = historico.pop();
-      if (anterior === undefined) return;
-      atual = anterior;
-      delete resp[passos[atual].dataset.q];
-      limparOrfas(MOTOR, resp);
-      salvarSessao(resp, MOTOR.pids, livre, MOTOR);   // senão a retomada devolve o que ela desfez
-      for (const b of passos[atual].querySelectorAll(".opc")) b.setAttribute("aria-pressed", "false");
-      mostrar();
-    };
-
     const calcular = () => calcularStack(MOTOR, resp);
 
     function render() {
@@ -574,23 +578,14 @@ JS = """
       el("res-perfil").textContent = `${area} · ${orc}. Identifiquei ${stack.length} ferramentas pra você.`;
 
       // o código carrega as respostas: é o que evita refazer o quiz no outro aparelho,
-      // que foi o que aconteceu na primeira venda de teste
+      // que foi o que aconteceu na primeira venda de teste. Ele NÃO aparece junto da oferta:
+      // "guarda para depois" ao lado do preço é permissão para adiar a compra. Quem tenta
+      // sair recebe o código na tela de retenção, onde adiar já não é o risco.
       const codigo = gerarCodigo(MOTOR, resp);
       if (codigo) {
-        el("res-codigo-valor").textContent = codigo;
-        el("res-codigo").hidden = false;
+        window.__codigo = codigo;
         for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
           if (!a.href.includes("c=")) a.href += (a.href.includes("?") ? "&" : "?") + "c=" + encodeURIComponent(codigo);
-      // o código só serve se ela conseguir levar para o outro aparelho, e o WhatsApp é o
-      // único app que ela tem nos dois. O link vai junto com o código dentro: no outro
-      // aparelho é um toque, sem digitar nada
-      const zap = el("res-codigo-zap");
-      if (zap) {
-        const texto = "O meu código do Qual IA Usar: " + codigo
-          + ". Para abrir o mapa em qualquer aparelho, e o link já vai com ele dentro: "
-          + location.origin + "/mapa?c=" + encodeURIComponent(codigo);
-        zap.href = "https://wa.me/?text=" + encodeURIComponent(texto);
-      }
       }
 
       el("res-stack").innerHTML = stack.map((s, i) => `
@@ -669,7 +664,6 @@ JS = """
 
     for (const b of quiz.querySelectorAll(".opc")) {
       b.addEventListener("click", () => {
-        historico.push(atual);
       resp[b.dataset.q] = +b.dataset.i;
       // trocar a área depois de voltar derruba a trilha antiga
       limparOrfas(MOTOR, resp);
@@ -683,8 +677,6 @@ JS = """
         if (atual < passos.length) mostrar(); else render();   // sem passo de contato, vai direto
       });
     }
-
-    el("quiz-voltar").addEventListener("click", voltar);
 
     // retomada: aplica o que já foi respondido neste aparelho e anda até o que falta
     let jaRetomou = false;
@@ -724,6 +716,17 @@ JS = """
   if (ret) {
     el("retencao-fica").addEventListener("click", () => { ret.hidden = true; });
     el("retencao-sai").addEventListener("click", () => { ret.hidden = true; modal.close(); });
+    // o botão de copiar existia no HTML sem nenhum listener nesta página: clicar não copiava
+    // nada e ainda assim parecia ter copiado
+    for (const b of ret.querySelectorAll(".m-copiar[data-alvo]")) {
+      b.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(el(b.dataset.alvo).textContent); }
+        catch (e) { return; }
+        const antes = b.textContent;
+        b.textContent = "Copiado";
+        setTimeout(() => { b.textContent = antes; }, 1600);
+      });
+    }
   }
 
   el("refazer").addEventListener("click", () => {
@@ -1171,11 +1174,18 @@ html = f"""<!doctype html>
       <h3 id="retencao-titulo"></h3>
       <p id="retencao-txt"></p>
       <button type="button" class="btn-cta" id="retencao-fica">Continuar de onde parei</button>
+      <div class="res-codigo" id="ret-codigo" hidden>
+        <span class="res-codigo-rot">Vai abrir em outro aparelho?</span>
+        <code id="ret-codigo-valor"></code>
+        <button type="button" class="m-copiar" data-alvo="ret-codigo-valor">Copiar</button>
+        <a class="m-copiar" id="ret-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
+        <p class="res-codigo-ajuda">Ele traz as suas respostas de volta, sem refazer nada.</p>
+      </div>
       <button type="button" class="retencao-sai" id="retencao-sai">Sair mesmo assim</button>
     </div>
     <h2 id="modal-titulo" class="modal-h">Qual IA você deveria usar</h2>
     <p class="modal-porque" id="modal-porque">{escape(DG["porque"])}</p>
-    <form id="quiz" novalidate><button type="button" id="quiz-voltar" class="quiz-voltar" hidden aria-label="Voltar para a pergunta anterior">←</button>{"".join(perguntas_html)}</form>
+    <form id="quiz" novalidate>{"".join(perguntas_html)}</form>
 
     <div id="resultado" role="region" aria-live="polite" aria-label="Resultado do diagnóstico" hidden>
       <div class="res-topo">
@@ -1202,14 +1212,6 @@ html = f"""<!doctype html>
         </div>
         {botao_compra}
         <p class="form-aviso">{aviso_compra}</p>
-      </div>
-      <div class="res-codigo" id="res-codigo" hidden>
-        <span class="res-codigo-rot">O seu código de acesso</span>
-        <code id="res-codigo-valor"></code>
-        <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
-        <a class="m-copiar" id="res-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
-        <p class="res-codigo-ajuda">Não vai comprar agora? Guarda este código: ele traz as suas
-           respostas de volta em qualquer aparelho, sem responder tudo de novo.</p>
       </div>
       <button type="button" class="refazer" id="refazer">Refazer o diagnóstico</button>
     </div>

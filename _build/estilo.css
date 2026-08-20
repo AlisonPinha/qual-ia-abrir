@@ -813,24 +813,18 @@ body.travado { overflow: hidden; }
   border: 1px solid rgba(193,131,251,.25); background: rgba(193,131,251,.06); }
 .completando-aviso[hidden] { display: none; }
 
-/* voltar: discreto de propósito, o funil anda para a frente */
-.quiz-voltar {
-  position: absolute; top: -6px; left: -4px; z-index: 2;
-  width: 34px; height: 34px; border-radius: 50%;
-  background: transparent; border: 1px solid rgba(255,255,255,.14);
-  color: var(--cinza-claro); font-size: 16px; line-height: 1; cursor: pointer;
-}
-.quiz-voltar:hover { border-color: rgba(193,131,251,.5); color: #fff; }
-.quiz-voltar[hidden] { display: none; }
-#quiz { position: relative; }
-
 /* código de acesso: leva as respostas para outro aparelho */
 .res-codigo { margin: 14px 0 4px; padding: 13px 15px; border-radius: 13px;
-  border: 1px dashed rgba(193,131,251,.45); background: rgba(193,131,251,.07); }
-.res-codigo-rot { display: block; font-size: 12px; color: var(--cinza-min); margin-bottom: 5px; }
+  border: 1px dashed rgba(193,131,251,.45); background: rgba(193,131,251,.07);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+.res-codigo-rot { flex: 1 0 100%; font-size: 12px; color: var(--cinza-min); }
 .res-codigo code { font-size: 19px; font-weight: 700; letter-spacing: .07em; font-family: ui-monospace, monospace; }
-.res-codigo .m-copiar { margin-left: 10px; }
-.res-codigo-ajuda { font-size: 12.5px; color: var(--cinza-min); margin: 8px 0 0; line-height: 1.5; }
+/* o botão e o link nasciam sem aparência aqui: .m-copiar só tinha CSS na página do mapa */
+.m-copiar { display: inline-block; padding: 9px 16px; border-radius: 11px; cursor: pointer;
+  border: 1px solid var(--linha); background: rgba(255,255,255,.05); color: #e9e7f0;
+  font-family: inherit; font-size: 13.5px; font-weight: 600; text-decoration: none; }
+.m-copiar:hover { background: rgba(255,255,255,.1); }
+.res-codigo-ajuda { flex: 1 0 100%; font-size: 12.5px; color: var(--cinza-min); margin: 0; line-height: 1.5; }
 /* One Belief: a mesma crença no hero, na entrega e no upsell. Nas páginas de entrega ela vai
    sem o nome do mecanismo, porque elas servem as quatro variantes do teste de nome */
 .crenca { color: #fff; font-weight: 600; }
