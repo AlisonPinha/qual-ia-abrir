@@ -10,6 +10,51 @@ o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso
 venda feita, o checkout do upsell de R$ 130 na Cakto e, desde a sessão da noite, o funil do
 quiz medido pergunta a pergunta.
 
+### 20/08: a saída do quiz virou duas telas, e o que a revisão dos commits achou
+
+**Três coisas que o Alison apontou na tela, e o que elas revelaram por baixo.**
+
+| O que ele pediu | O que entrou |
+|---|---|
+| Tirar a seta de voltar do quiz | Ela era desenhada **por cima** do contador "n de 19" (círculo de 34px em `position:absolute`, `top:-6px`). Saiu das três páginas com quiz, junto do histórico e do CSS |
+| Tirar o código de acesso de junto do preço | "Não vai comprar agora? Guarda este código" ao lado do botão de compra é permissão para adiar. Ele virou o que a pessoa recebe **em troca do contato**, na saída |
+| Pop-up de WhatsApp ao tentar fechar | Entrou como ele desenhou: tela 1 pergunta se tem certeza, tela 2 pede nome e WhatsApp. Só a copy mudou, ver abaixo |
+
+**O achado sério: o botão "Guardar no WhatsApp" entregava o produto pago.** A mensagem que
+a LP montava levava o link do `/mapa`, que é a entrega e não tem paywall: o que a protege é
+a URL não circular. Quem fazia o quiz e não comprava saía com o endereço do produto no
+WhatsApp, pronto para reencaminhar. Estava no ar desde 19/08, na tela que todo mundo via.
+Agora o link é o da própria LP com o código, e a LP aprendeu a ler o `?c=`.
+
+**"Você vai perder tudo" não entrou, e não vai entrar.** A LP guarda as respostas a cada
+clique e retoma sozinha desde 19/08. Prometer perda seria assustar com o que não acontece,
+que é da mesma família da escassez inventada. A tela 1 diz a verdade: onde a pessoa parou,
+ou que o diagnóstico já está pronto.
+
+**A tela 2 não liga a captura no meio do quiz.** O lead sai pelo mesmo Web App do envio
+anônimo, com `tipo: "lead"`, então a `CAPTURA_URL` continua vazia e o passo de contato
+dentro do quiz continua desligado, que é o que o playbook mede como pior (queda de 1% a 2%
+por etapa em dois nichos). Quem sai no meio do quiz sai direto: sem as respostas todas não
+existe código, e pedir contato sem ter o que entregar seria pedágio.
+
+**Da revisão dos 32 commits que ainda não subiram, dois buracos corrigidos:**
+- a coluna `utm` da aba `leads` nascia vazia (cabeçalho com 22 colunas, `appendRow` com 21);
+- o `/api/cakto` engolia venda aprovada em silêncio quando o campo não batia, que é o mesmo
+  silêncio dos 14 dias sem Purchase. Agora tem `console.error` com id, status e se havia valor.
+
+**Anotado, sem correção:** com order bump, se a Cakto repetir o mesmo `id` nas duas linhas
+do `data`, os dois eventos saem com o mesmo `event_id`, o Meta deduplica e o valor do
+segundo item some. Só dá para confirmar com payload real de uma venda com bump.
+
+**O que o print pegou e o teste verde não pegava:** o `display:flex` que entrou no
+`.res-codigo` vence o `hidden` do navegador, e o bloco do código ficava visível mesmo
+escondido. Faltava `.res-codigo[hidden] { display: none; }`. Desde então o QA mede
+`offsetParent`, não a propriedade `hidden`.
+
+**Pré-requisito para publicar a captura:** recolar o Apps Script (a correção do `utm` está
+em `_docs/apps-script-captura.js`, mas o que roda é a cópia no Google). A aba `leads` ainda
+não existe: ela nasce no primeiro lead, com o cabeçalho da versão que estiver implantada.
+
 ### A próxima sessão começa por aqui
 
 **O `Purchase` já existe, e agora falta a primeira venda para conferir.** O achado da noite de
