@@ -267,34 +267,34 @@
         "mes": 0
       },
       "ChatGPT": {
-        "custo": "R$ 104/mês no Plus",
+        "custo": "R$ 99,90/mês no Plus, cobrado em real e com Pix. Existe o Go por R$ 39,99, que pode ter anúncio",
         "faixa": 1,
         "free": true,
         "generalista": true,
         "verificado": true,
-        "curto": "R$ 104/mês",
+        "curto": "R$ 99,90/mês",
         "vitoria": "sair do zero em qualquer tarefa",
-        "mes": 104
+        "mes": 100
       },
       "Gemini": {
-        "custo": "R$ 104/mês no Google AI Pro",
+        "custo": "R$ 96,99/mês no Google AI Pro, cobrado em real. O AI Plus sai por R$ 24,99",
         "faixa": 1,
         "free": true,
         "generalista": true,
         "verificado": true,
-        "curto": "R$ 104/mês",
+        "curto": "R$ 96,99/mês",
         "vitoria": "material longo já digerido",
-        "mes": 104
+        "mes": 97
       },
       "Perplexity": {
-        "custo": "R$ 104/mês no Pro",
+        "custo": "US$ 17/mês no Pro, na cobrança anual. A Perplexity não publica o valor mensal",
         "faixa": 1,
         "free": true,
         "generalista": true,
         "verificado": true,
-        "curto": "R$ 104/mês",
+        "curto": "US$ 17/mês no anual",
         "vitoria": "resposta com a fonte do lado",
-        "mes": 104
+        "mes": 88
       },
       "Grok": {
         "custo": "R$ 52 a 156/mês, ou R$ 41 pelo X",
@@ -3284,8 +3284,8 @@
           "Guarda as fontes e a instrução de uma pesquisa que se repete, para você não recomeçar do zero toda vez."
         ],
         [
-          "Labs",
-          "Em vez de responder, entrega a peça pronta: relatório, planilha ou painel. Leva uns dez minutos, e vem no plano pago."
+          "Computer",
+          "Em vez de responder, entrega a peça pronta: relatório, planilha ou painel. Vem no plano pago, com limite por mês."
         ]
       ]
     },
