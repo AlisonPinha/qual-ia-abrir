@@ -19,6 +19,23 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### O Gamma ganhou o bloco "por dentro", e o preço dele estava certo
+
+Segundo da fila, com **16,1%** das stacks. Tudo conferido na página oficial em português, pelo
+navegador, porque o `gamma.app` também responde 403 a fetch simples.
+
+**Os três recursos estão no plano Free de propósito:** importar PDF e PPTX, exportar para PPTX,
+PDF, PNG e Google Slides, e o fato de o mesmo prompt virar documento, site ou post. Citar
+"Análises detalhadas" ou "marca personalizada" empurraria para o Pro de R$ 70, e o mapa
+recomenda o Plus de R$ 30.
+
+**A auditoria estava errada sobre o preço, e a fonte oficial corrigiu.** Os agregadores diziam
+US$ 8 no anual, que daria R$ 41. A página em pt-BR mostra que o **Gamma cobra em real**: Free
+R$ 0 com 400 créditos na inscrição, **Plus R$ 30/mês** (R$ 360/ano), Pro R$ 70 e Ultra R$ 495.
+Ou seja, o valor que o produto já dizia estava certo, e aplicar o agregador teria encarecido a
+tela em 37% num item correto. **É o argumento mais forte a favor da régua de só escrever o que
+veio da fonte oficial.**
+
 ### O Perplexity ganhou o bloco "por dentro", em 20/08
 
 **Por que ele primeiro:** aparece em **27,6%** das stacks e era a ferramenta com maior presença

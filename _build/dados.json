@@ -3218,6 +3218,20 @@
           "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
         ]
       ],
+      "Gamma": [
+        [
+          "Importar o que já existe",
+          "Sobe o seu PDF ou PPTX e ele remonta em cima do que já está pronto, em vez de você começar do zero."
+        ],
+        [
+          "Exportar sem prender",
+          "Sai em PPTX, PDF, PNG e Google Slides, então entregar para cliente não obriga ninguém a abrir o Gamma."
+        ],
+        [
+          "Não é só apresentação",
+          "O mesmo prompt vira documento, site ou post, então ele resolve mais do que o slide que te trouxe até aqui."
+        ]
+      ],
       "Perplexity": [
         [
           "Comet",
