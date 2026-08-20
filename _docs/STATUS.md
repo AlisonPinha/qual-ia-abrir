@@ -19,6 +19,43 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### Publicado em 20/08 à tarde, com a auditoria de playbook junto
+
+Deploy pela CLI depois da troca do preço pela vitória. **Zero "US$" nas seis páginas de
+produção**, conferido por requisição.
+
+| Bateria | Resultado |
+|---|---|
+| QA da vitória contra produção | **23 de 23**, mobile e desktop, console limpo |
+| Regressão completa | **29 de 29**, sem erro de página. O `/mapa` escreveu 8/8 blocos em 27s, a `/plano` os 7 dias em 10s, as 3 configurações em 13s e o material rodado em 4s |
+| Conformidade com o playbook | **13 de 13** nos itens que dá para medir |
+
+**O que a auditoria de playbook conferiu, e onde cada regra mora:** copy do botão (nunca
+"iniciar"), botão acima da dobra em 390x844 (23px na LP, 301px no resultado), One Belief na
+página, nenhuma escassez inventada, nenhum número de resultado inventado, quiz com mais de 20
+passos, breaks entre blocos, reason why na primeira tela, espelho das respostas antes do
+resultado, o preço aparecendo contra o que devolve, e nenhum custo de ferramenta no card.
+
+**Dois achados que a auditoria trouxe, e nenhum é defeito de hoje:**
+
+1. **Existem seis textos de CTA diferentes abrindo o mesmo quiz** ("Minha stack", "Descobrir a
+   minha stack", "Ver a resposta do meu caso", "Descubra quais são as suas 3 IAs", "Fazer o
+   diagnóstico"). O playbook pede que **o CTA do criativo case palavra por palavra com a
+   primeira tela**. Hoje não trava nada, porque não existe criativo rodando. No dia em que
+   existir, o criativo tem que casar com o CTA do hero, que é **"Descobrir a minha stack"**.
+   Unificar os seis é candidato a teste A/B, nunca a decreto.
+2. **A LP tem 10 seções**, e o playbook alerta que pós-pit longo em low ticket gera objeção
+   ("ninguém precisa de 15 minutos de argumento para comprar um lanche de R$ 20"). Já está na
+   fila como 4.4, e a régua de lá manda rodar como variante A/B medindo pela conversão final.
+
+**Medido e conforme:** 5 entregáveis na oferta (a Frente 1 pedia exatamente 5), zero depoimento
+no DOM (a regra de não inventar prova social), âncora de R$ 147 contra R$ 67.
+
+**Duas divergências que continuam de pé por decisão, não por esquecimento:** não existe escassez
+sob o botão, que o playbook pede e o projeto proíbe inventar; e o quiz tem 23 etapas contra as
+30 a 50 da operação de referência, porque as delas contam duas mini VSLs que este produto não
+tem.
+
 ### O preço saiu do teaser e o produto virou real, em 20/08
 
 **O gatilho foi o Alison olhando a tela:** os três cards diziam "Assina agora · US$ 20/mês", e
