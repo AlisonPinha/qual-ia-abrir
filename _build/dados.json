@@ -18,7 +18,7 @@
     "Gemini": {
       "logo": "gemini.svg",
       "url": "https://gemini.google.com",
-      "oq": "Engole PDF, vídeo e podcast inteiro sem reclamar do tamanho."
+      "oq": "Engole PDF, vídeo e podcast inteiro, e ainda cria a imagem no mesmo lugar."
     },
     "Perplexity": {
       "logo": "perplexity.svg",
@@ -693,7 +693,7 @@
             "Imagem pra vender a ideia antes de existir",
             {
               "Higgsfield": 4,
-              "Gemini": 1
+              "Gemini": 3
             }
           ],
           [
@@ -737,7 +737,7 @@
             "Criar imagem, capa e thumbnail",
             {
               "Higgsfield": 4,
-              "Gemini": 2
+              "Gemini": 3
             }
           ],
           [
@@ -1029,7 +1029,7 @@
             "Criar imagem e vídeo",
             {
               "Higgsfield": 4,
-              "Gemini": 2
+              "Gemini": 3
             }
           ],
           [
@@ -1109,7 +1109,7 @@
             "Foto e vídeo pra guardar ou postar",
             {
               "Higgsfield": 4,
-              "Gemini": 1
+              "Gemini": 3
             }
           ],
           [
@@ -1623,7 +1623,7 @@
             "Material visual",
             {
               "Higgsfield": 4,
-              "Gemini": 1,
+              "Gemini": 3,
               "ElevenLabs": 2
             }
           ],
@@ -2051,7 +2051,7 @@
             "Muito, sem imagem não fecha",
             {
               "Higgsfield": 4,
-              "Gemini": 1
+              "Gemini": 3
             }
           ],
           [
@@ -2097,7 +2097,8 @@
             "Carrossel e imagem",
             {
               "Higgsfield": 7,
-              "Gamma": 2
+              "Gamma": 2,
+              "Gemini": 3
             }
           ],
           [
@@ -2632,7 +2633,8 @@
           [
             "Imagem ou render do resultado",
             {
-              "Higgsfield": 7
+              "Higgsfield": 7,
+              "Gemini": 3
             }
           ],
           [
@@ -2810,7 +2812,7 @@
             "Uma imagem ou um vídeo bem feito",
             {
               "Higgsfield": 7,
-              "Gemini": 1
+              "Gemini": 3
             }
           ]
         ],
@@ -3204,6 +3206,10 @@
         [
           "Gems",
           "Um assistente configurado por você para a tarefa que se repete, sem custo no app."
+        ],
+        [
+          "Nano Banana",
+          "Cria e edita imagem ali mesmo, com texto legível dentro, que é o que capa e thumbnail pedem. Também reenquadra a foto que você já tem. A versão Pro vem no plano pago."
         ]
       ],
       "Gemini Notebook": [

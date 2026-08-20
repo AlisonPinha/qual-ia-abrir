@@ -244,7 +244,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Memorial, laudo e documento técnico | Claude +4 |
 | Ler norma e projeto de terceiro | Gemini +3, Perplexity +2 |
 | Montar a proposta que o cliente vê | Gamma +7, Gemini +3, Claude +2 |
-| Imagem pra vender a ideia antes de existir | Higgsfield +4, Gemini +1 |
+| Imagem pra vender a ideia antes de existir | Higgsfield +4, Gemini +3 |
 | Falar com cliente, fornecedor e equipe | ChatGPT +4 |
 | Nenhuma dessas, a minha é outra | não vota |
 
@@ -254,7 +254,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 |---|---|
 | Escrever roteiro e legenda | Claude +4, ChatGPT +2 |
 | Gravar e editar vídeo | ElevenLabs +7, Higgsfield +3, Poppy AI +2, Gemini +1 |
-| Criar imagem, capa e thumbnail | Higgsfield +4, Gemini +2 |
+| Criar imagem, capa e thumbnail | Higgsfield +4, Gemini +3 |
 | Achar pauta que ainda não saturou | Perplexity +3, Grok +3 |
 | Entender por que um post foi e outro não | Poppy AI +4, Claude +2 |
 | Responder comentário e direct | ChatGPT +3 |
@@ -314,7 +314,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 |---|---|
 | Escrever | Claude +4, ChatGPT +2, Gemini +1 |
 | Pesquisar e entender material longo | Perplexity +4, Gemini +3, Grok +1 |
-| Criar imagem e vídeo | Higgsfield +4, Gemini +2 |
+| Criar imagem e vídeo | Higgsfield +4, Gemini +3 |
 | Organizar e decidir | Claude +3, ChatGPT +3 |
 | Montar apresentação e relatório | Gemini +4, Claude +2, ChatGPT +1 |
 | Construir site ou app | Claude Code +4, Lovable +3 |
@@ -329,7 +329,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Estudo por conta: concurso, idioma, curso | Gemini Notebook +4, Gemini +3, Perplexity +1 |
 | Papelada: contrato, recurso, carta | Claude +4, Gemini +1 |
 | Casa e dinheiro: conta, rotina, planilha | Gemini +4, ChatGPT +1 |
-| Foto e vídeo pra guardar ou postar | Higgsfield +4, Gemini +1 |
+| Foto e vídeo pra guardar ou postar | Higgsfield +4, Gemini +3 |
 | Nenhuma dessas, a minha é outra | não vota |
 
 ### `c_ideia` De onde sai a sua próxima ideia de post?
@@ -429,7 +429,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 |---|---|
 | Texto e documento | Claude +4, Gamma +2, ChatGPT +1 |
 | Decisão e resposta pra alguém | Claude +3, ChatGPT +2 |
-| Material visual | Higgsfield +4, ElevenLabs +2, Gemini +1 |
+| Material visual | Higgsfield +4, Gemini +3, ElevenLabs +2 |
 | Atendimento e serviço | ChatGPT +3 |
 | Sistema, planilha ou ferramenta | Claude Code +3, Gemini +2, n8n +2, Lovable +1 |
 
@@ -528,7 +528,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 
 | Resposta | Favorece |
 |---|---|
-| Muito, sem imagem não fecha | Higgsfield +4, Gemini +1 |
+| Muito, sem imagem não fecha | Higgsfield +4, Gemini +3 |
 | Ajuda, mas não é o que decide | Higgsfield +2, Claude +2 |
 | Nada, é decisão técnica | Claude +3, Gemini +1 |
 | Hoje eu mostro foto de obra antiga | Higgsfield +3, Claude +1 |
@@ -538,7 +538,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Resposta | Favorece |
 |---|---|
 | Vídeo editado | Higgsfield +7, ElevenLabs +3 |
-| Carrossel e imagem | Higgsfield +7, Gamma +2 |
+| Carrossel e imagem | Higgsfield +7, Gemini +3, Gamma +2 |
 | Texto longo, roteiro ou newsletter | Claude +5, ChatGPT +2 |
 | Narração e áudio | ElevenLabs +7 |
 | Apresentação para marca ou cliente | Gamma +7 |
@@ -675,7 +675,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 
 | Resposta | Favorece |
 |---|---|
-| Imagem ou render do resultado | Higgsfield +7 |
+| Imagem ou render do resultado | Higgsfield +7, Gemini +3 |
 | Proposta e apresentação | Gamma +7 |
 | Planilha de orçamento | Gemini +5 |
 | Vídeo do projeto | Higgsfield +7 |
@@ -716,7 +716,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Um texto pronto pra enviar, tipo carta ou recurso | Claude +4 |
 | Uma planilha que se atualiza sozinha | n8n +4, Gemini +3 |
 | Um aplicativo simples, só pra mim | Lovable +7, Claude Code +2 |
-| Uma imagem ou um vídeo bem feito | Higgsfield +7, Gemini +1 |
+| Uma imagem ou um vídeo bem feito | Higgsfield +7, Gemini +3 |
 
 ### `l_ritmo` E com que frequência você precisa disso?
 

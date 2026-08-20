@@ -19,6 +19,41 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### O Gemini passou a valer como saída de imagem, em 20/08
+
+**Achado do Alison ao ler o mapa da persona social media:** ela declarou que criar imagem é o
+que mais rouba tempo dela, o Higgsfield foi cortado pelo teto de R$ 150 do orçamento, e ele
+perguntou por que o Gemini não serve, já que é mais barato.
+
+**Conferido no fabricante antes de escrever** (gemini.google/br/overview/image-generation, em
+20/08/2026): o gerador chama **Nano Banana 2**, está no menu de ferramentas para quem não
+assina, e a versão **Pro** exige Google AI Pro, Plus ou Ultra, que é exatamente o plano de
+R$ 104/mês que o produto já cita. Ele cria e edita imagem, aplica estilo por referência,
+reenquadra para o formato de cada plataforma e **escreve texto legível dentro da imagem**, que
+é o que capa, thumbnail e cartaz pedem.
+
+**O defeito não era a stack, era o texto.** Medido nas 587.776 combinações:
+
+| Quem declara entrega visual (90.880 combinações) | Antes | Depois |
+|---|---|---|
+| recebe Higgsfield, a resposta cara | 35,5% | 34,1% |
+| recebe Gemini sem Higgsfield | 44,4% | 56,5% |
+| **não recebe nenhuma que faz imagem** | **20,1%** | **9,4%** |
+
+Ou seja: **44,4% já recebiam a ferramenta certa e o mapa não dizia**, porque o `oq`, a
+`vitoria` e os `recursos` do Gemini não mencionavam imagem, e o `SISTEMA` proíbe a IA de citar
+recurso fora da lista. Esses 44,4% se resolveram sem tocar em peso nenhum.
+
+**O peso resolveu o resto.** O Gemini ganhou **3** nas nove respostas que declaram entrega
+visual, que é o degrau de "ajuda" da régua do repo, nunca o 7, que continua sendo do
+Higgsfield. Efeito na distribuição geral, medido: Gemini de 59,7% para **62,4%** (+2,7pp),
+Higgsfield de 8,5% para 8,3%, e nenhuma outra ferramenta perdeu mais de 0,7pp. Quem pode pagar
+continua recebendo a resposta cara.
+
+**Sobram 9,4% sem saída de imagem**, e isso é honesto: nem todo mundo que menciona imagem tem
+imagem como prioridade, e forçar o Gemini no pódio de quem não pediu seria o inverso do
+problema.
+
 ### Os CTAs unificados, e os dois defeitos que só o print pegou
 
 **Decisão do Alison depois da auditoria:** todo CTA que abre o diagnóstico passa a dizer
