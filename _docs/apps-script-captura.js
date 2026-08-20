@@ -101,7 +101,7 @@ function gravarLead(d, bruto) {
      d.whatsapp ? "'" + d.whatsapp : '']    // apóstrofo: senão o Sheets come o zero à esquerda
       .concat(PERGUNTAS.map(p => r[p] || ''))
       .concat([trilhaDe(r), d.descreveu || '',
-               (d.stack || []).join(', '), (d.cortar || []).join(', '), bruto])
+               (d.stack || []).join(', '), (d.cortar || []).join(', '), bruto, d.utm || ''])
   );
 }
 

@@ -156,7 +156,18 @@ export default {
         },
       });
     }
-    if (!eventos.length) return new Response("nada a enviar", { status: 200 });
+    // compra aprovada que não virou evento é o defeito mais caro possível aqui, e o mais
+    // silencioso: foi assim que 14 dias passaram sem nenhum Purchase. Se um dia a Cakto
+    // renomear `amount` ou `id`, o log é o que avisa, porque a venda entra igual no painel
+    if (!eventos.length) {
+      console.error("[capi] purchase_approved sem evento montado",
+                    JSON.stringify(pedidos.map(d => ({
+                      id: d.id ?? d.order_id ?? null,
+                      status: d.status ?? null,
+                      temValor: valor(d) !== null,
+                    }))).slice(0, 400));
+      return new Response("nada a enviar", { status: 200 });
+    }
 
     const payload = { data: eventos };
     // só em teste: o Events Manager mostra o evento na aba "Eventos de teste" sem sujar
