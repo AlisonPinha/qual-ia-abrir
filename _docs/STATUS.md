@@ -10,6 +10,27 @@ o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso
 venda feita, o checkout do upsell de R$ 130 na Cakto e, desde a sessão da noite, o funil do
 quiz medido pergunta a pergunta.
 
+### GA4 no ar em 20/08, e a armadilha de medir com navegador headless
+
+Propriedade **Qual IA Usar**, `G-J1383RJMK8`, criada dentro da conta **FESTIVAL HIT
+SALVADOR** a pedido do Alison, pelo mesmo motivo que o pixel mora no `Pixel - 001 - FESTIVAL
+HIT`: reaproveitar o que já existe. Fuso Bahia, moeda em real, fluxo apontando para
+`diagnostico.noahai.com.br`. Só na LP, porque o pixel também não está nas páginas de entrega.
+
+**A armadilha que custou duas rodadas:** o hit sai, o Google responde 204 e mesmo assim o
+relatório fica zerado. O GA4 descarta tráfego de bot conhecido, e **Chrome headless está
+nessa lista**. Com o mesmo teste rodando com user agent de iPhone, o Tempo real acendeu na
+hora, com a cidade certa. Quem for validar GA4 daqui para a frente: trocar o user agent, ou
+o teste mente dizendo que a tag não funciona.
+
+**Conferido em produção, no Tempo real:** `abriu_diagnostico`, `concluiu_diagnostico` e
+`iniciou_checkout`, mais `first_visit`, `page_view` e `session_start`. O `lead_saida` foi
+conferido no QA local, no fluxo da tela de saída.
+
+**O que só o GA4 dá aqui:** a quebra por UTM sem pagar. No plano Hobby da Vercel isso é
+recurso pago, e por isso a origem do tráfego só se lia no Events Manager e na planilha. O
+playbook não pede GA4: a medição dele é pixel e conversão final.
+
 ### Publicado em 20/08, com a bateria inteira verde
 
 Deploy pela CLI, 34 commits enviados ao GitHub (estavam só no disco desde 19/08) e o Apps

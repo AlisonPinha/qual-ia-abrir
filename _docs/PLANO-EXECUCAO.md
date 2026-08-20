@@ -413,7 +413,7 @@ decisão do Alison, não minha.
 | # | Tarefa | Quem | Depende | Critério de pronto |
 |---|---|---|---|---|
 | 4.1 | ~~**CAPI com dedup por `event_id`**~~ **feito 19/08** | Claude | 0.3 | `/api/cakto` recebe o `purchase_approved`, valida o segredo e manda o `Purchase` para a Graph API com o id do pedido como `event_id`. **29 de 29 no QA**, e a cadeia inteira conferida em produção: a Cakto entrega no endpoint (200, 258ms) e o Meta responde `events_received: 1`. Antecipado da Fase 4 porque sem ele o 3.3 mede clique, não venda |
-| 4.2 | **GA4** | Claude | 4.1 | No ar |
+| 4.2 | ~~**GA4**~~ **feito 20/08** | Claude | nada | Propriedade `Qual IA Usar` (`G-J1383RJMK8`) dentro da conta FESTIVAL HIT SALVADOR, fuso Bahia, moeda em real. Quatro eventos com a variante junto. Conferido no Tempo real, em produção: `abriu_diagnostico`, `concluiu_diagnostico` e `iniciou_checkout` chegaram, mais os três automáticos |
 | 4.3 | ~~**Seção das ferramentas vira tensão**~~ **feito 19/08** | Claude | nada | As 4 conhecidas com nome e logo, as outras 9 por categoria, com a silhueta do teaser. Conferido em produção: **zero** dos 9 nomes no HTML visível |
 | 4.4 | **Auditoria das 9 seções** pela régua de Makepeace, como variante A/B | Claude | 3.3 | Roda como teste, nunca por decreto. **A ordem dos testes é do playbook:** headline primeiro (maior retorno, menor esforço), depois imagem, copy do botão e por fim layout, sempre uma variável por vez e medindo pela conversão final |
 | 4.5 | ~~**One Belief**~~ **feito 19/08 no que é meu** | Claude | nada | A crença abre o hero das 4 LPs (com o mecanismo de cada variante), a tela pós-compra e as duas entregas (sem mecanismo, porque servem as 4). **Falta o criativo e o e-mail**, que dependem do Alison |
