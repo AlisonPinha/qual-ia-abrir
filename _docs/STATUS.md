@@ -5,10 +5,19 @@
 **Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
 `DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
-**Estado em 19/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo e vendendo
-o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a primeira
-venda feita, o checkout do upsell de R$ 130 na Cakto e, desde a sessão da noite, o funil do
-quiz medido pergunta a pergunta.
+**Estado em 20/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo e vendendo
+o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a saída em duas
+telas com pedido de contato, cupom pela URL, GA4 medindo e o checkout com Pix no padrão. A
+primeira venda (de teste) está feita e o funil do quiz é medido pergunta a pergunta.
+
+**Conferido de novo no fim de 20/08:** o build é determinístico (regerar as 4 LPs, o `/mapa`, o
+`/plano` e a doc do quiz deixa o `git status` limpo), `node _build/testar_motor.mjs` responde
+`ok` com as 13 ferramentas alcançáveis, e as seis páginas de produção respondem 200, com
+`/api/cakto` e `/api/mapa` em 405 no GET.
+
+**Este arquivo tinha 129 linhas duplicadas byte a byte** (o bloco de 20/08 aparecia duas vezes)
+e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
+saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
 ### O checkout, ajustado em 20/08 depois do teste de ponta a ponta
 
@@ -154,9 +163,10 @@ decisões suas:
 | **Criar o produto de R$ 47 na Cakto** | o downsell (4.10), já decidido: só os 7 dias, para quem recusa o upsell. O caminho de construção está neste plano |
 | **Criar um cupom no painel da Cakto** | o 4.9 já está no ar, mas sem cupom cadastrado a plataforma ignora o parâmetro |
 
-**Também esperando você:** gravar a VSL (com o bloco de 1:26 corrigido antes, porque promete
-"é só nessa tela" e a página não cumpre), revisar a voz dos 7 dias, trocar a chave da
-Anthropic e colher o depoimento da compradora de 19/08.
+**Também esperando você:** gravar a VSL, revisar a voz dos 7 dias, trocar a chave da Anthropic
+e colher o depoimento da compradora de 19/08. **O bloco de 1:26 já foi corrigido no roteiro do
+vault**, em 20/08: ele prometia "é só nessa tela", que a página não cumpre, e agora diz que o
+crédito é de quem comprou e vale sempre que a pessoa voltar ao mapa.
 
 **O que só o tráfego resolve:** conferir o `Purchase` no Events Manager na próxima venda, ler
 a origem por UTM no GA4, o teste seco de nome (3.1 a 3.4), a auditoria das 9 seções (4.4), o
@@ -165,136 +175,7 @@ pós-pit curto da Frente 7 e o world wide (4.7).
 **Antes de soltar tráfego:** arquivar a aba `diagnosticos` (97 linhas, quase todas de QA)
 como `diagnosticos ate 20-08`, do mesmo jeito que foi feito em 19/08. Combinado com o Alison.
 
-### O checkout, ajustado em 20/08 depois do teste de ponta a ponta
-
-Duas coisas que só apareceram ao rodar o fluxo inteiro como lead, no navegador.
-
-**1. O padrão era Cartão de Crédito, e virou PIX.** Em Produtos → Configurações existe
-"Método de pagamento padrão do Checkout". A mesma tela mostra o líquido de cada meio, e a
-diferença não é pequena:
-
-| Meio | Taxa | Líquido sobre R$ 66,01 | Recebimento |
-|---|---|---|---|
-| **Pix** | **0% + R$ 2,49** | **R$ 63,52** | **1 dia** |
-| Cartão | 4,99% + R$ 2,49 | R$ 60,23 | 15 dias |
-| Apple/Google Pay | 8,99% + R$ 2,49 | R$ 57,59 | 30 dias |
-
-**2. A taxa de serviço de R$ 0,99 não é desligável, e o preço absorveu ela.** Ela é cobrada
-do comprador em **todo** meio, inclusive Pix, e não existe chave para ela em nenhuma tela do
-painel: produto (Geral, Configurações, oferta), Checkout Builder, Financeiro e Planos e
-Taxas foram percorridos. A saída, decidida pelo Alison: **baixar o preço para R$ 66,01**, e
-o total volta a ser exatamente os R$ 67 que a LP promete. O upsell foi junto: R$ 129,01 mais
-a taxa fecha R$ 130.
-
-**Os cinco produtos ficaram iguais**, e isso importa para o teste de nome: variante que
-compara preço diferente não mede nome, mede preço.
-
-| Produto | Preço | Padrão | Total no checkout |
-|---|---|---|---|
-| Qual IA Usar? (controle) | R$ 66,01 | PIX | **R$ 67,00** |
-| Método das 3 Abas | R$ 66,01 | PIX | R$ 67,00 |
-| Regra das 3 IAs | R$ 66,01 | PIX | R$ 67,00 |
-| Stack Mínima | R$ 66,01 | PIX | R$ 67,00 |
-| Sua primeira semana pronta | R$ 129,01 | PIX | **R$ 130,00** |
-
-**Nada muda no código:** a LP continua anunciando R$ 67 e o upsell R$ 130, que é o que a
-pessoa paga. O que muda é o líquido, que cai R$ 0,99 por venda, porque a taxa saiu do bolso
-do comprador e entrou no seu.
-
-**Efeito colateral aceito:** o resumo do pedido mostra "R$ 66,01" na linha do item e o
-redondo só no Total.
-
-### GA4 no ar em 20/08, e a armadilha de medir com navegador headless
-
-Propriedade **Qual IA Usar**, `G-J1383RJMK8`, criada dentro da conta **FESTIVAL HIT
-SALVADOR** a pedido do Alison, pelo mesmo motivo que o pixel mora no `Pixel - 001 - FESTIVAL
-HIT`: reaproveitar o que já existe. Fuso Bahia, moeda em real, fluxo apontando para
-`diagnostico.noahai.com.br`. Só na LP, porque o pixel também não está nas páginas de entrega.
-
-**A armadilha que custou duas rodadas:** o hit sai, o Google responde 204 e mesmo assim o
-relatório fica zerado. O GA4 descarta tráfego de bot conhecido, e **Chrome headless está
-nessa lista**. Com o mesmo teste rodando com user agent de iPhone, o Tempo real acendeu na
-hora, com a cidade certa. Quem for validar GA4 daqui para a frente: trocar o user agent, ou
-o teste mente dizendo que a tag não funciona.
-
-**Conferido em produção, no Tempo real:** `abriu_diagnostico`, `concluiu_diagnostico` e
-`iniciou_checkout`, mais `first_visit`, `page_view` e `session_start`. O `lead_saida` foi
-conferido no QA local, no fluxo da tela de saída.
-
-**O que só o GA4 dá aqui:** a quebra por UTM sem pagar. No plano Hobby da Vercel isso é
-recurso pago, e por isso a origem do tráfego só se lia no Events Manager e na planilha. O
-playbook não pede GA4: a medição dele é pixel e conversão final.
-
-### Publicado em 20/08, com a bateria inteira verde
-
-Deploy pela CLI, 34 commits enviados ao GitHub (estavam só no disco desde 19/08) e o Apps
-Script na versão 5.
-
-| O que foi medido | Resultado |
-|---|---|
-| Regressão contra produção | **29 de 29**, sem erro de página. O `/mapa` escreveu 8/8 blocos em 26s e a `/plano` os 7 dias em 11s |
-| QA do fluxo novo em produção | **19 de 19**, console limpo |
-| Altura em 360x640 e 390x844 | **9 de 9**: o botão de enviar, o "Não, quero sair" e o bloco do código cabem sem rolar |
-| `/api/cakto` | 405 em GET, 401 sem segredo e com segredo errado, 400 em corpo quebrado |
-| Páginas | LP, `/mapa`, `/plano` e as 3 variantes respondendo 200 |
-
-**No QA de produção o POST do Apps Script e o pixel do Meta ficam bloqueados por rota**, para
-o teste não gravar lead falso na planilha nem sujar o Events Manager com `Lead` de mentira. A
-regressão para antes de enviar o contato pelo mesmo motivo.
-
-**Um teste quebrou e o defeito era dele:** o bloco do código em outro aparelho lia
-`lp.codigo`, que sumiu quando o código saiu da tela de oferta. Passou a ler o código de
-dentro do link da saída, que é onde ele vive agora.
-
-### 20/08: a saída do quiz virou duas telas, e o que a revisão dos commits achou
-
-**Três coisas que o Alison apontou na tela, e o que elas revelaram por baixo.**
-
-| O que ele pediu | O que entrou |
-|---|---|
-| Tirar a seta de voltar do quiz | Ela era desenhada **por cima** do contador "n de 19" (círculo de 34px em `position:absolute`, `top:-6px`). Saiu das três páginas com quiz, junto do histórico e do CSS |
-| Tirar o código de acesso de junto do preço | "Não vai comprar agora? Guarda este código" ao lado do botão de compra é permissão para adiar. Ele virou o que a pessoa recebe **em troca do contato**, na saída |
-| Pop-up de WhatsApp ao tentar fechar | Entrou como ele desenhou: tela 1 pergunta se tem certeza, tela 2 pede nome e WhatsApp. Só a copy mudou, ver abaixo |
-
-**O achado sério: o botão "Guardar no WhatsApp" entregava o produto pago.** A mensagem que
-a LP montava levava o link do `/mapa`, que é a entrega e não tem paywall: o que a protege é
-a URL não circular. Quem fazia o quiz e não comprava saía com o endereço do produto no
-WhatsApp, pronto para reencaminhar. Estava no ar desde 19/08, na tela que todo mundo via.
-Agora o link é o da própria LP com o código, e a LP aprendeu a ler o `?c=`.
-
-**"Você vai perder tudo" não entrou, e não vai entrar.** A LP guarda as respostas a cada
-clique e retoma sozinha desde 19/08. Prometer perda seria assustar com o que não acontece,
-que é da mesma família da escassez inventada. A tela 1 diz a verdade: onde a pessoa parou,
-ou que o diagnóstico já está pronto.
-
-**A tela 2 não liga a captura no meio do quiz.** O lead sai pelo mesmo Web App do envio
-anônimo, com `tipo: "lead"`, então a `CAPTURA_URL` continua vazia e o passo de contato
-dentro do quiz continua desligado, que é o que o playbook mede como pior (queda de 1% a 2%
-por etapa em dois nichos). Quem sai no meio do quiz sai direto: sem as respostas todas não
-existe código, e pedir contato sem ter o que entregar seria pedágio.
-
-**Da revisão dos 32 commits que ainda não subiram, dois buracos corrigidos:**
-- a coluna `utm` da aba `leads` nascia vazia (cabeçalho com 22 colunas, `appendRow` com 21);
-- o `/api/cakto` engolia venda aprovada em silêncio quando o campo não batia, que é o mesmo
-  silêncio dos 14 dias sem Purchase. Agora tem `console.error` com id, status e se havia valor.
-
-**Anotado, sem correção:** com order bump, se a Cakto repetir o mesmo `id` nas duas linhas
-do `data`, os dois eventos saem com o mesmo `event_id`, o Meta deduplica e o valor do
-segundo item some. Só dá para confirmar com payload real de uma venda com bump.
-
-**O que o print pegou e o teste verde não pegava:** o `display:flex` que entrou no
-`.res-codigo` vence o `hidden` do navegador, e o bloco do código ficava visível mesmo
-escondido. Faltava `.res-codigo[hidden] { display: none; }`. Desde então o QA mede
-`offsetParent`, não a propriedade `hidden`.
-
-**Apps Script recolado em 20/08, pelo navegador.** Implantado como **versão 5 na mesma
-implantação** (`v5 - lead grava a coluna utm`), então o `ANALITICO_URL` continua valendo:
-o código de implantação segue `AKfycbzY1PYcR4EC...`. Conferido com POST real do tipo `lead`:
-a aba `leads` **nasceu agora**, com as 22 colunas, e a `utm` veio preenchida com
-`utm_source=teste_recolagem&utm_campaign=v5`. A linha de teste foi apagada e a aba ficou
-vazia, com o cabeçalho certo, esperando o primeiro lead de verdade.
-
-### A próxima sessão começa por aqui
+### O `Purchase` e o WhatsApp, no fim de 19/08
 
 **O `Purchase` já existe, e agora falta a primeira venda para conferir.** O achado da noite de
 19/08 foi que a venda paga não chegava ao Meta: em 14 dias o pixel tinha 115 PageView, 83
@@ -317,8 +198,8 @@ o Alison dizer de que número sai a mensagem.
   única instância dele é o `teste1`, no celular pessoal, já amarrada ao Clinic.io. Disparo frio
   ali arrisca o número que ele usa para tudo
 - **Gravar a VSL** do upsell, roteiro no vault. As telas eu gravo com Playwright quando ele pedir.
-  **O bloco de 1:26 precisa mudar antes:** ele promete "é só nessa tela" e a página não cumpre,
-  porque o crédito é de quem comprou, não da tela
+  O bloco de 1:26 **já foi corrigido no roteiro em 20/08**: ele prometia "é só nessa tela", e o
+  crédito é de quem comprou, não da tela
 - **Revisar a voz dos 7 dias**, que estão no ar em `/plano`
 - **Trocar a chave da API**, parado por decisão dele até acabar a fase de teste
 - **Colher o primeiro depoimento real** com a compradora de 19/08. O `prova.depoimentos`
@@ -418,7 +299,7 @@ duas vezes dá o mesmo byte) e console.
 **A lição:** ao ligar memória, todo caminho que **apaga** estado tem que apagar nos dois
 lugares. Testar só o caminho feliz da retomada deixa o desfazer fora.
 
-### O que eu pego em seguida
+### O que eu pegava em seguida, em 19/08
 
 Ver "A próxima sessão começa por aqui", no topo: 2.11 (onde a pessoa abandona) e 2.5
 (recuperação por WhatsApp). O 2.7 continua esperando existir um próximo produto, que é

@@ -14,8 +14,11 @@ Nasceu do Reel `Db37tHWCLMV` (@aalisonaraujo, 10/08/2026), que fez 89.501 views.
 nada de graça. Saíram da página a lista pública das 24 tarefas, os três desempates, os papéis
 das cinco principais e a descrição de cada ferramenta. O resultado do diagnóstico é um teaser
 com silhuetas, e o conteúdo do produto (nome das ferramentas, prompts, primeiro passo)
-**não é enviado ao navegador**. O que ficou de ferramenta é só logo e nome, como escopo. O que isso custou, e ele sabia ao decidir: os ~10 mil caracteres
-que o Google indexava e a entrega prometida no Reel ("salva essa lista").
+**não é enviado ao navegador**. O que ficou de ferramenta são as **4 conhecidas com nome e
+logo** (prova emprestada) e as outras **9 por categoria, sem nome nem logo**, com a silhueta do
+teaser: conferido em produção, zero dos nove nomes aparece no HTML visível. O que isso custou,
+e ele sabia ao decidir: os ~10 mil caracteres que o Google indexava e a entrega prometida no
+Reel ("salva essa lista").
 
 Site estático, sem framework e sem dependência de runtime. Um passo de geração em Python
 transforma os dados em HTML.
@@ -155,7 +158,7 @@ citar uma ferramenta sequer.
 
 Agora `gerar.py` escreve as 24 tarefas direto no HTML e o JavaScript só liga a busca e
 o filtro sobre o que já está lá. Hoje o que precisa estar no HTML é a oferta: promessa, entregáveis, preço, garantias e FAQ. Tudo
-isso é texto real, mais o schema `Product` + `Offer` (R$ 47, BRL) e `FAQPage`. O quiz é a exceção
+isso é texto real, mais o schema `Product` + `Offer` (R$ 67, BRL) e `FAQPage`. O quiz é a exceção
 deliberada: vive num `dialog` e depende de JS para calcular.
 
 Regra que decorre disso: qualquer conteúdo novo entra no HTML gerado, nunca só no JS.
@@ -173,21 +176,26 @@ se mover o arquivo, conferir se os logos ainda aparecem na imagem.
 
 ## Pendências
 
-- **Medição desligada.** Ative "Web Analytics" no painel do projeto na Vercel e
-  descomente a última linha de `gerar.py` (bloco `<!-- Medição ... -->`). Sem o toggle
-  o script responde 404 e suja o console. A contagem básica de acessos já aparece no
-  dashboard da Vercel mesmo sem isso.
-- **Domínio próprio.** Hoje é `.vercel.app`. Um domínio pessoal dá mais confiança no
-  direct.
-- **Sem preço de ferramenta**, de propósito: nada foi verificado e preço de IA muda
-  todo mês. Para incluir grátis/pago, conferir uma por uma antes.
+A fila com quem faz e critério de pronto é o `_docs/PLANO-EXECUCAO.md`, e o estado do que está
+no ar é o `_docs/STATUS.md`. Em 20/08/2026, o que sobrou **não depende de código**: de que
+número sai o WhatsApp, criar o cupom e o produto de R$ 47 no painel da Cakto, gravar a VSL,
+revisar a voz dos 7 dias, trocar a chave da Anthropic, e o que só o tráfego resolve.
+
+Três itens que este arquivo listava e já estão resolvidos, para ninguém refazer: o **Web
+Analytics** está ligado (o script responde 200 em produção), o **domínio próprio** é
+`diagnostico.noahai.com.br` desde 18/08, e **todos os custos de ferramenta foram conferidos no
+site oficial em 19/08**, o Higgsfield inclusive.
 
 ## QA
 
-`/private/tmp/.../scratchpad/qa-site.js` (efêmero) cobria 21 checagens: logos carregando,
-links https com `rel="noopener"`, busca com e sem acento, filtro, estado vazio, ausência
-de 404, console limpo, claro e escuro. Rodar contra a URL de produção com
-`ALVO=https://qual-ia-abrir.vercel.app/`.
+A bateria que vale é `_build/regressao.js`, rodada contra produção pela `playwright-skill`
+(29 de 29 em 20/08). Ela custa 1 chamada ao `/api/mapa` e 3 ao `/api/plano`, e o limite por IP
+permite cerca de 2 rodadas por hora. O protocolo completo, com o que fazer quando o teste
+reprova, está em `_docs/CICLO.md`.
+
+Duas armadilhas de medição que já custaram rodadas: `hidden` não esconde elemento cujo CSS
+declara `display`, então o QA mede `offsetParent`; e o GA4 descarta Chrome headless como bot,
+então validar tag pede user agent de aparelho real.
 
 ## Diagnóstico "Qual IA Usar?"
 
@@ -196,9 +204,11 @@ do navegador, sem biblioteca). A seção `#diagnostico` ficou como chamada, com 
 botão; qualquer elemento com a classe `abre-diag` abre o modal, e o `href="#diagnostico"` segue
 como destino se o JS não carregar.
 
-São 5 perguntas (área, tarefa dominante, nível, orçamento, dispositivo). O motor soma pesos por
-ferramenta e devolve 3 recomendações com a ordem de compra, o primeiro passo e um prompt pronto
-de cada uma, mais o bloco "o que não assinar agora".
+São **19 perguntas em 23 etapas** (14 perguntas para quem nunca usou IA), com 5 delas vindo da
+trilha da área que a pessoa escolheu entre as 10. O motor soma pesos por ferramenta e devolve 3
+recomendações com a ordem de compra, o primeiro passo e um prompt pronto de cada uma, mais o
+bloco "o que não assinar agora". O quiz por dentro está em `_docs/DIAGNOSTICO.md`, gerado do
+`dados.json`.
 
 **Atenção ao mexer no CSS do modal:** `display: flex` só pode entrar sob `.modal[open]`. Solto na
 regra `.modal`, ele sobrescreve o `display: none` nativo do dialog fechado e o formulário aparece
@@ -221,18 +231,40 @@ Editar tudo em `dados.json` → `diagnostico`, nunca no HTML.
 ## Captura de e-mail
 
 O bloco "Fica sabendo antes" só renderiza o formulário quando `CAPTURA_URL` está preenchida
-no topo de `gerar.py` (Web App do Apps Script gravando na planilha). Enquanto estiver vazia,
+no `_build/config.py` (Web App do Apps Script gravando na planilha). Enquanto estiver vazia,
 sai no lugar o convite pelo direct: formulário sem destino engole lead em silêncio, e o
 `gerar.py` avisa isso no fim de cada execução.
 
+**Ela continua vazia de propósito**, e isso não quer dizer que não exista captura. Desde 20/08,
+quem confirma que vai embora **com o diagnóstico pronto** recebe o pedido de nome e WhatsApp na
+segunda tela da saída, em troca do código de acesso, e o lead sai pelo mesmo Web App do envio
+anônimo com `tipo: "lead"`. O passo de contato **dentro** do quiz segue desligado, que é o que
+o playbook mede como pior: queda de 1% a 2% por etapa acrescentada, em dois nichos.
+
 ## Medição
 
-`Web Analytics` precisa do toggle no painel da Vercel. Com ele ligado, descomente a última
-linha de `gerar.py`. Sem o toggle o script responde 404. Enquanto isso a página não mede
-nada: o Reel de agosto levou 89 mil pessoas e não sobrou um único dado de acesso.
+Três camadas, e cada uma existe por um motivo:
+
+| Camada | O que só ela dá |
+|---|---|
+| **Web Analytics** da Vercel | visita e referrer. Ligado; o script responde 200. A quebra por UTM é paga no plano Hobby |
+| **Pixel do Meta** `827402089420392` | `PageView`, `ViewContent` e `InitiateCheckout` pelo navegador, e o `Purchase` **pelo servidor**, via `/api/cakto`. Só na LP: página de entrega não recebe pixel |
+| **GA4** `G-J1383RJMK8` | a quebra por UTM sem pagar. Quatro eventos, com a variante do teste de nome junto |
+
+Mais a planilha do Apps Script, que grava o diagnóstico anônimo, o lead da saída, o abandono
+por pergunta e o voto do presente.
 
 ## Checkout
 
-`CHECKOUT_URL` no topo de `gerar.py` liga os dois botões de compra (a seção `#oferta` e o fim do
+`CHECKOUT_URL` no `_build/config.py` liga os dois botões de compra (a seção `#oferta` e o fim do
 diagnóstico). Vazia, ambos caem na lista de espera pelo direct e o build avisa. Preço e ancoragem
 ficam em `dados.json` → `oferta.preco` e `oferta.de`, e alimentam também o schema `Offer`.
+
+**O preço da página e o do painel da Cakto são diferentes de propósito.** A LP anuncia R$ 67 e o
+produto está cadastrado a **R$ 66,01**, porque a taxa de serviço de R$ 0,99 é cobrada do
+comprador em todo meio, inclusive Pix, e não tem como desligar. O total do checkout fecha nos
+R$ 67 anunciados, e o líquido cai R$ 0,99. O mesmo vale para o upsell: R$ 129,01 para fechar
+R$ 130. Mexer em um sem mexer no outro quebra a promessa da página.
+
+Os cinco produtos são idênticos em preço e em método padrão (Pix). Variante do teste de nome que
+compara preço diferente não mede nome, mede preço.

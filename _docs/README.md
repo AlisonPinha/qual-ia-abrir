@@ -9,7 +9,7 @@ Doc viva do **Qual IA Usar?**. Report encerrado vai para `archive/`.
 | [CICLO.md](CICLO.md) | O protocolo de trabalho: verificar, conferir no playbook, fazer, auditar, registrar, próximo. E quando parar |
 | [STATUS.md](STATUS.md) | Estado do que está no ar, o que foi medido e o handoff da última sessão |
 | [adrs/](adrs/) | Decisões técnicas que não se reabrem sem motivo novo |
-| [apps-script-captura.js](apps-script-captura.js) | Web App do Apps Script que grava diagnóstico, lead e voto do presente na planilha. **Implantado como versão 2 em 19/08** |
+| [apps-script-captura.js](apps-script-captura.js) | Web App do Apps Script que grava diagnóstico, lead, abandono do quiz e voto do presente na planilha. **Implantado como versão 5 em 20/08, na mesma implantação**, então a `ANALITICO_URL` não mudou |
 
 ## ADRs
 

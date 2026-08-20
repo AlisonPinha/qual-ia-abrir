@@ -8,7 +8,9 @@ quiz feita no motor, a transcrição do episódio #159 do Segredos da Escala e o
 pronto for verificado, não quando o código for escrito. Quem faz está explícito, porque quatro
 delas dependem do Alison e não adianta o Claude ficar esperando.
 
-**Estado em 19/08:** produto no ar, entrega funcionando com IA, zero tráfego real, zero venda.
+**Estado em 20/08:** produto no ar, entrega funcionando com IA, uma venda de teste feita e
+conferida, **zero tráfego real**. A pilha que só depende do Claude está vazia: o que sobra
+espera decisão do Alison, gravação, verba ou tráfego rodando.
 
 ---
 
@@ -495,4 +497,5 @@ verdade. Construir o degrau de baixo antes de medir o de cima é otimizar no esc
   porque o episódio traz dois testes em que prolongar a etapa 1 converteu menos
 - O nome do produto não muda sem o teste seco
 
-Atualizado em 19/08/2026, depois da sessão que ligou a venda dentro da entrega.
+Atualizado em 20/08/2026, depois da sessão que ligou o GA4, o cupom pela URL e a saída do quiz
+em duas telas, e do passe de higiene que tirou a duplicação do `STATUS.md`.
