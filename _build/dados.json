@@ -3218,6 +3218,20 @@
           "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
         ]
       ],
+      "n8n": [
+        [
+          "Mais de 10 mil prontos",
+          "A biblioteca tem mais de 10 mil fluxos para copiar, então você parte de um que já funciona."
+        ],
+        [
+          "Aprovação antes de disparar",
+          "O fluxo pode parar e esperar o seu sim antes de mandar qualquer coisa, então nada sai sem você ver."
+        ],
+        [
+          "IA dentro do fluxo",
+          "Não é só ligar um app no outro: dá para pôr um modelo no meio e conferir a decisão que ele tomou."
+        ]
+      ],
       "Gamma": [
         [
           "Importar o que já existe",

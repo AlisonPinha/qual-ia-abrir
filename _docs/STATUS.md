@@ -19,6 +19,20 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### O n8n ganhou o bloco "por dentro", em 20/08
+
+Terceiro da fila, com **13,4%** das stacks. Conferido em `n8n.io`, que responde a leitura
+automatizada sem bloqueio, ao contrário de quase todos os outros.
+
+**Os três falam com quem não é dev**, que é o público: os **mais de 10 mil fluxos prontos** para
+copiar, a **aprovação humana** que segura o fluxo antes de ele mandar qualquer coisa, e o fato
+de dar para **pôr um modelo de IA no meio** e conferir a decisão que ele tomou. Ficaram de fora
+os nós de código em JavaScript e Python, o MCP e o RAG, que são reais e não servem a quem chega
+por "quero parar de fazer isso na mão".
+
+**Placar do bloco:** era 4 de 13 no começo do dia, agora são **7**. Claude, ChatGPT, Gemini,
+Gemini Notebook, Perplexity, Gamma e n8n.
+
 ### O Gamma ganhou o bloco "por dentro", e o preço dele estava certo
 
 Segundo da fila, com **16,1%** das stacks. Tudo conferido na página oficial em português, pelo
