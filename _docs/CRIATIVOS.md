@@ -56,7 +56,7 @@ queimada na altura do peito, nunca no rodapé.
 - três "só pra testar" que viraram cobrança fixa dão **R$ 3.600 no ano**
 - as três que o mapa manda **cortar** somam **R$ 479 por mês** na mediana, e custam mais que a
   stack que fica em **91,4%** dos casos
-- o motor tem **587.776 combinações** de resposta, **13 ferramentas** e **24 tarefas**
+- o motor tem **587.776 combinações** de resposta, **12 ferramentas** e **24 tarefas**
 - **R$ 67**, pagamento único, 7 dias de garantia, diagnóstico de **2 minutos**
 
 **Os dois fechos, e eles não se misturam:**

@@ -2824,7 +2824,7 @@
       ],
       [
         "break3",
-        "Nenhuma entrou por indicação | As 13 ferramentas do catálogo foram testadas em trabalho real, com o preço conferido no site oficial de cada uma. As três que você vai receber saem dessas 13, não de um ranking da internet.",
+        "Nenhuma entrou por indicação | As 12 ferramentas do catálogo foram testadas em trabalho real, com o preço conferido no site oficial de cada uma. As três que você vai receber saem dessas 12, não de um ranking da internet.",
         [
           [
             "Continuar →",
@@ -3097,7 +3097,7 @@
       ],
       [
         "break_espelho",
-        "Montando o seu diagnóstico | Cruzando as suas respostas com as 13 ferramentas do catálogo.",
+        "Montando o seu diagnóstico | Cruzando as suas respostas com as 12 ferramentas do catálogo.",
         [
           [
             "Ver as minhas 3 IAs →",
@@ -3586,13 +3586,13 @@
   },
   "_escopo": "A seção das ferramentas entregava o catálogo: 13 logos com nome, e a pessoa saía da página com a lista pronta para pesquisar sozinha. As 4 que todo mundo já conhece ficam com nome, porque são prova emprestada e não revelam nada. As outras 9 viram categoria sem nome: mostram o tamanho do que existe sem entregar o produto.",
   "escopo": {
-    "eyebrow": "As 13 ferramentas",
-    "titulo": "O mapa cobre as 13 que eu uso",
+    "eyebrow": "As 12 ferramentas",
+    "titulo": "O mapa cobre as 12 que eu uso",
     "titulo_2": "num dia normal de trabalho.",
     "sub": "O seu mapa diz quais dessas fazem sentido pro seu caso, em que ordem e o que ignorar. Nenhuma recomendação é de afiliado, e onde eu não uso de verdade, eu não opino.",
     "conhecidas": ["Claude", "ChatGPT", "Gemini", "Perplexity"],
     "conhecidas_rot": "As quatro que você já conhece",
-    "sem_nome_rot": "E as nove que quase ninguém sabe usar",
+    "sem_nome_rot": "E as oito que quase ninguém sabe usar",
     "sem_nome": [
       "a que lê o processo inteiro e responde sobre ele",
       "a que monta a apresentação pronta pra mostrar",
@@ -3601,7 +3601,6 @@
       "a que cria a cena que ainda não existe",
       "a que sobe um site funcionando a partir de uma conversa",
       "a que trabalha dentro do seu projeto, não numa aba",
-      "a que explica por que um conteúdo funcionou e o outro não",
       "a que sabe o que estão falando agora, não mês passado"
     ],
     "fecho": "Qual é cada uma, e quais são as suas três, está no mapa."
