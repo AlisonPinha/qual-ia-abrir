@@ -115,3 +115,33 @@ vira enchimento que dilui a stack.
 respondem 403 para leitura automatizada. Recurso não é preço, então o risco de errar é menor,
 mas a regra do produto continua: a IA só pode citar o que está na lista, e a lista só recebe o
 que foi conferido.
+
+---
+
+## Rodada por agentes, fim do dia 20/08
+
+Seis agentes em paralelo, a pedido do Alison. **Cinco entregaram**, e o placar do bloco "por
+dentro" foi de 4 para **11 de 13**. O que a paralelização achou e a varredura sequencial não
+tinha achado:
+
+| Achado | Gravidade |
+|---|---|
+| **O "Labs" do Perplexity não existe mais**: virou Computer / Create files and apps | eu tinha publicado "Labs" no mesmo dia, mandando o comprador procurar um botão inexistente |
+| **ChatGPT, Gemini e o X cobram em real** e mais barato que a conversão: R$ 99,90, R$ 96,99 e R$ 42 | eu cobrava a mais em três ferramentas |
+| **Lovable: plano "Starter" não existe**, é Pro, e custa US$ 25 | mandava procurar plano inexistente, e cobrava a menos |
+| **Claude Code divide o limite do plano**, não é cota à parte | "sem custo extra" podia parecer ilimitado |
+| **Companions do Grok em descontinuação** desde 24/07 | estava no meu levantamento como recurso vigente |
+
+**Ressalvas que os agentes levantaram e que ficaram fora do produto de propósito:**
+
+- **ChatGPT Go:** o card de preços promete voz ampliada, o help center diz que o limite é o
+  mesmo do Free. Não prometer voz no Go. E o anúncio começou nos EUA, então "pode ter anúncio"
+  é seguro, "tem anúncio no Brasil" não é.
+- **ElevenLabs:** o **Instant Voice Cloning não existe no gratuito**, e é o que a maioria vai
+  procurar. E o grátis **obriga a creditar o ElevenLabs** no que for publicado, o que torna o
+  plano gratuito impróprio para trabalho de cliente. Isso virou o terceiro item do bloco dele,
+  porque é o tipo de coisa que ninguém descobre antes de já ter publicado.
+- **Grok Build:** três páginas oficiais discordam sobre em qual plano ele está. Não citar plano.
+- **DeepSearch:** existe no produto logado, mas a xAI parou de promover o nome e não dá para
+  saber o plano sem login. Não citar pelo nome.
+- **Higgsfield:** o único que não entregou até aqui.

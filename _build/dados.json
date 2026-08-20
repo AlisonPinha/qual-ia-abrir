@@ -297,7 +297,7 @@
         "mes": 88
       },
       "Grok": {
-        "custo": "R$ 52 a 156/mês, ou R$ 41 pelo X",
+        "custo": "R$ 52 a 156/mês no SuperGrok. Pelo X Premium sai R$ 42/mês, cobrado em real",
         "faixa": 1,
         "free": true,
         "verificado": true,
@@ -3216,6 +3216,34 @@
         [
           "Resumo em áudio",
           "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
+        ]
+      ],
+      "ElevenLabs": [
+        [
+          "Voice Design",
+          "Cria uma voz nova a partir de uma descrição em texto, sem você gravar nada. Existe até no plano grátis."
+        ],
+        [
+          "Voice Isolator",
+          "Tira o ruído de fundo de um áudio que você já gravou, e também está no grátis."
+        ],
+        [
+          "A licença do grátis",
+          "No plano gratuito você é obrigado a creditar o ElevenLabs no que publicar. Trabalho de cliente pede o pago."
+        ]
+      ],
+      "Grok": [
+        [
+          "Busca no X agora",
+          "Responde com o que está sendo publicado neste momento, com a fonte, em vez do que ele aprendeu meses atrás."
+        ],
+        [
+          "Grok Imagine",
+          "Gera imagem por texto ou em cima de uma foto sua, com preset de trocar fundo e de foto de produto."
+        ],
+        [
+          "Modo Expert",
+          "Faz ele pensar passo a passo antes de responder, em vez de devolver a primeira coisa. Não existe no grátis."
         ]
       ],
       "Lovable": [
