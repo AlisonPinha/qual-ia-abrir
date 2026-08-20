@@ -3217,9 +3217,23 @@
           "Resumo em áudio",
           "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
         ]
+      ],
+      "Perplexity": [
+        [
+          "Comet",
+          "O navegador deles, gratuito, que lê a página que você já tem aberta e responde sobre ela sem você copiar nada."
+        ],
+        [
+          "Projetos",
+          "Guarda as fontes e a instrução de uma pesquisa que se repete, para você não recomeçar do zero toda vez."
+        ],
+        [
+          "Labs",
+          "Em vez de responder, entrega a peça pronta: relatório, planilha ou painel. Leva uns dez minutos, e vem no plano pago."
+        ]
       ]
     },
-    "recursos_conferidos": "19/08/2026",
+    "recursos_conferidos": "20/08/2026",
     "comeco": {
       "Claude": [
         "Preenche as instruções do perfil antes do primeiro prompt: quem você é, o que faz e o que ele tem que parar de fazer.",

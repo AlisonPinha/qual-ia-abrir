@@ -19,6 +19,25 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### O Perplexity ganhou o bloco "por dentro", em 20/08
+
+**Por que ele primeiro:** aparece em **27,6%** das stacks e era a ferramenta com maior presença
+sem nenhum recurso listado. O bloco "Dentro dela, o que quase ninguém usa" é o que faz o mapa
+valer para quem **já conhece** a ferramenta, e ele existia em 4 das 13.
+
+| Recurso | O que entrou | Fonte |
+|---|---|---|
+| **Comet** | o navegador deles, que lê a página aberta e responde sobre ela | **oficial**, lida no navegador. A página diz: "We will always provide a free version of Perplexity for all users, and that will include Comet" |
+| **Projetos** | guarda fontes e instrução de uma pesquisa que se repete | **oficial**. Na interface em português ele chama **Projetos**, não Spaces |
+| **Labs** | entrega a peça pronta (relatório, planilha, painel) em vez de responder | imprensa. **Está no plano Pro**, que é o que o mapa recomenda, então citar não empurra ninguém para plano mais caro |
+
+**As páginas do Perplexity respondem 403 para leitura automatizada**, inclusive `/labs` e
+`/pro`, que caem no desafio da Cloudflare. O que passou foi navegador real. Fica registrado
+para a próxima auditoria não perder tempo com fetch simples.
+
+**Ainda sem bloco:** Claude Code, Grok, Higgsfield, Poppy AI, Lovable, Gamma, ElevenLabs e n8n.
+O mapa do ecossistema em `audits/2026-08-20-ecossistema.md` já tem o levantado de cada família.
+
 ### O Gemini passou a valer como saída de imagem, em 20/08
 
 **Achado do Alison ao ler o mapa da persona social media:** ela declarou que criar imagem é o
