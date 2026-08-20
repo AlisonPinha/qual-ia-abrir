@@ -97,12 +97,12 @@ recurso que serve para o caso da pessoa, já que ela só pode citar o que está 
 
 **3. Categorias que o catálogo não cobre**, e isso é decisão de produto, não de manutenção:
 
-| Categoria | Quem domina | Observação |
+| Categoria | Quem domina | Estado |
 |---|---|---|
-| design de marca e social | **Canva, com o Magic Studio** | o mais relevante para o público brasileiro, e não tem equivalente no catálogo |
-| edição de vídeo | **Runway** | remoção de fundo, inpainting, troca de fundo verde |
-| avatar e dublagem | **HeyGen** | traduz e dubla vídeo em mais de 175 idiomas |
-| música | **Suno** | trilha e música com letra |
+| design de marca e social | ~~Canva, com o Magic Studio~~ | **fora, decidido pelo Alison em 20/08.** Não entra no catálogo e não volta em auditoria futura |
+| edição de vídeo | **Runway** | em aberto. Remoção de fundo, inpainting, troca de fundo verde |
+| avatar e dublagem | **HeyGen** | em aberto. Traduz e dubla vídeo em mais de 175 idiomas |
+| música | **Suno** | em aberto. Trilha e música com letra |
 
 **A régua para decidir isso já existe no repo** e não se reabre por empolgação: entra no
 catálogo o que o Alison usa de verdade, porque a LP promete "onde eu não uso de verdade, eu não

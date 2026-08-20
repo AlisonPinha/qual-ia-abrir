@@ -539,6 +539,8 @@ verdade. Construir o degrau de baixo antes de medir o de cima é otimizar no esc
 - O CTA continua abrindo o quiz, e não desviando para o preço. Fica como teste A/B da Fase 4,
   porque o episódio traz dois testes em que prolongar a etapa 1 converteu menos
 - O nome do produto não muda sem o teste seco
+- **O Canva não entra no catálogo**, decidido em 20/08 quando a auditoria do ecossistema o
+  levantou como categoria ausente. Não voltar a propor em auditoria futura
 
 Atualizado em 20/08/2026, depois da sessão que ligou o GA4, o cupom pela URL e a saída do quiz
 em duas telas, e do passe de higiene que tirou a duplicação do `STATUS.md`.
