@@ -1972,6 +1972,9 @@ function rastrearFunil(url, origem, estado) {
 
   // Meta: PROD é o nome da variante, e é ele que separa o teste no Events Manager.
   const px = ev => window.fbq && fbq("track", ev, {content_name: PROD});
+  // o mesmo evento vai para os dois: o Meta é quem otimiza a campanha, o GA4 é quem quebra
+  // por UTM sem cobrar. Nome em português e em snake_case, que é como o relatório lê melhor.
+  const ga = (ev, extra) => window.gtag && gtag("event", ev, Object.assign({ variante: PROD }, extra || {}));
   // a origem viaja junto para a Cakto: sem ela toda venda aparece como direta
   const origem = origemTrafego();
   // o cupom decora TODOS os links de compra, inclusive os que nascem depois, e aparece na
@@ -1988,6 +1991,7 @@ function rastrearFunil(url, origem, estado) {
     }
     a.addEventListener("click", () => {
       px("InitiateCheckout");
+      ga("iniciou_checkout", { currency: "BRL" });
       // O checkout abre em outra aba, então esta continua viva. É aqui que o código deixa de
       // ser convite para adiar e vira entrega: a decisão de comprar já foi tomada, e o que
       // vem a seguir é o problema do aparelho, que a compra de 19/08 revelou. A Cakto entrega
@@ -2026,6 +2030,7 @@ function rastrearFunil(url, origem, estado) {
       modal.showModal();
       abriuQuiz = true;
       px("ViewContent");
+      ga("abriu_diagnostico");
       document.body.classList.add("travado");
       if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();
@@ -2210,6 +2215,7 @@ function rastrearFunil(url, origem, estado) {
       el("resultado").hidden = false;
       el("barra-fill").style.width = "100%";
       el("resultado").scrollIntoView({ block: "center", behavior: "smooth" });
+      ga("concluiu_diagnostico", { area });
       el("res-titulo").focus();   // leitor de tela precisa saber que o resultado chegou
     }
 
@@ -2360,6 +2366,7 @@ function rastrearFunil(url, origem, estado) {
       const { stack, corta } = calcular();
       enviarLead(MOTOR.analitico, MOTOR, resp, stack, corta, livre, nome, digitos);
       px("Lead");
+      ga("lead_saida");
       // a conversa abre em outra aba, então esta fica: quem volta encontra o código na tela,
       // e não uma janela que sumiu depois de pedir o número dela
       el("saida-campos").hidden = true;

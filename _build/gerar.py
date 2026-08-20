@@ -28,7 +28,8 @@ INSTA = "https://instagram.com/aalisonaraujo"
 # As URLs e o preço vivem em _build/config.py, para não haver dois lugares
 # onde a mesma constante precisa ser colada.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from config import CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO, PIXEL_META  # noqa: E402
+from config import (CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO,  # noqa: E402
+                    PIXEL_META, GA4_ID)
 from config import VARIANTES  # noqa: E402
 import questionario  # noqa: E402
 
@@ -413,11 +414,25 @@ fbq('init','__ID__');fbq('track','PageView');
 src="https://www.facebook.com/tr?id=__ID__&ev=PageView&noscript=1"></noscript>
 """).replace("__ID__", PIXEL_META)
 
+# gtag oficial do Google. Fora da f-string do template pelo mesmo motivo do pixel:
+# o snippet tem chaves e seria lido como campo de interpolação.
+GA4 = ""
+if GA4_ID:
+    GA4 = ("""<script async src="https://www.googletagmanager.com/gtag/js?id=__ID__"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+gtag('js',new Date());gtag('config','__ID__');
+</script>
+""").replace("__ID__", GA4_ID)
+
 JS = """
   const el = id => document.getElementById(id);
 
   // Meta: PROD é o nome da variante, e é ele que separa o teste no Events Manager.
   const px = ev => window.fbq && fbq("track", ev, {content_name: PROD});
+  // o mesmo evento vai para os dois: o Meta é quem otimiza a campanha, o GA4 é quem quebra
+  // por UTM sem cobrar. Nome em português e em snake_case, que é como o relatório lê melhor.
+  const ga = (ev, extra) => window.gtag && gtag("event", ev, Object.assign({ variante: PROD }, extra || {}));
   // a origem viaja junto para a Cakto: sem ela toda venda aparece como direta
   const origem = origemTrafego();
   // o cupom decora TODOS os links de compra, inclusive os que nascem depois, e aparece na
@@ -434,6 +449,7 @@ JS = """
     }
     a.addEventListener("click", () => {
       px("InitiateCheckout");
+      ga("iniciou_checkout", { currency: "BRL" });
       // O checkout abre em outra aba, então esta continua viva. É aqui que o código deixa de
       // ser convite para adiar e vira entrega: a decisão de comprar já foi tomada, e o que
       // vem a seguir é o problema do aparelho, que a compra de 19/08 revelou. A Cakto entrega
@@ -472,6 +488,7 @@ JS = """
       modal.showModal();
       abriuQuiz = true;
       px("ViewContent");
+      ga("abriu_diagnostico");
       document.body.classList.add("travado");
       if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();
@@ -656,6 +673,7 @@ JS = """
       el("resultado").hidden = false;
       el("barra-fill").style.width = "100%";
       el("resultado").scrollIntoView({ block: "center", behavior: "smooth" });
+      ga("concluiu_diagnostico", { area });
       el("res-titulo").focus();   // leitor de tela precisa saber que o resultado chegou
     }
 
@@ -806,6 +824,7 @@ JS = """
       const { stack, corta } = calcular();
       enviarLead(MOTOR.analitico, MOTOR, resp, stack, corta, livre, nome, digitos);
       px("Lead");
+      ga("lead_saida");
       // a conversa abre em outra aba, então esta fica: quem volta encontra o código na tela,
       // e não uma janela que sumiu depois de pedir o número dela
       el("saida-campos").hidden = true;
@@ -908,7 +927,7 @@ html = f"""<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 <script type="application/ld+json">{schema}</script>
-{PIXEL}<style>
+{PIXEL}{GA4}<style>
 {CSS}
 </style>
 </head>

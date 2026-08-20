@@ -35,6 +35,12 @@ CHECKOUT_UPSELL = "https://pay.cakto.com.br/j79id6y_1051180"
 # Vazio: nada é injetado e nada quebra.
 PIXEL_META = "827402089420392"
 
+# Measurement ID do GA4 ("G-XXXXXXXXXX"). O pixel do Meta já mede a venda e o Web Analytics
+# da Vercel já mede a visita: o que só o GA4 dá, sem pagar, é a quebra por UTM, que no plano
+# Hobby da Vercel é recurso pago. É por isso que ele existe aqui, e não por completude.
+# Vazio: nada é injetado, nenhum evento é disparado e nada quebra.
+GA4_ID = ""
+
 # ---------- variantes do teste seco de nome chiclete ----------
 # Uma LP por nome, servida em pasta própria. Só o nome muda e o que ele
 # obriga (título, marca, mecanismo, crença e a headline do diagnóstico).
