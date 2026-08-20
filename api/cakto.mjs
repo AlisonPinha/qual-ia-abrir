@@ -71,8 +71,13 @@ function nome(v) {
 
 // O valor vem como número ou como "67.00"; o que não der número não vira Purchase sem valor,
 // porque venda sem valor estraga o ROAS tanto quanto venda a mais.
+//
+// `baseAmount` vem PRIMEIRO porque é o nome que a documentação oficial da Cakto usa no payload
+// do `purchase_approved` (docs.cakto.com.br/conceitos/webhooks). Os outros quatro continuam
+// como rede: a lista foi escrita antes de a documentação ser lida, e nenhuma venda real passou
+// por aqui ainda para dizer qual chega de verdade.
 function valor(d) {
-  const bruto = d.amount ?? d.total ?? d.value ?? d.price;
+  const bruto = d.baseAmount ?? d.amount ?? d.total ?? d.value ?? d.price;
   const n = typeof bruto === "string" ? Number(bruto.replace(",", ".")) : Number(bruto);
   return Number.isFinite(n) && n > 0 ? n : null;
 }
