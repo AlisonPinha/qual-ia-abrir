@@ -106,6 +106,23 @@ Peso 4 numa pergunta só não chega ao pódio: o ElevenLabs entrou assim e apare
 stacks. Quem pega isso é `node _build/testar_motor.mjs`, que falha quando alguma ferramenta
 do catálogo fica impossível de sair.
 
+## Um texto só em todo CTA
+
+Todo elemento com `abre-diag` diz **"Descobrir a minha stack"**. Eram seis textos diferentes na
+mesma página até 20/08, e o playbook pede que o CTA do criativo case **palavra por palavra** com
+a primeira tela: com seis, não existe "a" frase para o criativo casar. Quando gravar criativo, é
+essa a frase.
+
+**A exceção é o `V["headline"]`** da seção do diagnóstico, que muda por variante ("Descubra
+quais são as suas 3 IAs", "3 abas", "a sua stack mínima"). Ele **é** o teste de nome, e
+unificar mataria o que o teste mede.
+
+**Trocar esse texto é mudar layout, não copy.** O `.btn-nav` é `nowrap` e a `.marca` não era: um
+CTA mais longo empurrou a marca, que quebrou em três linhas a 360px, e depois o botão passou a
+vazar pela borda. Abaixo de 420px o nome da marca sai da barra e fica só a bolha. Quem mexer
+aqui testa em 360, 375, 390, 414 e 430, e olha o print: nenhum dos dois defeitos deixa o teste
+vermelho.
+
 ## A venda dentro da entrega
 
 O `/mapa` não é só entrega: é onde o upsell é vendido, porque a entrega da Cakto é uma URL fixa
