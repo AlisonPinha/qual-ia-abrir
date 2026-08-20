@@ -373,17 +373,55 @@ medido com link na abertura, então isto é decisão, não dado, e a primeira ro
 
 ## Como gravar, em um lote só
 
-São **25 takes**, não 18 vídeos. O gancho é intercambiável: qualquer um dos três encaixa no
-corpo dele na edição, então grava os corpos e depois os ganchos em sequência.
+**A conta certa é 21 takes, não 18 vídeos**, e **hoje são 17**, porque o C5 está bloqueado.
+Cinco corpos falados, três ganchos para cada um, mais os cinco segundos de CTA do C4. O C4
+não tem corpo para gravar e os três ganchos dele são de tela.
 
-1. **Mesma roupa, mesma luz, mesmo enquadramento nos 24.** Se a roupa mudar entre o gancho e
-   o corpo, o corte fica visível e a peça inteira se perde.
-2. **Ordem:** C6, C1, C3, C2, C5 (se o número existir), mais os **cinco segundos de
-   CTA do C4**, que trocam a fala de "me segue aqui" pelo fecho de anúncio.
-3. Os ganchos por último, seguidos, lendo do teleprompter. São 7 segundos cada. **São 15
-   falados** (os três do C4 são de tela), e **12 enquanto o C5 estiver bloqueado**.
-4. C2 exige a tela gravada antes da fala, porque a fala aponta pro que está na tela.
-5. Áudio em -14 LUFS, e o corte de silêncio pela `edit-reel`, como nos masters anteriores.
+| | Com o C5 liberado | Hoje |
+|---|---|---|
+| corpos falados | 5 (C1, C2, C3, C5, C6) | 4 |
+| ganchos falados, 7s cada | 15 | 12 |
+| take de CTA do C4 | 1 | 1 |
+| **total** | **21** | **17** |
+
+**O gancho é intercambiável:** qualquer um dos três encaixa no corpo dele na edição. Por isso
+grava tudo de uma vez e monta depois, em vez de gravar peça por peça.
+
+### Antes de ligar a câmera
+
+Três gravações de tela, que não são take de rosto e podem sair no dia anterior:
+
+1. **O extrato**, para o C1. O app do banco ou a fatura, com tudo que não é assinatura de IA
+   borrado. Os valores dele, reais.
+2. **O quiz mais o mapa nascendo**, para o C2. Responde o diagnóstico inteiro gravando a tela,
+   e deixa o stream do mapa rodar até o fim. É a única prova que o funil tem hoje que não
+   depende de aluno, e o playbook põe demonstração acima de depoimento.
+3. **O mesmo pedido nas quatro**, para o C3. Escrever um e-mail difícil no ChatGPT, no Claude,
+   no Gemini e no Perplexity, e as quatro respostas lado a lado. **Se saírem parecidas naquele
+   dia, o C3 não sobe**, porque a peça inteira depende da diferença ser visível.
+
+### A lista de takes
+
+**Roupa, luz e enquadramento idênticos nos 17.** Se a roupa mudar entre o gancho e o corpo, o
+corte aparece e a peça se perde. Mural de onda, plano fixo, você gesticulando.
+
+**Primeiro os corpos, nesta ordem:**
+
+1. **C6**, não existe ferramenta certa, existe tarefa certa. É o mais fácil de falar, serve de
+   aquecimento e é o que carrega o One Belief inteiro.
+2. **C1**, a conta. Você lê os números do extrato em voz alta, sem arredondar.
+3. **C3**, a mesma tarefa nas quatro. A fala aponta para as respostas, então a tela precisa
+   estar gravada antes.
+4. **C2**, a demonstração. Mesma coisa: a tela vem antes, a fala vai por cima. Rosto só na
+   abertura e no fecho.
+
+**Depois os 12 ganchos, seguidos, lendo do teleprompter.** Sete segundos cada, palavra por
+palavra como estão escritos acima. São doze porque cada um dos quatro corpos tem três.
+
+**Por último, o take do C4:** cinco segundos com o fecho de anúncio, para substituir a fala
+"e pra aprender a IA mais rápido, me segue aqui" do Reel de 98 mil views.
+
+**Áudio em -14 LUFS**, e o corte de silêncio pela `edit-reel`, como nos masters anteriores.
 
 **Cabe numa janela de 2 horas**, que é o teto de gravação por dia.
 
