@@ -52,7 +52,7 @@ VARIANTES = {
     # controle: o que já está no ar
     "": {
         "nome": "Qual IA Usar?",
-        "marca": "qual ia abrir",
+        "marca": "qual ia usar",
         "mecanismo": "Regra das 3 IAs",
         "titulo": "Qual IA Usar? A sua stack de IA em 2 minutos",
         "headline": "Descubra quais são as suas 3 IAs",

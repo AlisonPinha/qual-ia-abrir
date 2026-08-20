@@ -58,14 +58,22 @@
         location.replace(dados.destino);
         return true;
       }
-      if (!automatico) {
+      if (automatico) {
+        retorno.textContent = dados.indisponivel
+          ? 'A conferência automática está temporariamente indisponível. Confirme abaixo os dados da compra.'
+          : 'Não reconheci uma compra neste aparelho. Confirme abaixo o e-mail e o WhatsApp usados no checkout.';
+        retorno.hidden = false;
+      } else {
         erro.textContent = dados.indisponivel
           ? 'A conferência está temporariamente indisponível. Tente novamente em alguns minutos.'
           : 'Não encontrei uma compra aprovada com esses dados. Confira o e-mail e o WhatsApp usados no checkout.';
         erro.hidden = false;
       }
     } catch (_) {
-      if (!automatico) {
+      if (automatico) {
+        retorno.textContent = 'Não consegui conferir este aparelho agora. Confirme abaixo os dados da compra.';
+        retorno.hidden = false;
+      } else {
         erro.textContent = 'Não consegui conferir agora. Verifique a conexão e tente novamente.';
         erro.hidden = false;
       }

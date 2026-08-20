@@ -232,9 +232,9 @@
     "crenca": "Escolher a IA certa para cada tarefa é a chave para a IA finalmente devolver resposta útil, e isso é possível através da Regra das 3 IAs.",
     "_crencaCurta": "A mesma crença sem o nome do mecanismo. As páginas de entrega são uma só para as quatro variantes do teste de nome: citar 'Regra das 3 IAs' ali contradiria quem comprou o 'Método das 3 Abas'.",
     "crencaCurta": "Escolher a IA certa para cada tarefa é o que faz a resposta parar de voltar genérica.",
-    "_cambio": "O câmbio da conversão para real, e a data dele. Ferramenta de IA cobra em dólar, então todo valor em real do produto envelhece com ele: é aqui que se atualiza, e o \"mes\" de cada ferramenta em acesso vem desta taxa.",
+    "_cambio": "O câmbio da conversão para real, e a data dele. Algumas ferramentas de IA cobram em dólar, então parte dos valores em real do produto envelhece com ele: é aqui que se atualiza, e o \"mes\" de cada ferramenta em acesso vem desta taxa.",
     "cambio": {"taxa": 5.1832, "euro": 6.0535, "data": "20/08/2026"},
-    "aviso_custo": "Valores conferidos em 19/08/2026 no site de cada ferramenta. Elas cobram em dólar, então o valor em real usa o câmbio de R$ 5,18 e muda com ele.",
+    "aviso_custo": "Valores conferidos em 19/08/2026 no site de cada ferramenta. Algumas cobram em dólar; nesses casos, o valor em real usa o câmbio de R$ 5,18 e muda com ele.",
     "acesso": {
       "Claude": {
         "custo": "R$ 104/mês no Pro",
@@ -3693,7 +3693,7 @@
       "uma vez"
     ],
     "remate": "Cortar uma única assinatura errada de R$ 104 já paga o mapa no primeiro mês, e ainda sobra.",
-    "rodape": "Valores conferidos em 19 de agosto de 2026, um a um, no site de cada ferramenta. Elas cobram em dólar, e a conversão usa R$ 5,18, o câmbio de 20 de agosto."
+    "rodape": "Valores conferidos em 19 de agosto de 2026, um a um, no site de cada ferramenta. Algumas cobram em dólar; nesses casos, a conversão usa R$ 5,18, o câmbio de 20 de agosto."
   },
   "_pedidos": "Pedidos, não depoimentos: é o que a pessoa diria, não o que alguém disse. Sem nome próprio, sem aspas de fala atribuída e sem número de resultado, porque prova social aqui só entra quando for real.",
   "pedidos": {

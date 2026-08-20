@@ -1101,7 +1101,7 @@ html = f"""<!doctype html>
   <div class="env">
     <div class="cabeca">
       <span class="eyebrow">Serve pra qualquer pedido</span>
-      <h2>Você fala do seu jeito.<br>O mapa responde as duas.</h2>
+      <h2>Você fala do seu jeito.<br>O mapa responde às duas.</h2>
       <p>Qual ferramenta abrir <b>e</b> o prompt exato pra pedir. Vale pro consultório, pro
          escritório e pro fechamento do mês, e vale igual pra passagem, a hospedagem e a
          compra que você adia há semanas. <b>Não é só trabalho.</b></p>
@@ -1296,7 +1296,7 @@ html = f"""<!doctype html>
     </div>
     <div class="rodape-base">
       <span>© 2026 Alison Araújo. Todos os direitos reservados.</span>
-      <span>Preços das ferramentas conferidos em 18/08/2026 e sujeitos a alteração pelos fornecedores.</span>
+      <span>{escape(DG["aviso_custo"])}</span>
     </div>
   </div>
 </footer>

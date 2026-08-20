@@ -60,6 +60,11 @@ mas hoje só abre uma mensagem pronta. A copy e o envio real ficam para 21/08, q
 instância disponível. Não confundir essa captura de saída com a entrega paga, que já funciona
 pela Cakto e por `/acesso`.
 
+**Limpeza de copy feita na mesma revisão:** a variante controle agora usa "qual ia usar" também
+na marca; "o mapa responde às duas" ganhou a crase; rodapé, catálogo e câmbio partem da mesma
+data; a ressalva de dólar fala apenas das ferramentas que de fato cobram em dólar; e `/acesso`
+explica quando não reconhece automaticamente o aparelho, em vez de apenas apagar o aviso.
+
 **Conferido de novo no fim de 20/08:** o build é determinístico (regerar as 4 LPs, o `/mapa`, o
 `/plano` e a doc do quiz deixa o `git status` limpo), `node _build/testar_motor.mjs` responde
 `ok` com as 12 ferramentas alcançáveis; as quatro LPs e `/acesso` respondem 200, `/mapa` e
@@ -1056,7 +1061,7 @@ correspondência avançada automática está **desativada** e vale ligar.
 |---|---|---|---|
 | 1 | ~~**3 produtos na Cakto** e os links em `config.py`~~ **feito em 18/08** | nada | Claude conduz no browser |
 | 2 | **Compra de teste de R$ 67** em si mesmo | item 1 | Alison paga, Claude confere a entrega e se a Cakto repassa parâmetros na URL |
-| 3 | **Unificar a marca** do logo, hoje "qual ia abrir" contra "Qual IA Usar?" no checkout | nada | Claude, 3 minutos |
+| 3 | ~~**Unificar a marca** do logo~~ **feito em 20/08**: controle e checkout usam "Qual IA Usar?" | nada | Claude |
 | 4 | **Custo do Higgsfield** | conferir no site da ferramenta | Alison confere, Claude atualiza `dados.json` |
 | 5 | **Conteúdo dos 7 dias** do upsell de R$ 197 | método do Alison | os dois: Claude estrutura, Alison revisa a voz |
 | 6 | **Página `/plano`** da entrega do upsell | item 5 | Claude, ~2h |
