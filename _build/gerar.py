@@ -271,13 +271,19 @@ motor = {
     "celular": DG["celular"],
     "semCelular": DG["semCelular"],
     "perfil": DG["perfil"],
+    # o preço em número, para o JS decidir se pode dizer que cortar uma já paga o mapa
+    "preco": int(d["oferta"]["preco"]),   # OF só é definido depois deste bloco
     "analitico": ANALITICO_URL,
     "origem": SLUG or "site",
     "pids": [p[0] for p in DG["perguntas"] if not p[0].startswith("break")],
     "ferramentas": {
-        # só o que o teaser exibe. logo, url, descrição e custo completo são do produto
+        # só o que o teaser exibe. logo, url, descrição e custo completo são do produto.
+        # "vitoria" é o que o card mostra no lugar do preço, e não nomeia nem descreve a
+        # ferramenta: é o resultado que a pessoa leva. "mes" é o custo em real, usado só
+        # na conta do que ela NÃO precisa assinar, que é onde o custo joga a favor.
         n: {"curto": DG["acesso"][n]["curto"], "faixa": DG["acesso"][n]["faixa"],
-            "free": DG["acesso"][n]["free"],
+            "free": DG["acesso"][n]["free"], "vitoria": DG["acesso"][n]["vitoria"],
+            "mes": DG["acesso"][n]["mes"],
             "generalista": DG["acesso"][n].get("generalista", False)}
         for n in F
     },
@@ -655,15 +661,27 @@ JS = """
             <span class="res-logo-off" aria-hidden="true"></span>
             <div>
               <span class="res-nome-off"></span>
-              <span class="res-quando">${s.quando} · ${s.curto}</span>
+              <span class="res-quando">${s.quando} · ${s.vitoria}</span>
             </div>
             <span class="res-n">${i + 1}</span>
           </div>
           <span class="res-vazio" aria-hidden="true"></span>
         </li>`).join("");
 
-      el("res-corta").innerHTML = `<b>E ${corta.length} que você deveria cortar agora.</b> ` +
-        `A mais cara da lista sai por ${MOTOR.ferramentas[corta[0]].curto}.`;
+      // O custo saiu dos cards e aparece aqui, que é onde ele joga a favor: no card,
+      // somado, ele é a conta que a pessoa vai pagar todo mês, e assusta antes do preço.
+      // Aqui é o que ela deixa de pagar. Cada frase só entra se o número a sustentar:
+      // "cortar já paga o mapa" com uma ferramenta de R$ 52 seria promessa falsa.
+      const custosCorte = corta.map(n => MOTOR.ferramentas[n].mes || 0);
+      const somaCorte = custosCorte.reduce((a, b) => a + b, 0);
+      const maiorCorte = custosCorte.reduce((a, b) => (a > b ? a : b), 0);
+      const emReal = n => "R$ " + n.toLocaleString("pt-BR");
+      el("res-corta").innerHTML =
+        `<b>E ${corta.length} que você não precisa assinar.</b> `
+        + (somaCorte > 0 ? `Juntas dão ${emReal(somaCorte)} por mês. ` : "")
+        + (maiorCorte >= MOTOR.preco
+            ? `Só a mais cara sai por ${emReal(maiorCorte)}: cortar ela já paga o mapa no primeiro mês.`
+            : "O mapa diz quais são e por que nenhuma delas é para agora.");
 
       quiz.hidden = true;
       // "as suas 3 saem do que você responder aqui" é texto de quem ainda vai responder:

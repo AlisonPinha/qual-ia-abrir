@@ -55,7 +55,50 @@ Ordem por impacto medido, não por esforço. Os itens 1.1 a 1.4 saíram da audit
 | 1.6 | ~~**Reason why na abertura**~~ **feito 19/08**. A escassez foi descartada | O porquê está na primeira tela e some depois dela. **A escassez não entra:** o playbook pede escassez sob o botão, mas o projeto proíbe inventar escassez em produto digital sem limite real, e não existe limite real aqui. Entre o playbook e a regra do Alison, vale a regra | Claude | Reason why no ar, sem alterar a simplicidade da etapa 1 |
 | 1.7 | ~~**`estilo` passa a valer**~~ **feito 19/08** | Quem diz "prefiro dominar uma a fundo" recebe três ferramentas igual | Claude | A composição muda entre as duas respostas |
 | 1.8 | ~~**Botão acima da dobra, medido em aparelho**~~ **feito 19/08** | Estava a 582px da dobra no iPhone, 815px num Android pequeno e 415px no desktop. O que empurrava era o bloco do código de acesso, 200px no meio da venda | Claude | Aparece sem rolar em 390x844, 360x640 e 1280x900 |
+| 1.10 | ~~**O teaser deixou de anunciar custo**~~ **feito 20/08** | O card mostrava "Assina agora · US$ 20/mês" nas três linhas, e a soma aparecia logo antes do preço: mediana de US$ 40/mês, medida nas 587.776 combinações, contra um produto de R$ 67 pago uma vez. O olho compara os dois, e o de cima é maior. Achado do Alison, olhando a tela | Claude | O card passou a mostrar a **vitória** no lugar do preço, e o custo mudou de lugar: some do card e aparece na linha do corte, onde joga a favor. 23 de 23 no QA da LP e 5 de 5 no do `/mapa` |
 | 1.9 | ~~**Revisão de clareza do questionário**~~ **feito 19/08** | Oito correções de texto, mais duas perguntas que viraram condicionais: quem nunca usou IA responde 14 em vez de 19 | Claude | Nenhuma pergunta fala de trabalho para quem escolheu vida pessoal, e nenhuma pergunta sem sentido para iniciante |
+
+### O custo saiu do card e virou a conta, em 20/08
+
+**O que estava na tela, e por que assusta.** Os três cards do teaser mostravam o momento e o
+preço de cada ferramenta. Medido nas 587.776 combinações: a stack pede **US$ 40/mês na
+mediana** (cerca de R$ 216), US$ 60 no p90 e até US$ 102 no pior caso. Em 27,1% das
+combinações ela não pede nada agora, porque a pessoa respondeu que só quer o que é grátis;
+nos outros 73%, uma conta recorrente de três dígitos em real aparecia imediatamente antes de
+um preço de R$ 67 pago uma vez.
+
+**O playbook não trata disso**, e isso foi conferido nas duas fontes. O que ele tem e encosta
+são os três testes A/B deles, e todos apontam para o mesmo lado: fechar o loop na última etapa
+converteu **menos**, prolongar a primeira etapa converteu **menos** em dois nichos, e deixar o
+quiz mais bonito piorou. A régua que sai disso é que informação a mais antes do checkout é
+candidata a piorar, e o preço das ferramentas é informação a mais.
+
+**A primeira ideia foi descartada por medição, não por gosto.** A tentativa era rastrear a
+"vitória" a partir do peso: mostrar a resposta da pessoa que fez aquela ferramenta entrar. O
+motor sabe isso, mas a stack é decidida por **soma** de respostas, não por uma. Com o critério
+apertado (peso 7, e só em pergunta de tarefa) a cobertura das três é de **7,7%**; com critério
+frouxo, ela cobre 95% mas devolve lixo do tipo "No celular" e "Quase nunca abro". Descartado.
+
+**O que entrou:** uma frase de vitória por ferramenta, no `dados.json` em `acesso[n].vitoria`.
+Ela não nomeia nem descreve a ferramenta: diz o resultado que a pessoa leva ("material pronto
+para a reunião", "a tarefa repetida sem você"). O paywall continua igual, porque nome, `oq`,
+`passo` e prompt seguem fora do teaser.
+
+**O custo não sumiu, mudou de lado.** A linha do corte deixou de ser nota de rodapé e passou a
+carregar a conta: as três cortadas somam **R$ 479/mês na mediana** (p10 R$ 427, p90 R$ 531), e
+em **91,4%** das combinações o corte custa mais que a stack inteira. A frase "cortar a mais
+cara já paga o mapa no primeiro mês" é verdadeira em **587.766 das 587.776** combinações, e nas
+**10** restantes o código não a escreve: a guarda `maiorCorte >= MOTOR.preco` troca por um texto
+sem promessa. Promessa na tela é requisito de código, e aqui ela é verificada por número.
+
+**Tudo passou a ser em real**, a pedido do Alison, com o câmbio de R$ 5,1832 e o euro a
+R$ 6,0535, guardados em `diagnostico.cambio` com a data. Não sobrou **nenhum** "US$" nem "€" no
+produto: nem na LP, nem no `/mapa`, nem na `/plano`, nem nos comentários do motor. A conta do
+erro foi junto: US$ 240/399/700+ por ano viraram R$ 1.244, R$ 2.068 e R$ 3.600+.
+
+**Por que não converter só o lado da economia**, que teria sido mais fácil: comparar R$ 479 com
+US$ 40 na mesma tela faz a diferença parecer 12x quando ela é 2,3x. Escolher a moeda para o
+número parecer maior é da mesma família da escassez inventada.
 
 ### O que o bloco do motor mudou, medido em 37.632 combinações
 

@@ -40,8 +40,8 @@ function calcularStack(MOTOR, resp) {
   for (const n of MOTOR.semCelular) if (noCelular) delete pontos[n];
 
   // O orçamento declarado tira da mesa o que não cabe nele. Teto -1 é "só o que tem
-  // camada gratuita de verdade". Mandar assinar US$ 49 quem acabou de dizer que tem
-  // R$ 150 é recomendação que ninguém executa, e o mapa perde a autoridade inteira.
+  // camada gratuita de verdade". Mandar assinar R$ 254 por mês a quem acabou de dizer
+  // que tem R$ 150 é recomendação que ninguém executa, e o mapa perde a autoridade.
   const iOrc = resp[MOTOR.perfil[1]] ?? 1;
   const teto = MOTOR.teto[iOrc];
   const cabeNoBolso = n => teto < 0 ? MOTOR.ferramentas[n].free : MOTOR.ferramentas[n].faixa <= teto;
@@ -82,7 +82,7 @@ function calcularStack(MOTOR, resp) {
         : pelaGratuita ? MOTOR.gratisPlano
         : MOTOR.ordem[i < cabem ? 0 : (i === cabem ? 1 : 2)],
       ...f,
-      // dizer "plano grátis" ao lado de "US$ 20/mês" se contradiz na mesma linha
+      // dizer "plano grátis" ao lado de "R$ 104/mês" se contradiz na mesma linha
       // o teaser já disse "de graça": aqui vai o que custa se ela quiser mais, que é
       // a promessa de custo real do produto
       ...(pelaGratuita ? { curto: MOTOR.curtoGratis.replace("{custo}", f.curto) } : {})

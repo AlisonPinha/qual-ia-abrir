@@ -19,6 +19,44 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### O preço saiu do teaser e o produto virou real, em 20/08
+
+**O gatilho foi o Alison olhando a tela:** os três cards diziam "Assina agora · US$ 20/mês", e
+a soma aparecia logo antes do preço. Medido: a stack pede **US$ 40/mês na mediana** das 587.776
+combinações, uma conta recorrente de três dígitos em real na frente de um produto de R$ 67 pago
+uma vez.
+
+| O que mudou | Onde |
+|---|---|
+| O card mostra a **vitória**, não o preço | `acesso[n].vitoria` no `dados.json`, uma frase por ferramenta, sem nomear nem descrever |
+| A linha do corte virou a conta | soma das três cortadas (mediana **R$ 479/mês**) e a mais cara, com o remate de que cortar ela paga o mapa |
+| Tudo em real | câmbio R$ 5,1832 e euro R$ 6,0535, em `diagnostico.cambio` com a data |
+| A conta do erro foi junto | US$ 240/399/700+ por ano viraram R$ 1.244, R$ 2.068 e R$ 3.600+ |
+
+**Zero "US$" e zero "€" no produto inteiro**, conferido na LP, no `/mapa`, na `/plano` e até nos
+comentários do motor, que citavam valores em dólar e passaram a contradizer a tela.
+
+**A promessa do corte é verificada por número, não por confiança.** "Cortar a mais cara já paga
+o mapa no primeiro mês" é verdade em **587.766 das 587.776** combinações. Nas 10 em que não é, a
+guarda `maiorCorte >= MOTOR.preco` troca a frase por uma sem promessa. Foi assim que a regra
+"promessa na tela é requisito de código" saiu do texto e virou condição.
+
+**Uma ideia melhor foi descartada por medição.** Tentei rastrear a vitória pelo peso, mostrando
+a resposta da pessoa que elegeu aquela ferramenta. Não se sustenta: a stack sai da **soma** das
+respostas, não de uma. Com critério apertado a cobertura das três é de **7,7%**; com critério
+frouxo o card diria "No celular" e "Quase nunca abro". Fica registrado para ninguém tentar de
+novo.
+
+**QA:** 23 de 23 na LP (mobile e desktop, com orçamento pagante, que é o caso de 73%) e 5 de 5
+no `/mapa`, contra o build local, sem gastar chamada de API. **Duas falhas foram do teste, não
+do produto:** o console acusava as rotas que o próprio teste aborta, e o 404 do Web Analytics,
+que não existe no servidor local e responde 200 em produção. O 404 passou a ser julgado pela
+URL, porque o texto do console não diz qual recurso falhou.
+
+**O print pegou o que o verde não pegava:** a primeira rodada testou o caso gratuito, em que os
+três cards dizem "Começa hoje, de graça", e não o caso do print do Alison. O teste passou a
+escolher um orçamento pagante.
+
 ### O checkout, ajustado em 20/08 depois do teste de ponta a ponta
 
 Duas coisas que só apareceram ao rodar o fluxo inteiro como lead, no navegador.
