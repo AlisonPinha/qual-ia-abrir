@@ -136,8 +136,8 @@ sem número medido por trás.
 
 | # | O que é | Depende de | Estado |
 |---|---|---|---|
-| 1 | **Mostrar o código no clique de compra.** O checkout abre em outra aba, então a LP continua viva e pode trocar a oferta pelo código com o botão do WhatsApp. Ataca o aparelho diferente na origem | nada | **não existe.** O clique só adiciona UTM e dispara `InitiateCheckout` |
-| 2 | **"Mandar o meu mapa para o meu WhatsApp" dentro do `/mapa`**, com o resumo (as 3, a ordem, o custo) e o link com código. Quem manda é a própria pessoa, pelo `wa.me` | nada | **meio feito.** O botão existe, mas manda a chave, não o conteúdo |
+| 1 | ~~**Mostrar o código no clique de compra**~~ **feito 20/08** | nada | No ar. O bloco se muda para 14px abaixo do botão que a pessoa clicou, nos dois botões, e diz que o checkout abriu |
+| 2 | ~~**"Mandar o meu mapa no WhatsApp" dentro do `/mapa`**~~ **feito 20/08** | nada | No ar. Vão as três na ordem com o custo, o que não assinar e o link com o código. 537 caracteres. O prompt e o passo a passo ficam fora: não cabem e são o que ela vem buscar na página |
 | 3 | **O webhook mandar a mensagem quando o Pix cair.** Some o e-mail do caminho. O `/api/cakto` já recebe nome e celular | **o número** | **preferência do Alison.** Trava no mesmo ponto do 2.5 |
 
 **O risco do `teste1` aqui não é ban.** Entrega pós-compra não é disparo frio: a pessoa
