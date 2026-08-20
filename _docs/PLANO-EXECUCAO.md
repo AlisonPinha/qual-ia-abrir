@@ -118,7 +118,52 @@ barato. Hoje não há para onde subir.
 | 2.8 | ~~**Formulário do presente na pós-compra**~~ **feito 19/08** | Claude | 0.1 | Cinco opções e uma saída aberta, no fim do `/mapa`, gravando na aba `presentes`. Fica **depois** do CTA de ascensão de propósito: o voto não pode competir com a venda |
 | 2.9 | ~~**Back redirect** no diagnóstico~~ **feito 19/08** | Claude | nada | O pop-up passou a existir no histórico, o voltar mostra uma vez o que a pessoa perde, e quem insiste sai. O do **checkout** não dá: a página é da Cakto |
 | 2.11 | ~~**Saber onde a pessoa abandona o quiz**~~ **feito 19/08** | Claude | nada | `sendBeacon` no `visibilitychange` e no `pagehide`, uma linha por pessoa na aba `abandonos`, com o pid onde parou, o enunciado, a posição, quantas respondeu, a área e a UTM. Quem termina fica na mesma linha com `concluiu=sim`, então numerador e denominador ficam juntos. Ligado na LP, no `/mapa` e no `/plano`. **16 de 16 no QA local** e **25 de 25 na regressão** em produção. Apps Script na versão 4, mesma URL |
+| 2.12 | **A entrega chegar no WhatsApp** | Claude | **decisão do Alison sobre o número** | Ver "A entrega no WhatsApp" abaixo. A parte 1 e a 2 não dependem de ninguém; a 3, que é a preferida dele, trava no mesmo número do 2.5 |
 | 2.10 | **O e-mail de acesso levar o upsell junto** | Alison, se quiser a marcação de origem | 2.3 | **A premissa estava errada, conferido em 19/08.** Ver "O e-mail já leva o upsell" abaixo: não existe corpo de e-mail para escrever, e o link já cai numa página que abre com a oferta. Sobra só marcar a origem do link |
+
+### A entrega no WhatsApp, pedida em 20/08
+
+**A queixa:** a entrega está complexa. Ela é simples para quem compra e abre no mesmo
+aparelho (um toque no link do e-mail e o mapa aparece), e complexa nos outros dois caminhos:
+aparelho diferente, que cai no quiz de novo, e quem não abre o e-mail, que não recebe nada.
+A raiz é estrutural: as respostas moram no navegador, então o mapa só se monta onde a pessoa
+respondeu.
+
+**O playbook não tem entrega por WhatsApp.** Ele usa o WhatsApp num lugar só, e é
+recuperação de cobrança gerada e não paga, medida em +20%. A entrega da operação de
+referência é e-mail com link mais banner na área de membros. Ou seja, isto é ideia nossa,
+sem número medido por trás.
+
+| # | O que é | Depende de | Estado |
+|---|---|---|---|
+| 1 | **Mostrar o código no clique de compra.** O checkout abre em outra aba, então a LP continua viva e pode trocar a oferta pelo código com o botão do WhatsApp. Ataca o aparelho diferente na origem | nada | **não existe.** O clique só adiciona UTM e dispara `InitiateCheckout` |
+| 2 | **"Mandar o meu mapa para o meu WhatsApp" dentro do `/mapa`**, com o resumo (as 3, a ordem, o custo) e o link com código. Quem manda é a própria pessoa, pelo `wa.me` | nada | **meio feito.** O botão existe, mas manda a chave, não o conteúdo |
+| 3 | **O webhook mandar a mensagem quando o Pix cair.** Some o e-mail do caminho. O `/api/cakto` já recebe nome e celular | **o número** | **preferência do Alison.** Trava no mesmo ponto do 2.5 |
+
+**O risco do `teste1` aqui não é ban.** Entrega pós-compra não é disparo frio: a pessoa
+acabou de pagar e está esperando. O risco concreto é outro: aquele número está amarrado ao
+Clinic.io por webhook, então a resposta do comprador cai no fluxo da clínica. As três saídas
+são chip novo com instância própria (o certo), reconectar a `cs-bot-nsm` da agência, ou
+aceitar o cruzamento com o Clinic.io.
+
+**O que a documentação da Cakto disse, apurado em 20/08:**
+- o payload do `purchase_approved` traz `id`, `refId`, `status`, `baseAmount`, `checkoutUrl`,
+  `offer_type`, `customer`, `product` e `offer`;
+- **`baseAmount` não estava na lista do `valor()`** e virou correção no mesmo dia: a próxima
+  venda real poderia ser descartada em silêncio;
+- **`checkoutUrl` é a peça que decide o desenho.** Se ele vier com os parâmetros da URL, o
+  `?c=` do código chega no webhook e a mensagem leva o link que abre o mapa pronto em
+  qualquer aparelho. Se não vier, o link só monta o mapa no aparelho onde ela respondeu.
+  Dá para conferir sem esperar venda nova: a compra de 19/08 saiu pelo link da LP, então os
+  parâmetros dela devem estar em Minhas Vendas → detalhes.
+
+**Onde a mensagem roda:** direto no `/api/cakto`, com um `fetch` para a Evolution. Sem n8n no
+meio, que seria um salto a mais para cair sem ninguém ver. A chave entra por
+`vercel env add EVOLUTION_API_KEY production`, digitada no prompt da CLI.
+
+**O que a 3 destrava de quebra:** enquanto a entrega for um link fixo por e-mail, não existe
+como travar o `/mapa`, porque a URL é a mesma para todo mundo. Com a mensagem personalizada,
+o link pode ser único e assinado, e aí a entrega deixa de ser aberta para quem tem o endereço.
 
 ### O e-mail já leva o upsell, e não existe e-mail para escrever
 
