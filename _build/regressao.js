@@ -95,8 +95,24 @@ async function responderTudo(page, escopo) {
     zap: document.getElementById('ret-codigo-zap')?.href || '',
   }));
   ok('saída com quiz pronto: código aparece', fim.visivel === true && /^[0-9A-Z-]{8,}$/.test(fim.codigo), fim.codigo);
-  ok('saída: WhatsApp com link e código', /wa\.me/.test(fim.zap) && /mapa\?c=/.test(decodeURIComponent(fim.zap)));
+  // o link tem que ser o da LP: /mapa é a entrega paga e não tem paywall, então mandá-lo
+  // para quem ainda não comprou seria dar o produto
+  ok('saída: WhatsApp leva a LP, não a entrega', /wa\.me/.test(fim.zap)
+     && /\/\?c=/.test(decodeURIComponent(fim.zap)) && !/\/mapa/.test(decodeURIComponent(fim.zap)), fim.zap.slice(0, 80));
   ok('saída: fala de diagnóstico pronto', /pronto/i.test(fim.titulo), fim.titulo);
+
+  // e o link que ela guarda tem que cumprir o que promete: abrir no resultado dela
+  const link = (decodeURIComponent(fim.zap).match(/https?:\/\/[^\s]+/g) || []).pop() || '';
+  const c2b = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const p2b = await c2b.newPage();
+  await p2b.goto(link, { waitUntil: 'domcontentloaded' });
+  await p2b.waitForTimeout(1500);
+  const volta = await p2b.evaluate(() => ({
+    resultado: !document.getElementById('resultado')?.hidden,
+    silhueta: document.querySelectorAll('#res-stack .oculto').length,
+  }));
+  ok('link guardado: abre no resultado, ainda em silhueta', volta.resultado === true && volta.silhueta === 3,
+     `${volta.silhueta} ocultos`);
 
   // ---------- 3. /mapa: entrega com IA ----------
   const c3 = await browser.newContext({ viewport: { width: 390, height: 844 } });

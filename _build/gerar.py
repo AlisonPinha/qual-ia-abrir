@@ -485,10 +485,13 @@ JS = """
       const codigoBloco = el("ret-codigo");
       if (codigoBloco && pronto && window.__codigo) {
         el("ret-codigo-valor").textContent = window.__codigo;
+        // o link é o desta página, e não o do /mapa: a entrega não tem paywall, e a única
+        // coisa que a protege é a URL não circular. Mandar o /mapa para quem ainda não
+        // comprou era entregar o produto pago por WhatsApp
         el("ret-codigo-zap").href = "https://wa.me/?text=" + encodeURIComponent(
-          "O meu código do Qual IA Usar: " + window.__codigo
-          + ". Para abrir o mapa em qualquer aparelho, e o link já vai com ele dentro: "
-          + location.origin + "/mapa?c=" + encodeURIComponent(window.__codigo));
+          "O meu diagnóstico do " + PROD + ": " + window.__codigo
+          + ". O link abre direto no meu resultado, em qualquer aparelho: "
+          + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo));
         codigoBloco.hidden = false;
       }
       ret.hidden = false;
@@ -605,6 +608,10 @@ JS = """
         `A mais cara da lista sai por ${MOTOR.ferramentas[corta[0]].curto}.`;
 
       quiz.hidden = true;
+      // "as suas 3 saem do que você responder aqui" é texto de quem ainda vai responder:
+      // quem retoma direto no resultado via essa frase acima da própria stack
+      const porqueRender = el("modal-porque");
+      if (porqueRender) porqueRender.hidden = true;
       el("resultado").hidden = false;
       el("barra-fill").style.width = "100%";
       el("resultado").scrollIntoView({ block: "center", behavior: "smooth" });
@@ -763,6 +770,16 @@ JS = """
     });
 
     mostrar();
+
+    // quem guardou o link no WhatsApp volta com o código na URL: cai no resultado dela sem
+    // responder nada de novo, que é a promessa do botão. Depois do mostrar() inicial de
+    // propósito: antes dele, a barra de progresso voltava para a primeira pergunta
+    const codigoDaUrl = new URLSearchParams(location.search).get("c");
+    const doLink = codigoDaUrl ? lerCodigo(MOTOR, codigoDaUrl) : null;
+    if (doLink) {
+      salvarSessao(doLink, MOTOR.pids, {}, MOTOR);
+      document.querySelector(".abre-diag")?.click();
+    }
   }
 
 """
