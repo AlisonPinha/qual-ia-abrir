@@ -39,7 +39,7 @@ PIXEL_META = "827402089420392"
 # da Vercel já mede a visita: o que só o GA4 dá, sem pagar, é a quebra por UTM, que no plano
 # Hobby da Vercel é recurso pago. É por isso que ele existe aqui, e não por completude.
 # Vazio: nada é injetado, nenhum evento é disparado e nada quebra.
-GA4_ID = ""
+GA4_ID = "G-J1383RJMK8"
 
 # ---------- variantes do teste seco de nome chiclete ----------
 # Uma LP por nome, servida em pasta própria. Só o nome muda e o que ele
