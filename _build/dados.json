@@ -258,7 +258,7 @@
         "mes": 104
       },
       "Claude Code": {
-        "custo": "já vem no Pro ou no Max do Claude",
+        "custo": "vem em todo plano pago do Claude, e divide o mesmo limite de uso do resto do plano",
         "faixa": 1,
         "free": false,
         "verificado": true,
@@ -3216,6 +3216,20 @@
         [
           "Resumo em áudio",
           "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
+        ]
+      ],
+      "Claude Code": [
+        [
+          "Plan mode",
+          "Ele lê tudo e te mostra o plano antes de encostar em qualquer arquivo. Você aprova, e só então ele executa."
+        ],
+        [
+          "Checkpoints",
+          "Guarda o estado antes de cada pedido seu, e o /rewind devolve o código, a conversa ou os dois se der ruim."
+        ],
+        [
+          "Output styles",
+          "Tira o viés de programação e ele vira assistente de escrita ou de análise, sem você trocar de ferramenta."
         ]
       ],
       "n8n": [

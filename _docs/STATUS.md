@@ -19,6 +19,22 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### O Claude Code ganhou o bloco, e o custo dele estava incompleto
+
+Quarto da fila. **Pesquisado por agente dedicado**, a pedido do Alison, que sugeriu paralelizar
+a varredura. O agente voltou com **37 recursos nomeados, todos de fonte oficial da Anthropic e
+nenhum de agregador**, o que é o oposto do que aconteceu com as páginas de preço.
+
+**Os três que entraram atacam a barreira real, que é medo de deixar a ferramenta mexer no seu
+trabalho:** o **Plan mode**, que lê tudo e mostra o plano antes de encostar em qualquer arquivo;
+os **Checkpoints**, com o `/rewind` devolvendo código e conversa; e o **Output styles**, que tira
+o viés de programação e transforma a ferramenta em assistente de escrita ou de análise. O
+terceiro é o que mais rende aqui, porque a maioria acha que Claude Code só serve para programar.
+
+**A correção de custo:** o produto dizia "já vem no Pro ou no Max". O FAQ oficial diz que vem em
+**todo plano pago** e que **divide o mesmo limite de uso** do resto do plano, o que "sem custo
+extra" sozinho podia fazer parecer ilimitado.
+
 ### O n8n ganhou o bloco "por dentro", em 20/08
 
 Terceiro da fila, com **13,4%** das stacks. Conferido em `n8n.io`, que responde a leitura

@@ -447,7 +447,7 @@ decisão do Alison, não minha.
 | # | Tarefa | Quem | Depende | Critério de pronto |
 |---|---|---|---|---|
 | 3.1 | **Segunda conta de anúncio** | Alison | nada | Existe, porque o protocolo do episódio pede duas no mínimo: conta ruim mata oferta boa |
-| 3.2 | **Criativos a partir dos Reels medidos** | Alison grava, Claude corta | nada | 6 corpos x 3 ganchos, saídos do banco que já viralizou |
+| 3.2 | **Criativos a partir dos Reels medidos.** Os **18 roteiros estão prontos** em [CRIATIVOS.md](CRIATIVOS.md), escritos em 20/08 contra a Frente 8 do playbook: gancho literal (7s, é o que o teste compara), corpo em beats (a voz é dele) e o CTA casando palavra por palavra com o botão da LP. **Falta gravar** | Alison grava, Claude corta | nada | 6 corpos x 3 ganchos, saídos do banco que já viralizou. **C4 não precisa de gravação**: é o Reel de 98.288 views com o CTA trocado, que é o caso que o playbook traz como melhor criativo de uma oferta inteira. **C5 está bloqueado** até o Alison dar quanto pagou e por quantos meses na ferramenta que não usava: valor plausível ali seria prova inventada |
 | 3.3 | **Rodar o teste seco de nome** (R$ 200 a 300) | Alison | 3.1, 3.2, Fase 1 | Uma variante vence por conversão, não por CPC |
 | 3.4 | **Ler a origem do tráfego** na planilha e no Events Manager | Claude | 0.2, 3.3 | Sabemos de onde veio cada diagnóstico e cada venda |
 

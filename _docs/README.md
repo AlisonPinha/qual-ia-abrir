@@ -7,6 +7,7 @@ Doc viva do **Qual IA Usar?**. Report encerrado vai para `archive/`.
 | [PLANO-EXECUCAO.md](PLANO-EXECUCAO.md) | A fila única, em 5 fases, com quem faz e o critério de pronto de cada tarefa. **Comece por aqui.** |
 | [DIAGNOSTICO.md](DIAGNOSTICO.md) | O quiz por dentro: fluxo, trilhas, o que cada resposta faz com a stack e onde mexer. **Gerado do `dados.json`, não editar à mão** |
 | [CICLO.md](CICLO.md) | O protocolo de trabalho: verificar, conferir no playbook, fazer, auditar, registrar, próximo. E quando parar |
+| [CRIATIVOS.md](CRIATIVOS.md) | Os 18 anúncios (6 corpos x 3 ganchos) para gravar e soltar no Instagram: gancho literal, corpo em beats, o CTA que casa com o botão da LP e a UTM de cada peça |
 | [STATUS.md](STATUS.md) | Estado do que está no ar, o que foi medido e o handoff da última sessão |
 | [adrs/](adrs/) | Decisões técnicas que não se reabrem sem motivo novo |
 | [audits/](audits/) | A verificação periódica do catálogo, uma por rodada. **Nada dali entra no produto sem o Alison aprovar item a item:** preço errado dentro da entrega paga é reembolso |
