@@ -380,7 +380,8 @@ corpo dele na edição, então grava os corpos e depois os ganchos em sequência
    o corpo, o corte fica visível e a peça inteira se perde.
 2. **Ordem:** C6, C1, C3, C2, C5 (se o número existir), mais os **cinco segundos de
    CTA do C4**, que trocam a fala de "me segue aqui" pelo fecho de anúncio.
-3. Os ganchos por último, os 15 seguidos, lendo do teleprompter. São 7 segundos cada.
+3. Os ganchos por último, seguidos, lendo do teleprompter. São 7 segundos cada. **São 15
+   falados** (os três do C4 são de tela), e **12 enquanto o C5 estiver bloqueado**.
 4. C2 exige a tela gravada antes da fala, porque a fala aponta pro que está na tela.
 5. Áudio em -14 LUFS, e o corte de silêncio pela `edit-reel`, como nos masters anteriores.
 
@@ -408,8 +409,14 @@ checkout da Cakto e pra planilha, então o código do criativo aparece na venda:
 https://diagnostico.noahai.com.br/?utm_source=ig&utm_medium=paid&utm_campaign=stack&utm_content=C1G1
 ```
 
-Trocar só o `utm_content` por peça. No orgânico, `utm_medium=organico`. Sem isso, toda venda
-aparece como direta e a rodada inteira não diz qual criativo pagou por ela.
+Trocar só o `utm_content` por peça. Sem isso, toda venda aparece como direta e a rodada
+inteira não diz qual criativo pagou por ela.
+
+**No orgânico isso não fecha sozinho, e é melhor saber antes:** o link mora na bio, e a bio é
+uma só para todos os Reels. Ou ele troca o `utm_content` da bio a cada peça publicada, e aí a
+atribuição vale enquanto aquele Reel for o do dia, ou os Reels orgânicos sobem todos com
+`utm_medium=organico&utm_content=bio` e o que se lê é o canal, não a peça. **A leitura por
+peça só é limpa no pago**, onde cada anúncio carrega o próprio link.
 
 **O que decide, e não é view:** conversão final, nunca CPC nem retenção. O playbook mede
 headline com 60% de interação convertendo menos que uma de 50%. Quem manda é a venda na
