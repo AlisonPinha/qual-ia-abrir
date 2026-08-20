@@ -315,13 +315,13 @@
         "mes": 130
       },
       "Higgsfield": {
-        "custo": "Plus com 1.000 créditos por R$ 254/mês no anual; Ultra com 3.000 por R$ 669/mês",
-        "faixa": 2,
+        "custo": "Starter com 200 créditos por R$ 78/mês; Plus com 1.000 por R$ 254. Cobrado em dólar, some IOF",
+        "faixa": 1,
         "free": false,
         "verificado": true,
-        "curto": "a partir de R$ 254/mês",
+        "curto": "a partir de R$ 78/mês",
         "vitoria": "imagem no nível do anúncio",
-        "mes": 254
+        "mes": 78
       },
       "Poppy AI": {
         "custo": "R$ 2.068 por ano no Basic, sem teste",
@@ -3216,6 +3216,20 @@
         [
           "Resumo em áudio",
           "Vira as suas fontes numa conversa de dois apresentadores, para ouvir no deslocamento."
+        ]
+      ],
+      "Higgsfield": [
+        [
+          "Soul 2.0",
+          "A imagem fotorrealista mais barata do catálogo dele, e já vem no plano de entrada."
+        ],
+        [
+          "Face e Character Swap",
+          "Troca o rosto ou o personagem de uma imagem que já existe, sem refazer a cena do zero."
+        ],
+        [
+          "O crédito não acumula",
+          "O que sobrar expira no fim do ciclo, então assinar e deixar parado é dinheiro que some."
         ]
       ],
       "ElevenLabs": [
