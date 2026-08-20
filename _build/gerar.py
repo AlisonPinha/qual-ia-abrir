@@ -451,7 +451,9 @@ JS = """
     window.__retomar = () => {};
     for (const b of document.querySelectorAll(".abre-diag"))
       b.addEventListener("click", () => window.__retomar());
-    el("fecha").addEventListener("click", () => modal.close());
+    // o × também passa pela tela de saída: fechar o pop-up é tentar sair, e era o caminho
+    // em que a pessoa sumia sem nem a pergunta
+    el("fecha").addEventListener("click", () => { if (!segurar()) modal.close(); });
 
     // Voltar com o quiz começado mostra o que a pessoa perde, uma vez só. Quem insiste sai:
     // segurar duas vezes deixa de ser retenção e vira sequestro do botão do navegador.
@@ -459,45 +461,53 @@ JS = """
     // e a do fim entrega o código de acesso. Quem já tinha sido segurado na pergunta 5
     // ficava sem o código ao sair no resultado, que é justamente quem mais precisa dele.
     const jaSegurou = { meio: false, pronto: false };
-    window.addEventListener("popstate", () => {
-      noHistorico = false;
-      if (!modal.open) return;
+
+    // A tela de saída, usada pelos dois caminhos de fechar: o gesto de voltar e o ×.
+    // Devolve true quando segurou, e false quando é para deixar sair de vez.
+    const segurar = () => {
       const ret = el("retencao");
       const pronto = !el("resultado").hidden;
       const comecou = document.querySelector("#quiz .passo:not([hidden])")?.dataset.q !== "area"
                    || pronto;
       const momento = pronto ? "pronto" : "meio";
-      if (!ret || jaSegurou[momento] || !comecou) { modal.close(); return; }
+      if (!ret || jaSegurou[momento] || !comecou) return false;
       jaSegurou[momento] = true;
+      el("ret-passo1").hidden = false;
+      el("ret-passo2").hidden = true;
       el("retencao-titulo").textContent = pronto
         ? "O seu diagnóstico já está pronto"
         : "Falta pouco pro seu mapa";
       const contador = window.__contador || "";
+      // nada de "você vai perder tudo": a página guarda as respostas a cada clique, e
+      // assustar com o que não acontece é da mesma família da escassez inventada
       el("retencao-txt").textContent = pronto
         ? "As suas 3 já foram calculadas. Sair agora não apaga nada: as respostas ficam neste aparelho."
         : (contador ? "Você já respondeu " + contador + ". " : "")
           + "Sair agora não apaga nada: as respostas ficam neste aparelho.";
       el("retencao-fica").textContent = pronto ? "Ver o meu resultado" : "Continuar de onde parei";
-      // o código só existe com o quiz inteiro respondido, então quem sai no meio não tem o
-      // que guardar: para essa pessoa a memória deste aparelho já é a rede de segurança.
-      // O WhatsApp é o único app que ela tem nos dois aparelhos, e o link vai com o código
-      // dentro: do outro lado é um toque, sem digitar nada
-      const codigoBloco = el("ret-codigo");
-      if (codigoBloco && pronto && window.__codigo) {
-        el("ret-codigo-valor").textContent = window.__codigo;
-        // o link é o desta página, e não o do /mapa: a entrega não tem paywall, e a única
-        // coisa que a protege é a URL não circular. Mandar o /mapa para quem ainda não
-        // comprou era entregar o produto pago por WhatsApp
-        el("ret-codigo-zap").href = "https://wa.me/?text=" + encodeURIComponent(
-          "O meu diagnóstico do " + PROD + ": " + window.__codigo
+      // o WhatsApp é o único app que a pessoa tem nos dois aparelhos, e o link vai com o
+      // código dentro: do outro lado é um toque, sem digitar nada. O link é o DESTA página,
+      // e não o do /mapa: a entrega não tem paywall, e a única coisa que a protege é a URL
+      // não circular. Mandar o /mapa para quem ainda não comprou era dar o produto pago
+      if (pronto && window.__codigo) {
+        const texto = "O meu diagnóstico do " + PROD + ": " + window.__codigo
           + ". O link abre direto no meu resultado, em qualquer aparelho: "
-          + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo));
-        codigoBloco.hidden = false;
+          + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo);
+        el("ret-codigo-valor").textContent = window.__codigo;
+        el("ret-codigo-zap").href = "https://wa.me/?text=" + encodeURIComponent(texto);
+        el("saida-enviar").href = "https://wa.me/?text=" + encodeURIComponent(texto);
       }
       ret.hidden = false;
       // quem rolou o resultado estava com o topo do pop-up fora da tela, e a retenção nasce
       // lá em cima: sem isto ela aparecia para o código e não para a pessoa
       ret.scrollIntoView({ block: "start" });
+      return true;
+    };
+
+    window.addEventListener("popstate", () => {
+      noHistorico = false;
+      if (!modal.open) return;
+      if (!segurar()) { modal.close(); return; }
       history.pushState({ diag: 1 }, "", location.href);
       noHistorico = true;
     });
@@ -721,8 +731,58 @@ JS = """
 
     const ret = el("retencao");
   if (ret) {
+    const sair = () => { ret.hidden = true; modal.close(); };
     el("retencao-fica").addEventListener("click", () => { ret.hidden = true; });
-    el("retencao-sai").addEventListener("click", () => { ret.hidden = true; modal.close(); });
+
+    // Confirmar a saída com o diagnóstico pronto abre o pedido de contato, que é o último
+    // ponto em que dá para continuar a conversa com quem não comprou. Quem sai no meio do
+    // quiz sai direto: sem as respostas todas não existe código, e pedir o número sem ter
+    // o que entregar seria pedágio.
+    el("retencao-sai").addEventListener("click", () => {
+      if (el("resultado").hidden || !window.__codigo) return sair();
+      el("ret-passo1").hidden = true;
+      el("ret-passo2").hidden = false;
+      ret.scrollIntoView({ block: "start" });
+      el("saida-nome").focus();
+    });
+    el("saida-nao").addEventListener("click", sair);
+
+    // máscara e validação de número brasileiro (10 ou 11 dígitos com DDD)
+    const zapSaida = el("saida-zap");
+    zapSaida.addEventListener("input", () => {
+      const d = zapSaida.value.replace(/\\D/g, "").slice(0, 11);
+      zapSaida.value = d.length > 10 ? `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
+                     : d.length > 6  ? `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
+                     : d.length > 2  ? `(${d.slice(0,2)}) ${d.slice(2)}` : d;
+    });
+
+    // é um link de verdade, com o href já montado: validar aqui e deixar o clique seguir é
+    // o que faz o WhatsApp abrir sem esbarrar no bloqueio de pop-up do celular
+    el("saida-enviar").addEventListener("click", e => {
+      const nome = el("saida-nome").value.trim();
+      const digitos = zapSaida.value.replace(/\\D/g, "");
+      const aviso = el("saida-aviso");
+      if (nome.length < 2) {
+        e.preventDefault();
+        aviso.textContent = "Escreve o seu nome pra eu saber com quem falo.";
+        return;
+      }
+      if (digitos.length < 10) {
+        e.preventDefault();
+        aviso.textContent = "Confere o WhatsApp: faltou dígito ou o DDD.";
+        return;
+      }
+      const { stack, corta } = calcular();
+      enviarLead(MOTOR.analitico, MOTOR, resp, stack, corta, livre, nome, digitos);
+      px("Lead");
+      // a conversa abre em outra aba, então esta fica: quem volta encontra o código na tela,
+      // e não uma janela que sumiu depois de pedir o número dela
+      el("saida-campos").hidden = true;
+      el("saida-titulo").textContent = "Pronto, mandei no seu WhatsApp";
+      el("saida-txt").textContent = "Se a conversa não abrir, o código está aqui embaixo.";
+      el("ret-codigo").hidden = false;
+      el("saida-nao").textContent = "Fechar";
+    });
     // o botão de copiar existia no HTML sem nenhum listener nesta página: clicar não copiava
     // nada e ainda assim parecia ter copiado
     for (const b of ret.querySelectorAll(".m-copiar[data-alvo]")) {
@@ -1188,17 +1248,36 @@ html = f"""<!doctype html>
 
   <div class="modal-corpo">
     <div class="retencao" id="retencao" hidden>
-      <h3 id="retencao-titulo"></h3>
-      <p id="retencao-txt"></p>
-      <button type="button" class="btn-cta" id="retencao-fica">Continuar de onde parei</button>
-      <div class="res-codigo" id="ret-codigo" hidden>
-        <span class="res-codigo-rot">Vai abrir em outro aparelho?</span>
-        <code id="ret-codigo-valor"></code>
-        <button type="button" class="m-copiar" data-alvo="ret-codigo-valor">Copiar</button>
-        <a class="m-copiar" id="ret-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
-        <p class="res-codigo-ajuda">Ele traz as suas respostas de volta, sem refazer nada.</p>
+      <div id="ret-passo1">
+        <h3 id="retencao-titulo"></h3>
+        <p id="retencao-txt"></p>
+        <button type="button" class="btn-cta" id="retencao-fica">Continuar de onde parei</button>
+        <button type="button" class="retencao-sai" id="retencao-sai">Sair mesmo assim</button>
       </div>
-      <button type="button" class="retencao-sai" id="retencao-sai">Sair mesmo assim</button>
+      <div id="ret-passo2" hidden>
+        <h3 id="saida-titulo">Quer o seu diagnóstico no WhatsApp?</h3>
+        <p id="saida-txt">Te mando o link que abre este resultado em qualquer aparelho, sem
+           responder de novo.</p>
+        <div id="saida-campos">
+          <label class="campo-lead">Seu nome
+            <input id="saida-nome" type="text" autocomplete="given-name"
+                   placeholder="Como posso te chamar?"></label>
+          <label class="campo-lead">WhatsApp
+            <input id="saida-zap" type="tel" inputmode="numeric" autocomplete="tel"
+                   placeholder="(11) 99999-0000" maxlength="16"></label>
+          <a class="btn-cta" id="saida-enviar" target="_blank" rel="noopener" href="#">Me manda no WhatsApp</a>
+          <p class="form-aviso" id="saida-aviso">Mando o seu diagnóstico e, de vez em quando, o
+             que eu aprendo sobre IA. É só pedir para parar.</p>
+        </div>
+        <div class="res-codigo" id="ret-codigo" hidden>
+          <span class="res-codigo-rot">O seu código de acesso</span>
+          <code id="ret-codigo-valor"></code>
+          <button type="button" class="m-copiar" data-alvo="ret-codigo-valor">Copiar</button>
+          <a class="m-copiar" id="ret-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
+          <p class="res-codigo-ajuda">Ele traz as suas respostas de volta, sem refazer nada.</p>
+        </div>
+        <button type="button" class="retencao-sai" id="saida-nao">Não, quero sair</button>
+      </div>
     </div>
     <h2 id="modal-titulo" class="modal-h">Qual IA você deveria usar</h2>
     <p class="modal-porque" id="modal-porque">{escape(DG["porque"])}</p>

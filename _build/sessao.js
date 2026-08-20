@@ -112,6 +112,34 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
   } catch (e) { /* nunca atrapalhar o resultado */ }
 }
 
+// Lead da saída: nome e WhatsApp de quem já viu o resultado e está indo embora. Vai pelo
+// mesmo Web App do envio anônimo, que separa por `tipo`, então não depende da CAPTURA_URL:
+// o passo de contato no meio do quiz continua desligado, que é o que o playbook manda.
+// keepalive porque a pessoa clica e sai na sequência.
+function enviarLead(url, MOTOR, resp, stack, corta, livre, nome, whatsapp) {
+  if (!url) return;
+  try {
+    const respostas = {};
+    for (const [q, i] of Object.entries(resp)) {
+      if (q.startsWith("break")) continue;
+      respostas[q] = MOTOR.rotulos[q][i];
+    }
+    fetch(url, {
+      method: "POST", mode: "no-cors", keepalive: true,
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        tipo: "lead", nome, whatsapp,
+        utm: origemTrafego(),
+        respostas,
+        descreveu: Object.values(livre || {}).join(" | "),
+        stack: stack.map(s => s.nome),
+        cortar: corta,
+        ts: new Date().toISOString()
+      })
+    }).catch(() => {});
+  } catch (e) { /* o lead nunca pode travar a saída */ }
+}
+
 // Funil do quiz: onde a pessoa parou. O envio anônimo acima só acontece quando o quiz
 // TERMINA, então quem sai no meio não deixava rastro nenhum e a taxa de saída por
 // pergunta era invisível. Aqui sai uma linha por pessoa, atualizada a cada saída, e quem

@@ -90,19 +90,31 @@ async function responderTudo(page, escopo) {
   await p2.waitForTimeout(400);
   const fim = await p2.evaluate(() => ({
     titulo: document.getElementById('retencao-titulo')?.textContent || '',
-    visivel: !document.getElementById('ret-codigo').hidden,
-    codigo: document.getElementById('ret-codigo-valor')?.textContent || '',
-    zap: document.getElementById('ret-codigo-zap')?.href || '',
+    passo1: !!document.getElementById('ret-passo1')?.offsetParent,
+    codigo: !!document.getElementById('ret-codigo')?.offsetParent,
   }));
-  ok('saída com quiz pronto: código aparece', fim.visivel === true && /^[0-9A-Z-]{8,}$/.test(fim.codigo), fim.codigo);
+  ok('saída com quiz pronto: tela 1 aparece', fim.passo1 === true);
+  ok('saída: fala de diagnóstico pronto', /pronto/i.test(fim.titulo), fim.titulo);
+  ok('saída: código não sai antes do contato', fim.codigo === false);
+
+  // confirmar a saída abre o pedido de WhatsApp. A bateria PARA aqui de propósito: clicar
+  // em "Me manda no WhatsApp" gravaria um lead de teste na planilha de verdade
+  await p2.locator('#retencao-sai').click();
+  await p2.waitForTimeout(300);
+  const contato = await p2.evaluate(() => ({
+    passo2: !!document.getElementById('ret-passo2')?.offsetParent,
+    href: document.getElementById('saida-enviar')?.href || '',
+    campos: !!document.getElementById('saida-nome') && !!document.getElementById('saida-zap'),
+  }));
+  ok('saída: confirmar abre o pedido de contato', contato.passo2 === true && contato.campos === true);
   // o link tem que ser o da LP: /mapa é a entrega paga e não tem paywall, então mandá-lo
   // para quem ainda não comprou seria dar o produto
-  ok('saída: WhatsApp leva a LP, não a entrega', /wa\.me/.test(fim.zap)
-     && /\/\?c=/.test(decodeURIComponent(fim.zap)) && !/\/mapa/.test(decodeURIComponent(fim.zap)), fim.zap.slice(0, 80));
-  ok('saída: fala de diagnóstico pronto', /pronto/i.test(fim.titulo), fim.titulo);
+  ok('saída: o link leva a LP, não a entrega', /wa\.me/.test(contato.href)
+     && /\/\?c=/.test(decodeURIComponent(contato.href))
+     && !/\/mapa/.test(decodeURIComponent(contato.href)), decodeURIComponent(contato.href).slice(0, 90));
 
   // e o link que ela guarda tem que cumprir o que promete: abrir no resultado dela
-  const link = (decodeURIComponent(fim.zap).match(/https?:\/\/[^\s]+/g) || []).pop() || '';
+  const link = (decodeURIComponent(contato.href).match(/https?:\/\/[^\s]+/g) || []).pop() || '';
   const c2b = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const p2b = await c2b.newPage();
   await p2b.goto(link, { waitUntil: 'domcontentloaded' });

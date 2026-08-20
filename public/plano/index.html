@@ -834,6 +834,9 @@ body.travado { overflow: hidden; }
   font-family: inherit; font-size: 13.5px; font-weight: 600; text-decoration: none; }
 .m-copiar:hover { background: rgba(255,255,255,.1); }
 .res-codigo-ajuda { flex: 1 0 100%; font-size: 12.5px; color: var(--cinza-min); margin: 0; line-height: 1.5; }
+/* o display:flex acima vence o hidden do navegador, e sem esta linha o bloco fica visível
+   mesmo escondido: apareceu no print antes de a pessoa dar o contato */
+.res-codigo[hidden] { display: none; }
 /* One Belief: a mesma crença no hero, na entrega e no upsell. Nas páginas de entrega ela vai
    sem o nome do mecanismo, porque elas servem as quatro variantes do teste de nome */
 .crenca { color: #fff; font-weight: 600; }
@@ -1447,6 +1450,34 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
       })
     }).catch(() => {});
   } catch (e) { /* nunca atrapalhar o resultado */ }
+}
+
+// Lead da saída: nome e WhatsApp de quem já viu o resultado e está indo embora. Vai pelo
+// mesmo Web App do envio anônimo, que separa por `tipo`, então não depende da CAPTURA_URL:
+// o passo de contato no meio do quiz continua desligado, que é o que o playbook manda.
+// keepalive porque a pessoa clica e sai na sequência.
+function enviarLead(url, MOTOR, resp, stack, corta, livre, nome, whatsapp) {
+  if (!url) return;
+  try {
+    const respostas = {};
+    for (const [q, i] of Object.entries(resp)) {
+      if (q.startsWith("break")) continue;
+      respostas[q] = MOTOR.rotulos[q][i];
+    }
+    fetch(url, {
+      method: "POST", mode: "no-cors", keepalive: true,
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        tipo: "lead", nome, whatsapp,
+        utm: origemTrafego(),
+        respostas,
+        descreveu: Object.values(livre || {}).join(" | "),
+        stack: stack.map(s => s.nome),
+        cortar: corta,
+        ts: new Date().toISOString()
+      })
+    }).catch(() => {});
+  } catch (e) { /* o lead nunca pode travar a saída */ }
 }
 
 // Funil do quiz: onde a pessoa parou. O envio anônimo acima só acontece quando o quiz
