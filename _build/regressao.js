@@ -115,6 +115,7 @@ async function responderTudo(page, escopo) {
 
   // e o link que ela guarda tem que cumprir o que promete: abrir no resultado dela
   const link = (decodeURIComponent(contato.href).match(/https?:\/\/[^\s]+/g) || []).pop() || '';
+  const codigo = new URL(link).searchParams.get('c') || '';
   const c2b = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const p2b = await c2b.newPage();
   await p2b.goto(link, { waitUntil: 'domcontentloaded' });
@@ -201,9 +202,9 @@ async function responderTudo(page, escopo) {
   const c4 = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const p4 = await c4.newPage();
   p4.on('pageerror', e => erros.push('código: ' + e.message));
-  await p4.goto(`${BASE}/mapa?c=${encodeURIComponent(lp.codigo)}`, { waitUntil: 'domcontentloaded' });
+  await p4.goto(`${BASE}/mapa?c=${encodeURIComponent(codigo)}`, { waitUntil: 'domcontentloaded' });
   const entrou = await esperar(p4, () => document.getElementById('quiz')?.hidden === true, 30000);
-  ok('código na URL abre sem refazer', entrou !== null);
+  ok('código na URL abre sem refazer', entrou !== null && !!codigo, codigo);
 
   // ---------- 5. memória parcial ----------
   const ANTIGA = { v: 1, ts: Date.now(), livre: {}, pids: [], resp: {

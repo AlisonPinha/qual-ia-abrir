@@ -10,6 +10,27 @@ o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso
 venda feita, o checkout do upsell de R$ 130 na Cakto e, desde a sessão da noite, o funil do
 quiz medido pergunta a pergunta.
 
+### Publicado em 20/08, com a bateria inteira verde
+
+Deploy pela CLI, 34 commits enviados ao GitHub (estavam só no disco desde 19/08) e o Apps
+Script na versão 5.
+
+| O que foi medido | Resultado |
+|---|---|
+| Regressão contra produção | **29 de 29**, sem erro de página. O `/mapa` escreveu 8/8 blocos em 26s e a `/plano` os 7 dias em 11s |
+| QA do fluxo novo em produção | **19 de 19**, console limpo |
+| Altura em 360x640 e 390x844 | **9 de 9**: o botão de enviar, o "Não, quero sair" e o bloco do código cabem sem rolar |
+| `/api/cakto` | 405 em GET, 401 sem segredo e com segredo errado, 400 em corpo quebrado |
+| Páginas | LP, `/mapa`, `/plano` e as 3 variantes respondendo 200 |
+
+**No QA de produção o POST do Apps Script e o pixel do Meta ficam bloqueados por rota**, para
+o teste não gravar lead falso na planilha nem sujar o Events Manager com `Lead` de mentira. A
+regressão para antes de enviar o contato pelo mesmo motivo.
+
+**Um teste quebrou e o defeito era dele:** o bloco do código em outro aparelho lia
+`lp.codigo`, que sumiu quando o código saiu da tela de oferta. Passou a ler o código de
+dentro do link da saída, que é onde ele vive agora.
+
 ### 20/08: a saída do quiz virou duas telas, e o que a revisão dos commits achou
 
 **Três coisas que o Alison apontou na tela, e o que elas revelaram por baixo.**
