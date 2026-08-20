@@ -72,13 +72,44 @@ function limparSessao() {
 // Origem do tráfego: o que veio na URL, guardado para a compra que acontece dias
 // depois não aparecer como direta. Last touch: parâmetro novo passa a valer.
 const ORIGEM_CHAVE = "qia:org";
+const CUPOM_CHAVE = "qia:cupom";
+const CUPOM_DIAS = 7;
 
+// O `c` é código de acesso e o `cupom` vira `coupon` mais adiante: nenhum dos dois é origem.
+// Sem tirá-los daqui, quem volta pelo link que guardou no WhatsApp aparece na planilha como
+// se tivesse vindo de uma campanha chamada "c", e o link do checkout sai com o cupom escrito
+// duas vezes, uma delas com o nome que a Cakto não entende.
 function origemTrafego() {
-  const agora = location.search.slice(1);
+  const q = new URLSearchParams(location.search);
+  for (const k of ["c", "cupom", "coupon"]) q.delete(k);
+  const agora = q.toString();
   try {
     if (agora) localStorage.setItem(ORIGEM_CHAVE, agora);
     return agora || localStorage.getItem(ORIGEM_CHAVE) || "";
   } catch (e) { return agora; }        // modo privado: vale só a visita atual
+}
+
+// Cupom pela URL: `?cupom=X` na nossa página vira `coupon=X` no checkout, que é o nome que a
+// Cakto entende (ajuda.cakto.com.br, "checkout pré-preenchido"). Guardado por 7 dias, como
+// no funil de referência: quem chega pelo criativo com cupom e volta dois dias depois pela
+// busca não perde o desconto que foi prometido a ela.
+//
+// Prazo explícito, e não "para sempre": cupom vencido decorando link é promessa que o
+// checkout desmente na cara da pessoa.
+function cupomAtivo() {
+  const daUrl = new URLSearchParams(location.search).get("cupom")
+             || new URLSearchParams(location.search).get("coupon");
+  const limpo = (daUrl || "").trim().toUpperCase().replace(/[^0-9A-Z_-]/g, "").slice(0, 40);
+  try {
+    if (limpo) {
+      localStorage.setItem(CUPOM_CHAVE, JSON.stringify({ c: limpo, ate: Date.now() + CUPOM_DIAS * 864e5 }));
+      return limpo;
+    }
+    const salvo = JSON.parse(localStorage.getItem(CUPOM_CHAVE) || "null");
+    if (salvo && salvo.ate > Date.now()) return salvo.c;
+    if (salvo) localStorage.removeItem(CUPOM_CHAVE);
+  } catch (e) { /* modo privado ou lixo guardado: vale só a URL desta visita */ }
+  return limpo;
 }
 
 // Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:

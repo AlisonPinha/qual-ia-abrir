@@ -420,8 +420,18 @@ JS = """
   const px = ev => window.fbq && fbq("track", ev, {content_name: PROD});
   // a origem viaja junto para a Cakto: sem ela toda venda aparece como direta
   const origem = origemTrafego();
+  // o cupom decora TODOS os links de compra, inclusive os que nascem depois, e aparece na
+  // tela: desconto que só existe dentro do checkout a pessoa não sabe que ganhou
+  const cupom = cupomAtivo();
   for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
     if (origem) a.href += (a.href.includes("?") ? "&" : "?") + origem;
+    if (cupom && !/[?&]coupon=/.test(a.href)) {
+      a.href += (a.href.includes("?") ? "&" : "?") + "coupon=" + encodeURIComponent(cupom);
+      const aviso = document.createElement("p");
+      aviso.className = "cupom-aviso";
+      aviso.textContent = "Cupom " + cupom + " aplicado no checkout.";
+      a.insertAdjacentElement("afterend", aviso);
+    }
     a.addEventListener("click", () => {
       px("InitiateCheckout");
       // O checkout abre em outra aba, então esta continua viva. É aqui que o código deixa de
