@@ -19,6 +19,32 @@ primeira venda (de teste) está feita e o funil do quiz é medido pergunta a per
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
 saiu e a versão de 19/08 virou seção histórica, com o nome do que ela conta.
 
+### Os CTAs unificados, e os dois defeitos que só o print pegou
+
+**Decisão do Alison depois da auditoria:** todo CTA que abre o diagnóstico passa a dizer
+**"Descobrir a minha stack"**. Eram seis textos diferentes na mesma página, e o playbook pede
+que o CTA do criativo case palavra por palavra com a primeira tela.
+
+**O que ficou de fora da unificação, de propósito:** o `V["headline"]` da seção do diagnóstico,
+que é a única peça que muda por variante ("Descubra quais são as suas 3 IAs", "3 abas", "a sua
+stack mínima"). Ele **é** o teste de nome: unificar mataria a peça que o teste mede.
+
+**Duas voltas de QA, dois defeitos diferentes, os dois invisíveis para teste verde:**
+
+| Volta | O que os testes disseram | O que o print mostrou |
+|---|---|---|
+| 1 | 12 de 12 | A marca "qual ia abrir" quebrou em **três linhas** no header a 360px: o `.btn-nav` é `nowrap` e o CTA maior empurrou a marca, que não era. Medido contra produção: 126x26px lá, 71x69px aqui |
+| 2 | 12 de 12 | Com `white-space: nowrap` na marca, o **botão passou a vazar pela borda direita** (folga de -30px a 360px e 0px a 390px). A causa é espaço, não quebra de linha: em tela estreita não cabem os dois inteiros |
+| 3 | **7 de 7** em 360, 375, 390, 414, 430, 768 e 1280 | Aprovado. Folga de 11px em todas |
+
+**A saída:** o nome da marca ganhou um `<span>` e sai da barra abaixo de 420px, ficando só a
+bolha. O CTA acima da dobra é o que o playbook trata como crítico; a marca do topo não. No
+rodapé ela continua inteira.
+
+**A lição, que vale para qualquer texto de botão:** trocar a copy de um botão é mudança de
+layout. O `.btn-nav` sendo `nowrap` e a `.marca` não é uma assimetria que só aparece quando o
+texto cresce, e nenhum dos dois defeitos gera erro de console ou teste vermelho.
+
 ### Publicado em 20/08 à tarde, com a auditoria de playbook junto
 
 Deploy pela CLI depois da troca do preço pela vitória. **Zero "US$" nas seis páginas de

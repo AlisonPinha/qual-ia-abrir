@@ -955,13 +955,13 @@ html = f"""<!doctype html>
 
 <nav class="nav">
   <div class="nav-in">
-    <span class="marca"><span class="bolha">?</span> {escape(V["marca"])}</span>
+    <span class="marca"><span class="bolha">?</span> <span class="marca-nome">{escape(V["marca"])}</span></span>
     <div class="nav-links">
       <a href="#diagnostico">Diagnóstico</a>
       <a href="#oferta">O que vem</a>
       <a href="#prova">Resultados</a>
     </div>
-    <a class="btn-nav abre-diag" href="#diagnostico">Minha stack →</a>
+    <a class="btn-nav abre-diag" href="#diagnostico">Descobrir a minha stack →</a>
   </div>
 </nav>
 
@@ -1115,7 +1115,7 @@ html = f"""<!doctype html>
     <div class="casos">{casos}</div>
     <div class="outros-pedidos">{outros}</div>
     <div class="acoes" style="justify-content:center;margin-top:30px">
-      <a class="btn btn-p abre-diag" href="#diagnostico">Ver a resposta do meu caso →</a>
+      <a class="btn btn-p abre-diag" href="#diagnostico">Descobrir a minha stack →</a>
     </div>
   </div>
 </section>
@@ -1149,7 +1149,7 @@ html = f"""<!doctype html>
         <h3>Para de assinar IA que você não usa.</h3>
         <p>O diagnóstico diz quais três valem pro seu trabalho e orçamento, e o que cortar agora.</p>
       </div>
-      <a class="btn btn-p abre-diag" href="#diagnostico">Fazer o diagnóstico →</a>
+      <a class="btn btn-p abre-diag" href="#diagnostico">Descobrir a minha stack →</a>
     </div>
   </div>
 </section>
@@ -1280,7 +1280,7 @@ html = f"""<!doctype html>
   <div class="env">
     <div class="rodape-topo">
       <div class="rodape-marca">
-        <span class="marca"><span class="bolha">?</span> {escape(V["marca"])}</span>
+        <span class="marca"><span class="bolha">?</span> <span class="marca-nome">{escape(V["marca"])}</span></span>
         <p>O mapa que diz qual IA abrir pra cada tarefa do seu trabalho, e o prompt exato
            pra pedir. Feito por quem usa IA em projeto de cliente todo dia.</p>
         <div class="rodape-selos">
@@ -1292,7 +1292,7 @@ html = f"""<!doctype html>
         <a href="#pedidos">Pra que serve</a>
         <a href="#oferta">O que vem no mapa</a>
         <a href="#prova">Quanto custa errar</a>
-        <a class="abre-diag" href="#diagnostico">Fazer o diagnóstico</a>
+        <a class="abre-diag" href="#diagnostico">Descobrir a minha stack</a>
       </div>
       <div class="rodape-col">
         <b>Dúvidas</b>

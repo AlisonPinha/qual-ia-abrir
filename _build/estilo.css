@@ -63,7 +63,10 @@ a { color: inherit; text-decoration: none; }
   background: rgba(14, 11, 20, .72);
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
 }
-.marca { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+.marca { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px; letter-spacing: -.01em;
+  /* o .btn-nav é nowrap: sem isto, um CTA mais longo empurra a marca e ela quebra em
+     três linhas no Android pequeno, medido em 360px */
+  white-space: nowrap; }
 .marca .bolha {
   width: 26px; height: 26px; border-radius: 8px; background: var(--grad);
   display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #12101a;
@@ -80,6 +83,12 @@ a { color: inherit; text-decoration: none; }
   .nav-links { display: none; }
   .nav-in { margin-inline: auto; justify-content: space-between; padding-left: 18px; }
   .btn-nav { margin-left: auto; padding: 10px 16px; font-size: 13px; }
+}
+/* Abaixo disto a marca inteira e o CTA não cabem na mesma barra, e o botão vazava pela
+   borda direita (medido em 360px e em 390px). Some o nome, fica a bolha: o CTA acima da
+   dobra é o que o playbook trata como crítico, a marca do topo não. No rodapé ela fica. */
+@media (max-width: 420px) {
+  .nav-in .marca-nome { display: none; }
 }
 
 /* ---------- hero ---------- */

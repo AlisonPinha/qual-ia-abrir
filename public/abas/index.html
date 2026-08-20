@@ -109,7 +109,10 @@ a { color: inherit; text-decoration: none; }
   background: rgba(14, 11, 20, .72);
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
 }
-.marca { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+.marca { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px; letter-spacing: -.01em;
+  /* o .btn-nav é nowrap: sem isto, um CTA mais longo empurra a marca e ela quebra em
+     três linhas no Android pequeno, medido em 360px */
+  white-space: nowrap; }
 .marca .bolha {
   width: 26px; height: 26px; border-radius: 8px; background: var(--grad);
   display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #12101a;
@@ -126,6 +129,12 @@ a { color: inherit; text-decoration: none; }
   .nav-links { display: none; }
   .nav-in { margin-inline: auto; justify-content: space-between; padding-left: 18px; }
   .btn-nav { margin-left: auto; padding: 10px 16px; font-size: 13px; }
+}
+/* Abaixo disto a marca inteira e o CTA não cabem na mesma barra, e o botão vazava pela
+   borda direita (medido em 360px e em 390px). Some o nome, fica a bolha: o CTA acima da
+   dobra é o que o playbook trata como crítico, a marca do topo não. No rodapé ela fica. */
+@media (max-width: 420px) {
+  .nav-in .marca-nome { display: none; }
 }
 
 /* ---------- hero ---------- */
@@ -1099,13 +1108,13 @@ body.travado { overflow: hidden; }
 
 <nav class="nav">
   <div class="nav-in">
-    <span class="marca"><span class="bolha">?</span> método das 3 abas</span>
+    <span class="marca"><span class="bolha">?</span> <span class="marca-nome">método das 3 abas</span></span>
     <div class="nav-links">
       <a href="#diagnostico">Diagnóstico</a>
       <a href="#oferta">O que vem</a>
       <a href="#prova">Resultados</a>
     </div>
-    <a class="btn-nav abre-diag" href="#diagnostico">Minha stack →</a>
+    <a class="btn-nav abre-diag" href="#diagnostico">Descobrir a minha stack →</a>
   </div>
 </nav>
 
@@ -1259,7 +1268,7 @@ body.travado { overflow: hidden; }
     <div class="casos"><article class="caso"><span class="caso-tag">Saúde e consultório</span><h3>O prontuário que sobra pro fim do dia</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:08</span></div><p class="caso-fala">“Preciso evoluir o prontuário e escrever o encaminhamento sem levar isso pra casa”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Jurídico</span><h3>As 300 páginas que chegaram hoje</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:09</span></div><p class="caso-fala">“Chegou um processo de trezentas páginas e a audiência é quinta, preciso do que interessa”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Contábil e financeiro</span><h3>O fechamento que repete igual todo mês</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:07</span></div><p class="caso-fala">“Todo mês eu refaço o mesmo relatório pra cada cliente, muda só o número”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article><article class="caso"><span class="caso-tag">Do dia a dia</span><h3>A passagem que fica mais barata depois que você compra</h3><div class="audio"><span class="play">▶</span><span class="onda"><i style="height:7px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:22px"></i><i style="height:14px"></i><i style="height:26px"></i><i style="height:11px"></i><i style="height:19px"></i><i style="height:8px"></i><i style="height:24px"></i><i style="height:16px"></i><i style="height:10px"></i><i style="height:21px"></i><i style="height:13px"></i><i style="height:6px"></i><i style="height:17px"></i><i style="height:23px"></i><i style="height:9px"></i><i style="height:12px"></i></span><span class="dur">0:06</span></div><p class="caso-fala">“Quero a passagem mais barata pra novembro sem abrir dez abas e sem ficar olhando todo dia”</p><div class="caso-resp"><span class="linha-r"><b>Ferramenta</b><i></i></span><span class="linha-r"><b>Prompt pronto</b><i class="i2"></i></span><span class="selo-mapa">🔒 no seu mapa</span></div></article></div>
     <div class="outros-pedidos"><span>Achar hospedagem sem pagar a mais</span><span>Comparar preço antes de comprar</span><span>Planejar a viagem inteira sem dez abas</span><span>Escrever o e-mail difícil pro chefe</span><span>Resumir um PDF de 80 páginas</span><span>Montar a apresentação de amanhã</span><span>Responder cliente no WhatsApp</span><span>Imagem que não pareça feita por IA</span><span>Revisar contrato antes de assinar</span><span>Fazer um site sem programar</span><span>Organizar a minha semana</span></div>
     <div class="acoes" style="justify-content:center;margin-top:30px">
-      <a class="btn btn-p abre-diag" href="#diagnostico">Ver a resposta do meu caso →</a>
+      <a class="btn btn-p abre-diag" href="#diagnostico">Descobrir a minha stack →</a>
     </div>
   </div>
 </section>
@@ -1293,7 +1302,7 @@ body.travado { overflow: hidden; }
         <h3>Para de assinar IA que você não usa.</h3>
         <p>O diagnóstico diz quais três valem pro seu trabalho e orçamento, e o que cortar agora.</p>
       </div>
-      <a class="btn btn-p abre-diag" href="#diagnostico">Fazer o diagnóstico →</a>
+      <a class="btn btn-p abre-diag" href="#diagnostico">Descobrir a minha stack →</a>
     </div>
   </div>
 </section>
@@ -1424,7 +1433,7 @@ body.travado { overflow: hidden; }
   <div class="env">
     <div class="rodape-topo">
       <div class="rodape-marca">
-        <span class="marca"><span class="bolha">?</span> método das 3 abas</span>
+        <span class="marca"><span class="bolha">?</span> <span class="marca-nome">método das 3 abas</span></span>
         <p>O mapa que diz qual IA abrir pra cada tarefa do seu trabalho, e o prompt exato
            pra pedir. Feito por quem usa IA em projeto de cliente todo dia.</p>
         <div class="rodape-selos">
@@ -1436,7 +1445,7 @@ body.travado { overflow: hidden; }
         <a href="#pedidos">Pra que serve</a>
         <a href="#oferta">O que vem no mapa</a>
         <a href="#prova">Quanto custa errar</a>
-        <a class="abre-diag" href="#diagnostico">Fazer o diagnóstico</a>
+        <a class="abre-diag" href="#diagnostico">Descobrir a minha stack</a>
       </div>
       <div class="rodape-col">
         <b>Dúvidas</b>
