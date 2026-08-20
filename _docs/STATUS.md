@@ -10,6 +10,45 @@ o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso
 venda feita, o checkout do upsell de R$ 130 na Cakto e, desde a sessão da noite, o funil do
 quiz medido pergunta a pergunta.
 
+### O checkout, ajustado em 20/08 depois do teste de ponta a ponta
+
+Duas coisas que só apareceram ao rodar o fluxo inteiro como lead, no navegador.
+
+**1. O padrão era Cartão de Crédito, e virou PIX.** Em Produtos → Configurações existe
+"Método de pagamento padrão do Checkout". A mesma tela mostra o líquido de cada meio, e a
+diferença não é pequena:
+
+| Meio | Taxa | Líquido sobre R$ 66,01 | Recebimento |
+|---|---|---|---|
+| **Pix** | **0% + R$ 2,49** | **R$ 63,52** | **1 dia** |
+| Cartão | 4,99% + R$ 2,49 | R$ 60,23 | 15 dias |
+| Apple/Google Pay | 8,99% + R$ 2,49 | R$ 57,59 | 30 dias |
+
+**2. A taxa de serviço de R$ 0,99 não é desligável, e o preço absorveu ela.** Ela é cobrada
+do comprador em **todo** meio, inclusive Pix, e não existe chave para ela em nenhuma tela do
+painel: produto (Geral, Configurações, oferta), Checkout Builder, Financeiro e Planos e
+Taxas foram percorridos. A saída, decidida pelo Alison: **baixar o preço para R$ 66,01**, e
+o total volta a ser exatamente os R$ 67 que a LP promete. O upsell foi junto: R$ 129,01 mais
+a taxa fecha R$ 130.
+
+**Os cinco produtos ficaram iguais**, e isso importa para o teste de nome: variante que
+compara preço diferente não mede nome, mede preço.
+
+| Produto | Preço | Padrão | Total no checkout |
+|---|---|---|---|
+| Qual IA Usar? (controle) | R$ 66,01 | PIX | **R$ 67,00** |
+| Método das 3 Abas | R$ 66,01 | PIX | R$ 67,00 |
+| Regra das 3 IAs | R$ 66,01 | PIX | R$ 67,00 |
+| Stack Mínima | R$ 66,01 | PIX | R$ 67,00 |
+| Sua primeira semana pronta | R$ 129,01 | PIX | **R$ 130,00** |
+
+**Nada muda no código:** a LP continua anunciando R$ 67 e o upsell R$ 130, que é o que a
+pessoa paga. O que muda é o líquido, que cai R$ 0,99 por venda, porque a taxa saiu do bolso
+do comprador e entrou no seu.
+
+**Efeito colateral aceito:** o resumo do pedido mostra "R$ 66,01" na linha do item e o
+redondo só no Total.
+
 ### GA4 no ar em 20/08, e a armadilha de medir com navegador headless
 
 Propriedade **Qual IA Usar**, `G-J1383RJMK8`, criada dentro da conta **FESTIVAL HIT
