@@ -436,8 +436,8 @@ que funciona no orgânico funciona no pago. Um por dia, na ordem C4, C1, C6, C3,
 Reel manter as curtidas e os comentários que ganhou no orgânico.
 
 **As cinco variáveis do protocolo, que precisam estar todas de pé antes de julgar a oferta:**
-ticket no menor valor plausível (R$ 67, feito), **duas contas de anúncio no mínimo** (é a
-tarefa 3.1 e ainda não existe), ABO e CBO, **três dias rodando, nunca um**, e os 6 corpos x 3
+ticket no menor valor plausível (R$ 67, feito), **duas contas de anúncio no mínimo**
+(confirmadas pelo Alison em 20/08), ABO e CBO, **três dias rodando, nunca um**, e os 6 corpos x 3
 ganchos (é este documento).
 
 **A UTM de cada peça, e ela não é opcional.** A LP guarda a query inteira e leva junto pro
@@ -472,6 +472,6 @@ problema não é o banner do checkout.
   peças apontam para a variante controle. O nome se testa depois, com o corpo que ganhar,
   gravado quatro vezes trocando só a palavra do mecanismo.
 - **C5 está bloqueado** até o Alison dar o valor e o tempo reais.
-- **A segunda conta de anúncio não existe** (tarefa 3.1), e o playbook é categórico em que
-  conta ruim mata oferta boa.
+- ~~**A segunda conta de anúncio não existe**~~ **resolvido em 20/08:** o Alison confirmou
+  que já tem a segunda conta; a tarefa 3.1 não bloqueia mais o teste.
 - **Gravação é do Alison.** Roteiro pronto não é criativo, é papel.
