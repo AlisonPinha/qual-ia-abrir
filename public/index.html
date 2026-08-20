@@ -883,11 +883,6 @@ body.travado { overflow: hidden; }
 /* o display:flex acima vence o hidden do navegador, e sem esta linha o bloco fica visível
    mesmo escondido: apareceu no print antes de a pessoa dar o contato */
 .res-codigo[hidden] { display: none; }
-/* cupom pela URL: discreto, colado no botão que ele desconta. Duas cores porque os botões
-   de compra vivem em fundos opostos, e o roxo claro não passa de 2,7:1 sobre card branco */
-.cupom-aviso { margin: 9px 0 0; text-align: center; font-size: 13px; font-weight: 600;
-  color: var(--roxo); }
-.res-oferta .cupom-aviso, .sec-claro .cupom-aviso { color: var(--roxo-escuro); }
 /* One Belief: a mesma crença no hero, na entrega e no upsell. Nas páginas de entrega ela vai
    sem o nome do mecanismo, porque elas servem as quatro variantes do teste de nome */
 .crenca { color: #fff; font-weight: 600; }
@@ -1385,7 +1380,7 @@ body.travado { overflow: hidden; }
           <span class="valor"><b>R$</b>67</span>
           <span class="unico">pagamento único</span>
         </div>
-        <a class="btn-cta" href="https://pay.cakto.com.br/3fxqxg5_1049811" target="_blank" rel="noopener">Quero a minha stack por R$ 67 →</a>
+        <a class="btn-cta" href="https://pay.cakto.com.br/3fxqxg5_1049811" target="_blank" rel="noopener" data-pronto="Quero a minha stack por R$ 67 →">Fazer o diagnóstico e desbloquear por R$ 67 →</a>
         <p class="form-aviso">Pagamento único, acesso imediato e 7 dias de garantia.</p>
         <div class="garantias"><span>Pagamento único</span><span>7 dias de garantia</span><span>Acesso imediato</span></div>
       </div>
@@ -1834,45 +1829,29 @@ function limparSessao() {
 // Origem do tráfego: o que veio na URL, guardado para a compra que acontece dias
 // depois não aparecer como direta. Last touch: parâmetro novo passa a valer.
 const ORIGEM_CHAVE = "qia:org";
-const CUPOM_CHAVE = "qia:cupom";
-const CUPOM_DIAS = 7;
+const PARAMETROS_ORIGEM = [
+  "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"
+];
 
-// `c` é o código do diagnóstico, `sck` leva código + claim à Cakto e `cupom` vira `coupon`:
-// nenhum deles é origem de tráfego.
-// Sem tirá-los daqui, quem volta pelo link que guardou no WhatsApp aparece na planilha como
-// se tivesse vindo de uma campanha chamada "c", e o link do checkout sai com o cupom escrito
-// duas vezes, uma delas com o nome que a Cakto não entende.
-function origemTrafego() {
-  const q = new URLSearchParams(location.search);
-  for (const k of ["c", "sck", "cupom", "coupon"]) q.delete(k);
-  const agora = q.toString();
-  try {
-    if (agora) localStorage.setItem(ORIGEM_CHAVE, agora);
-    return agora || localStorage.getItem(ORIGEM_CHAVE) || "";
-  } catch (e) { return agora; }        // modo privado: vale só a visita atual
+// Só atribuição reconhecida viaja para a Cakto. O código do diagnóstico e qualquer outro
+// parâmetro da página ficam de fora, para um link compartilhado não virar campanha por engano.
+function filtrarOrigem(busca = "") {
+  const entrada = new URLSearchParams(busca);
+  const saida = new URLSearchParams();
+  for (const k of PARAMETROS_ORIGEM) {
+    for (const valor of entrada.getAll(k)) saida.append(k, valor);
+  }
+  return saida.toString();
 }
 
-// Cupom pela URL: `?cupom=X` na nossa página vira `coupon=X` no checkout, que é o nome que a
-// Cakto entende (ajuda.cakto.com.br, "checkout pré-preenchido"). Guardado por 7 dias, como
-// no funil de referência: quem chega pelo criativo com cupom e volta dois dias depois pela
-// busca não perde o desconto que foi prometido a ela.
-//
-// Prazo explícito, e não "para sempre": cupom vencido decorando link é promessa que o
-// checkout desmente na cara da pessoa.
-function cupomAtivo() {
-  const daUrl = new URLSearchParams(location.search).get("cupom")
-             || new URLSearchParams(location.search).get("coupon");
-  const limpo = (daUrl || "").trim().toUpperCase().replace(/[^0-9A-Z_-]/g, "").slice(0, 40);
+function origemTrafego() {
+  const agora = filtrarOrigem(location.search);
   try {
-    if (limpo) {
-      localStorage.setItem(CUPOM_CHAVE, JSON.stringify({ c: limpo, ate: Date.now() + CUPOM_DIAS * 864e5 }));
-      return limpo;
-    }
-    const salvo = JSON.parse(localStorage.getItem(CUPOM_CHAVE) || "null");
-    if (salvo && salvo.ate > Date.now()) return salvo.c;
-    if (salvo) localStorage.removeItem(CUPOM_CHAVE);
-  } catch (e) { /* modo privado ou lixo guardado: vale só a URL desta visita */ }
-  return limpo;
+    if (agora) localStorage.setItem(ORIGEM_CHAVE, agora);
+    const salvo = filtrarOrigem(localStorage.getItem(ORIGEM_CHAVE) || "");
+    if (!agora && salvo) localStorage.setItem(ORIGEM_CHAVE, salvo);
+    return agora || salvo;
+  } catch (e) { return agora; }        // modo privado: vale só a visita atual
 }
 
 // Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:
@@ -2010,19 +1989,23 @@ function rastrearFunil(url, origem, estado) {
   const ga = (ev, extra) => window.gtag && gtag("event", ev, Object.assign({ variante: PROD }, extra || {}));
   // a origem viaja junto para a Cakto: sem ela toda venda aparece como direta
   const origem = origemTrafego();
-  // o cupom decora TODOS os links de compra, inclusive os que nascem depois, e aparece na
-  // tela: desconto que só existe dentro do checkout a pessoa não sabe que ganhou
-  const cupom = cupomAtivo();
+  let abrirDiagnostico = () => {};
+  const checkoutComDiagnostico = a => {
+    try {
+      return /^qia2_.{8,}\.[A-Za-z0-9_-]{20,}$/.test(new URL(a.href).searchParams.get("sck") || "");
+    } catch (_) { return false; }
+  };
   for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
     if (origem) a.href += (a.href.includes("?") ? "&" : "?") + origem;
-    if (cupom && !/[?&]coupon=/.test(a.href)) {
-      a.href += (a.href.includes("?") ? "&" : "?") + "coupon=" + encodeURIComponent(cupom);
-      const aviso = document.createElement("p");
-      aviso.className = "cupom-aviso";
-      aviso.textContent = "Cupom " + cupom + " aplicado no checkout.";
-      a.insertAdjacentElement("afterend", aviso);
-    }
-    a.addEventListener("click", () => {
+    a.addEventListener("click", e => {
+      // Comprar antes de responder cria um pedido sem diagnóstico, perde o acesso automático
+      // e obriga o cliente a refazer o quiz depois de pagar. O checkout só abre quando o sck
+      // já leva código + claim; antes disso, o mesmo clique começa ou retoma o diagnóstico.
+      if (!checkoutComDiagnostico(a)) {
+        e.preventDefault();
+        abrirDiagnostico(e);
+        return;
+      }
       px("InitiateCheckout");
       ga("iniciou_checkout", { currency: "BRL" });
     });
@@ -2049,6 +2032,7 @@ function rastrearFunil(url, origem, estado) {
       if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();
     };
+    abrirDiagnostico = abrir;
     for (const b of document.querySelectorAll(".abre-diag")) b.addEventListener("click", abrir);
     // quem já respondeu parte e voltou não recomeça do zero: o quiz retoma na primeira
     // pergunta sem resposta, e quem já tinha terminado cai direto no resultado
@@ -2205,6 +2189,8 @@ function rastrearFunil(url, origem, estado) {
           if (claim) url.searchParams.set("sck", "qia2_" + codigo + "." + claim);
           a.href = url.toString();
         }
+        const ofertaPronta = document.querySelector("#oferta [data-pronto]");
+        if (ofertaPronta) ofertaPronta.textContent = ofertaPronta.dataset.pronto;
       }
 
       el("res-stack").innerHTML = stack.map((s, i) => `

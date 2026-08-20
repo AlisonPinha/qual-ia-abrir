@@ -209,7 +209,7 @@ se mover o arquivo, conferir se os logos ainda aparecem na imagem.
 
 A fila com quem faz e critério de pronto é o `_docs/PLANO-EXECUCAO.md`, e o estado do que está
 no ar é o `_docs/STATUS.md`. Em 20/08/2026, o que sobrou **não depende de código**: de que
-número sai o WhatsApp, criar o cupom e o produto de R$ 47 no painel da Cakto, gravar a VSL,
+número sai o WhatsApp, criar o produto de R$ 47 no painel da Cakto, gravar a VSL,
 revisar a voz dos 7 dias, trocar a chave da Anthropic, e o que só o tráfego resolve.
 
 Três itens que este arquivo listava e já estão resolvidos, para ninguém refazer: o **Web

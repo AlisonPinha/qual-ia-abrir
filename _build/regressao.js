@@ -2,8 +2,8 @@
 //
 // Uso: cd ~/.claude/skills/playwright-skill && node run.js _build/regressao.js
 //
-// Cobre: quiz da LP, teaser em silhueta, código do diagnóstico, botão do WhatsApp, checkout
-// com UTM + sck, bloqueio sem sessão, tela pós-compra do upsell, entrega do /mapa com IA,
+// Cobre: quiz da LP, teaser em silhueta, código do diagnóstico, botão do WhatsApp, bloqueio
+// do checkout antes do quiz, checkout com UTM + sck, paywall, pós-compra e entrega com IA,
 // CTA de ascensão, formulário do presente, respostas em outro aparelho, memória parcial e
 // a /plano inteira, incluindo o material rodado.
 //
@@ -57,25 +57,35 @@ async function responderTudo(page, escopo) {
   const c1 = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const p1 = await c1.newPage();
   p1.on('pageerror', e => erros.push('LP: ' + e.message));
-  await p1.goto(BASE + '/?utm_source=regressao', { waitUntil: 'domcontentloaded' });
-  await p1.locator('.abre-diag').first().click();
+  await p1.goto(BASE + '/?utm_source=regressao&desconto_antigo=IGNORAR', { waitUntil: 'domcontentloaded' });
+  const paginasAntes = c1.pages().length;
+  await p1.locator('#oferta a[href*="pay.cakto"]').click();
   await p1.waitForTimeout(400);
+  const antesDoQuiz = await p1.evaluate(() => ({
+    modal: document.getElementById('modal')?.open === true,
+    checkout: document.querySelector('#oferta a[href*="pay.cakto"]')?.href || '',
+  }));
+  ok('LP: comprar antes do diagnóstico abre o quiz', antesDoQuiz.modal
+     && c1.pages().length === paginasAntes && !/[?&]sck=/.test(antesDoQuiz.checkout));
   const cliques = await responderTudo(p1, '#modal');
   await p1.waitForTimeout(900);
   const lp = await p1.evaluate(() => ({
     titulo: document.getElementById('res-titulo')?.textContent?.trim(),
     codigoNaOferta: !!document.getElementById('res-codigo'),
     checkout: document.querySelector('a[href*="pay.cakto"]')?.href || '',
+    ctaOferta: document.querySelector('#oferta a[href*="pay.cakto"]')?.textContent?.trim() || '',
     silhueta: document.querySelectorAll('#res-stack .oculto').length,
   }));
   ok('LP: quiz completa', cliques >= 14, `${cliques} cliques`);
   ok('LP: resultado aparece', /stack/i.test(lp.titulo || ''), lp.titulo);
   ok('LP: teaser em silhueta', lp.silhueta === 3, `${lp.silhueta} cards ocultos`);
+  ok('LP: CTA de preço vira compra depois do diagnóstico', /^Quero a minha stack/.test(lp.ctaOferta), lp.ctaOferta);
   // o código ao lado do preço convidava a adiar a compra: ele só aparece para quem sai
   ok('LP: código fora da oferta', lp.codigoNaOferta === false);
   const checkoutLp = new URL(lp.checkout);
   ok('LP: checkout leva UTM e diagnóstico no sck', checkoutLp.searchParams.get('utm_source') === 'regressao'
      && /^qia2_.{8,}\.[A-Za-z0-9_-]{20,}$/.test(checkoutLp.searchParams.get('sck') || ''));
+  ok('LP: parâmetro estranho não viaja ao checkout', !checkoutLp.searchParams.has('desconto_antigo'));
 
   // ---------- 2. saída: a retenção guarda as respostas, não o acesso pago ----------
   const c2 = await browser.newContext({ viewport: { width: 390, height: 844 } });

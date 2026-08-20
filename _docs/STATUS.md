@@ -40,13 +40,30 @@ anteriores. Deploy e links precisam voltar juntos.
 
 **Estado em produção depois desta migração:** LP em 4 variantes, `/mapa` com a IA redigindo e vendendo
 o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a saída em duas
-telas com pedido de contato, cupom pela URL, GA4 medindo e o checkout com Pix no padrão. A
+telas com pedido de contato, GA4 medindo e o checkout com Pix no padrão. A
 primeira venda (de teste) está feita e o funil do quiz é medido pergunta a pergunta.
+
+### Revisão do caminho do lead em 20/08
+
+O checkout agora só abre depois de o diagnóstico estar completo e de o link carregar um `sck`
+válido. Antes disso, o CTA de preço diz "Fazer o diagnóstico e desbloquear" e o clique abre ou
+retoma o quiz. Isso elimina o pedido sem diagnóstico, preserva o acesso automático no aparelho
+da compra e impede que o cliente pague para depois encontrar "Responde de novo". Só o clique
+que realmente abre a Cakto dispara `InitiateCheckout`.
+
+Descontos por parâmetro de URL foram removidos do gerador, do armazenamento local, da interface
+e dos links da Cakto. A origem agora usa uma lista fechada das cinco UTMs, `fbclid` e `gclid`;
+qualquer outro parâmetro fica fora do checkout.
+
+**Ajuste adiado por decisão do Alison:** a saída ainda diz que mandou o diagnóstico no WhatsApp,
+mas hoje só abre uma mensagem pronta. A copy e o envio real ficam para 21/08, quando houver uma
+instância disponível. Não confundir essa captura de saída com a entrega paga, que já funciona
+pela Cakto e por `/acesso`.
 
 **Conferido de novo no fim de 20/08:** o build é determinístico (regerar as 4 LPs, o `/mapa`, o
 `/plano` e a doc do quiz deixa o `git status` limpo), `node _build/testar_motor.mjs` responde
-`ok` com as 13 ferramentas alcançáveis, e as seis páginas de produção respondem 200, com
-`/api/cakto` e `/api/mapa` em 405 no GET.
+`ok` com as 12 ferramentas alcançáveis; as quatro LPs e `/acesso` respondem 200, `/mapa` e
+`/plano` sem sessão redirecionam, e `/api/cakto` e `/api/mapa` ficam em 405 no GET.
 
 **Este arquivo tinha 129 linhas duplicadas byte a byte** (o bloco de 20/08 aparecia duas vezes)
 e duas seções chamadas "A próxima sessão começa por aqui" dizendo coisas diferentes. A cópia
@@ -423,14 +440,13 @@ vazia, com o cabeçalho certo, esperando o primeiro lead de verdade.
 checkout com Pix no padrão e total redondo. O fluxo inteiro foi percorrido como lead, no
 navegador, e passou de ponta a ponta.
 
-**Nada na fila depende só do Claude.** As três coisas que destravam trabalho de verdade são
+**Nada na fila depende só do Claude.** As duas coisas que destravam trabalho de verdade são
 decisões suas:
 
 | O que | Destrava |
 |---|---|
-| **De que número sai o WhatsApp** | a entrega automática (2.12 parte 3), a recuperação de cobrança (2.5) e a única forma de travar o `/mapa`, porque hoje o acesso é um link fixo igual para todo mundo |
+| **De que número sai o WhatsApp** | o envio verdadeiro na saída e a recuperação de cobrança; segurança e entrega paga já não dependem disso |
 | **Criar o produto de R$ 47 na Cakto** | o downsell (4.10), já decidido: só os 7 dias, para quem recusa o upsell. O caminho de construção está neste plano |
-| **Criar um cupom no painel da Cakto** | o 4.9 já está no ar, mas sem cupom cadastrado a plataforma ignora o parâmetro |
 
 **Também esperando você:** gravar a VSL, revisar a voz dos 7 dias, trocar a chave da Anthropic
 e colher o depoimento da compradora de 19/08. **O bloco de 1:26 já foi corrigido no roteiro do
@@ -1133,7 +1149,6 @@ Serve de referência para os próximos passos:
 - **Planos:** mensal R$ 59,90 e anual R$ 358,80 (12x de R$ 29,90). O "R$ 29,90" da LP é o anual parcelado.
 - **Beacon próprio de funil:** `POST /api/assinar/funil-visita-site`, 1x por sessão, `sendBeacon` com fallback. Não dependem só de Pixel.
 - **Etapa gravada a cada passo** (`/api/assinar/sessao/etapa`) e **retomada de sessão** (`/api/assinar/sessao/{token}` devolve `{etapa, metodo}`).
-- **Cupom pela URL** (`?cupom=X`) grava por 7 dias no `localStorage` e decora todos os links do checkout com cupom, `fbclid` e as 5 UTMs.
 - **Gateways:** EFI/Gerencianet e Asaas para PIX, Hotmart no estorno.
 - **Dedup de evento:** `analytics_event_id` do servidor usado no Pixel e na CAPI.
 

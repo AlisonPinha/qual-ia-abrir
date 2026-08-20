@@ -348,11 +348,15 @@ if CHECKOUT_URL:
                   f'Desbloquear as minhas 3 por R$ {OF["preco"]} →</a>')
     botao_compra = (f'<a class="btn-cta" href="{CHECKOUT_URL}" target="_blank" rel="noopener">'
                     f'Quero a minha stack por R$ {PRECO_N} →</a>')
+    botao_oferta = (f'<a class="btn-cta" href="{CHECKOUT_URL}" target="_blank" rel="noopener" '
+                    f'data-pronto="Quero a minha stack por R$ {PRECO_N} →">'
+                    f'Fazer o diagnóstico e desbloquear por R$ {PRECO_N} →</a>')
     aviso_compra = "Pagamento único, acesso imediato e 7 dias de garantia."
 else:
     botao_topo = ""
     botao_compra = (f'<a class="btn-cta" href="{INSTA}" target="_blank" rel="noopener">'
                     f'Entrar na lista de lançamento →</a>')
+    botao_oferta = botao_compra
     aviso_compra = ("O checkout abre em instantes. Manda <b>STACK</b> no direct que você entra na "
                     "lista e leva o preço de lançamento.")
 
@@ -441,19 +445,23 @@ JS = """
   const ga = (ev, extra) => window.gtag && gtag("event", ev, Object.assign({ variante: PROD }, extra || {}));
   // a origem viaja junto para a Cakto: sem ela toda venda aparece como direta
   const origem = origemTrafego();
-  // o cupom decora TODOS os links de compra, inclusive os que nascem depois, e aparece na
-  // tela: desconto que só existe dentro do checkout a pessoa não sabe que ganhou
-  const cupom = cupomAtivo();
+  let abrirDiagnostico = () => {};
+  const checkoutComDiagnostico = a => {
+    try {
+      return /^qia2_.{8,}\\.[A-Za-z0-9_-]{20,}$/.test(new URL(a.href).searchParams.get("sck") || "");
+    } catch (_) { return false; }
+  };
   for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
     if (origem) a.href += (a.href.includes("?") ? "&" : "?") + origem;
-    if (cupom && !/[?&]coupon=/.test(a.href)) {
-      a.href += (a.href.includes("?") ? "&" : "?") + "coupon=" + encodeURIComponent(cupom);
-      const aviso = document.createElement("p");
-      aviso.className = "cupom-aviso";
-      aviso.textContent = "Cupom " + cupom + " aplicado no checkout.";
-      a.insertAdjacentElement("afterend", aviso);
-    }
-    a.addEventListener("click", () => {
+    a.addEventListener("click", e => {
+      // Comprar antes de responder cria um pedido sem diagnóstico, perde o acesso automático
+      // e obriga o cliente a refazer o quiz depois de pagar. O checkout só abre quando o sck
+      // já leva código + claim; antes disso, o mesmo clique começa ou retoma o diagnóstico.
+      if (!checkoutComDiagnostico(a)) {
+        e.preventDefault();
+        abrirDiagnostico(e);
+        return;
+      }
       px("InitiateCheckout");
       ga("iniciou_checkout", { currency: "BRL" });
     });
@@ -480,6 +488,7 @@ JS = """
       if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();
     };
+    abrirDiagnostico = abrir;
     for (const b of document.querySelectorAll(".abre-diag")) b.addEventListener("click", abrir);
     // quem já respondeu parte e voltou não recomeça do zero: o quiz retoma na primeira
     // pergunta sem resposta, e quem já tinha terminado cai direto no resultado
@@ -636,6 +645,8 @@ JS = """
           if (claim) url.searchParams.set("sck", "qia2_" + codigo + "." + claim);
           a.href = url.toString();
         }
+        const ofertaPronta = document.querySelector("#oferta [data-pronto]");
+        if (ofertaPronta) ofertaPronta.textContent = ofertaPronta.dataset.pronto;
       }
 
       el("res-stack").innerHTML = stack.map((s, i) => `
@@ -1215,7 +1226,7 @@ html = f"""<!doctype html>
           <span class="valor"><b>R$</b>{PRECO_N}</span>
           <span class="unico">pagamento único</span>
         </div>
-        {botao_compra}
+        {botao_oferta}
         <p class="form-aviso">{aviso_compra}</p>
         <div class="garantias">{garantias_of}</div>
       </div>

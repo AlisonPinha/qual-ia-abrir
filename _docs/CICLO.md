@@ -60,5 +60,5 @@ que "melhorei o botão".
 
 O playbook tem nove frentes. As que sobram dependem de **gravação** (VSL, criativos),
 **verba e conta de anúncio** (teste seco de nome), **decisão de produto** (captura de contato,
-cupom, downsell) ou **tráfego rodando** (todo o bloco de medição e os testes A/B). Nenhuma
+downsell) ou **tráfego rodando** (todo o bloco de medição e os testes A/B). Nenhuma
 delas fecha sem o Alison, e o ciclo não deve fingir que fecha.

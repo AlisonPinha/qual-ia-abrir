@@ -837,11 +837,6 @@ body.travado { overflow: hidden; }
 /* o display:flex acima vence o hidden do navegador, e sem esta linha o bloco fica visível
    mesmo escondido: apareceu no print antes de a pessoa dar o contato */
 .res-codigo[hidden] { display: none; }
-/* cupom pela URL: discreto, colado no botão que ele desconta. Duas cores porque os botões
-   de compra vivem em fundos opostos, e o roxo claro não passa de 2,7:1 sobre card branco */
-.cupom-aviso { margin: 9px 0 0; text-align: center; font-size: 13px; font-weight: 600;
-  color: var(--roxo); }
-.res-oferta .cupom-aviso, .sec-claro .cupom-aviso { color: var(--roxo-escuro); }
 /* One Belief: a mesma crença no hero, na entrega e no upsell. Nas páginas de entrega ela vai
    sem o nome do mecanismo, porque elas servem as quatro variantes do teste de nome */
 .crenca { color: #fff; font-weight: 600; }

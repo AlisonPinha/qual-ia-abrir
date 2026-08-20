@@ -58,7 +58,7 @@ test("token assinado rejeita alteração e vencimento", async () => {
   assert.equal(await interno.verificarAssinatura(vencido, "session"), null);
 });
 
-test("entregas não existem no diretório público e todas as LPs enviam sck", async () => {
+test("entregas não existem no público e o checkout exige diagnóstico", async () => {
   await assert.rejects(stat(new URL("../public/mapa/index.html", import.meta.url)));
   await assert.rejects(stat(new URL("../public/plano/index.html", import.meta.url)));
   assert.ok((await stat(new URL("../_private/mapa.html", import.meta.url))).size > 100_000);
@@ -66,6 +66,9 @@ test("entregas não existem no diretório público e todas as LPs enviam sck", a
   for (const caminho of ["../public/index.html", "../public/abas/index.html", "../public/regra/index.html", "../public/stack/index.html"]) {
     const lp = await readFile(new URL(caminho, import.meta.url), "utf8");
     assert.match(lp, /searchParams\.set\("sck", "qia2_" \+ codigo \+ "\." \+ claim\)/);
+    assert.match(lp, /if \(!checkoutComDiagnostico\(a\)\)/);
+    assert.match(lp, /Fazer o diagnóstico e desbloquear por R\$ 67/);
+    assert.doesNotMatch(lp, /coupon|cupom/i);
     assert.doesNotMatch(lp, /id="pos-clique"/);
   }
 });
