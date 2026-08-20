@@ -151,7 +151,15 @@ async function responderTudo(page, escopo) {
   await p3.locator('#oto-pular').click();
   await p3.waitForTimeout(300);
   ok('/mapa: um clique abre a entrega', await p3.evaluate(() => !document.getElementById('resultado').hidden));
-  const tMapa = await esperar(p3, () => (document.getElementById('res-corta-ia')?.textContent || '').trim().length > 50);
+  // O fim do stream é o aviso "escrevendo" sumir, não o último bloco passar de 50
+  // caracteres. Medir por tamanho lê o CORTE pela metade, porque ele é o último a ser
+  // preenchido: cinco personas rodadas em 20/08 vieram todas com ele cortado no meio da
+  // frase, e a bateria dava 8/8 assim mesmo.
+  const tMapa = await esperar(p3, () => {
+    const aviso = document.getElementById('res-escrevendo');
+    const corte = (document.getElementById('res-corta-ia')?.textContent || '').trim();
+    return aviso && aviso.hidden && corte.length > 50;
+  });
   const mapa = await p3.evaluate(() => {
     const t = id => (document.getElementById(id)?.textContent || '').trim();
     const b = { ABERTURA: t('res-abertura'), CORTE: t('res-corta-ia') };
@@ -162,6 +170,10 @@ async function responderTudo(page, escopo) {
     const vals = Object.values(b);
     return {
       cheios: vals.filter(v => v.length > 40).length,
+      // bloco que acaba no meio da frase conta como cheio se olhar só o tamanho. Prompt
+      // pode terminar em colchete de instrução, então a régua vale para os de texto
+      cortados: ['ABERTURA', 'PORQUE1', 'PORQUE2', 'PORQUE3', 'CORTE']
+        .filter(k => b[k] && !/[.!?]$/.test(b[k].trim())),
       lacunas: vals.some(v => /\{[^}]+\}/.test(v)),
       // só o que marca quem fala: "ele roda sozinho" é a ferramenta, e acusar isso
       // como defeito faz a bateria mentir
@@ -170,6 +182,8 @@ async function responderTudo(page, escopo) {
     };
   });
   ok('/mapa: 8 blocos escritos pela IA', mapa.cheios === 8, `${mapa.cheios}/8 em ${tMapa}s`);
+  ok('/mapa: nenhum bloco cortado no meio da frase', mapa.cortados.length === 0,
+     mapa.cortados.join(', '));
   ok('/mapa: sem lacuna {}', !mapa.lacunas);
   if (mapa.genero) {
     const bruto = await p3.evaluate(() => [...document.querySelectorAll('#resultado')].map(n => n.textContent).join('\n'));
