@@ -2,10 +2,10 @@
 //
 // Uso: cd ~/.claude/skills/playwright-skill && node run.js _build/regressao.js
 //
-// Cobre: quiz da LP, teaser em silhueta, código de acesso, botão do WhatsApp, checkout com
-// UTM, voltar com limpeza de trilha, tela pós-compra do upsell, entrega do /mapa com IA,
-// CTA de ascensão, formulário do presente, acesso por código em outro aparelho, memória
-// parcial e a /plano inteira, incluindo o material rodado.
+// Cobre: quiz da LP, teaser em silhueta, código do diagnóstico, botão do WhatsApp, checkout
+// com UTM + sck, bloqueio sem sessão, tela pós-compra do upsell, entrega do /mapa com IA,
+// CTA de ascensão, formulário do presente, respostas em outro aparelho, memória parcial e
+// a /plano inteira, incluindo o material rodado.
 //
 // Custo por rodada: 1 chamada ao /api/mapa e 3 ao /api/plano. Os limites por IP são 6 e
 // 6/6/5 por hora, então dá para rodar umas duas vezes seguidas, não mais.
@@ -13,6 +13,9 @@ const { chromium } = require('playwright');
 
 const BASE = 'https://diagnostico.noahai.com.br';
 const CHECKOUT_UPSELL = 'pay.cakto.com.br/j79id6y_1051180';
+// Valor do cookie qia_sessao de uma conta interna com entitlement plano. Nunca commitar.
+// Sem ele a bateria valida toda a parte pública e o bloqueio, depois para antes da entrega.
+const SESSAO = process.env.QIA_SESSION_COOKIE || '';
 const r = [];
 const ok = (nome, passou, obs = '') => r.push({ nome, passou, obs });
 
@@ -41,6 +44,14 @@ async function responderTudo(page, escopo) {
 (async () => {
   const browser = await chromium.launch({ headless: false, slowMo: 15 });
   const erros = [];
+  const contexto = async viewport => {
+    const c = await browser.newContext({ viewport });
+    if (SESSAO) await c.addCookies([{
+      name: 'qia_sessao', value: SESSAO, domain: 'diagnostico.noahai.com.br', path: '/',
+      httpOnly: true, secure: true, sameSite: 'Lax',
+    }]);
+    return c;
+  };
 
   // ---------- 1. LP: quiz, teaser, código, checkout ----------
   const c1 = await browser.newContext({ viewport: { width: 390, height: 844 } });
@@ -62,9 +73,11 @@ async function responderTudo(page, escopo) {
   ok('LP: teaser em silhueta', lp.silhueta === 3, `${lp.silhueta} cards ocultos`);
   // o código ao lado do preço convidava a adiar a compra: ele só aparece para quem sai
   ok('LP: código fora da oferta', lp.codigoNaOferta === false);
-  ok('LP: checkout leva UTM e código', /utm_source=regressao/.test(lp.checkout) && /[?&]c=/.test(lp.checkout));
+  const checkoutLp = new URL(lp.checkout);
+  ok('LP: checkout leva UTM e diagnóstico no sck', checkoutLp.searchParams.get('utm_source') === 'regressao'
+     && /^qia2_.{8,}\.[A-Za-z0-9_-]{20,}$/.test(checkoutLp.searchParams.get('sck') || ''));
 
-  // ---------- 2. saída: a retenção é onde o código de acesso vive agora ----------
+  // ---------- 2. saída: a retenção guarda as respostas, não o acesso pago ----------
   const c2 = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const p2 = await c2.newPage();
   p2.on('pageerror', e => erros.push('saída: ' + e.message));
@@ -107,8 +120,7 @@ async function responderTudo(page, escopo) {
     campos: !!document.getElementById('saida-nome') && !!document.getElementById('saida-zap'),
   }));
   ok('saída: confirmar abre o pedido de contato', contato.passo2 === true && contato.campos === true);
-  // o link tem que ser o da LP: /mapa é a entrega paga e não tem paywall, então mandá-lo
-  // para quem ainda não comprou seria dar o produto
+  // o link tem que ser o da LP: /mapa é a entrega paga e exige uma sessão de comprador
   ok('saída: o link leva a LP, não a entrega', /wa\.me/.test(contato.href)
      && /\/\?c=/.test(decodeURIComponent(contato.href))
      && !/\/mapa/.test(decodeURIComponent(contato.href)), decodeURIComponent(contato.href).slice(0, 90));
@@ -127,8 +139,24 @@ async function responderTudo(page, escopo) {
   ok('link guardado: abre no resultado, ainda em silhueta', volta.resultado === true && volta.silhueta === 3,
      `${volta.silhueta} ocultos`);
 
+  // ---------- 2b. paywall ----------
+  const semSessao = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const bloqueada = await semSessao.newPage();
+  await bloqueada.goto(BASE + '/mapa', { waitUntil: 'domcontentloaded' });
+  ok('paywall: /mapa sem sessão vai para /acesso', /\/acesso(?:\?|$)/.test(bloqueada.url()), bloqueada.url());
+  await semSessao.close();
+  if (!SESSAO) {
+    console.log('\nParte pública concluída. Defina QIA_SESSION_COOKIE para testar as entregas pagas.');
+    console.log('\n================ REGRESSÃO ================');
+    for (const x of r) console.log(`${x.passou ? ' ok ' : 'FALHA'} | ${x.nome}${x.obs ? '  (' + x.obs + ')' : ''}`);
+    const falhasPublicas = r.filter(x => !x.passou).length;
+    console.log(`\n${r.length - falhasPublicas}/${r.length} passaram`);
+    await browser.close();
+    process.exit(falhasPublicas ? 1 : 0);
+  }
+
   // ---------- 3. /mapa: entrega com IA ----------
-  const c3 = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const c3 = await contexto({ width: 390, height: 844 });
   const p3 = await c3.newPage();
   p3.on('pageerror', e => erros.push('mapa: ' + e.message));
   await p3.goto(BASE + '/mapa?utm_source=regressao', { waitUntil: 'domcontentloaded' });
@@ -213,18 +241,18 @@ async function responderTudo(page, escopo) {
      `${fimDoMapa.opcoes} opções`);
 
   // ---------- 4. código em outro aparelho ----------
-  const c4 = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const c4 = await contexto({ width: 1280, height: 900 });
   const p4 = await c4.newPage();
   p4.on('pageerror', e => erros.push('código: ' + e.message));
   await p4.goto(`${BASE}/mapa?c=${encodeURIComponent(codigo)}`, { waitUntil: 'domcontentloaded' });
   const entrou = await esperar(p4, () => document.getElementById('quiz')?.hidden === true, 30000);
-  ok('código na URL abre sem refazer', entrou !== null && !!codigo, codigo);
+  ok('sessão + código do diagnóstico abrem sem refazer', entrou !== null && !!codigo, codigo);
 
   // ---------- 5. memória parcial ----------
   const ANTIGA = { v: 1, ts: Date.now(), livre: {}, pids: [], resp: {
     area: 0, c_tarefa: 0, tempo_ia: 1, quantas: 2, gasto: 1, c_ideia: 1, c_voz: 2,
     generica: 0, parada: 1, refaz: 1, horas: 2, nivel: 1, prazo: 1, estilo: 0, orcamento: 1, onde: 1 } };
-  const c5 = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const c5 = await contexto({ width: 390, height: 844 });
   await c5.addInitScript(m => localStorage.setItem('qia:resp', JSON.stringify(m)), ANTIGA);
   const p5 = await c5.newPage();
   p5.on('pageerror', e => erros.push('parcial: ' + e.message));
@@ -236,7 +264,7 @@ async function responderTudo(page, escopo) {
   ok('memória parcial: pergunta só o que falta', faltaram <= 6, `${faltaram} passos (era 19+)`);
 
   // ---------- 6. /plano ----------
-  const c6 = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const c6 = await contexto({ width: 390, height: 844 });
   const p6 = await c6.newPage();
   p6.on('pageerror', e => erros.push('plano: ' + e.message));
   await p6.goto(BASE + '/plano', { waitUntil: 'domcontentloaded' });

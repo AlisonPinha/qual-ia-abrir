@@ -13,6 +13,7 @@
 // determinístico completo antes de chamar este endpoint.
 
 import { MOTOR, calcularStack, pidsExigidos } from "../_lib/motor.mjs";
+import { autorizar } from "./_access.mjs";
 
 export const config = { maxDuration: 60 };
 
@@ -154,6 +155,13 @@ function pergunta(resp, stack, corta, livre) {
 export default {
   async fetch(request) {
     if (request.method !== "POST") return new Response("", { status: 405 });
+
+    try {
+      if (!await autorizar(request, "mapa")) return new Response("", { status: 401 });
+    } catch (erro) {
+      console.error("[mapa] falha de autorização", erro?.message);
+      return new Response("", { status: 503 });
+    }
 
     const chave = process.env.ANTHROPIC_API_KEY;
     // sem chave configurada o mapa fixo já está na tela: some em silêncio

@@ -1,5 +1,5 @@
 """
-Gera public/plano/index.html: a entrega do upsell de R$ 197.
+Gera _private/plano.html: a entrega do upsell de R$ 197.
 
 O /mapa diz quais são as três e por quê. Aqui elas entram na semana da pessoa e
 rodam em cima de um trabalho real dela. É a fronteira decidida em 19/08: o front
@@ -18,7 +18,8 @@ import sys
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 BUILD = RAIZ / "_build"
-SAIDA = RAIZ / "public" / "plano" / "index.html"
+SAIDA = RAIZ / "_private" / "plano.html"
+SAIDA.parent.mkdir(parents=True, exist_ok=True)
 
 CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
 MOTOR_JS = (BUILD / "motor.js").read_text(encoding="utf-8")
@@ -474,7 +475,7 @@ html = f"""<!doctype html>
 
   <div class="entrar-codigo" id="entrar-codigo">
     <p><b>Já respondeu no celular?</b> Cola aqui o código que apareceu no fim do diagnóstico
-       e o seu mapa abre sem refazer nada.</p>
+       e as suas respostas voltam sem refazer nada. O acesso à compra já foi confirmado pelo seu e-mail.</p>
     <input id="codigo-campo" type="text" inputmode="latin" autocomplete="off"
            placeholder="2 6 A K - 4 6 A K - 4 6 A K" maxlength="26">
     <button type="button" class="btn btn-p" id="codigo-usar">Abrir com o meu código</button>

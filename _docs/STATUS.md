@@ -5,7 +5,40 @@
 **Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
 `DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
-**Estado em 20/08/2026, tudo no ar:** LP em 4 variantes, `/mapa` com a IA redigindo e vendendo
+### Acesso pago ligado ao pedido está no ar
+
+Em 20/08 foi publicada a troca da URL pública por acesso ligado ao pedido:
+`sck` leva o código do diagnóstico e um claim aleatório à Cakto, `purchase_approved` grava a
+compra e a sessão `HttpOnly` libera `/mapa` ou `/plano`. A própria Cakto continua enviando o
+e-mail. No mesmo aparelho o claim é consumido uma vez; em outro, `/acesso` confere e-mail +
+telefone contra hashes do pedido. Reembolso e chargeback revogam a sessão. O código do quiz
+voltou a ser chamado pelo nome certo: **código do diagnóstico**; ele guarda respostas e não
+libera produto.
+
+O Neon gratuito conectado ao `qual-ia-abrir` está em `gru1`; o banco duplicado vazio criado
+durante o provisionamento foi excluído. `ACCESS_TOKEN_SECRET` e `ACCESS_DATA_SECRET` existem
+em produção e preview; as três tabelas foram criadas. O preview provou os dois lados: sem compra
+redireciona e as APIs devolvem 401; um pedido sintético abriu o HTML privado, e o mesmo cookie
+foi cortado depois de `refund`. O pedido de QA foi apagado. O artefato da Vercel não contém
+`mapa` nem `plano` entre os arquivos estáticos.
+
+Em produção, `/acesso` responde 200, `/mapa` e `/plano` sem sessão redirecionam, e chamadas
+diretas a `/api/mapa` e `/api/plano` devolvem 401. Na Cakto, os cinco produtos enviam
+`https://diagnostico.noahai.com.br/acesso`; o webhook `Purchase para o Meta (CAPI)` continua
+nos cinco e agora ouve `purchase_approved`, `refund` e `chargeback`.
+
+**A venda anterior `6XF4ljB` foi migrada em 20/08:** ficou ativa com direito ao `/mapa`; e-mail
+e telefone existem no Neon somente como HMAC, sem dado pessoal em texto aberto e sem nada no
+repositório. Depois da rotação das chaves e do deploy, a autenticação dessa compra devolveu
+sessão segura, abriu 190.138 bytes do HTML privado e confirmou o entitlement `mapa`; sem compra,
+a mesma rota continua redirecionando a `/acesso`. **O que falta provar:** fazer a próxima compra
+controlada real, conferindo `sck`, e-mail da Cakto, sessão, banco e `Purchase` na cadeia nova.
+
+Rollback: restaurar `public/mapa/index.html` e `public/plano/index.html` pelo gerador
+antigo/revisão anterior, publicar e devolver os cinco links de e-mail da Cakto às rotas
+anteriores. Deploy e links precisam voltar juntos.
+
+**Estado em produção depois desta migração:** LP em 4 variantes, `/mapa` com a IA redigindo e vendendo
 o upsell, `/plano` com a entrega do upsell, quiz de 23 etapas, código de acesso, a saída em duas
 telas com pedido de contato, cupom pela URL, GA4 medindo e o checkout com Pix no padrão. A
 primeira venda (de teste) está feita e o funil do quiz é medido pergunta a pergunta.
@@ -490,7 +523,7 @@ lugar, não cortar a medição.
 |---|---|
 | `/api/cakto` | no ar, 29 de 29 no QA local |
 | Token da API de Conversões | gerado no Events Manager **só para este dataset**, sem a Dataset Quality API, e guardado em `META_CAPI_TOKEN` na Vercel |
-| Webhook na Cakto | `Purchase para o Meta (CAPI)`, ativo, nos 5 produtos, evento "Compra aprovada", disparo **Agrupado** |
+| Webhook na Cakto | `Purchase para o Meta (CAPI)`, ativo, nos 5 produtos, eventos **Compra aprovada**, **Reembolso** e **Chargeback**, disparo **Agrupado** |
 | `CAKTO_WEBHOOK_SECRET` | é o UUID que **a Cakto gera**, não o que a gente digita |
 | Provado em produção | a Cakto entrega no endpoint (2 envios, 1 entregue, 258ms) e o Meta responde `events_received: 1` |
 | Venda de 19/08 | recuperada à mão: o webhook só dispara em evento novo, e a CAPI aceita evento de até 7 dias. Pedido `6XF4ljB`, R$ 67, variante **abas**, sem UTM nenhuma |
@@ -513,11 +546,10 @@ a Quality API, que não força a lista.
 ### O e-mail de acesso, e a premissa que estava errada
 
 O 2.10 dizia "o e-mail manda só o link do mapa". Conferido no painel: a Cakto **não deixa
-editar o corpo do e-mail**, o produtor só controla o campo do link, e a tela pós-compra do
-upsell aparece em todo caminho de entrada do `/mapa`, inclusive para quem clica no link do
-e-mail. Ou seja, não existe e-mail para escrever e o upsell já é alcançado. Sobra marcar a
-origem do link, que é mexer no campo que entrega o produto para quem pagou, e por isso ficou
-para ele decidir.
+editar o corpo do e-mail**, o produtor só controla o campo do link. Em 20/08 os cinco produtos
+passaram a enviar `/acesso`; depois da confirmação do pedido, o Mapa ainda mostra a tela do
+upsell antes da entrega. Não existe e-mail para escrever e o upsell já é alcançado. Sobra só a
+medição opcional da origem `email_cakto`.
 
 ### A revisão da sessão de 19/08, e o que ela achou
 

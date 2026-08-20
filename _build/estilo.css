@@ -822,7 +822,7 @@ body.travado { overflow: hidden; }
   border: 1px solid rgba(193,131,251,.25); background: rgba(193,131,251,.06); }
 .completando-aviso[hidden] { display: none; }
 
-/* código de acesso: leva as respostas para outro aparelho */
+/* código do diagnóstico: leva as respostas, mas não libera a entrega paga */
 .res-codigo { margin: 14px 0 4px; padding: 13px 15px; border-radius: 13px;
   border: 1px dashed rgba(193,131,251,.45); background: rgba(193,131,251,.07);
   display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }

@@ -456,25 +456,6 @@ JS = """
     a.addEventListener("click", () => {
       px("InitiateCheckout");
       ga("iniciou_checkout", { currency: "BRL" });
-      // O checkout abre em outra aba, então esta continua viva. É aqui que o código deixa de
-      // ser convite para adiar e vira entrega: a decisão de comprar já foi tomada, e o que
-      // vem a seguir é o problema do aparelho, que a compra de 19/08 revelou. A Cakto entrega
-      // por e-mail com link fixo, e sem o código quem paga no celular e lê no computador
-      // responde as 19 perguntas de novo.
-      const bloco = el("pos-clique");
-      if (!bloco || !window.__codigo) return;
-      // debaixo do botão que ela clicou, e não onde o HTML o deixou: os dois botões de
-      // compra ficam longe um do outro, e o código tem que aparecer onde o olho está
-      a.insertAdjacentElement("afterend", bloco);
-      el("pos-clique-valor").textContent = window.__codigo;
-      const zap = el("pos-clique-zap");
-      if (zap && !zap.href) {
-        zap.href = "https://wa.me/?text=" + encodeURIComponent(
-          "O meu diagnóstico do " + PROD + ": " + window.__codigo
-          + ". O link abre direto no meu resultado, em qualquer aparelho: "
-          + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo));
-      }
-      bloco.hidden = false;
     });
   }
 
@@ -512,7 +493,7 @@ JS = """
     // Voltar com o quiz começado mostra o que a pessoa perde, uma vez só. Quem insiste sai:
     // segurar duas vezes deixa de ser retenção e vira sequestro do botão do navegador.
     // Uma vez em cada momento, porém, e não uma vez na vida: a tela do meio do quiz segura,
-    // e a do fim entrega o código de acesso. Quem já tinha sido segurado na pergunta 5
+    // e a do fim entrega o código do diagnóstico. Quem já tinha sido segurado na pergunta 5
     // ficava sem o código ao sair no resultado, que é justamente quem mais precisa dele.
     const jaSegurou = { meio: false, pronto: false };
 
@@ -541,11 +522,10 @@ JS = """
       el("retencao-fica").textContent = pronto ? "Ver o meu resultado" : "Continuar de onde parei";
       // o WhatsApp é o único app que a pessoa tem nos dois aparelhos, e o link vai com o
       // código dentro: do outro lado é um toque, sem digitar nada. O link é o DESTA página,
-      // e não o do /mapa: a entrega não tem paywall, e a única coisa que a protege é a URL
-      // não circular. Mandar o /mapa para quem ainda não comprou era dar o produto pago
+      // nunca o da entrega paga. O código devolve somente as respostas e o teaser.
       if (pronto && window.__codigo) {
         const texto = "O meu diagnóstico do " + PROD + ": " + window.__codigo
-          + ". O link abre direto no meu resultado, em qualquer aparelho: "
+          + ". O link abre direto neste resultado gratuito, em qualquer aparelho: "
           + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo);
         el("ret-codigo-valor").textContent = window.__codigo;
         el("ret-codigo-zap").href = "https://wa.me/?text=" + encodeURIComponent(texto);
@@ -644,15 +624,18 @@ JS = """
       el("res-titulo").textContent = "A sua stack está pronta";
       el("res-perfil").textContent = `${area} · ${orc}. Identifiquei ${stack.length} ferramentas pra você.`;
 
-      // o código carrega as respostas: é o que evita refazer o quiz no outro aparelho,
-      // que foi o que aconteceu na primeira venda de teste. Ele NÃO aparece junto da oferta:
-      // "guarda para depois" ao lado do preço é permissão para adiar a compra. Quem tenta
-      // sair recebe o código na tela de retenção, onde adiar já não é o risco.
+      // O código carrega apenas as respostas. Vai no campo customizado `sck` da Cakto para
+      // o webhook associar pagamento e diagnóstico; sozinho ele NÃO abre a entrega paga.
+      // Quem tenta sair ainda pode guardá-lo para voltar ao teaser sem refazer o quiz.
       const codigo = gerarCodigo(MOTOR, resp);
       if (codigo) {
         window.__codigo = codigo;
-        for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
-          if (!a.href.includes("c=")) a.href += (a.href.includes("?") ? "&" : "?") + "c=" + encodeURIComponent(codigo);
+        const claim = claimCheckout();
+        for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
+          const url = new URL(a.href);
+          if (claim) url.searchParams.set("sck", "qia2_" + codigo + "." + claim);
+          a.href = url.toString();
+        }
       }
 
       el("res-stack").innerHTML = stack.map((s, i) => `
@@ -1324,7 +1307,7 @@ html = f"""<!doctype html>
       </div>
       <div id="ret-passo2" hidden>
         <h3 id="saida-titulo">Quer o seu diagnóstico no WhatsApp?</h3>
-        <p id="saida-txt">Te mando o link que abre este resultado em qualquer aparelho, sem
+        <p id="saida-txt">Te mando o link que abre este resultado gratuito em qualquer aparelho, sem
            responder de novo.</p>
         <div id="saida-campos">
           <label class="campo-lead">Seu nome
@@ -1338,7 +1321,7 @@ html = f"""<!doctype html>
              que eu aprendo sobre IA. É só pedir para parar.</p>
         </div>
         <div class="res-codigo" id="ret-codigo" hidden>
-          <span class="res-codigo-rot">O seu código de acesso</span>
+          <span class="res-codigo-rot">O código do seu diagnóstico</span>
           <code id="ret-codigo-valor"></code>
           <button type="button" class="m-copiar" data-alvo="ret-codigo-valor">Copiar</button>
           <a class="m-copiar" id="ret-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
@@ -1376,14 +1359,6 @@ html = f"""<!doctype html>
         </div>
         {botao_compra}
         <p class="form-aviso">{aviso_compra}</p>
-      </div>
-      <div class="res-codigo" id="pos-clique" hidden>
-        <span class="res-codigo-rot">Abrimos o checkout na outra aba</span>
-        <code id="pos-clique-valor"></code>
-        <button type="button" class="m-copiar" data-alvo="pos-clique-valor">Copiar</button>
-        <a class="m-copiar" id="pos-clique-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
-        <p class="res-codigo-ajuda">Guarde este código: é ele que abre o seu mapa em qualquer
-           aparelho, se você pagar no celular e for ler no computador.</p>
       </div>
       <button type="button" class="refazer" id="refazer">Refazer o diagnóstico</button>
     </div>

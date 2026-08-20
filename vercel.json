@@ -3,6 +3,16 @@
   "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,
+  "regions": ["gru1"],
+  "functions": {
+    "api/entrega.mjs": {
+      "includeFiles": "_private/**",
+      "maxDuration": 10
+    },
+    "api/cakto.mjs": {
+      "maxDuration": 10
+    }
+  },
   "headers": [
     {
       "source": "/logos/(.*)",
@@ -45,6 +55,16 @@
       ],
       "destination": "https://diagnostico.noahai.com.br/:path*",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/mapa",
+      "destination": "/api/entrega?produto=mapa"
+    },
+    {
+      "source": "/plano",
+      "destination": "/api/entrega?produto=plano"
     }
   ]
 }

@@ -22,6 +22,7 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 |---|---|---|---|---|
 | 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
 | 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
+| 0.1c | **Acesso ligado ao pagamento** — infraestrutura e migração antiga feitas em 20/08; falta compra real na cadeia nova | Claude | 0.1 | **Feito:** Neon ativo e sem o duplicado vazio; Cakto envia `/acesso` nos 5 produtos; `sck` carrega diagnóstico + claim de uso único; outro aparelho valida e-mail + telefone por hash; sessão `HttpOnly`; `/mapa` e `/plano` ausentes de `public/`; refund e chargeback ativos e revogando; compra `6XF4ljB` migrada somente com HMAC. **Falta:** uma compra controlada real provar a cadeia inteira |
 | 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08 pelo Claude, no navegador** | Claude | nada | Versão 2 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. A aba `diagnosticos` nasceu de novo com 21 colunas, incluindo `trilha`, `descreveu` e `utm`, e a `presentes` com as 8 dela. Conferido com POST real nos dois tipos |
 | 0.3 | ~~**Conferir o `Purchase` no Events Manager**~~ **conferido e resolvido em 19/08** | Claude | 0.1 | Reprovou: a venda paga não gerou `Purchase` nenhum, porque o Pix é pago fora do navegador. Resolvido no mesmo dia pelo 4.1, que é o webhook da Cakto mandando o evento do servidor |
 
@@ -206,28 +207,26 @@ aceitar o cruzamento com o Clinic.io.
 meio, que seria um salto a mais para cair sem ninguém ver. A chave entra por
 `vercel env add EVOLUTION_API_KEY production`, digitada no prompt da CLI.
 
-**O que a 3 destrava de quebra:** enquanto a entrega for um link fixo por e-mail, não existe
-como travar o `/mapa`, porque a URL é a mesma para todo mundo. Com a mensagem personalizada,
-o link pode ser único e assinado, e aí a entrega deixa de ser aberta para quem tem o endereço.
+**O acesso deixou de depender disso em 20/08.** O e-mail continua com um link fixo, mas ele
+leva a `/acesso`: o servidor só abre `/mapa` ou `/plano` depois de encontrar compra aprovada.
+A mensagem personalizada no WhatsApp continua melhor para conveniência, não para segurança.
 
 ### O e-mail já leva o upsell, e não existe e-mail para escrever
 
 Conferido no painel em 19/08. A Cakto **não deixa editar o corpo do e-mail**: ela manda um
 "Pagamento Confirmado" próprio, e a única coisa que o produtor controla é o campo "Link de
-acesso enviado ao e-mail", hoje com `https://diagnostico.noahai.com.br/mapa`. Não há editor,
+acesso enviado ao e-mail", hoje com `https://diagnostico.noahai.com.br/acesso` nos cinco
+produtos. Não há editor,
 template nem variável.
 
-**E o item já está resolvido por outro caminho.** A tela pós-compra do upsell (2.3) é revelada
-no fim do `render()` do `/mapa`, ou seja, em **todo** caminho de entrada: por código, por
-memória do navegador ou respondendo o quiz. Quem clica no link do e-mail cai nela antes de ver
-o mapa. Então a frase "o e-mail manda só o link do mapa" descrevia o problema errado: o link
-manda para a oferta.
+**E o item está resolvido.** `/acesso` cria a sessão e leva ao produto comprado. No Mapa, a
+tela pós-compra do upsell (2.3) continua aparecendo antes da entrega. Então a frase "o e-mail
+manda só o link do mapa" descrevia o problema errado: o caminho autenticado também chega à
+oferta.
 
-**O que sobra, e é decisão do Alison:** o link de entrega não carrega origem. Trocá-lo por
-`https://diagnostico.noahai.com.br/mapa?utm_source=email_cakto` faria a venda de upsell vinda do
-e-mail aparecer separada, porque o `/mapa` já repassa a origem para o link do checkout. É uma
-linha em cada um dos quatro produtos, **no campo que entrega o produto para quem pagou**:
-errar ali é comprador sem entrega, e por isso não mexi.
+**O que sobra é só medição opcional:** o link de entrega não carrega origem. Para separar a
+venda de upsell vinda do e-mail, `/acesso` teria que preservar `utm_source=email_cakto` no
+redirecionamento. Segurança e entrega não dependem disso.
 
 ### O `Purchase` não existe, e isso trava o tráfego pago
 

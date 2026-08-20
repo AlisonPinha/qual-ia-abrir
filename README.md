@@ -20,8 +20,8 @@ teaser: conferido em produção, zero dos nove nomes aparece no HTML visível. O
 e ele sabia ao decidir: os ~10 mil caracteres que o Google indexava e a entrega prometida no
 Reel ("salva essa lista").
 
-Site estático, sem framework e sem dependência de runtime. Um passo de geração em Python
-transforma os dados em HTML.
+Site sem framework: as LPs e a porta `/acesso` são estáticas; as entregas são HTML gerado,
+empacotado dentro de uma Vercel Function e servido somente depois de validar a compra.
 
 **Pendências e o mapa do funil concorrente:** `_docs/STATUS.md`.
 
@@ -31,12 +31,13 @@ transforma os dados em HTML.
 |---|---|
 | `_build/dados.json` | **Fonte única.** Ferramentas, tarefas, desempates, splits, números, FAQ, captura |
 | `_build/gerar.py` | Gera `public/index.html` a partir do JSON e do CSS |
-| `_build/gerar_mapa.py` | Gera `public/mapa/index.html` (entrega paga, mais a venda do upsell) e `_lib/motor.mjs` |
-| `_build/gerar_plano.py` | Gera `public/plano/index.html`, a entrega do upsell |
+| `_build/gerar_mapa.py` | Gera `_private/mapa.html` (entrega paga, mais a venda do upsell) e `_lib/motor.mjs` |
+| `_build/gerar_plano.py` | Gera `_private/plano.html`, a entrega do upsell |
+| `_build/gerar_acesso.py` | Gera `public/acesso/index.html`, que valida a compra enviada pela Cakto |
 | `_build/gerar_doc_quiz.py` | Gera `_docs/DIAGNOSTICO.md` a partir do `dados.json` |
 | `_build/config.py` | As URLs de deploy, os checkouts e o pixel. **Um lugar só para cada URL** |
 | `_build/sessao.js` | Memória do diagnóstico no navegador, origem do tráfego e envio anônimo |
-| `_build/codigo.js` | O código de acesso: as respostas viram texto curto, para abrir em outro aparelho |
+| `_build/codigo.js` | Código do diagnóstico: carrega respostas, mas nunca autoriza a entrega paga |
 | `_build/espelho.js` | Repete as respostas na tela antes do resultado |
 | `_build/regressao.js` | A bateria de ponta a ponta, rodada contra produção |
 | `_build/questionario.py` | HTML dos passos e as regras de trilha, usados pelos dois geradores |
@@ -46,6 +47,10 @@ transforma os dados em HTML.
 | `_build/og-fonte.html` | Página 1200x630 que vira a imagem de preview |
 | `api/mapa.mjs` | Function da camada de redação por IA do mapa (ADR-0001) |
 | `api/plano.mjs` | Function que escreve os 7 dias, as configurações e roda o material da pessoa |
+| `api/cakto.mjs` | Webhook: registra pagamento, envia o acesso, revoga em reembolso/chargeback e mede o Purchase |
+| `api/acesso.mjs` | Troca o claim do aparelho ou e-mail + telefone por uma sessão segura |
+| `api/entrega.mjs` | Autoriza e serve o HTML privado de `/mapa` e `/plano` |
+| `api/_access.mjs` | Banco, hashes privados, sessão, rate limit e contrato dos cinco produtos |
 | `_lib/motor.mjs` | **Gerado.** O motor do lado do servidor, para a function não confiar no navegador |
 | `public/index.html` | **Gerado. Não editar à mão**, `gerar.py` sobrescreve |
 | `public/logos/` | Ícones no mesmo squircle dos Reels |
@@ -59,11 +64,10 @@ são os PNGs usados nos próprios Reels.
 
 ```bash
 # 1. mexer em _build/dados.json
-# 2. gerar as 4 variantes do teste de nome, as duas entregas e a doc do quiz
-for v in "" abas regra stack; do python3 _build/gerar.py $v; done
-python3 _build/gerar_mapa.py && python3 _build/gerar_plano.py && python3 _build/gerar_doc_quiz.py
+# 2. gerar as 4 variantes, as entregas privadas, a porta de acesso e a doc
+npm run build
 # 3. conferir o motor (pesos, trilhas, cobertura do catálogo)
-node _build/testar_motor.mjs
+npm test
 # 4. antes de publicar mudança grande, a bateria de ponta a ponta
 cd ~/.claude/skills/playwright-skill && node run.js ~/Projetos/qual-ia-abrir/_build/regressao.js
 # 5. publicar
@@ -155,6 +159,16 @@ escreve a abertura, o porquê de cada uma, o prompt sob medida e o corte.
 O teaser do diagnóstico mostra: quantas ferramentas foram identificadas, o momento de compra de
 cada uma ("assina agora", "em 30 dias", "quando escalar") e o custo **curto** (`acesso.curto`,
 por exemplo "US$ 20/mês"). Nunca o nome, a descrição, o primeiro passo ou o prompt.
+
+`/mapa` e `/plano` não existem em `public/`. O `vercel.json` reescreve os dois caminhos para
+`api/entrega.mjs`, que valida um cookie `HttpOnly`, consulta o status do pedido e só então lê o
+HTML de `_private/`. O código do diagnóstico pode circular sem risco: ele contém respostas,
+não prova pagamento. O acesso nasce apenas do `purchase_approved` da Cakto.
+
+A própria Cakto envia o e-mail com `/acesso`. No aparelho que iniciou o checkout, um segredo
+aleatório transportado no `sck` é consumido uma única vez e abre direto. Em outro aparelho, a
+pessoa informa e-mail e telefone usados na compra; o banco compara apenas hashes HMAC desses
+dados. Não existe segundo e-mail nosso nem dependência de entregabilidade externa.
 
 Três regras que existem por motivo, não por gosto:
 

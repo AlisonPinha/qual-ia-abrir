@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Gera public/mapa/index.html: a entrega paga do "Qual IA Usar?".
+Gera _private/mapa.html: a entrega paga do "Qual IA Usar?".
 
 É o mesmo diagnóstico do site, sem o paywall. Onde o index mostra silhueta e
 faixa de preço vaga, aqui vem o nome, o custo real, o primeiro passo e o prompt
@@ -22,7 +22,8 @@ from html import escape
 
 RAIZ = pathlib.Path(__file__).resolve().parent.parent
 BUILD = RAIZ / "_build"
-SAIDA = RAIZ / "public" / "mapa" / "index.html"
+SAIDA = RAIZ / "_private" / "mapa.html"
+SAIDA.parent.mkdir(parents=True, exist_ok=True)
 
 d = json.loads((BUILD / "dados.json").read_text(encoding="utf-8"))
 CSS = (BUILD / "estilo.css").read_text(encoding="utf-8")
@@ -280,19 +281,17 @@ JS = r"""
     if (codigo) {
       el("res-codigo-valor").textContent = codigo;
       el("res-codigo").hidden = false;
-      // O WhatsApp é o único app que a pessoa tem nos dois aparelhos, então é por ele que o
-      // mapa sai daqui. Vai o mapa em si, não só a chave dele: as três na ordem, o custo de
-      // cada uma, o que cortar e o link com o código dentro, que abre o resto sem digitar
-      // nada. O prompt e o passo a passo ficam de fora de propósito: não cabem numa mensagem
-      // e são o que a pessoa vem buscar na página.
+      // O código salva as respostas, não a compra. Em outro aparelho a pessoa primeiro entra
+      // pelo e-mail em /acesso e usa o código apenas se o pedido antigo não tiver sido ligado
+      // automaticamente ao diagnóstico.
       const zap = el("res-codigo-zap");
       if (zap) {
         const texto = "O meu mapa de IA, do Qual IA Usar\n\n"
           + stack.map((s, i) => `${i + 1}. ${s.nome} (${s.custo})`).join("\n")
           + (corta.length ? "\n\nO que não assinar agora: " + corta.join(", ") : "")
-          + "\n\nO mapa completo, com o primeiro passo e o prompt pronto de cada uma, abre "
-          + "em qualquer aparelho por aqui:\n"
-          + location.origin + "/mapa?c=" + encodeURIComponent(codigo);
+          + "\n\nCódigo do meu diagnóstico: " + codigo
+          + "\nPara abrir em outro aparelho, peço o link pessoal por aqui:\n"
+          + location.origin + "/acesso";
         zap.href = "https://wa.me/?text=" + encodeURIComponent(texto);
         zap.textContent = "Mandar no meu WhatsApp";
       }
@@ -347,8 +346,14 @@ JS = r"""
     el("barra-fill").style.width = "100%";
     // a origem viaja junto para a Cakto: sem ela a venda do upsell aparece como direta
     const origem = origemTrafego();
+    const claim = claimCheckout();
     for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
-      if (origem && !a.dataset.org) a.href += (a.href.includes("?") ? "&" : "?") + origem;
+      const url = new URL(a.href);
+      if (origem && !a.dataset.org) {
+        for (const [chave, valor] of new URLSearchParams(origem)) url.searchParams.set(chave, valor);
+      }
+      if (codigo && claim) url.searchParams.set("sck", "qia2_" + codigo + "." + claim);
+      a.href = url.toString();
       a.dataset.org = "1";
     }
     if (oto && !otoVisto()) { oto.hidden = false; el("oto-titulo").focus(); }
@@ -812,11 +817,11 @@ html = f"""<!doctype html>
       <h3 id="res-titulo" tabindex="-1">Estas são as suas 3</h3>
       <p id="res-perfil"></p>
       <div class="res-codigo" id="res-codigo" hidden>
-        <span class="res-codigo-rot">O seu código de acesso</span>
+        <span class="res-codigo-rot">O código do seu diagnóstico</span>
         <code id="res-codigo-valor"></code>
         <button type="button" class="m-copiar" data-alvo="res-codigo-valor">Copiar</button>
         <a class="m-copiar" id="res-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
-        <p class="res-codigo-ajuda">Com ele você abre este mapa em qualquer aparelho, sem responder de novo.</p>
+        <p class="res-codigo-ajuda">Ele guarda as suas respostas. O acesso à compra continua sendo feito pelo seu e-mail.</p>
       </div>
     </div>
     <p class="res-memoria" id="res-memoria" hidden>Montado com as respostas que você deu no
@@ -846,7 +851,7 @@ API_MOTOR.write_text(
     "export { calcularStack, valePergunta, pidsExigidos, limparOrfas };\n",
     encoding="utf-8")
 
-print(f"gerado: public/mapa/index.html  ({len(html):,} bytes)")
+print(f"gerado: _private/mapa.html  ({len(html):,} bytes)")
 print(f"  {n_perguntas} perguntas, {len(F)} ferramentas com passo, prompt e custo real")
 print("  noindex ligado. A URL não é divulgada: quem chega aqui é quem comprou.")
 if CHECKOUT_UPSELL:

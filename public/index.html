@@ -868,7 +868,7 @@ body.travado { overflow: hidden; }
   border: 1px solid rgba(193,131,251,.25); background: rgba(193,131,251,.06); }
 .completando-aviso[hidden] { display: none; }
 
-/* código de acesso: leva as respostas para outro aparelho */
+/* código do diagnóstico: leva as respostas, mas não libera a entrega paga */
 .res-codigo { margin: 14px 0 4px; padding: 13px 15px; border-radius: 13px;
   border: 1px dashed rgba(193,131,251,.45); background: rgba(193,131,251,.07);
   display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
@@ -1477,7 +1477,7 @@ body.travado { overflow: hidden; }
       </div>
       <div id="ret-passo2" hidden>
         <h3 id="saida-titulo">Quer o seu diagnóstico no WhatsApp?</h3>
-        <p id="saida-txt">Te mando o link que abre este resultado em qualquer aparelho, sem
+        <p id="saida-txt">Te mando o link que abre este resultado gratuito em qualquer aparelho, sem
            responder de novo.</p>
         <div id="saida-campos">
           <label class="campo-lead">Seu nome
@@ -1491,7 +1491,7 @@ body.travado { overflow: hidden; }
              que eu aprendo sobre IA. É só pedir para parar.</p>
         </div>
         <div class="res-codigo" id="ret-codigo" hidden>
-          <span class="res-codigo-rot">O seu código de acesso</span>
+          <span class="res-codigo-rot">O código do seu diagnóstico</span>
           <code id="ret-codigo-valor"></code>
           <button type="button" class="m-copiar" data-alvo="ret-codigo-valor">Copiar</button>
           <a class="m-copiar" id="ret-codigo-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
@@ -1529,14 +1529,6 @@ body.travado { overflow: hidden; }
         </div>
         <a class="btn-cta" href="https://pay.cakto.com.br/3fxqxg5_1049811" target="_blank" rel="noopener">Quero a minha stack por R$ 67 →</a>
         <p class="form-aviso">Pagamento único, acesso imediato e 7 dias de garantia.</p>
-      </div>
-      <div class="res-codigo" id="pos-clique" hidden>
-        <span class="res-codigo-rot">Abrimos o checkout na outra aba</span>
-        <code id="pos-clique-valor"></code>
-        <button type="button" class="m-copiar" data-alvo="pos-clique-valor">Copiar</button>
-        <a class="m-copiar" id="pos-clique-zap" target="_blank" rel="noopener">Guardar no WhatsApp</a>
-        <p class="res-codigo-ajuda">Guarde este código: é ele que abre o seu mapa em qualquer
-           aparelho, se você pagar no celular e for ler no computador.</p>
       </div>
       <button type="button" class="refazer" id="refazer">Refazer o diagnóstico</button>
     </div>
@@ -1753,6 +1745,32 @@ function lerCodigo(MOTOR, texto) {
 
 const SESSAO_CHAVE = "qia:resp";
 const SESSAO_DIAS = 30;
+const CLAIM_CHAVE = "qia:claim";
+
+// Segredo aleatório deste aparelho. Viaja no `sck` junto do diagnóstico, mas só ganha valor
+// depois que o webhook grava uma compra paga. A /acesso consome uma vez e apaga do aparelho.
+function claimCheckout() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CLAIM_CHAVE) || "null");
+    if (salvo?.valor && salvo.ate > Date.now()) return salvo.valor;
+    const bytes = crypto.getRandomValues(new Uint8Array(24));
+    const valor = btoa(String.fromCharCode(...bytes))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    localStorage.setItem(CLAIM_CHAVE, JSON.stringify({ valor, ate: Date.now() + SESSAO_DIAS * 864e5 }));
+    return valor;
+  } catch (_) { return ""; }
+}
+
+function claimSalvo() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CLAIM_CHAVE) || "null");
+    return salvo?.ate > Date.now() ? salvo.valor || "" : "";
+  } catch (_) { return ""; }
+}
+
+function limparClaim() {
+  try { localStorage.removeItem(CLAIM_CHAVE); } catch (_) {}
+}
 
 // Assinatura das opções de uma pergunta. Sem isto, uma resposta guardada com o
 // questionário antigo continuaria "válida" depois de a gente inserir uma opção nova, e o
@@ -1819,13 +1837,14 @@ const ORIGEM_CHAVE = "qia:org";
 const CUPOM_CHAVE = "qia:cupom";
 const CUPOM_DIAS = 7;
 
-// O `c` é código de acesso e o `cupom` vira `coupon` mais adiante: nenhum dos dois é origem.
+// `c` é o código do diagnóstico, `sck` leva código + claim à Cakto e `cupom` vira `coupon`:
+// nenhum deles é origem de tráfego.
 // Sem tirá-los daqui, quem volta pelo link que guardou no WhatsApp aparece na planilha como
 // se tivesse vindo de uma campanha chamada "c", e o link do checkout sai com o cupom escrito
 // duas vezes, uma delas com o nome que a Cakto não entende.
 function origemTrafego() {
   const q = new URLSearchParams(location.search);
-  for (const k of ["c", "cupom", "coupon"]) q.delete(k);
+  for (const k of ["c", "sck", "cupom", "coupon"]) q.delete(k);
   const agora = q.toString();
   try {
     if (agora) localStorage.setItem(ORIGEM_CHAVE, agora);
@@ -2006,25 +2025,6 @@ function rastrearFunil(url, origem, estado) {
     a.addEventListener("click", () => {
       px("InitiateCheckout");
       ga("iniciou_checkout", { currency: "BRL" });
-      // O checkout abre em outra aba, então esta continua viva. É aqui que o código deixa de
-      // ser convite para adiar e vira entrega: a decisão de comprar já foi tomada, e o que
-      // vem a seguir é o problema do aparelho, que a compra de 19/08 revelou. A Cakto entrega
-      // por e-mail com link fixo, e sem o código quem paga no celular e lê no computador
-      // responde as 19 perguntas de novo.
-      const bloco = el("pos-clique");
-      if (!bloco || !window.__codigo) return;
-      // debaixo do botão que ela clicou, e não onde o HTML o deixou: os dois botões de
-      // compra ficam longe um do outro, e o código tem que aparecer onde o olho está
-      a.insertAdjacentElement("afterend", bloco);
-      el("pos-clique-valor").textContent = window.__codigo;
-      const zap = el("pos-clique-zap");
-      if (zap && !zap.href) {
-        zap.href = "https://wa.me/?text=" + encodeURIComponent(
-          "O meu diagnóstico do " + PROD + ": " + window.__codigo
-          + ". O link abre direto no meu resultado, em qualquer aparelho: "
-          + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo));
-      }
-      bloco.hidden = false;
     });
   }
 
@@ -2062,7 +2062,7 @@ function rastrearFunil(url, origem, estado) {
     // Voltar com o quiz começado mostra o que a pessoa perde, uma vez só. Quem insiste sai:
     // segurar duas vezes deixa de ser retenção e vira sequestro do botão do navegador.
     // Uma vez em cada momento, porém, e não uma vez na vida: a tela do meio do quiz segura,
-    // e a do fim entrega o código de acesso. Quem já tinha sido segurado na pergunta 5
+    // e a do fim entrega o código do diagnóstico. Quem já tinha sido segurado na pergunta 5
     // ficava sem o código ao sair no resultado, que é justamente quem mais precisa dele.
     const jaSegurou = { meio: false, pronto: false };
 
@@ -2091,11 +2091,10 @@ function rastrearFunil(url, origem, estado) {
       el("retencao-fica").textContent = pronto ? "Ver o meu resultado" : "Continuar de onde parei";
       // o WhatsApp é o único app que a pessoa tem nos dois aparelhos, e o link vai com o
       // código dentro: do outro lado é um toque, sem digitar nada. O link é o DESTA página,
-      // e não o do /mapa: a entrega não tem paywall, e a única coisa que a protege é a URL
-      // não circular. Mandar o /mapa para quem ainda não comprou era dar o produto pago
+      // nunca o da entrega paga. O código devolve somente as respostas e o teaser.
       if (pronto && window.__codigo) {
         const texto = "O meu diagnóstico do " + PROD + ": " + window.__codigo
-          + ". O link abre direto no meu resultado, em qualquer aparelho: "
+          + ". O link abre direto neste resultado gratuito, em qualquer aparelho: "
           + location.origin + location.pathname + "?c=" + encodeURIComponent(window.__codigo);
         el("ret-codigo-valor").textContent = window.__codigo;
         el("ret-codigo-zap").href = "https://wa.me/?text=" + encodeURIComponent(texto);
@@ -2194,15 +2193,18 @@ function rastrearFunil(url, origem, estado) {
       el("res-titulo").textContent = "A sua stack está pronta";
       el("res-perfil").textContent = `${area} · ${orc}. Identifiquei ${stack.length} ferramentas pra você.`;
 
-      // o código carrega as respostas: é o que evita refazer o quiz no outro aparelho,
-      // que foi o que aconteceu na primeira venda de teste. Ele NÃO aparece junto da oferta:
-      // "guarda para depois" ao lado do preço é permissão para adiar a compra. Quem tenta
-      // sair recebe o código na tela de retenção, onde adiar já não é o risco.
+      // O código carrega apenas as respostas. Vai no campo customizado `sck` da Cakto para
+      // o webhook associar pagamento e diagnóstico; sozinho ele NÃO abre a entrega paga.
+      // Quem tenta sair ainda pode guardá-lo para voltar ao teaser sem refazer o quiz.
       const codigo = gerarCodigo(MOTOR, resp);
       if (codigo) {
         window.__codigo = codigo;
-        for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]'))
-          if (!a.href.includes("c=")) a.href += (a.href.includes("?") ? "&" : "?") + "c=" + encodeURIComponent(codigo);
+        const claim = claimCheckout();
+        for (const a of document.querySelectorAll('a[href*="pay.cakto.com.br"]')) {
+          const url = new URL(a.href);
+          if (claim) url.searchParams.set("sck", "qia2_" + codigo + "." + claim);
+          a.href = url.toString();
+        }
       }
 
       el("res-stack").innerHTML = stack.map((s, i) => `

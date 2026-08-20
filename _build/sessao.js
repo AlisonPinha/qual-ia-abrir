@@ -9,6 +9,32 @@
 
 const SESSAO_CHAVE = "qia:resp";
 const SESSAO_DIAS = 30;
+const CLAIM_CHAVE = "qia:claim";
+
+// Segredo aleatório deste aparelho. Viaja no `sck` junto do diagnóstico, mas só ganha valor
+// depois que o webhook grava uma compra paga. A /acesso consome uma vez e apaga do aparelho.
+function claimCheckout() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CLAIM_CHAVE) || "null");
+    if (salvo?.valor && salvo.ate > Date.now()) return salvo.valor;
+    const bytes = crypto.getRandomValues(new Uint8Array(24));
+    const valor = btoa(String.fromCharCode(...bytes))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    localStorage.setItem(CLAIM_CHAVE, JSON.stringify({ valor, ate: Date.now() + SESSAO_DIAS * 864e5 }));
+    return valor;
+  } catch (_) { return ""; }
+}
+
+function claimSalvo() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CLAIM_CHAVE) || "null");
+    return salvo?.ate > Date.now() ? salvo.valor || "" : "";
+  } catch (_) { return ""; }
+}
+
+function limparClaim() {
+  try { localStorage.removeItem(CLAIM_CHAVE); } catch (_) {}
+}
 
 // Assinatura das opções de uma pergunta. Sem isto, uma resposta guardada com o
 // questionário antigo continuaria "válida" depois de a gente inserir uma opção nova, e o
@@ -75,13 +101,14 @@ const ORIGEM_CHAVE = "qia:org";
 const CUPOM_CHAVE = "qia:cupom";
 const CUPOM_DIAS = 7;
 
-// O `c` é código de acesso e o `cupom` vira `coupon` mais adiante: nenhum dos dois é origem.
+// `c` é o código do diagnóstico, `sck` leva código + claim à Cakto e `cupom` vira `coupon`:
+// nenhum deles é origem de tráfego.
 // Sem tirá-los daqui, quem volta pelo link que guardou no WhatsApp aparece na planilha como
 // se tivesse vindo de uma campanha chamada "c", e o link do checkout sai com o cupom escrito
 // duas vezes, uma delas com o nome que a Cakto não entende.
 function origemTrafego() {
   const q = new URLSearchParams(location.search);
-  for (const k of ["c", "cupom", "coupon"]) q.delete(k);
+  for (const k of ["c", "sck", "cupom", "coupon"]) q.delete(k);
   const agora = q.toString();
   try {
     if (agora) localStorage.setItem(ORIGEM_CHAVE, agora);

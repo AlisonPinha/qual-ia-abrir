@@ -1,0 +1,15 @@
+{
+  "name": "qual-ia-abrir",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "for v in '' abas regra stack; do python3 _build/gerar.py \"$v\"; done && python3 _build/gerar_mapa.py && python3 _build/gerar_plano.py && python3 _build/gerar_acesso.py && python3 _build/gerar_doc_quiz.py",
+    "test": "node --test tests/*.test.mjs && node _build/testar_motor.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.1"
+  }
+}

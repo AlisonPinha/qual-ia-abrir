@@ -12,6 +12,7 @@
 // índices de resposta e o material que a pessoa colou, delimitado por etiqueta.
 
 import { MOTOR, calcularStack, pidsExigidos } from "../_lib/motor.mjs";
+import { autorizar } from "./_access.mjs";
 
 export const config = { maxDuration: 60 };
 
@@ -180,6 +181,13 @@ ${material}
 export default {
   async fetch(request) {
     if (request.method !== "POST") return new Response("", { status: 405 });
+
+    try {
+      if (!await autorizar(request, "plano")) return new Response("", { status: 401 });
+    } catch (erro) {
+      console.error("[plano] falha de autorização", erro?.message);
+      return new Response("", { status: 503 });
+    }
 
     const chave = process.env.ANTHROPIC_API_KEY;
     if (!chave) return new Response("", { status: 503 });

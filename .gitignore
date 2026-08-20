@@ -1,5 +1,7 @@
-.vercel
-.DS_Store
+node_modules/
+.vercel/
 __pycache__/
 .env
-.env.local
+.env.*
+!.env.example
+.DS_Store
