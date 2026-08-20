@@ -51,9 +51,12 @@ segundo item some. Só dá para confirmar com payload real de uma venda com bump
 escondido. Faltava `.res-codigo[hidden] { display: none; }`. Desde então o QA mede
 `offsetParent`, não a propriedade `hidden`.
 
-**Pré-requisito para publicar a captura:** recolar o Apps Script (a correção do `utm` está
-em `_docs/apps-script-captura.js`, mas o que roda é a cópia no Google). A aba `leads` ainda
-não existe: ela nasce no primeiro lead, com o cabeçalho da versão que estiver implantada.
+**Apps Script recolado em 20/08, pelo navegador.** Implantado como **versão 5 na mesma
+implantação** (`v5 - lead grava a coluna utm`), então o `ANALITICO_URL` continua valendo:
+o código de implantação segue `AKfycbzY1PYcR4EC...`. Conferido com POST real do tipo `lead`:
+a aba `leads` **nasceu agora**, com as 22 colunas, e a `utm` veio preenchida com
+`utm_source=teste_recolagem&utm_campaign=v5`. A linha de teste foi apagada e a aba ficou
+vazia, com o cabeçalho certo, esperando o primeiro lead de verdade.
 
 ### A próxima sessão começa por aqui
 
