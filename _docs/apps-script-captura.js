@@ -1,12 +1,13 @@
 /**
  * Recebe os dados do diagnóstico do qual-ia-abrir e grava numa planilha.
  *
- * Grava quatro coisas em abas diferentes, conforme o campo "tipo" do payload:
+ * Grava cinco coisas em abas diferentes, conforme o campo "tipo" do payload:
  *   - "lead"        → aba 'leads', com nome e WhatsApp (só quando o passo de contato existe)
  *   - "diagnostico" → aba 'diagnosticos', ANÔNIMO, toda vez que alguém termina o quiz
  *   - "presente"    → aba 'presentes', o que o comprador escolheu de próximo produto
  *   - "funil"       → aba 'abandonos', uma linha por pessoa que ABRIU o quiz, com a
  *                     pergunta em que ela parou. É a única que grava quem não terminou.
+ *   - "venda"       → aba 'vendas', espelho sem PII dos eventos do webhook da Cakto.
  *
  * A aba 'diagnosticos' é a que responde: qual perfil responde mais, qual dor
  * aparece, qual ferramenta o motor mais recomenda e o que ele mais manda cortar.
@@ -38,6 +39,7 @@ const ABA_LEADS = 'leads';
 const ABA_DIAG = 'diagnosticos';
 const ABA_PRESENTE = 'presentes';
 const ABA_FUNIL = 'abandonos';
+const ABA_VENDAS = 'vendas';
 
 // colunas de resposta gravadas em coluna própria; o resto vai no bruto
 // Só o tronco tem coluna fixa. As perguntas de trilha mudam conforme a área, então
@@ -58,12 +60,103 @@ function doPost(e) {
   let d = {};
   try { d = JSON.parse(bruto); } catch (err) { d = {}; }
 
-  if (d.tipo === 'diagnostico') gravarDiagnostico(d, bruto);
+  if (d.tipo === 'venda') {
+    if (!segredoVendasValido(d.segredo))
+      return ContentService.createTextOutput('negado');
+    gravarVenda(d);
+  }
+  else if (d.tipo === 'diagnostico') gravarDiagnostico(d, bruto);
   else if (d.tipo === 'presente') gravarPresente(d, bruto);
   else if (d.tipo === 'funil') gravarFunil(d, bruto);
-  else gravarLead(d, bruto);
+  else if (d.tipo === 'lead') gravarLead(d, bruto);
+  else return ContentService.createTextOutput('ignorado');
 
   return ContentService.createTextOutput('ok');
+}
+
+/** O endpoint é público porque o site grava diagnóstico anônimo. Venda exige um segundo
+ *  segredo que existe apenas nas propriedades deste script e na Function da Vercel. */
+function segredoVendasValido(recebido) {
+  const esperado = PropertiesService.getScriptProperties().getProperty('VENDAS_SECRET') || '';
+  const atual = String(recebido || '');
+  if (!esperado || atual.length !== esperado.length) return false;
+  let diferente = 0;
+  for (let i = 0; i < esperado.length; i++)
+    diferente |= esperado.charCodeAt(i) ^ atual.charCodeAt(i);
+  return diferente === 0;
+}
+
+/**
+ * Uma linha por pedido. Reenvio, reembolso e chargeback atualizam a mesma linha.
+ * Não recebe nome, e-mail, telefone, corpo bruto nem query string do checkout.
+ */
+function gravarVenda(d) {
+  const pedido = String(d.pedido || '').trim();
+  if (!pedido) return;
+  const cabecalho = [
+    'primeiro evento', 'última atualização', 'pedido', 'referência', 'evento', 'status',
+    'produto', 'direito', 'valor base Cakto', 'moeda', 'código diagnóstico', 'meta event id',
+    'checkout', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+    'pago em', 'origem'
+  ];
+  const aba = abaOu(ABA_VENDAS, cabecalho);
+  const agora = new Date();
+  const numero = Number(d.valor);
+  const pago = new Date(d.pago_em || '');
+  const nova = [
+    agora, agora, pedido, d.referencia || '', d.evento || '', d.status || '',
+    d.produto || '', d.direito || '', Number.isFinite(numero) && numero > 0 ? numero : '',
+    d.moeda || 'BRL', d.codigo_diagnostico || '', d.meta_event_id || pedido,
+    d.checkout || '', d.utm_source || '', d.utm_medium || '', d.utm_campaign || '',
+    d.utm_content || '', d.utm_term || '', isNaN(pago.getTime()) ? '' : pago,
+    d.origem || 'cakto_webhook'
+  ];
+
+  const trava = LockService.getScriptLock();
+  try { trava.waitLock(20000); } catch (err) { return; }
+  try {
+    const linha = acharLinhaVenda(aba, pedido);
+    if (linha) {
+      const atual = aba.getRange(linha, 1, 1, nova.length).getValues()[0];
+      for (let i = 1; i < nova.length; i++)
+        if (i === 1 || nova[i] !== '') atual[i] = nova[i];
+      aba.getRange(linha, 1, 1, atual.length).setValues([atual]);
+      formatarLinhaVenda(aba, linha);
+    } else {
+      aba.appendRow(nova);
+      formatarLinhaVenda(aba, aba.getLastRow());
+    }
+    prepararAbaVendas(aba, cabecalho);
+  } finally {
+    trava.releaseLock();
+  }
+}
+
+function acharLinhaVenda(aba, pedido) {
+  const n = aba.getLastRow();
+  if (n < 2) return 0;
+  const pedidos = aba.getRange(2, 3, n - 1, 1).getValues();
+  for (let i = pedidos.length - 1; i >= 0; i--)
+    if (String(pedidos[i][0]) === pedido) return i + 2;
+  return 0;
+}
+
+function formatarLinhaVenda(aba, linha) {
+  aba.getRange(linha, 1, 1, 2).setNumberFormat('dd/MM/yyyy HH:mm:ss');
+  aba.getRange(linha, 9).setNumberFormat('R$ #,##0.00');
+  aba.getRange(linha, 19).setNumberFormat('dd/MM/yyyy HH:mm:ss');
+}
+
+function prepararAbaVendas(aba, nomes) {
+  const colunas = nomes.length;
+  const cabecalho = aba.getRange(1, 1, 1, colunas);
+  cabecalho.setValues([nomes]).setFontWeight('bold').setBackground('#e8f0fe');
+  aba.setFrozenRows(1);
+  const larguras = [145, 145, 280, 100, 150, 100, 180, 100, 100, 75,
+                    180, 280, 260, 150, 150, 150, 220, 150, 145, 170];
+  larguras.forEach(function (largura, i) { aba.setColumnWidth(i + 1, largura); });
+  if (!aba.getFilter() && aba.getLastRow() > 1)
+    aba.getRange(1, 1, aba.getMaxRows(), colunas).createFilter();
 }
 
 /** Anônimo: nem nome nem WhatsApp entram aqui, de propósito. */

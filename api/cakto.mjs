@@ -26,6 +26,7 @@ const PIXEL = "827402089420392";
 const API = "v21.0";
 const SITE = "https://diagnostico.noahai.com.br";
 const LIMITE_CORPO = 20000;
+const LIMITE_PLANILHA_MS = 8000;
 
 // O que a Cakto manda quando a cobrança é criada e ainda não foi paga. Não vira Purchase:
 // contar aqui é exatamente o ROAS mentiroso que os toggles do painel evitam. Fica listado
@@ -112,6 +113,70 @@ export function prepararCompraAprovada(d = {}) {
   return { pedido, acesso: normalizarPedido(d), preco: valor(d) };
 }
 
+function rastreamentoDoCheckout(d = {}) {
+  const checkout = String(d.checkoutUrl || d.checkout_url || "").trim();
+  try {
+    const url = new URL(checkout);
+    const parametro = nome => String(url.searchParams.get(nome) || "").slice(0, 500);
+    return {
+      checkout: `${url.origin}${url.pathname}`.slice(0, 500),
+      utm_source: parametro("utm_source"),
+      utm_medium: parametro("utm_medium"),
+      utm_campaign: parametro("utm_campaign"),
+      utm_content: parametro("utm_content"),
+      utm_term: parametro("utm_term"),
+    };
+  } catch {
+    return { checkout: "", utm_source: "", utm_medium: "", utm_campaign: "",
+             utm_content: "", utm_term: "" };
+  }
+}
+
+// Espelho operacional sem PII. A Cakto continua sendo a fonte financeira e o Neon a fonte
+// do acesso; a planilha existe para cruzar pedido, variante, UTM e estado numa tela só.
+// O URL perde query string de propósito: o `sck` contém o claim do aparelho e nunca deve ser
+// duplicado numa planilha.
+export function prepararVendaParaPlanilha(d = {}, evento = "") {
+  const pedido = String(d.id || d.order_id || "").trim();
+  const email = texto((d.customer || {}).email);
+  if (!pedido || EXEMPLO_DO_PAINEL.includes(pedido) || email === EMAIL_DO_EXEMPLO) return null;
+  if (!["purchase_approved", "refund", "chargeback"].includes(evento)) return null;
+  const acesso = normalizarPedido(d);
+  const preco = valor(d);
+  const produto = d.product || {};
+  return {
+    pedido,
+    referencia: String(d.refId || d.ref_id || "").trim().slice(0, 200),
+    evento,
+    status: evento === "purchase_approved" ? "paid" : evento,
+    produto: String(produto.name || "").trim().slice(0, 255),
+    direito: acesso?.entitlement || "",
+    valor: preco ?? "",
+    moeda: "BRL",
+    codigo_diagnostico: acesso?.diagnosticCode || "",
+    meta_event_id: pedido,
+    pago_em: acesso?.paidAt || "",
+    origem: "cakto_webhook",
+    ...rastreamentoDoCheckout(d),
+  };
+}
+
+async function registrarVendaNaPlanilha(venda) {
+  const url = process.env.SHEETS_SALES_URL;
+  const segredo = process.env.SHEETS_SALES_SECRET;
+  if (!url || !segredo) throw new Error("SHEETS_SALES_URL ou SHEETS_SALES_SECRET ausente");
+  const resposta = await fetch(url, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ tipo: "venda", segredo, ...venda }),
+    signal: AbortSignal.timeout(LIMITE_PLANILHA_MS),
+  });
+  const corpo = await resposta.text();
+  if (!resposta.ok || corpo.trim() !== "ok")
+    throw new Error(`resposta inesperada (${resposta.status}): ${corpo.slice(0, 80)}`);
+  return true;
+}
+
 export default {
   async fetch(request) {
     if (request.method !== "POST") return new Response("", { status: 405 });
@@ -139,11 +204,19 @@ export default {
     // Reembolso e chargeback cortam o acesso. O webhook precisa ter esses dois eventos
     // marcados no painel da Cakto; até lá, este bloco fica pronto mas não é chamado.
     if (REVOGAR.has(evento)) {
-      const resultados = await Promise.allSettled(pedidos.map(d =>
-        revogarPedido(String(d.id || d.order_id || ""), evento)));
+      const revogacoes = pedidos.map(d =>
+        revogarPedido(String(d.id || d.order_id || ""), evento));
+      const vendas = pedidos.map(d => prepararVendaParaPlanilha(d, evento)).filter(Boolean)
+        .map(venda => registrarVendaNaPlanilha(venda));
+      const resultados = await Promise.allSettled(revogacoes);
+      const resultadosVendas = await Promise.allSettled(vendas);
       for (const resultado of resultados) {
         if (resultado.status === "rejected")
           console.error("[acesso] falha ao revogar", evento, resultado.reason?.message);
+      }
+      for (const resultado of resultadosVendas) {
+        if (resultado.status === "rejected")
+          console.error("[planilha] falha ao atualizar venda", evento, resultado.reason?.message);
       }
       return new Response("ok", { status: 200 });
     }
@@ -157,10 +230,14 @@ export default {
     const agora = Math.floor(Date.now() / 1000);
     const eventos = [];
     const entregas = [];
+    const vendas = [];
     for (const d of pedidos) {
       const compra = prepararCompraAprovada(d);
       if (!compra) continue;
       const { pedido, acesso, preco } = compra;
+      const venda = prepararVendaParaPlanilha(d, evento);
+      if (venda) vendas.push(registrarVendaNaPlanilha(venda).catch(erro =>
+        console.error("[planilha] falha ao gravar venda", pedido, erro?.message)));
 
       // A entrega não depende do contrato de dados do Meta. Se a Cakto renomear o campo de
       // preço, o Purchase pode deixar de ser montado, mas uma compra aprovada conhecida ainda
@@ -205,7 +282,7 @@ export default {
     // silencioso: foi assim que 14 dias passaram sem nenhum Purchase. Se um dia a Cakto
     // renomear `amount` ou `id`, o log é o que avisa, porque a venda entra igual no painel
     if (!eventos.length) {
-      await Promise.all(entregas);
+      await Promise.all([...entregas, ...vendas]);
       console.error("[capi] purchase_approved sem evento montado",
                     JSON.stringify(pedidos.map(d => ({
                       id: d.id ?? d.order_id ?? null,
@@ -221,7 +298,7 @@ export default {
     if (corpo.test_event_code) payload.test_event_code = String(corpo.test_event_code);
 
     if (!token) {
-      await Promise.all(entregas);
+      await Promise.all([...entregas, ...vendas]);
       console.error("[capi] META_CAPI_TOKEN ausente; acesso entregue sem evento Meta");
       return new Response("acesso ok, meta indisponível", { status: 200 });
     }
@@ -231,7 +308,7 @@ export default {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(payload),
     });
-    const [resultadoMeta] = await Promise.allSettled([meta, ...entregas]);
+    const [resultadoMeta] = await Promise.allSettled([meta, ...entregas, ...vendas]);
     if (resultadoMeta.status === "rejected") {
       console.error("[capi] falha de rede", resultadoMeta.reason?.message);
       return new Response("erro no meta", { status: 200 });

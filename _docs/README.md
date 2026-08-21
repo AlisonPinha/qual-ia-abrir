@@ -11,7 +11,7 @@ Doc viva do **Qual IA Usar?**. Report encerrado vai para `archive/`.
 | [STATUS.md](STATUS.md) | Estado do que está no ar, o que foi medido e o handoff da última sessão |
 | [adrs/](adrs/) | Decisões técnicas que não se reabrem sem motivo novo |
 | [audits/](audits/) | A verificação periódica do catálogo, uma por rodada. **Nada dali entra no produto sem o Alison aprovar item a item:** preço errado dentro da entrega paga é reembolso |
-| [apps-script-captura.js](apps-script-captura.js) | Web App do Apps Script que grava diagnóstico, lead, abandono do quiz e voto do presente na planilha. **Implantado como versão 5 em 20/08, na mesma implantação**, então a `ANALITICO_URL` não mudou |
+| [apps-script-captura.js](apps-script-captura.js) | Web App do Apps Script que grava diagnóstico, lead, abandono, voto do presente e o espelho sem PII das vendas. **Implantado como versão 8 em 21/08, na mesma implantação**, então a `ANALITICO_URL` não mudou |
 
 ## ADRs
 

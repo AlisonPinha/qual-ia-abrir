@@ -5,10 +5,25 @@
 **Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
 `DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
-**Primeira ação de 21/08:** retomar a compra controlada `82QBXtc`. Rever o `Purchase` no Meta,
-pedir ao Alison a confirmação no momento do reembolso integral de R$ 67, executar o reembolso
-e provar que webhook, Neon e sessões revogaram o acesso. Depois decidir se a planilha ganhará
-uma linha própria de venda.
+**Primeira ação de 21/08:** retomada. O `Purchase` apareceu no Meta e a aba `vendas` foi ligada
+em produção. Falta pedir ao Alison a confirmação no momento do reembolso integral de R$ 67,
+executar o reembolso e provar que webhook, Neon, planilha e sessões registraram a revogação.
+
+### Venda e UTM agora têm linha própria
+
+Em 21/08 entrou a aba `vendas` na planilha já existente. Ela é espelho operacional, não fonte
+financeira: a Cakto continua respondendo pelo dinheiro e o Neon pelo acesso. O webhook manda
+uma linha sanitizada com pedido, referência, evento, status, produto, direito, valor base Cakto, código do
+diagnóstico, `event_id`, checkout sem query string e as cinco UTMs. Nome, e-mail, telefone,
+payload bruto, `sck`, `fbclid` e `gclid` ficam de fora.
+
+O Apps Script v8 exige `VENDAS_SECRET`, faz upsert pela ID interna do pedido e mantém a primeira
+data enquanto atualiza o último evento. Reenvio não duplica; `refund` e `chargeback` mudam a
+mesma linha. Tentativa sem segredo respondeu `negado`. O pedido real `82QBXtc` foi retroalimentado
+uma vez, o segundo envio atualizou a mesma linha e preservou `teste / controlado / homologacao /
+compra_controlada_20260820_chrome`. Cabeçalho congelado, filtro, datas, moeda e larguras foram
+conferidos visualmente. Backend publicado no deploy `dpl_CTKscV1BCTFGSrGAcGz2wPBRBhrS`, com
+sete testes verdes, status `Ready` e nenhum erro nos logs após a publicação.
 
 ### Acesso pago ligado ao pedido está no ar
 
@@ -42,10 +57,10 @@ a mesma rota continua redirecionando a `/acesso`.
 UTM → Cakto → `purchase_approved` → Neon → e-mail da Cakto → `/acesso` → sessão → `/mapa`.
 O mapa devolveu Higgsfield, Claude e ElevenLabs, exatamente a stack do diagnóstico, e o acesso
 também abriu em janela anônima depois de validar e-mail + telefone. O webhook respondeu `200`
-com body `ok`, portanto a Graph API aceitou o `Purchase`; falta somente o relatório do Events
-Manager terminar de processá-lo. A planilha gravou diagnóstico e mapa com a UTM completa, mas
-não tem hoje uma linha própria de venda — a venda + UTM ficam correlacionadas no pedido e no
-`checkout_url` do Neon.
+com body `ok`, portanto a Graph API aceitou o `Purchase`. Em 21/08 o relatório do Events
+Manager passou a mostrar **Compra · Ativo · API de Conversões · 1**, com `order_id` entre os
+parâmetros. Em 21/08 a aba `vendas` passou a mostrar o pedido, a venda e a UTM completa numa
+única linha, sem guardar PII nem o claim do `sck`.
 
 Rollback: restaurar `public/mapa/index.html` e `public/plano/index.html` pelo gerador
 antigo/revisão anterior, publicar e devolver os cinco links de e-mail da Cakto às rotas
@@ -474,15 +489,13 @@ crédito é de quem comprou e vale sempre que a pessoa voltar ao mapa.
 **O que só o tráfego resolve:** ler a origem por UTM no GA4, o teste seco de nome (3.1 a 3.4), a auditoria das 9 seções (4.4), o
 pós-pit curto da Frente 7 e o world wide (4.7).
 
-**O que ainda depende da homologação de 20/08:** ver o `Purchase` do pedido `82QBXtc` terminar
-de aparecer no relatório agregado do Meta; o envio pelo servidor já foi aceito. Também ficou
-visível a lacuna de não existir uma linha própria de venda na planilha.
+**O que ainda depende da homologação de 20/08:** o `Purchase` e a linha de venda com UTM já
+passaram. Resta provar a revogação com o reembolso: Cakto → webhook → Neon → planilha → sessões.
 
 **Combinado para 21/08:** solicitar o reembolso integral de R$ 67 do pedido `82QBXtc`, depois
-confirmar no Neon que o status mudou, que a versão do acesso avançou e que as sessões já
-emitidas deixaram de abrir `/mapa`. No mesmo retorno, rever o `Purchase` no Meta e decidir se a
-planilha deve ganhar uma linha própria de venda. Não reembolsar sem a confirmação do Alison no
-momento da ação.
+confirmar no Neon que o status mudou, que a versão do acesso avançou, que a linha em `vendas`
+mudou para `refund` e que as sessões já emitidas deixaram de abrir `/mapa`. Não reembolsar sem
+a confirmação do Alison no momento da ação.
 
 **Antes de soltar tráfego:** arquivar a aba `diagnosticos` (97 linhas, quase todas de QA)
 como `diagnosticos ate 20-08`, do mesmo jeito que foi feito em 19/08. Combinado com o Alison.
@@ -496,8 +509,8 @@ a pessoa nunca volta à página. Resolvido no mesmo dia: `/api/cakto` recebe o w
 `purchase_approved` e manda o evento pelo servidor, com o id do pedido como `event_id`.
 
 Na compra controlada `82QBXtc`, o webhook chegou e o endpoint respondeu `ok`, confirmando que o
-Meta aceitou o evento. O relatório agregado ainda estava dentro da janela de processamento no
-fim da sessão; conferir nele o `Purchase` e o `content_name` da variante.
+Meta aceitou o evento. Em 21/08 o relatório agregado mostrou **Compra · Ativo · API de
+Conversões · 1** e listou `order_id` entre os cinco parâmetros recebidos.
 
 **A recuperação por WhatsApp (2.5) está a uma decisão de distância.** A Cakto tem os eventos de
 cobrança gerada e não paga, o mesmo webhook já está criado e o n8n tem a fundação pronta. Falta
@@ -573,7 +586,7 @@ lugar, não cortar a medição.
 | Provado em produção | a Cakto entrega no endpoint (2 envios, 1 entregue, 258ms) e o Meta responde `events_received: 1` |
 | Venda de 19/08 | recuperada à mão: o webhook só dispara em evento novo, e a CAPI aceita evento de até 7 dias. Pedido `6XF4ljB`, R$ 67, variante **abas**, sem UTM nenhuma |
 | Compra real nova | pedido `82QBXtc`, R$ 67, em 20/08: `sck`, UTM, webhook, Neon, e-mail, sessão e mapa provados; acesso também validado em janela anônima |
-| Meta desta compra | Graph API aceitou (`200`, body `ok`); visualização no relatório agregado ainda em processamento |
+| Meta desta compra | Graph API aceitou (`200`, body `ok`); em 21/08 o relatório agregado mostrou **Compra · Ativo · API de Conversões · 1**, com `order_id` entre os parâmetros |
 
 **Onde conferir se o evento chegou:** em **Eventos de teste → canal Site**, que responde na hora
 e mostrou `Compra · Processado · Servidor`, uma marcada como `Desduplicado`. O relatório demora:

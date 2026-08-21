@@ -22,10 +22,10 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 |---|---|---|---|---|
 | 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
 | 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
-| 0.1c | ~~**Acesso ligado ao pagamento**~~ **homologado com compra real em 20/08** | Claude | 0.1 | Pedido `82QBXtc`, R$ 67: `sck` + UTM chegaram à Cakto; `purchase_approved` gravou pedido ativo no Neon; e-mail abriu `/acesso`; claim e e-mail + telefone em janela anônima emitiram sessão; `/mapa` correspondeu ao diagnóstico. Webhook do `Purchase` respondeu `200`/`ok`; relatório agregado do Meta ainda em processamento. **21/08:** com autorização do Alison no momento da ação, reembolsar e provar a revogação real |
+| 0.1c | ~~**Acesso ligado ao pagamento**~~ **homologado com compra real em 20/08** | Claude | 0.1 | Pedido `82QBXtc`, R$ 67: `sck` + UTM chegaram à Cakto; `purchase_approved` gravou pedido ativo no Neon; e-mail abriu `/acesso`; claim e e-mail + telefone em janela anônima emitiram sessão; `/mapa` correspondeu ao diagnóstico. Webhook do `Purchase` respondeu `200`/`ok`; em 21/08 o Meta mostrou **Compra · Ativo · API de Conversões · 1**, com `order_id`. Falta, com autorização do Alison no momento da ação, reembolsar e provar a revogação real |
 | 0.1d | ~~**Impedir compra sem diagnóstico**~~ **feito em 20/08** | Claude | nada | O CTA de preço abre/retoma o quiz enquanto não existe `sck`; depois do resultado, o mesmo checkout leva UTM + código + claim. `InitiateCheckout` só dispara quando a Cakto realmente abre. Regressão cobre os dois lados |
 | 0.1e | ~~**Limpeza de copy do caminho**~~ **feito em 20/08** | Claude | nada | Marca do controle unificada, crase corrigida, data e ressalva cambial vindas do mesmo dado e fallback automático de `/acesso` explicado na tela |
-| 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08 pelo Claude, no navegador** | Claude | nada | Versão 2 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. A aba `diagnosticos` nasceu de novo com 21 colunas, incluindo `trilha`, `descreveu` e `utm`, e a `presentes` com as 8 dela. Conferido com POST real nos dois tipos |
+| 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08; ampliado em 21/08** | Claude | nada | Versão 8 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. Além das abas anteriores, `vendas` recebe uma linha por pedido, sem PII nem `sck`, com upsert de compra/reembolso/chargeback e UTMs. Tentativa sem segredo respondeu `negado`; compra `82QBXtc` entrou uma vez e o reenvio atualizou a mesma linha. A coluna financeira explicita que registra o valor base informado pela Cakto |
 | 0.3 | ~~**Conferir o `Purchase` no Events Manager**~~ **conferido e resolvido em 19/08** | Claude | 0.1 | Reprovou: a venda paga não gerou `Purchase` nenhum, porque o Pix é pago fora do navegador. Resolvido no mesmo dia pelo 4.1, que é o webhook da Cakto mandando o evento do servidor |
 
 ### O que a compra de teste ensinou
@@ -307,8 +307,8 @@ seguinte.
 
 **Provado com compra nova em 20/08:** o `purchase_approved` do pedido `82QBXtc` chegou com os
 campos esperados, gravou o direito no Neon e produziu resposta `200`/`ok` depois de o Meta
-aceitar o payload. A visualização no relatório agregado continuava dentro da janela de
-processamento quando a homologação terminou.
+aceitar o payload. Em 21/08 a visualização no relatório agregado apareceu como **Compra ·
+Ativo · API de Conversões · 1**, com `order_id` entre os parâmetros.
 
 **Conferido que nada falso entrou:** o pixel continua com zero `Purchase` depois de todos os
 testes, porque os de curl foram com `test_event_code` e o do painel caiu na guarda.
@@ -450,7 +450,7 @@ decisão do Alison, não minha.
 | 3.1 | ~~**Segunda conta de anúncio**~~ **confirmada pelo Alison em 20/08** | Alison | nada | As duas contas exigidas pelo protocolo já existem; não é mais pendência nem bloqueio para o teste |
 | 3.2 | **Criativos a partir dos Reels medidos.** Os **18 roteiros estão prontos** em [CRIATIVOS.md](CRIATIVOS.md), escritos em 20/08 contra a Frente 8 do playbook: gancho literal (7s, é o que o teste compara), corpo em beats (a voz é dele) e o CTA casando palavra por palavra com o botão da LP. **Falta gravar** | Alison grava, Claude corta | nada | 6 corpos x 3 ganchos, saídos do banco que já viralizou. **C4 não precisa de gravação**: é o Reel de 98.288 views com o CTA trocado, que é o caso que o playbook traz como melhor criativo de uma oferta inteira. **C5 está bloqueado** até o Alison dar quanto pagou e por quantos meses na ferramenta que não usava: valor plausível ali seria prova inventada |
 | 3.3 | **Rodar o teste seco de nome** (R$ 200 a 300) | Alison | 3.1, 3.2, Fase 1 | Uma variante vence por conversão, não por CPC |
-| 3.4 | **Ler a origem do tráfego** na planilha e no Events Manager | Claude | 0.2, 3.3 | Sabemos de onde veio cada diagnóstico e cada venda |
+| 3.4 | **Ler a origem do tráfego** na planilha e no Events Manager — infraestrutura pronta em 21/08 | Claude | 0.2, 3.3 | A aba `vendas` já cruza pedido, variante e UTM; a compra controlada provou a leitura. Continua aberta até o teste de tráfego dizer de onde vieram diagnósticos e vendas reais da campanha |
 
 ---
 
