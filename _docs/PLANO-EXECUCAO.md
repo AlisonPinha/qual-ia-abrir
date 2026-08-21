@@ -22,7 +22,7 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 |---|---|---|---|---|
 | 0.1 | ~~**Compra de teste de R$ 67**~~ **feita em 19/08, por uma pessoa de fora** | Alison paga, Claude confere | nada | A venda entrou (R$ 64,51 líquidos no painel). **Achou o defeito que nenhum QA meu pegava:** a compradora respondeu no celular, abriu o e-mail no computador e refez as 23 etapas depois de ter pago |
 | 0.1b | ~~**Acesso em outro aparelho**~~ **resolvido em 19/08** | Claude | 0.1 | Código de acesso que carrega as respostas, campo no `/mapa` e no `/plano`, leitura de `?c=` na URL e botão para guardar no WhatsApp com o link pronto |
-| 0.1c | **Acesso ligado ao pagamento** — infraestrutura e migração antiga feitas em 20/08; falta compra real na cadeia nova | Claude | 0.1 | **Feito:** Neon ativo e sem o duplicado vazio; Cakto envia `/acesso` nos 5 produtos; `sck` carrega diagnóstico + claim de uso único; outro aparelho valida e-mail + telefone por hash; sessão `HttpOnly`; `/mapa` e `/plano` ausentes de `public/`; refund e chargeback ativos e revogando; compra `6XF4ljB` migrada somente com HMAC. **Falta:** uma compra controlada real provar a cadeia inteira |
+| 0.1c | ~~**Acesso ligado ao pagamento**~~ **homologado com compra real em 20/08** | Claude | 0.1 | Pedido `82QBXtc`, R$ 67: `sck` + UTM chegaram à Cakto; `purchase_approved` gravou pedido ativo no Neon; e-mail abriu `/acesso`; claim e e-mail + telefone em janela anônima emitiram sessão; `/mapa` correspondeu ao diagnóstico. Webhook do `Purchase` respondeu `200`/`ok`; relatório agregado do Meta ainda em processamento. **21/08:** com autorização do Alison no momento da ação, reembolsar e provar a revogação real |
 | 0.1d | ~~**Impedir compra sem diagnóstico**~~ **feito em 20/08** | Claude | nada | O CTA de preço abre/retoma o quiz enquanto não existe `sck`; depois do resultado, o mesmo checkout leva UTM + código + claim. `InitiateCheckout` só dispara quando a Cakto realmente abre. Regressão cobre os dois lados |
 | 0.1e | ~~**Limpeza de copy do caminho**~~ **feito em 20/08** | Claude | nada | Marca do controle unificada, crase corrigida, data e ressalva cambial vindas do mesmo dado e fallback automático de `/acesso` explicado na tela |
 | 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08 pelo Claude, no navegador** | Claude | nada | Versão 2 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. A aba `diagnosticos` nasceu de novo com 21 colunas, incluindo `trilha`, `descreveu` e `utm`, e a `presentes` com as 8 dela. Conferido com POST real nos dois tipos |
@@ -305,10 +305,10 @@ próprio Meta como **`Desduplicado`**, prova de que o `event_id` faz o trabalho 
 fica: para evento de servidor, conferir pela aba de teste na hora e pelo relatório só no dia
 seguinte.
 
-**O que ainda não foi provado, e só a próxima venda prova:** que o `purchase_approved` de uma
-compra de verdade chega com os campos esperados. O que já está provado é que a Cakto alcança o
-endpoint (2 envios, 1 entregue com 258ms; o que falhou foi o primeiro teste, antes de alinhar o
-segredo) e que o Meta aceita o payload que o endpoint monta.
+**Provado com compra nova em 20/08:** o `purchase_approved` do pedido `82QBXtc` chegou com os
+campos esperados, gravou o direito no Neon e produziu resposta `200`/`ok` depois de o Meta
+aceitar o payload. A visualização no relatório agregado continuava dentro da janela de
+processamento quando a homologação terminou.
 
 **Conferido que nada falso entrou:** o pixel continua com zero `Purchase` depois de todos os
 testes, porque os de curl foram com `test_event_code` e o do painel caiu na guarda.
