@@ -115,11 +115,11 @@ parte do quiz que mais muda a stack.
 - `e_fonte` O que acontece quando você pede fonte pra IA?
 - `e_volume` Por semana, quanto material você tem que dar conta?
 - `e_entrega` O que você precisa produzir no fim?
-- `e_ritmo` Você prefere consumir o material lendo ou ouvindo?
+- `e_ritmo` Você prefere ler ou ouvir o material?
 
 **4. Técnico e desenvolvimento**
 - `t_tarefa` No trabalho técnico, onde o tempo vai embora?
-- `t_base` O código onde você mexe é...
+- `t_base` Como é o código onde você mexe?
 - `t_entrega` O que você precisa entregar mais rápido?
 - `t_entrega_2` Fora código, o que você ainda precisa entregar?
 - `t_ritmo` Quanto do seu trabalho é tarefa repetida?
@@ -177,7 +177,7 @@ parte do quiz que mais muda a stack.
 | `nivel` | Como você usa IA hoje? | sim |
 | `prazo` | Em quanto tempo você quer isso resolvido? | não |
 | `estilo` | Você prefere dominar uma ferramenta ou saber trocar entre várias? | não |
-| `orcamento` | Quanto você pode investir por mês em ferramenta? | não |
+| `orcamento` | Quanto você pode pagar por mês em ferramenta? | não |
 | `onde` | Onde você usa IA na maior parte do tempo? | sim |
 
 ## O que cada resposta faz com a stack
@@ -405,7 +405,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Várias aulas gravadas | Gemini +3, Gemini Notebook +3 |
 | Não é volume, é dificuldade do conteúdo | Claude +4, ChatGPT +1 |
 
-### `t_base` O código onde você mexe é...
+### `t_base` Como é o código onde você mexe?
 
 | Resposta | Favorece |
 |---|---|
@@ -595,7 +595,7 @@ Só as perguntas que votam. Peso alto manda: 7 é resposta dominante, 1 a 3 é r
 | Texto autoral, artigo ou TCC | Claude +5 |
 | Exercício, prova ou correção | ChatGPT +4 |
 
-### `e_ritmo` Você prefere consumir o material lendo ou ouvindo?
+### `e_ritmo` Você prefere ler ou ouvir o material?
 
 | Resposta | Favorece |
 |---|---|

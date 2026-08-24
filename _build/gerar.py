@@ -962,7 +962,7 @@ html = f"""<!doctype html>
 <header class="hero">
   <div class="env">
     <div>
-      <h1>Pare de assinar IA<br>que você <span class="g">não usa.</span></h1>
+      <h1>Para de assinar IA<br>que você <span class="g">não usa.</span></h1>
       <!-- o H1 tem 2 linhas por desenho: se mudar a copy, confira a quebra em 1440 e em 390 -->
       <p class="tese">
         <b class="crenca">{escape(DG["crenca"])}</b>
@@ -1246,7 +1246,7 @@ html = f"""<!doctype html>
     <div class="cabeca">
       <span class="eyebrow">Tire suas dúvidas</span>
       <h2>Perguntas frequentes</h2>
-      <p>O que costumam me perguntar no direct sobre esta lista.</p>
+      <p>O que costumam me perguntar no direct sobre o mapa.</p>
     </div>
     <div class="faq" id="faq">{faq_html}</div>
   </div>

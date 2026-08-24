@@ -84,11 +84,10 @@ VARIANTES = {
         "nome": "Stack Mínima",
         "marca": "stack mínima",
         "mecanismo": "Stack Mínima",
-        "titulo": "Stack Mínima: as 3 IAs que bastam para o seu trabalho",
-        "headline": "Descubra a sua stack mínima",
+        "titulo": "Stack Mínima: as suas 3 IAs em 2 minutos",
+        "headline": "Descubra quais são as suas 3 IAs",
         "crenca": ("Quando a resposta volta genérica, quase nunca é a IA que é fraca: é a tarefa "
-                   "na ferramenta errada, pedida do jeito errado. A Stack Mínima resolve as duas com "
-                   "menos ferramentas, não com mais."),
+                   "na ferramenta errada, pedida do jeito errado. A Stack Mínima resolve as duas."),
         "checkout": "https://pay.cakto.com.br/3dtj6z8_1049909",
     },
 }

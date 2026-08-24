@@ -5,9 +5,112 @@
 **Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
 `DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
-**Primeira ação de 21/08:** retomada. O `Purchase` apareceu no Meta e a aba `vendas` foi ligada
-em produção. Falta pedir ao Alison a confirmação no momento do reembolso integral de R$ 67,
-executar o reembolso e provar que webhook, Neon, planilha e sessões registraram a revogação.
+**Estado em 24/08:** a copy das 4 LPs e do quiz passou por revisão completa e **a variante
+`stack` voltou a isolar só o nome**, que era o que impedia o teste seco de responder qualquer
+coisa. A fila que só depende do Claude continua vazia depois disso.
+
+**O que espera o Alison:** o reembolso integral de R$ 67 com autorização no momento da ação,
+para provar a revogação em webhook, Neon, planilha e sessões; de que número sai o WhatsApp;
+criar o cupom e o produto de R$ 47 na Cakto; gravar a VSL; trocar a chave da Anthropic; colher
+o depoimento. **O gargalo é tráfego:** zero visita real até aqui.
+
+### Revisão de copy das 4 LPs e do quiz, em 24/08
+
+Sete sweeps sobre a LP inteira (628 linhas visíveis), as 73 perguntas e as 4 variantes. **Doze
+correções aplicadas, uma revertida pelo próprio QA.** Todas nascem no `dados.json`, no
+`config.py` ou no `gerar.py`, então as quatro variantes herdaram de uma vez.
+
+**O achado que valia mais: a variante `stack` quebrava o teste de nome.** O comentário do
+próprio `config.py` declara a regra ("se mais de uma variável mudar, o teste não diz qual delas
+ganhou") e ela violava em três lugares: o `titulo` perdeu o "em 2 minutos" que as outras três
+prometem, a `headline` perdeu o número 3 ("Descubra a sua stack mínima" contra "Descubra quais
+são as suas 3 IAs") e a `crenca` ganhou um "com menos ferramentas, não com mais" que nenhuma
+outra tem. Os R$ 200 a 300 do teste seco não diriam se o resultado veio do nome ou dessas três.
+Lastro triplo no playbook: Frente 4 ("o nome trocado em **todas** as etapas"), Frente 9
+("isolando uma variável, com todo o resto 100% idêntico") e Frente 5, o One Belief. **As quatro
+agora só diferem pelo nome**, conferido no HTML gerado.
+
+**A data dos preços estava errada, e o git prova.** `aviso_custo`, `conta.rodape` e a faixa
+diziam 19/08. Entre 14:05 e 15:16 de **20/08**, seis commits mudaram preço e catálogo
+(`fc2bc30`, `8212e5f`, `336ef5b`, `01f5ec6`, `edfa77d`, `6701c97`), todos depois da data
+declarada. A página se dizia mais velha do que é. Passou para 20/08 nos três lugares, e o
+playbook do vault ganhou a seção da varredura, que não estava registrada lá.
+
+**Duas contradições de posicionamento:** o FAQ abria com "o que costumam me perguntar no direct
+sobre **esta lista**", chamando o produto pelo nome que a resposta seguinte usa como inimigo
+("você acha lista de ferramenta em qualquer lugar"); e `escopo.titulo` dizia "as 12 que eu uso
+**num dia normal de trabalho**" numa página que argumenta que três bastam. Viraram "sobre o
+mapa" e "as 12 que eu testei em trabalho real, uma a uma".
+
+**Voz:** o H1 dizia "**Pare** de assinar IA que você não usa" e o CTA do meio dizia "**Para** de
+assinar IA que você não usa". Frase idêntica, imperativo diferente. Unificado em "Para", que é
+o registro do resto da página (Responde, Recebe, Aplica, Vai até o fim, Escolhe).
+
+**Especificidade:** `oferta.promessa` dizia "Em poucos minutos" onde a página promete "2 minutos"
+cinco vezes, e ela também alimenta a `description` do schema.org. "Os prompts **perfeitos**" era
+o único superlativo da página contra 16 ocorrências de "prompt exato/pronto". Os entregáveis
+"Comparativos diretos" e "Diagnóstico completo" descreviam feature e passaram a responder o que
+a pessoa ganha.
+
+**No quiz:** "quanto você pode **investir**" era a única palavra de vendedor do produto, e a
+pergunta gêmea usa a honesta ("quanto você **paga** hoje"); virou "pagar". "Consumir o material"
+era jargão de criador num bloco de estudante e virou "ler ou ouvir". E a única das 73 com
+reticências ganhou interrogação.
+
+**A que foi revertida, e por que o print pegou o que o texto escondia:** eu tinha aberto o H2
+"O mapa responde às duas" para "às duas: qual abrir e como pedir", por achar que "as duas"
+caía sem antecedente logo depois de quatro cards numerados. O screenshot mostrou que a linha de
+apoio imediatamente abaixo **já diz** "Qual ferramenta abrir e o prompt exato pra pedir": a
+correção repetia na headline o que o parágrafo resolvia, e custava 4 linhas de título em mobile.
+Voltou ao original.
+
+**QA:** 3 viewports (390x844, 360x640, 1280x900), scroll horizontal 0 nas três, H1 em 2 linhas,
+os 5 cards de entregável sem corte com os dois textos novos mais longos, 11 testes e as 587.776
+combinações verdes. Dois "erros" da bateria eram do ambiente, não do produto: o "CORTADO" da
+faixa era o seletor pegando um ancestral (ela é marquee, 4976px por design) e o 404 é o
+`/_vercel/insights/script.js`, que só existe servido pela Vercel. Prints em
+`scratchpad/copy/bloco-*.png`.
+
+**Não aplicado, e fica anotado:** o mockup do WhatsApp no hero mostra `12:45` na barra de status
+e `15:41` nas mensagens. Não estava na lista aprovada e mudança de passagem não entra no diff.
+
+### O que 22 e 23/08 deixaram sem registro aqui
+
+Estas três sessões existiam só no git. O `STATUS.md` parava em 21/08.
+
+**`/grafico`, em 22/08:** entrega do post que pede CINZA, VERDE, AMARELO ou VERMELHO nos
+comentários. O workflow IG DM 1/2 responde no Direct com o link, variando o texto pela cor. O
+`reel.mp4` e a capa moram no repo porque o Metricool exige URL pública para publicar.
+
+**A conta do corte estava morta, refeita em 23/08:** os R$ 479/mês das três cortadas e os 91,4%
+eram de 20/08 com 13 ferramentas, e a Poppy AI, que sozinha sustentava o número, saiu no mesmo
+dia. Os números vivos, medidos nas 587.776 combinações contra o `_lib/motor.mjs` de produção:
+as três cortadas somam **R$ 140/mês** na mediana (p10 52, p90 260) e o corte custa mais que a
+stack em **16,8%**, não em 91,4%. **A consequência é de copy:** a stack recomendada custa mais
+que o corte (R$ 234 contra R$ 140), então nenhuma peça pode insinuar economia no total. O que
+ficou de pé é melhor: a maior cortada sozinha paga os R$ 67 em **90,0%** das combinações. O G3
+do `CRIATIVOS.md` morreu antes de virar vídeo.
+
+**Banner do checkout, em 23/08:** os cinco produtos tinham o checkout pelado. O
+`_build/gerar_banner.js` monta desktop e mobile do `dados.json`, e o mockup não é desenho: o
+script sobe o site local, responde o quiz e fotografa o card real do `/mapa`, então envelhece
+junto com o catálogo. No ar nos quatro produtos do teste de nome, 8 de 8 conferidos em produção
+pela `naturalWidth` (screenshot mente, o CDN demora a decodificar). Doc em
+`MODELAGEM-BANNER-CHECKOUT.md`. **O upsell ainda não tem peça própria.**
+
+**A `/cola` saiu do ar em 23/08, e o número foi cruel:** 16 aberturas e **zero** cliques no CTA,
+com o botão em duas posições. O defeito não era o botão: os Shorts já entregavam "10 tarefas e a
+IA certa para cada", a cola entregava 11 e o produto promete 23. A mesma coisa três vezes, cada
+vez com um pouco mais, e quem chegava já estava servido. A **`/materia` não entrega nada**, e
+essa é a decisão inteira: mostrar o tamanho da pergunta em vez de respondê-la. O gerador tem
+duas travas de build (quebra se o corpo nomear ferramenta do catálogo, e se o espelho do quiz
+mudar de tamanho). `/cola` redireciona para `/materia`, senão os 16 links já enviados viram 404.
+
+**A linha das duas causas, em 23/08:** o criativo acusava a escolha errada, a matéria explicava
+duas causas e a LP abria falando de desperdício. A causa que faltava é do Alison: usar a IA
+errada faz a pessoa concluir que a IA é fraca, e na maioria das vezes nem é a ferramenta, é a
+forma de pedir. As quatro crenças, a break1 do quiz e as peças A1, A3, A4 e M3 passaram a contar
+a mesma história.
 
 ### Presente de boas-vindas do Direct
 

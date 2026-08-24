@@ -234,7 +234,7 @@
     "crencaCurta": "A resposta volta genérica quando a tarefa está na ferramenta errada, ou pedida do jeito errado.",
     "_cambio": "O câmbio da conversão para real, e a data dele. Algumas ferramentas de IA cobram em dólar, então parte dos valores em real do produto envelhece com ele: é aqui que se atualiza, e o \"mes\" de cada ferramenta em acesso vem desta taxa.",
     "cambio": {"taxa": 5.1832, "euro": 6.0535, "data": "20/08/2026"},
-    "aviso_custo": "Valores conferidos em 19/08/2026 no site de cada ferramenta. Algumas cobram em dólar; nesses casos, o valor em real usa o câmbio de R$ 5,18 e muda com ele.",
+    "aviso_custo": "Valores conferidos em 20/08/2026 no site de cada ferramenta. Algumas cobram em dólar; nesses casos, o valor em real usa o câmbio de R$ 5,18 e muda com ele.",
     "acesso": {
       "Claude": {
         "custo": "R$ 104/mês no Pro",
@@ -1499,7 +1499,7 @@
       ],
       [
         "t_base",
-        "O código onde você mexe é...",
+        "Como é o código onde você mexe?",
         [
           [
             "Meu, começado do zero",
@@ -2307,7 +2307,7 @@
       ],
       [
         "e_ritmo",
-        "Você prefere consumir o material lendo ou ouvindo?",
+        "Você prefere ler ou ouvir o material?",
         [
           [
             "Lendo",
@@ -3055,7 +3055,7 @@
       ],
       [
         "orcamento",
-        "Quanto você pode investir por mês em ferramenta?",
+        "Quanto você pode pagar por mês em ferramenta?",
         [
           [
             "Nada, quero só o que é grátis",
@@ -3496,23 +3496,23 @@
     "nome": "Qual IA Usar?",
     "preco": "67",
     "de": "147",
-    "promessa": "Em poucos minutos você sabe quais ferramentas precisa, em que ordem começar e o prompt exato para usar cada uma.",
+    "promessa": "Em 2 minutos você sabe quais ferramentas precisa, em que ordem começar e o prompt exato para usar cada uma.",
     "entregaveis": [
       [
         "Diagnóstico completo",
-        "Profissão, objetivo e orçamento"
+        "As suas respostas viram a stack, não um ranking pronto"
       ],
       [
         "Sua stack em 3 camadas",
         "Agora, em 30 dias e depois"
       ],
       [
-        "Os prompts perfeitos",
+        "Os prompts prontos",
         "Um para cada tarefa da sua área, com o tutorial de cada ferramenta"
       ],
       [
         "Comparativos diretos",
-        "ChatGPT, Claude, Gemini e Perplexity"
+        "Qual das quatro abrir em cada tarefa, e onde cada uma perde"
       ],
       [
         "O que NÃO assinar",
@@ -3600,8 +3600,8 @@
   "_escopo": "A seção das ferramentas entregava o catálogo: 13 logos com nome, e a pessoa saía da página com a lista pronta para pesquisar sozinha. As 4 que todo mundo já conhece ficam com nome, porque são prova emprestada e não revelam nada. As outras 9 viram categoria sem nome: mostram o tamanho do que existe sem entregar o produto.",
   "escopo": {
     "eyebrow": "As 12 ferramentas",
-    "titulo": "O mapa cobre as 12 que eu uso",
-    "titulo_2": "num dia normal de trabalho.",
+    "titulo": "O mapa cobre as 12 que eu testei",
+    "titulo_2": "em trabalho real, uma a uma.",
     "sub": "O seu mapa diz quais dessas fazem sentido pro seu caso, em que ordem e o que ignorar. Nenhuma recomendação é de afiliado, e onde eu não uso de verdade, eu não opino.",
     "conhecidas": ["Claude", "ChatGPT", "Gemini", "Perplexity"],
     "conhecidas_rot": "As quatro que você já conhece",
@@ -3663,7 +3663,7 @@
     ],
     [
       "Preços conferidos",
-      "em agosto de 2026"
+      "em 20/08/2026, um a um"
     ],
     [
       "Zero",
@@ -3706,7 +3706,7 @@
       "uma vez"
     ],
     "remate": "Cortar uma única assinatura errada de R$ 104 já paga o mapa no primeiro mês, e ainda sobra.",
-    "rodape": "Valores conferidos em 19 de agosto de 2026, um a um, no site de cada ferramenta. Algumas cobram em dólar; nesses casos, a conversão usa R$ 5,18, o câmbio de 20 de agosto."
+    "rodape": "Valores conferidos em 20 de agosto de 2026, um a um, no site de cada ferramenta. Algumas cobram em dólar; nesses casos, a conversão usa R$ 5,18, o câmbio do mesmo dia."
   },
   "_pedidos": "Pedidos, não depoimentos: é o que a pessoa diria, não o que alguém disse. Sem nome próprio, sem aspas de fala atribuída e sem número de resultado, porque prova social aqui só entra quando for real.",
   "pedidos": {
