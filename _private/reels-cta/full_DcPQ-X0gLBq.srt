@@ -1,0 +1,100 @@
+1
+00:00:00,000 --> 00:00:01,200
+Fazer petição
+
+2
+00:00:01,200 --> 00:00:02,920
+Cloud Cowork ou Jus IA
+
+3
+00:00:02,920 --> 00:00:04,260
+Pesquisar jurisprudência
+
+4
+00:00:04,260 --> 00:00:06,220
+Cloud Browser ou Jus IA
+
+5
+00:00:06,220 --> 00:00:07,400
+Revisar contrato
+
+6
+00:00:07,400 --> 00:00:08,620
+Cloud Cowork sem dúvidas
+
+7
+00:00:08,620 --> 00:00:09,620
+Resumir processo
+
+8
+00:00:09,620 --> 00:00:11,200
+Cloud Cowork ou Gemini
+
+9
+00:00:11,200 --> 00:00:12,440
+Conferir citação
+
+10
+00:00:12,440 --> 00:00:14,300
+Cloud Cowork ou Jus IA
+
+11
+00:00:14,300 --> 00:00:15,540
+E-mail pro cliente
+
+12
+00:00:15,540 --> 00:00:16,540
+Cloud sem dúvidas
+
+13
+00:00:16,540 --> 00:00:17,460
+Montar tese
+
+14
+00:00:17,460 --> 00:00:18,480
+Chat GPT
+
+15
+00:00:18,480 --> 00:00:19,740
+Transcrever audiência
+
+16
+00:00:19,740 --> 00:00:20,380
+Gemini
+
+17
+00:00:20,380 --> 00:00:21,600
+Cálculo trabalhista
+
+18
+00:00:21,600 --> 00:00:23,720
+Cloud Cowork ou Cálculo jurídico
+
+19
+00:00:23,720 --> 00:00:24,760
+Explicar o processo
+
+20
+00:00:24,760 --> 00:00:25,800
+Cloud disparado
+
+21
+00:00:25,800 --> 00:00:26,780
+Ler contrato
+
+22
+00:00:26,780 --> 00:00:28,300
+Cloud Cowork ou Gemini
+
+23
+00:00:28,300 --> 00:00:29,520
+E pra aprender a IA mais rápido
+
+24
+00:00:29,520 --> 00:00:30,080
+Me segue aqui
+
+25
+00:00:30,080 --> 00:00:31,080
+Que todo dia tem conteúdo
+

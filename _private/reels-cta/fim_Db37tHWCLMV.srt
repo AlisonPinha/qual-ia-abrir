@@ -1,0 +1,40 @@
+1
+00:00:00,000 --> 00:00:00,680
+Gemini
+
+2
+00:00:00,680 --> 00:00:01,720
+Planejar o dia
+
+3
+00:00:01,720 --> 00:00:02,660
+Chat GPT
+
+4
+00:00:02,660 --> 00:00:04,160
+Conteúdo cinematográfico
+
+5
+00:00:04,160 --> 00:00:04,720
+Hugs Field
+
+6
+00:00:04,720 --> 00:00:05,820
+Página de vindas
+
+7
+00:00:05,820 --> 00:00:06,180
+Cloud
+
+8
+00:00:06,180 --> 00:00:07,300
+Fotos de produto
+
+9
+00:00:07,300 --> 00:00:08,040
+Hugs Field
+
+10
+00:00:08,040 --> 00:00:10,860
+E pra aprender a IA mais rápido, me segue aqui, que todo dia tem conteúdo.
+

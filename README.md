@@ -11,16 +11,22 @@ que cortar.
 Nasceu do Reel `Db37tHWCLMV` (@aalisonaraujo, 10/08/2026), que fez 89.501 views.
 
 **Em 18/08/2026 a página deixou de ser diretório e virou LP de venda.** Decisão do Alison:
-nada de graça. Saíram da página a lista pública das 24 tarefas, os três desempates, os papéis
+nada de graça na LP. Saíram da página a lista pública das 23 tarefas, os três desempates, os papéis
 das cinco principais e a descrição de cada ferramenta. O resultado do diagnóstico é um teaser
 com silhuetas, e o conteúdo do produto (nome das ferramentas, prompts, primeiro passo)
 **não é enviado ao navegador**. O que ficou de ferramenta são as **4 conhecidas com nome e
 logo** (prova emprestada) e as outras **9 por categoria, sem nome nem logo**, com a silhueta do
-teaser: conferido em produção, zero dos nove nomes aparece no HTML visível. O que isso custou,
+teaser: conferido em produção, zero dos nove nomes aparece no HTML visível. A exceção deliberada
+é `/cola`: um presente de boas-vindas com somente as 11 tarefas do Reel, sem prompts, custos,
+ordem de compra ou personalização; o CTA leva ao diagnóstico pago preservando a atribuição. O que isso custou,
 e ele sabia ao decidir: os ~10 mil caracteres que o Google indexava e a entrega prometida no
 Reel ("salva essa lista").
 
-Site sem framework: as LPs e a porta `/acesso` são estáticas; as entregas são HTML gerado,
+O link público da bio é `https://diagnostico.noahai.com.br/bio`. Ele redireciona para a LP
+com a atribuição fixa `instagram / organic_social / qual_ia_usar / link_bio`, sem expor as UTMs
+no endereço compartilhado.
+
+Site sem framework: as LPs, a `/cola` e a porta `/acesso` são estáticas; as entregas são HTML gerado,
 empacotado dentro de uma Vercel Function e servido somente depois de validar a compra.
 
 **Pendências e o mapa do funil concorrente:** `_docs/STATUS.md`.
@@ -34,6 +40,8 @@ empacotado dentro de uma Vercel Function e servido somente depois de validar a c
 | `_build/gerar_mapa.py` | Gera `_private/mapa.html` (entrega paga, mais a venda do upsell) e `_lib/motor.mjs` |
 | `_build/gerar_plano.py` | Gera `_private/plano.html`, a entrega do upsell |
 | `_build/gerar_acesso.py` | Gera `public/acesso/index.html`, que valida a compra enviada pela Cakto |
+| `_build/gerar_cola.py` | Gera `public/cola/index.html` e o card do presente a partir das 11 tarefas `no_reel` |
+| `_build/cola.js` | Repassa somente UTMs e click IDs permitidos da cola para a LP |
 | `_build/gerar_doc_quiz.py` | Gera `_docs/DIAGNOSTICO.md` a partir do `dados.json` |
 | `_build/config.py` | As URLs de deploy, os checkouts e o pixel. **Um lugar só para cada URL** |
 | `_build/sessao.js` | Memória do diagnóstico no navegador, origem do tráfego e envio anônimo |
@@ -55,6 +63,7 @@ empacotado dentro de uma Vercel Function e servido somente depois de validar a c
 | `public/index.html` | **Gerado. Não editar à mão**, `gerar.py` sobrescreve |
 | `public/logos/` | Ícones no mesmo squircle dos Reels |
 | `public/og.png` | Preview de compartilhamento |
+| `public/card-dm.png` | Card quadrado do presente enviado no Direct |
 
 Os SVGs de logo saem dos paths de `~/Projetos/reels-ferramentas-ia/src/AppIcon.tsx`
 (ChatGPT, Claude, Claude Code, Gemini, Perplexity, Higgsfield). Grok, Poppy e Lovable
@@ -187,7 +196,7 @@ Google, o gerador de preview do WhatsApp e leitores de tela recebiam a página v
 porque nenhum deles executa o script. Medido com um leitor externo: ele não conseguia
 citar uma ferramenta sequer.
 
-Agora `gerar.py` escreve as 24 tarefas direto no HTML e o JavaScript só liga a busca e
+Agora `gerar.py` escreve as 23 tarefas direto no HTML e o JavaScript só liga a busca e
 o filtro sobre o que já está lá. Hoje o que precisa estar no HTML é a oferta: promessa, entregáveis, preço, garantias e FAQ. Tudo
 isso é texto real, mais o schema `Product` + `Offer` (R$ 67, BRL) e `FAQPage`. O quiz é a exceção
 deliberada: vive num `dialog` e depende de JS para calcular.

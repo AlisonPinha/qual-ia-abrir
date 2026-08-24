@@ -1,0 +1,92 @@
+1
+00:00:00,000 --> 00:00:01,260
+Classificar lançamento.
+
+2
+00:00:01,620 --> 00:00:03,120
+Cloud Cowork ou Conta Azul.
+
+3
+00:00:03,180 --> 00:00:04,100
+Ler nota fiscal.
+
+4
+00:00:04,420 --> 00:00:06,020
+Cloud Cowork ou Conta Azul.
+
+5
+00:00:06,180 --> 00:00:08,020
+Puxar XML no portal.
+
+6
+00:00:08,260 --> 00:00:09,560
+Cloud Browser ou Key.
+
+7
+00:00:09,700 --> 00:00:10,620
+Conferir Speed.
+
+8
+00:00:10,940 --> 00:00:12,720
+Cloud Cowork ou CIEG.
+
+9
+00:00:12,920 --> 00:00:14,580
+Ver pendência no ECAC.
+
+10
+00:00:14,880 --> 00:00:16,000
+Cloud Browser ou...
+
+11
+00:00:16,520 --> 00:00:17,720
+Entender a reforma.
+
+12
+00:00:17,840 --> 00:00:18,480
+Cloud Browser.
+
+13
+00:00:18,700 --> 00:00:19,780
+Relatório para o cliente.
+
+14
+00:00:19,980 --> 00:00:20,700
+Cloud Cowork.
+
+15
+00:00:20,920 --> 00:00:21,800
+Dúvida no WhatsApp.
+
+16
+00:00:22,060 --> 00:00:22,800
+Chat GPT.
+
+17
+00:00:23,060 --> 00:00:23,980
+Imposto de renda.
+
+18
+00:00:24,240 --> 00:00:26,400
+Cloud Cowork ou Confere Leão.
+
+19
+00:00:26,620 --> 00:00:27,560
+Conferir a folha.
+
+20
+00:00:27,560 --> 00:00:30,180
+Cloud Cowork ou Alter Data IA.
+
+21
+00:00:30,280 --> 00:00:31,420
+E para aprender IA mais rápido.
+
+22
+00:00:31,520 --> 00:00:31,980
+Me segue aqui.
+
+23
+00:00:32,080 --> 00:00:32,940
+Que todo dia tem conteúdo.
+

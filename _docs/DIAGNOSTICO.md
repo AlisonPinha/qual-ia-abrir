@@ -172,7 +172,7 @@ parte do quiz que mais muda a stack.
 |---|---|---|
 | `area` | Onde a IA entra primeiro pra você? | sim |
 | `tempo_ia` | Há quanto tempo você usa IA? | não |
-| `quantas` | Quantas ferramentas de IA você tem abertas hoje? | não |
+| `quantas` | Quantas ferramentas de IA você tem hoje? | não |
 | `horas` | Somando tudo isso, quantas horas por semana você perde? | não |
 | `nivel` | Como você usa IA hoje? | sim |
 | `prazo` | Em quanto tempo você quer isso resolvido? | não |

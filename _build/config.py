@@ -56,8 +56,8 @@ VARIANTES = {
         "mecanismo": "Regra das 3 IAs",
         "titulo": "Qual IA Usar? A sua stack de IA em 2 minutos",
         "headline": "Descubra quais são as suas 3 IAs",
-        "crenca": ("Escolher a IA certa para cada tarefa é a chave para a IA finalmente devolver "
-                   "resposta útil, e isso é possível através da Regra das 3 IAs."),
+        "crenca": ("Quando a resposta volta genérica, quase nunca é a IA que é fraca: é a tarefa "
+                   "na ferramenta errada, pedida do jeito errado. A Regra das 3 IAs resolve as duas."),
         "checkout": CHECKOUT_URL,
     },
     "abas": {
@@ -66,8 +66,8 @@ VARIANTES = {
         "mecanismo": "Método das 3 Abas",
         "titulo": "Método das 3 Abas: a sua stack de IA em 2 minutos",
         "headline": "Descubra quais são as suas 3 abas",
-        "crenca": ("Deixar aberta a aba certa para cada tarefa é a chave para a IA finalmente "
-                   "devolver resposta útil, e isso é possível através do Método das 3 Abas."),
+        "crenca": ("Quando a resposta volta genérica, quase nunca é a IA que é fraca: é a tarefa "
+                   "na aba errada, pedida do jeito errado. O Método das 3 Abas resolve as duas."),
         "checkout": "https://pay.cakto.com.br/32hjw7j_1049893",
     },
     "regra": {
@@ -76,8 +76,8 @@ VARIANTES = {
         "mecanismo": "Regra das 3 IAs",
         "titulo": "Regra das 3 IAs: a sua stack de IA em 2 minutos",
         "headline": "Descubra quais são as suas 3 IAs",
-        "crenca": ("Escolher a IA certa para cada tarefa é a chave para a IA finalmente devolver "
-                   "resposta útil, e isso é possível através da Regra das 3 IAs."),
+        "crenca": ("Quando a resposta volta genérica, quase nunca é a IA que é fraca: é a tarefa "
+                   "na ferramenta errada, pedida do jeito errado. A Regra das 3 IAs resolve as duas."),
         "checkout": "https://pay.cakto.com.br/8t2cigd_1049903",
     },
     "stack": {
@@ -86,8 +86,9 @@ VARIANTES = {
         "mecanismo": "Stack Mínima",
         "titulo": "Stack Mínima: as 3 IAs que bastam para o seu trabalho",
         "headline": "Descubra a sua stack mínima",
-        "crenca": ("Ficar só com as ferramentas que você de fato usa é a chave para a IA "
-                   "finalmente devolver resposta útil, e isso é possível através da Stack Mínima."),
+        "crenca": ("Quando a resposta volta genérica, quase nunca é a IA que é fraca: é a tarefa "
+                   "na ferramenta errada, pedida do jeito errado. A Stack Mínima resolve as duas com "
+                   "menos ferramentas, não com mais."),
         "checkout": "https://pay.cakto.com.br/3dtj6z8_1049909",
     },
 }

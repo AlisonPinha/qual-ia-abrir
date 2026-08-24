@@ -974,8 +974,8 @@ html = f"""<!doctype html>
         <a class="btn" href="#oferta">Ver o que vem no mapa</a>
       </div>
       <ul class="bullets">
-        <li>Diagnóstico de 2 minutos</li>
-        <li>Pagamento único de R$ {PRECO_N}</li>
+        <li>Diagnóstico grátis</li>
+        <li>Mapa completo por R$ {PRECO_N}, uma vez</li>
         <li>7 dias de garantia</li>
       </ul>
     </div>
@@ -1090,7 +1090,7 @@ html = f"""<!doctype html>
   <div class="env">
     <div class="cabeca">
       <span class="eyebrow">Por que não está funcionando</span>
-      <h2>O problema não é falta de ferramenta.<br><span class="g">É não saber qual abrir.</span></h2>
+      <h2>O problema não é falta de ferramenta.<br><span class="g">É não saber qual abrir, nem como pedir.</span></h2>
       <p>Se você se reconhecer em duas dessas quatro, o mapa resolve em menos de uma semana.</p>
     </div>
     <div class="cinco-grid">{problemas}</div>
@@ -1188,7 +1188,7 @@ html = f"""<!doctype html>
   <div class="env">
     <div class="cabeca">
       <span class="eyebrow">A conta que ninguém faz</span>
-      <h2>Errar sai mais caro<br><span class="g">do que acertar.</span></h2>
+      <h2>Uma assinatura errada<br><span class="g">custa mais que o mapa inteiro.</span></h2>
       <p>Não é o preço da IA que pesa. É o da que você assina, não abre e esquece de cancelar.</p>
     </div>
 

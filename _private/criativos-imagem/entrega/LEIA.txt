@@ -1,0 +1,40 @@
+DEZ CRIATIVOS EM IMAGEM · Qual IA Usar? · 23/08/2026
+1080x1350 (4:5). O nome do arquivo é o utm_content, não renomear.
+
+LINK, trocando só o utm_content por peça:
+https://diagnostico.noahai.com.br/?utm_source=ig&utm_medium=paid&utm_campaign=stack&utm_content=A1
+
+CONJUNTOS SEPARADOS. As duas famílias não vão no mesmo conjunto: elas testam
+coisas diferentes e misturar destrói as duas leituras. E nenhuma delas entra no
+conjunto da triagem I1 a I6, que isola headline sobre fundo idêntico.
+
+  Conjunto 1, imitam conteúdo:  A1, A4, A2, A3
+  Conjunto 2, vestem a marca:   M4, M2-conteudo, M1, M3
+  Conjunto 3, teste de público: M2-negocio, M2-vendas (mesmo layout, área trocada)
+
+A COPY DE CADA ANÚNCIO ESTÁ EM COPY-DOS-ANUNCIOS.md
+  Texto primário, título e descrição, uma entrada por peça. Todos os textos
+  primários fecham com a frase exata do botão da LP ("descobrir a minha stack"),
+  que é a regra 121 do playbook: o CTA do criativo casa palavra por palavra com
+  a primeira tela. Nas seis peças M a frase também está na arte; nas quatro A ela
+  só existe no texto primário, porque preço e CTA saíram da imagem de propósito.
+  O preço mora na descrição, nunca na arte.
+
+ANTES DE SUBIR
+  - A1: confirmar o @ (está como @alisonaraujo) e se a conta tem selo de
+    verificado. Handle errado numa peça que imita print mata a peça.
+  - A3 e A4 são as de maior risco de reprovação: o botão azul do A3 imita
+    interface da plataforma e o A4 tem forma de matéria. Se reprovar, não
+    insistir: trocar a peça, não recorrer.
+  - Nenhuma peça leva preço nem URL na arte, de propósito. O CTA real é o
+    botão do anúncio.
+
+O QUE DECIDE
+  Venda na planilha, cruzada por utm_content. Nunca CTR: o playbook mede
+  headline com 60% de interação convertendo menos que uma de 50%.
+  Três dias rodando, nunca um. ABO e CBO, os dois.
+
+O QUE ESTAS PEÇAS NÃO SÃO
+  Criativo de escala. O playbook é categórico: todos os campeões vieram de
+  formato orgânico. Elas existem para descobrir QUAL ÂNGULO merece a câmera.
+  O que converter vira vídeo, e os roteiros já estão no _docs/CRIATIVOS.md.

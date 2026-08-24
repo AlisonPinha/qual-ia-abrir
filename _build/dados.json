@@ -229,9 +229,9 @@
   ],
   "diagnostico": {
     "mecanismo": "Regra das 3 IAs",
-    "crenca": "Escolher a IA certa para cada tarefa é a chave para a IA finalmente devolver resposta útil, e isso é possível através da Regra das 3 IAs.",
+    "crenca": "Quando a resposta volta genérica, quase nunca é a IA que é fraca: é a tarefa na ferramenta errada, pedida do jeito errado. A Regra das 3 IAs resolve as duas.",
     "_crencaCurta": "A mesma crença sem o nome do mecanismo. As páginas de entrega são uma só para as quatro variantes do teste de nome: citar 'Regra das 3 IAs' ali contradiria quem comprou o 'Método das 3 Abas'.",
-    "crencaCurta": "Escolher a IA certa para cada tarefa é o que faz a resposta parar de voltar genérica.",
+    "crencaCurta": "A resposta volta genérica quando a tarefa está na ferramenta errada, ou pedida do jeito errado.",
     "_cambio": "O câmbio da conversão para real, e a data dele. Algumas ferramentas de IA cobram em dólar, então parte dos valores em real do produto envelhece com ele: é aqui que se atualiza, e o \"mes\" de cada ferramenta em acesso vem desta taxa.",
     "cambio": {"taxa": 5.1832, "euro": 6.0535, "data": "20/08/2026"},
     "aviso_custo": "Valores conferidos em 19/08/2026 no site de cada ferramenta. Algumas cobram em dólar; nesses casos, o valor em real usa o câmbio de R$ 5,18 e muda com ele.",
@@ -1119,7 +1119,7 @@
       ],
       [
         "quantas",
-        "Quantas ferramentas de IA você tem abertas hoje?",
+        "Quantas ferramentas de IA você tem hoje?",
         [
           [
             "Nenhuma ainda",
@@ -1170,7 +1170,7 @@
       ],
       [
         "break1",
-        "A Regra das 3 IAs | O problema quase nunca é a IA, é abrir a errada para aquela tarefa. Escolher a certa é o que faz a resposta parar de voltar genérica. Vai até o fim e você sai daqui com as três ferramentas do seu caso, na ordem de assinar e com o prompt de cada uma.",
+        "A Regra das 3 IAs | O problema quase nunca é a IA. É a tarefa na ferramenta errada, pedida do jeito errado, e as duas fazem a resposta voltar genérica. Vai até o fim e você sai daqui com as três ferramentas do seu caso, na ordem de assinar e com o prompt de cada uma.",
         [
           [
             "Continuar →",
@@ -3535,6 +3535,19 @@
       ]
     ],
     "selo_inclusos": "Sem mensalidade"
+  },
+  "_banner": "A copy do banner do checkout da Cakto, gerado por _build/gerar_banner.js. Os seis campos são a receita da peça: headline de acesso imediato, promessa primária, quebra da objeção principal, preço, garantia e a linha de entrega. Não citar o mecanismo aqui: o mesmo banner sobe nos quatro produtos do teste de nome. Ver _docs/MODELAGEM-BANNER-CHECKOUT.md.",
+  "banner": {
+    "headline": "ACESSO IMEDIATO AO SEU MAPA DE IA",
+    "promessa": "As 3 ferramentas certas para o seu trabalho, em que ordem começar e o prompt pronto de cada tarefa da sua área.",
+    "objecao": "Sem testar 50 ferramentas para descobrir sozinho",
+    "garantia": "7 dias de garantia",
+    "entrega": "Receba o acesso no seu e-mail assim que o pagamento for aprovado",
+    "reforcos": [
+      "Pagamento único",
+      "Sem mensalidade",
+      "Feito em 2 minutos"
+    ]
   },
   "upsell": {
     "nome": "Sua primeira semana pronta",

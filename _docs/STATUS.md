@@ -9,6 +9,35 @@
 em produção. Falta pedir ao Alison a confirmação no momento do reembolso integral de R$ 67,
 executar o reembolso e provar que webhook, Neon, planilha e sessões registraram a revogação.
 
+### Presente de boas-vindas do Direct
+
+Em 21/08 entrou em produção `https://diagnostico.noahai.com.br/cola`, gerada do mesmo
+`dados.json` do produto e limitada por teste às **11 tarefas marcadas `no_reel`**. É a
+continuidade do Reel que trouxe os seguidores: mostra tarefa, ferramenta e motivo, mas não
+entrega prompts, custos, ordem de assinatura, cortes nem personalização do produto pago.
+
+A cola preserva `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`,
+`fbclid` e `gclid` ao levar para a LP; qualquer outro parâmetro, inclusive `sck`, é descartado.
+O card quadrado agora promete a cola, e a imagem geral foi corrigida de 24 para 23 tarefas.
+Onze testes automatizados e as 587.776 combinações do motor passaram; em produção, a página
+respondeu 200, mostrou 11 tarefas e manteve a cadeia de UTM no CTA.
+
+Na revisão visual seguinte, a `/cola` foi alinhada ao sistema da LP: fundo `#0c0a10`,
+gradiente roxo→rosa, Poppins, bolha da marca e cards da mesma família. O CTA exato
+“Receber meu diagnóstico personalizado” passou a aparecer logo depois da explicação do hero,
+antes dos logos e das tarefas, e continua repetido no fechamento. Em 360×640 o botão inteiro
+termina em 446 px, portanto fica acima da primeira dobra no menor aparelho de QA.
+
+O workflow ativo do Direct já usa as mensagens, o card e a URL da cola com `utm_content`
+individual. O teste real com `noaah.ai` completou resposta → entrega do presente → link sem
+ruído. Antes do primeiro contato manual, o seguidor precisa estar cadastrado na planilha com o
+estado esperado pelo fluxo; automatizar esse cadastro a partir do eco da mensagem continua
+como melhoria opcional, não como bloqueio.
+
+Para a bio do Instagram, `https://diagnostico.noahai.com.br/bio` funciona como endereço curto
+e redireciona temporariamente para a LP com `instagram / organic_social / qual_ia_usar /
+link_bio`. O destino pode mudar depois sem trocar o link público nem deixar cache permanente.
+
 ### Venda e UTM agora têm linha própria
 
 Em 21/08 entrou a aba `vendas` na planilha já existente. Ela é espelho operacional, não fonte
@@ -1129,7 +1158,7 @@ LP de venda do **Qual IA Usar? (R$ 67, ancorado em R$ 147)**, modelada na LP do 
 8. **A conta do erro**: US$ 240 / 399 / 700+ por ano contra R$ 67 uma vez
 9. **Oferta** com preço, 5 entregáveis e garantia, depois FAQ e fecho
 
-Decisão do Alison em 18/08: **nada de graça**. Saíram a lista pública das 24 tarefas, os
+Decisão do Alison em 18/08: **nada de graça**. Saíram a lista pública das 23 tarefas, os
 desempates, os papéis das cinco principais, as descrições das ferramentas e o bloco de captura
 gratuita. O resultado do diagnóstico é teaser com silhuetas.
 
