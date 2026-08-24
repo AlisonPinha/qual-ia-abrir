@@ -15,12 +15,14 @@ existir: `03 - Resources/Marketing/Playbook Low Ticket.md`, seção "Criativo", 
 | Pegar um vídeo que já viralizou e trocar só o CTA | é o **C4**, e é por isso que ele sobe primeiro |
 | Curiosidade é igual a criatividade | os ganchos saem das 4 tensões de `Anatomia do hook`, não de esqueleto vazio |
 
-**Onde divergimos do playbook, de propósito e por escrito:** ele manda **imagem para testar e
-vídeo para escalar**, porque imagem é barata. Aqui o banco validado é de vídeo (dois Reels
-medidos, um deles 176x a mediana do perfil), e a régua maior do próprio playbook é que criativo
-campeão vem de formato orgânico. Testar em imagem seria testar num formato sem lastro nenhum
-nesta conta. Fica registrado: **isto não é o desenho do playbook, é uma escolha nossa**, e o
-custo de errar é uma rodada de verba.
+**A divergência de formato foi revogada pelo Alison em 23/08/2026.** Este documento nasceu
+indo direto para vídeo, contra a linha 238 do playbook ("**imagem para testar, vídeo para
+escalar.** Imagem é barata e serve para testar ideia nova e fatia de público nova; o que
+converter vira vídeo"), com o argumento de que o banco validado da casa é vídeo. O Alison
+decidiu seguir o playbook. **A ordem agora é: imagem triando o ângulo, vídeo só no que
+converter**, e o desenho está em [Triagem em imagem, antes da câmera](#triagem-em-imagem-antes-da-camera).
+A única peça que sobe em vídeo sem passar pela triagem é o **C4**, porque o playbook traz
+literalmente esse caso: vídeo que já viralizou, CTA trocado.
 
 ---
 
@@ -44,7 +46,10 @@ prompt de cada uma**.
 
 **Zero escassez e zero depoimento.** Não existe vaga limitada nem prova social real ainda.
 Inventar qualquer uma das duas é o art. 37 do CDC e é a primeira linha do "o que não fazer"
-do playbook.
+do plano do projeto no vault (`Qual IA Usar - Plano Low Ticket.md`), **não do playbook**: o
+playbook não trata de veracidade de prova em lugar nenhum, e chega a pedir escassez sem
+ressalva. A regra é decisão do Alison, e como toda regra dele, vence o playbook quando os dois
+divergem.
 
 **Cenário, e isso é dado, não gosto:** o mural de onda da sala, enquadramento fixo, ele
 gesticulando. Os dois Reels campeões saíram dali. Cor de destaque **`#CCF912`**, legenda
@@ -54,9 +59,25 @@ queimada na altura do peito, nunca no rodapé.
 
 - R$ 104 por mês numa ferramenta aberta uma vez por mês dá **R$ 1.244 no ano**
 - três "só pra testar" que viraram cobrança fixa dão **R$ 3.600 no ano**
-- as três que o mapa manda **cortar** somam **R$ 479 por mês** na mediana, e custam mais que a
-  stack que fica em **91,4%** dos casos
-- o motor tem **587.776 combinações** de resposta, **12 ferramentas** e **24 tarefas**
+- ~~as três cortadas somam R$ 479 por mês na mediana, e custam mais que a stack em 91,4%~~
+  **Refeito em 23/08/2026 na varredura completa das 587.776 combinações** (`_private/conta_corte.mjs`,
+  que roda em cima do mesmo `_lib/motor.mjs` da produção). Os números vivos são:
+  **as três cortadas somam R$ 140/mês na mediana** (p10 R$ 52, p90 R$ 260) e **o corte custa
+  mais que a stack em 16,8%** das combinações. A amostragem de 60 mil tinha dado R$ 140 e 17,7%;
+  a varredura completa confirma.
+  **O argumento econômico encolheu, e é preciso saber disso antes de escrever qualquer peça:**
+  os R$ 479 e os 91,4% eram sustentados pela Poppy AI sozinha, que saiu do catálogo em 20/08.
+  "O que você corta custa mais que o que você mantém" deixou de ser verdade na maioria: hoje
+  vale em 16,8%. **A stack recomendada custa mais que o corte** (R$ 234/mês contra R$ 140 na
+  mediana), então nenhuma peça pode insinuar que o mapa faz a pessoa gastar menos no total.
+- **O que sobrou, e é forte:** a **maior** ferramenta cortada, sozinha, paga os R$ 67 do produto
+  em **90,0%** das combinações (528.967 de 587.776). Esse é o número que substitui os R$ 479,
+  e ele é sobre uma assinatura só, não sobre a soma das três.
+- o motor tem **12 ferramentas** (conferido) e **66 opções de tarefa**, seis em cada uma das
+  onze áreas (contado no `dados.json` em 23/08, sem contar o "nenhuma dessas")
+- **587.776 combinações** e **23 tarefas**: não consegui reproduzir nem refutar em 23/08. Não é
+  o mesmo caso dos dois acima, que são impossíveis; estes só não estão confirmados. Antes de
+  dizer qualquer um dos dois na câmera, recalcular.
 - **R$ 67**, pagamento único, 7 dias de garantia, diagnóstico de **2 minutos**
 
 **Os dois fechos, e eles não se misturam:**
@@ -90,8 +111,8 @@ não for assinatura de IA.
 3. Três "só pra testar" que viraram cobrança fixa: R$ 3.600 no ano.
 4. **A virada, e é ela que sustenta a peça inteira:** o problema não é quanto você paga. É
    qual você abre quando senta pra trabalhar.
-5. Prova: o diagnóstico corta três e mantém três. As três que ele manda cortar somam R$ 479
-   por mês na mediana, e em 91,4% dos casos custam mais que as que ficam.
+5. Prova: o diagnóstico mapeia 66 tarefas, seis por área, e diz qual das 12 abrir em cada uma.
+   **Não citar aqui a conta das cortadas:** os números dela caducaram, ver as constantes acima.
 6. Fecho de anúncio.
 
 **G1 (isso vai te custar, número quebrado):**
@@ -188,17 +209,32 @@ muda dentro dela: nem layout, nem cor, nem ritmo, nem a ordem dos itens. **Só o
 **A ressalva que eu conferi no código, e que muda a conta:** o CTA do `Reel03` é **falado**,
 não é placa. Ele está marcado no `Root.tsx` como `ctaDe: EVENTOS.find(e => e.texto === "e pra
 aprender")` e vive dentro do master de áudio ("e pra aprender a IA mais rápido, me segue
-aqui"). Então trocar o CTA custa **um take novo de cinco segundos** com o fecho de anúncio,
-cortando o trecho antigo e emendando. Não é só render. Continua sendo o mais barato dos seis,
-mas não é de graça, e é melhor gravar esses cinco segundos junto com o lote dos ganchos.
+aqui"). Então trocar o CTA custa **um take novo** com o fecho de anúncio, cortando o trecho
+antigo e emendando. Não é só render.
 
-**Os três ganchos aqui são de tela, não de fala**, porque a peça não tem rosto. Trocar a
-linha do título é o teste:
+**Medido no projeto em 23/08, e corrige dois erros que estavam escritos aqui:**
+
+1. **O bloco a substituir tem 2,83s, não cinco.** Na `timeline.ts` o CTA abre no frame **591**
+   ("e pra aprender") e vai até o fim, **676**, a 30fps. O `public/cta_r03.mp4` é esse recorte
+   já extraído, com 2,90s. Como o fecho de anúncio é uma frase mais longa que a antiga, a peça
+   nova fica com cerca de 27s em vez de 22,5s, o que segue dentro da régua de 20 a 45s.
+2. **A peça TEM rosto, ao contrário do que este documento afirmava.** O `master.mp4` é talking
+   head: o Alison falando, com os cards de ferramenta sobrepostos. Consequência prática que
+   vale mais que a correção: **o take novo precisa do mesmo figurino do dia 10/08**, moletom
+   creme com capuz, óculos de armação redonda preta, mural de onda, porque a emenda cai no
+   meio da mesma cena e qualquer troca de roupa aparece. Os três ganchos do C4 continuam sendo
+   de tela (título no topo), e isso não muda: eles entram sobre o rosto.
+
+**Os três ganchos aqui são de tela, não de fala**, porque o que se testa nesta peça é o
+título de topo, não a abertura falada (a peça tem rosto, ver acima). Trocar a linha do
+título é o teste:
 
 - **G1:** `11 TAREFAS / a IA certa pra cada uma` (é o título original, o que já viralizou, e
   serve de controle)
 - **G2:** `VOCÊ TÁ ABRINDO A IA ERRADA / pra 8 destas 11`
-- **G3:** `R$ 479 POR MÊS / nas três que você devia cortar`
+- **G3:** ~~`R$ 479 POR MÊS / nas três que você devia cortar`~~ **número morto, ver a
+  seção das constantes.** O que a conta de 23/08 sustenta é a maior cortada pagando o produto
+  sozinha, não a soma das três: `UMA ASSINATURA SUA / paga isso em 9 de cada 10 casos`
 
 **Segunda ressalva, do mesmo tipo:** esse título de topo **não está no projeto Remotion**.
 Procurei em `src/` e em `scripts/`: ele entrou depois, na edição final da peça publicada.
@@ -371,7 +407,93 @@ medido com link na abertura, então isto é decisão, não dado, e a primeira ro
 
 ---
 
+## Triagem em imagem, antes da câmera
+
+**Decidido em 23/08/2026, seguindo a linha 238 do playbook.** A gravação dos takes deixou de
+ser o primeiro passo. Antes dela, cada um dos seis argumentos sobe como **uma imagem**, que é
+o que o playbook manda usar para testar ideia nova, e **só o que converter vira vídeo**.
+
+**Por que isto destrava o projeto:** os 17 takes dependem de uma janela de 2 horas de gravação
+que ainda não aconteceu, e o funil está no ar com zero visita real. Imagem sobe sem câmera,
+sem luz e sem roupa combinando. Se um argumento morre aqui, ele não custa take nenhum.
+
+**A headline de cada imagem é o G1 do corpo**, palavra por palavra, porque ele já está escrito
+e porque o playbook manda testar headline primeiro (linha 275: headline → imagem → copy do
+botão → layout).
+
+| Peça | Headline | Argumento que testa | Corpo que ela destrava |
+|---|---|---|---|
+| **I1** | R$ 1.244 por ano numa IA que você abre uma vez por mês | dor financeira | C1 |
+| **I2** | Eu respondi meu próprio diagnóstico e ele mandou cortar uma que eu pago | demonstração | C2 |
+| **I3** | Mesmo pedido, quatro IAs, três respostas que você não manda pra ninguém | comparação | C3 |
+| **I4** | 11 tarefas, a IA certa pra cada uma | o ângulo de 98.288 views | C4 |
+| **I5** | bloqueada com o C5 | erro confessado | C5 |
+| **I6** | Dominar o ChatGPT é o conselho mais caro que te deram esse ano | contra o consenso | C6 |
+
+**As constantes das 18 valem inteiras aqui**, sem exceção: só as quatro conhecidas podem ser
+citadas, nenhuma promessa de resultado financeiro, zero escassez, zero depoimento, cor de
+destaque `#CCF912` e o CTA **"descobrir a minha stack"**, que casa com o botão da LP.
+
+**Nenhuma das seis afirma fato.** São headline mais elemento gráfico, então geração por IA
+serve, e é aí que o Higgsfield entra sem esbarrar na regra de prova do plano do vault. As três
+gravações de tela (extrato, mapa nascendo, quatro respostas lado a lado) continuam sendo
+captura real, porque elas afirmam.
+
+**O `utm_content` é I1 a I6**, para a leitura da triagem não se misturar com a dos vídeos.
+
+**O que a triagem decide e o que ela não decide.** Ela escolhe **qual corpo gravar**, e nada
+além disso. O playbook manda medir por conversão final e mostra headline com 60% de interação
+convertendo menos que uma de 50%, então CTR aqui é critério de fila, nunca veredito sobre a
+oferta. O corte da oferta continua sendo o da seção de baixo.
+
+**O C4 não espera a triagem.** Ele sobe em vídeo desde o primeiro dia, porque o playbook traz
+o caso idêntico (vídeo que já viralizou, CTA trocado, melhor criativo da oferta inteira) e
+porque ele é o único com lastro medido. A I4 sobe junto, como leitura do mesmo ângulo em
+imagem.
+
+### A direção de arte, e de onde ela vem
+
+**O playbook quase não dá direção de imagem, e é honesto dizer isso.** Ele tem três linhas
+aproveitáveis, e só a primeira é regra dura:
+
+| Linha | O que diz | Como entrou |
+|---|---|---|
+| 273 | Isolar **uma** variável, resto 100% idêntico | **um fundo só para as cinco**, conferido por hash: a foto é pixel-idêntica em I1, I2, I3, I4 e I6, e entre elas muda só a headline |
+| 236 | Formato orgânico ganha sempre | sem cara de banner: foto em cima, manchete embaixo, o mesmo eixo dos carrosséis da casa |
+| 277 | Layout que imita o conteúdo que o público consome converte mais | proporção 4:5 de post de feed, não formato de anúncio |
+
+**Atenção para não citar errado:** a lista "imagem (expert, antes e depois, ou marca)" da linha
+114 é da **primeira etapa do quiz**, ou seja, da LP. Não é direção de criativo, e usá-la como
+tal seria inventar régua.
+
+**Tudo o mais é régua da casa, não do playbook:** `#CCF912`, Anton na manchete, Archivo no
+CTA, fundo `#151515`, luminância da foto entre 46 e 106 (as cinco ficaram entre 68 e 74,8) e
+nada de selo ou logo sobre a foto.
+
+**Como foram feitas:** `_private/criativos-imagem/gerar.py`. O Higgsfield (`z_image`, 3:4)
+entregou **só a cena**, e a manchete entrou por cima em CSS. **Texto nunca é gerado pelo
+modelo:** ele quebra acento, e "VOCÊ" e "MÊS" são justamente as palavras das manchetes. O
+`line-height` ficou em **1,18** e não no piso 1,02 da régua geral, porque em Anton o
+circunflexo extrapola mais o em-box; foi medido em recorte ampliado do render, não no CSS.
+
+**Rosto gerado por IA foi testado e reprovado.** A segunda cena trouxe um homem plausível
+sentado às telas, e ela não sobe: nesta conta a marca é o rosto do Alison, e anúncio com
+estranho gerado contradiz o "formato orgânico ganha sempre" da linha 236. As cinco usam mão e
+teclado, sem identidade.
+
+**O teste de nome continua fora desta rodada**, mesmo ele sendo em imagem no playbook (linha
+62, cinco criativos em imagem por nome). Motivo: a conta dele é R$ 500 por oferta testada, e
+dividir isso entre as quatro variantes de nome dá R$ 125 cada, que não decide nada. O nome se
+testa depois, com volume.
+
+---
+
+
 ## Como gravar, em um lote só
+
+**Desde 23/08 esta seção roda depois da triagem em imagem, e só para os corpos que passarem.**
+O lote inteiro de uma vez continua sendo a forma certa de gravar (roupa e luz idênticas), mas
+o que entra no lote é o que a triagem aprovou, não os seis por decreto.
 
 **A conta certa é 21 takes, não 18 vídeos**, e **hoje são 17**, porque o C5 está bloqueado.
 Cinco corpos falados, três ganchos para cada um, mais os cinco segundos de CTA do C4. O C4
@@ -418,8 +540,10 @@ corte aparece e a peça se perde. Mural de onda, plano fixo, você gesticulando.
 **Depois os 12 ganchos, seguidos, lendo do teleprompter.** Sete segundos cada, palavra por
 palavra como estão escritos acima. São doze porque cada um dos quatro corpos tem três.
 
-**Por último, o take do C4:** cinco segundos com o fecho de anúncio, para substituir a fala
-"e pra aprender a IA mais rápido, me segue aqui" do Reel de 98 mil views.
+**Por último, o take do C4**, e ele é o único que não usa o figurino do dia: **veste o moletom
+creme com capuz e os óculos redondos pretos do Reel de 10/08**, porque a emenda cai no meio da
+mesma cena. Grava o fecho de anúncio inteiro para substituir "e pra aprender a IA mais rápido,
+me segue aqui" (frames 591 a 676 da `timeline.ts`).
 
 **Áudio em -14 LUFS**, e o corte de silêncio pela `edit-reel`, como nos masters anteriores.
 
@@ -429,8 +553,15 @@ palavra como estão escritos acima. São doze porque cada um dos quatro corpos t
 
 ## Como rodar e como ler o resultado
 
-**Primeiro orgânico, depois pago.** É de graça, o perfil já entrega, e o playbook diz que o
-que funciona no orgânico funciona no pago. Um por dia, na ordem C4, C1, C6, C3, C2.
+**A ordem passou a ter três tempos, e não dois:**
+
+1. **Triagem em imagem no pago** (I1 a I6, menos a I5), mais o **C4 em vídeo**, que não espera.
+2. **Gravação** dos corpos que a triagem aprovou, no lote único da seção acima.
+3. **Rodagem em vídeo**, aí sim com os 3 ganchos por corpo aprovado.
+
+**Dentro do tempo 3, primeiro orgânico, depois pago.** É de graça, o perfil já entrega, e o
+playbook diz que o que funciona no orgânico funciona no pago. Um por dia, na ordem C4, C1, C6,
+C3, C2, respeitando quem sobreviveu à triagem.
 
 **No pago, nunca pelo botão Impulsionar.** Gerenciador, "usar publicação existente", para o
 Reel manter as curtidas e os comentários que ganhou no orgânico.

@@ -27,6 +27,7 @@ Nada aqui é opcional. Sem esta fase, vender é apostar que a entrega funciona.
 | 0.1e | ~~**Limpeza de copy do caminho**~~ **feito em 20/08** | Claude | nada | Marca do controle unificada, crase corrigida, data e ressalva cambial vindas do mesmo dado e fallback automático de `/acesso` explicado na tela |
 | 0.2 | ~~**Recolar o Apps Script**~~ **feito 19/08; ampliado em 21/08** | Claude | nada | Versão 8 implantada na **mesma URL** (`AKfycbzY1PYcR4EC...`), então o `ANALITICO_URL` não mudou. Além das abas anteriores, `vendas` recebe uma linha por pedido, sem PII nem `sck`, com upsert de compra/reembolso/chargeback e UTMs. Tentativa sem segredo respondeu `negado`; compra `82QBXtc` entrou uma vez e o reenvio atualizou a mesma linha. A coluna financeira explicita que registra o valor base informado pela Cakto |
 | 0.3 | ~~**Conferir o `Purchase` no Events Manager**~~ **conferido e resolvido em 19/08** | Claude | 0.1 | Reprovou: a venda paga não gerou `Purchase` nenhum, porque o Pix é pago fora do navegador. Resolvido no mesmo dia pelo 4.1, que é o webhook da Cakto mandando o evento do servidor |
+| 0.4 | ~~**Presente de boas-vindas no Direct**~~ **publicado e testado em 21/08** | Claude | nada | `/cola` contém somente as 11 tarefas `no_reel`; CTA acima da dobra em 360×640 e repetido no fim; identidade roxo→rosa da LP; atribuição preservada; card promete o presente; workflow ativo usa a cadência SPIN, aponta para a cola com `utm_content` único e passou no teste real com `noaah.ai` |
 
 ### O que a compra de teste ensinou
 
@@ -88,8 +89,15 @@ para a reunião", "a tarefa repetida sem você"). O paywall continua igual, porq
 `passo` e prompt seguem fora do teaser.
 
 **O custo não sumiu, mudou de lado.** A linha do corte deixou de ser nota de rodapé e passou a
-carregar a conta: as três cortadas somam **R$ 479/mês na mediana** (p10 R$ 427, p90 R$ 531), e
-em **91,4%** das combinações o corte custa mais que a stack inteira. A frase "cortar a mais
+carregar a conta. ~~as três cortadas somam **R$ 479/mês na mediana** (p10 R$ 427, p90 R$ 531), e
+em **91,4%** das combinações o corte custa mais que a stack inteira~~ **Refeito em 23/08/2026**
+na varredura completa das 587.776 combinações (`_private/conta_corte.mjs`): as três cortadas
+somam **R$ 140/mês na mediana** (p10 R$ 52, p90 R$ 260) e o corte custa mais que a stack em
+**16,8%**, não em 91,4%. A Poppy AI sozinha sustentava o número antigo.
+**A consequência é de copy, não de código:** "o que você corta custa mais que o que você mantém"
+virou minoria, e a stack recomendada custa mais que o corte (R$ 234/mês contra R$ 140 na
+mediana). O argumento que continua de pé é outro: **a maior cortada sozinha paga os R$ 67 em
+90,0% das combinações**. Ver `CRIATIVOS.md`, seção das constantes. A frase "cortar a mais
 cara já paga o mapa no primeiro mês" é verdadeira em **587.766 das 587.776** combinações, e nas
 **10** restantes o código não a escreve: a guarda `maiorCorte >= MOTOR.preco` troca por um texto
 sem promessa. Promessa na tela é requisito de código, e aqui ela é verificada por número.
@@ -448,7 +456,7 @@ decisão do Alison, não minha.
 | # | Tarefa | Quem | Depende | Critério de pronto |
 |---|---|---|---|---|
 | 3.1 | ~~**Segunda conta de anúncio**~~ **confirmada pelo Alison em 20/08** | Alison | nada | As duas contas exigidas pelo protocolo já existem; não é mais pendência nem bloqueio para o teste |
-| 3.2 | **Criativos a partir dos Reels medidos.** Os **18 roteiros estão prontos** em [CRIATIVOS.md](CRIATIVOS.md), escritos em 20/08 contra a Frente 8 do playbook: gancho literal (7s, é o que o teste compara), corpo em beats (a voz é dele) e o CTA casando palavra por palavra com o botão da LP. **Falta gravar** | Alison grava, Claude corta | nada | 6 corpos x 3 ganchos, saídos do banco que já viralizou. **C4 não precisa de gravação**: é o Reel de 98.288 views com o CTA trocado, que é o caso que o playbook traz como melhor criativo de uma oferta inteira. **C5 está bloqueado** até o Alison dar quanto pagou e por quantos meses na ferramenta que não usava: valor plausível ali seria prova inventada |
+| 3.2 | **Criativos a partir dos Reels medidos.** **Reordenado em 23/08: a triagem em imagem (I1 a I6) vem antes da câmera**, seguindo a linha 238 do playbook (imagem para testar, vídeo para escalar); só o corpo que converter vira take. O C4 não espera a triagem. Os **18 roteiros estão prontos** em [CRIATIVOS.md](CRIATIVOS.md), escritos em 20/08 contra a Frente 8 do playbook: gancho literal (7s, é o que o teste compara), corpo em beats (a voz é dele) e o CTA casando palavra por palavra com o botão da LP. **Falta gravar** | Alison grava, Claude corta | nada | 6 corpos x 3 ganchos, saídos do banco que já viralizou. **C4 não precisa de gravação**: é o Reel de 98.288 views com o CTA trocado, que é o caso que o playbook traz como melhor criativo de uma oferta inteira. **C5 está bloqueado** até o Alison dar quanto pagou e por quantos meses na ferramenta que não usava: valor plausível ali seria prova inventada |
 | 3.3 | **Rodar o teste seco de nome** (R$ 200 a 300) | Alison | 3.1, 3.2, Fase 1 | Uma variante vence por conversão, não por CPC |
 | 3.4 | **Ler a origem do tráfego** na planilha e no Events Manager — infraestrutura pronta em 21/08 | Claude | 0.2, 3.3 | A aba `vendas` já cruza pedido, variante e UTM; a compra controlada provou a leitura. Continua aberta até o teste de tráfego dizer de onde vieram diagnósticos e vendas reais da campanha |
 
@@ -532,7 +540,7 @@ verdade. Construir o degrau de baixo antes de medir o de cima é otimizar no esc
 
 ## O que não se reabre sem o Alison pedir
 
-- Nada de graça: a lista pública das 24 tarefas saiu e o resultado é teaser com silhueta
+- Nada de graça: a lista pública das 23 tarefas saiu e o resultado é teaser com silhueta
 - Nenhuma trilha gratuita nas recomendações
 - ~~Sem VSL e sem aula gravada~~ **revisto em 19/08: o Alison vai gravar a VSL.** O playbook
   pede vídeo sempre, e é o vídeo que camufla a venda, então a decisão nova segue o playbook.
