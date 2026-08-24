@@ -3,7 +3,9 @@
   "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,
-  "regions": ["gru1"],
+  "regions": [
+    "gru1"
+  ],
   "functions": {
     "api/entrega.mjs": {
       "includeFiles": "_private/**",
@@ -34,6 +36,16 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/cola",
+      "destination": "/materia",
+      "permanent": false
+    },
+    {
+      "source": "/bio",
+      "destination": "https://diagnostico.noahai.com.br/?utm_source=instagram&utm_medium=organic_social&utm_campaign=qual_ia_usar&utm_content=link_bio",
+      "permanent": false
+    },
     {
       "source": "/",
       "has": [
