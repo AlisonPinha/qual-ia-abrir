@@ -1,0 +1,161 @@
+CRIATIVOS PARA SUBIR · Qual IA Usar? · reunidos em 25/08/2026
+
+22 peças num lugar só: 7 em vídeo (9:16, 1080x1920) e 15 em imagem (4:5, 1080x1350).
+A copy pronta para colar (texto primário, título e descrição) está em
+COPY-DOS-ANUNCIOS.md, e ela cobre as 10 peças A e M. As 5 peças I ainda não têm copy
+de anúncio escrita.
+
+O NOME DO ARQUIVO DE IMAGEM É O utm_content. Não renomear.
+Link, trocando só o utm_content por peça:
+https://diagnostico.noahai.com.br/?utm_source=ig&utm_medium=paid&utm_campaign=stack&utm_content=A1
+
+Fonte: _docs/CHECKLIST-GRAVACAO.md (Bloco 0 e auditoria de 24/08). Se houver conflito,
+o checklist manda.
+
+
+ORDEM DE SUBIDA, QUE NÃO É A ORDEM DA PASTA
+Primeiro as A e as M, que já vestem o destino. Depois as I, e só depois de ler as três
+travas delas mais abaixo. O vídeo 07 não espera nada: ele é o C4, tem o maior lastro
+medido da casa (98 mil views) e sobe desde o primeiro dia.
+
+
+CONJUNTOS SEPARADOS, E ISSO NÃO É DETALHE
+As famílias não vão no mesmo conjunto de anúncios: elas testam coisas diferentes e
+misturar destrói as leituras.
+
+  Conjunto 1, imitam conteúdo:   A1, A4, A2, A3
+  Conjunto 2, vestem a marca:    M4, M2-conteudo, M1, M3
+  Conjunto 3, teste de público:  M2-negocio, M2-vendas (mesmo layout, área trocada)
+  Conjunto 4, triagem de headline: I1, I2, I3, I4, I6 (fundo idêntico, muda só a manchete)
+  Conjunto 5, vídeo:             as 7 peças .mp4
+
+
+AS 7 EM VÍDEO
+São Reels que já rodaram no orgânico, com o CTA de "me segue aqui" trocado pela CTA
+falada de anúncio e o card final pedindo clique no botão.
+
+  arquivo                        dur     o que é              paywall
+  01 - Grafico adocao de IA      52,3s   gráfico de adoção    limpo, não cita ferramenta
+  02 - 13 tarefas e a IA certa   32,6s   lista, geral         cita Grok
+  03 - Prompts melhores          34,5s   prompt               limpo, não cita ferramenta
+  04 - IAs para psicologos       34,6s   nicho psicologia     cita Higgsfield
+  05 - IAs para medicos          40,6s   nicho saúde          cita NotebookLM
+  06 - IAs para advogados        37,5s   nicho jurídico       limpo
+  07 - 11 tarefas e a IA certa   28,3s   é o C4, 98 mil views cita Higgsfield e Grok
+
+A COLUNA PAYWALL É DECISÃO SUA, e está no Bloco 4 do checklist. A regra das constantes
+diz que só ChatGPT, Claude, Gemini e Perplexity podem ser citados, porque as outras são
+o que a pessoa compra. Quatro dos sete furam. Os três limpos sobem sem discussão, e o
+06 é de nicho, o que já dá segmentação pronta sem gravar nada. O 01 e o 03 foram
+conferidos ouvindo o áudio inteiro em 25/08: não citam ferramenta nenhuma.
+
+utm_content dos vídeos: só o 07 tem código em documento, que é o C4. Os outros seis não
+têm, e sem código a venda aparece como direta. Sugestão para confirmar antes de subir:
+V-GRAFICO, V-TAREFAS, V-PROMPT, V-PSI, V-MED, V-JUR, na ordem da tabela.
+
+QUALIDADE DESIGUAL, E VALE SABER
+O 06 foi refeito em 25/08 a partir do master do Remotion e está em 7,5 Mbps. Os outros
+seis vieram dos publicados baixados do Instagram e ficaram em torno de 3 Mbps. O 04 e o
+05 também têm master (out/reel07_final.mp4 e out/reel08_final.mp4 em
+~/Projetos/reels-ferramentas-ia/) e podem ser refeitos do mesmo jeito.
+
+O fecho falado dos sete diz "descubra qual é a stack perfeita" e o botão da LP diz
+"Descobrir a minha stack". Não casa palavra por palavra, que é a regra 121 do playbook.
+Só resolve regravando o take.
+
+
+AS 5 DE TRIAGEM (I), E AS TRÊS TRAVAS DELAS
+Fundo pixel-idêntico nas cinco, conferido por hash: entre elas muda só a headline, que é
+o que a triagem isola.
+
+  I1  R$ 1.244 por ano numa IA que você abre uma vez por mês     dor financeira
+  I2  Respondi meu próprio diagnóstico e ele mandou cortar       demonstração
+  I3  Mesmo pedido, quatro IAs. Três você não manda pra ninguém  comparação
+  I4  11 tarefas, a IA certa pra cada uma                        o ângulo de 98 mil views
+  I6  Dominar o ChatGPT é o conselho mais caro do ano            contra o consenso
+
+  1. PALETA. As I usam fundo #151515 e destaque #CCF912, e a LP é #0c0a10 com o
+     gradiente roxo para rosa. Nenhuma das duas cores existe na página de destino.
+     Veredito do checklist: as I sobem depois das A e M, ou sobem regeradas na paleta
+     da LP.
+  2. A I3 SÓ SOBE depois da gravação de tela mostrar que as quatro respostas saem
+     mesmo diferentes. Sem isso ela crava na arte o que o próprio C3 proíbe cravar.
+  3. A I2 É AFIRMAÇÃO DE FATO sobre você. Só sobe se for verdade e com o print guardado.
+
+  A I5 não existe: o corpo C5 está bloqueado esperando o número real, e a peça nunca
+  foi gerada.
+
+
+ANTES DE SUBIR
+  - A1: confirmar o @ da arte (está como @alisonaraujo) e se a conta mostra selo.
+    Handle errado numa peça que imita print mata a peça.
+  - A3 e A4 são as de maior risco de reprovação: o A3 imita interface da plataforma e o
+    A4 tem forma de matéria. Se reprovar, não insistir: trocar a peça, não recorrer.
+    Recurso queima conta.
+  - Nenhuma peça leva preço nem URL na arte, de propósito. O CTA real é o botão do
+    anúncio, e o preço mora na descrição.
+  - A I4 fala em 11 tarefas e o produto entrega 66. É de propósito, é o número do Reel
+    que viralizou, mas vale lembrar na hora de ler o resultado.
+
+
+O QUE DECIDE
+Venda na planilha, cruzada por utm_content. Nunca CTR: o playbook mede headline com 60%
+de interação convertendo menos que uma de 50%. Três dias rodando, nunca um. ABO e CBO,
+os dois. Estas peças não são criativo de escala: elas existem para descobrir qual ângulo
+merece a câmera, e o que converter vira vídeo.
+
+
+O QUE NÃO ENTROU NESTA PASTA
+  - as variantes editoriais das I (-casa, -creme) e as v3-*, direções alternativas
+    testadas no mesmo dia que nunca entraram em entrega. Ficaram em
+    _private/criativos-imagem/
+  - o Reel do contador (Rells 5), que nunca foi montado como criativo de anúncio
+  - os Shorts do YouTube, que são outro canal e estão em deliverables/youtube-shorts/
+
+
+COMO SOBE, E O QUE FALTA PARA SUBIR
+O subir_campanhas.py cria a rodada inteira pausada, pela CLI oficial da Meta,
+na conta CA - 001 - INFO (act_828815582355498), que é a única sua que enxerga o
+pixel 827402089420392 do funil.
+
+  python3 subir_campanhas.py --dry-run    mostra cada comando, não cria nada
+  python3 subir_campanhas.py              cria de verdade, tudo pausado
+
+  QIU | VENDAS | IMAGEM | CBO    R$ 500   3 conjuntos, 10 anúncios
+  janela de 3 dias (26 a 29/08), otimização por Purchase no pixel do funil,
+  lance sem teto, Brasil 18-65, CTA Saiba mais, identidade @aalisonaraujo
+
+  Posicionamento restrito a FEED do Facebook e FEED do Instagram. As peças são
+  1080x1350 desenhadas como post de feed, e em Stories ou Reels a Meta corta ou
+  põe barra, o que descaracteriza as A, que imitam print de post.
+
+  Atribuição 7 dias de clique mais 1 de visualização. Ela é IMUTÁVEL depois da
+  criação: os conjuntos foram recriados em 25/08 só por causa disso, e os
+  criativos foram reaproveitados (não recriar criativo à toa, ele carrega a
+  identidade e a UTM).
+
+Os três vídeos foram criados mas SAÍRAM desta rodada, em 25/08, e a campanha
+deles se chama "[FASE 2, NAO LIGAR]". Motivo, do próprio playbook: imagem é o
+que testa ideia nova, e o que converter é que vira vídeo. Os R$ 200 que estavam
+neles voltaram para o CBO de imagem. O único vídeo que o playbook mandaria subir
+agora é o 07, o que já viralizou e teve só o CTA trocado, e ele depende da sua
+decisão sobre o paywall.
+
+Resolvido por API em 25/08: o system user do app Clickup - NSM ganhou MANAGE
+na conta e na Página Alison Araujo, que eram os dois acessos que faltavam. O da
+Página só se revela na hora de criar o criativo, não antes.
+
+O @aalisonaraujo (17841400503107410) foi conectado ao business e à conta em
+25/08, e os treze criativos foram recriados no perfil pelo trocar_identidade.py.
+Conferido peça a peça: 13 no perfil, 0 fora.
+
+Falta uma coisa, e é só sua: SALDO. A conta é pré-paga e está em R$ 0,00. O
+limite de gastos dela não é editável por API ("alteração inválida para uma conta
+pré-paga"): ele espelha o que já foi carregado, então o teto sobe quando o saldo
+entra. Carregue os R$ 500 da rodada em
+business.facebook.com/billing_hub/accounts?business_id=174861684889557
+
+DE ONDE VEIO CADA COISA
+  vídeos   ~/Desktop/Videos TikTok - Qual IA Usar/COM CTA/
+  I1..I6   _private/criativos-imagem/
+  A e M    _private/criativos-imagem/entrega/

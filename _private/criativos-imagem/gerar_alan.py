@@ -32,7 +32,9 @@ FOTO_A2 = PALCO if PALCO.exists() else FOTO
 FOTO_A4 = PALCO_MED if PALCO_MED.exists() else FOTO_A2
 
 NOME = "Alison Araújo"
-ARROBA = "@alisonaraujo"   # CONFERIR antes de subir: se o handle for outro, é só aqui
+ARROBA = "@aalisonaraujo"  # dois "a": conferido no perfil real em 25/08/2026.
+                          # Estava com um "a" só, e a peça imita print de post:
+                          # o anúncio saía por um perfil e o print mostrava outro.
 
 
 def b64(caminho):
