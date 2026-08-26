@@ -2,7 +2,13 @@
 
 ## Próxima sessão começa aqui
 
-**Leia primeiro `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
+**Estado em 26/08: o tráfego pago está no ar e a próxima decisão é numérica.** Leia
+`VIABILIDADE-TRAFEGO.md` antes de qualquer coisa: ele traz a conta que decide se a oferta fecha
+e o critério que a rodada v2 tem que devolver em **29/08**. A v2 (`120249034223980685`) roda até
+lá **sem ser tocada**, e o que ela entrega é a taxa de abertura do quiz, não um veredito sobre a
+oferta. Pendência de código pronta e não publicada: o pixel na `/materia`.
+
+**Leia depois `PLANO-EXECUCAO.md`**, que é a fila com quem faz e critério de pronto, e
 `DIAGNOSTICO.md`, que é o quiz por dentro, gerado do `dados.json`.
 
 **Estado em 24/08:** a copy das 4 LPs e do quiz passou por revisão completa e **a variante

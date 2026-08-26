@@ -13,6 +13,84 @@ Fonte: _docs/CHECKLIST-GRAVACAO.md (Bloco 0 e auditoria de 24/08). Se houver con
 o checklist manda.
 
 
+DECIDIDO EM 25/08, À TARDE, E JÁ APLICADO NA CONTA
+  1. SALDO. Continua R$ 0,00 (conferido por API às 14h40). O spend_cap espelha o
+     que já foi gasto na vida da conta, exatamente como este arquivo previa, então
+     não há teto sobrando. Nada entrega enquanto o carregamento não cair.
+  2. VÍDEO 07. Liberado quanto ao paywall: o Reel já é público no orgânico com 98
+     mil views, então Higgsfield e Grok já vazaram e bloquear o anúncio não recupera
+     nada. Mas ele NÃO sobe nesta rodada, por verba: os R$ 500 são triagem de ângulo
+     em imagem, e um vídeo com lastro ganharia o leilão e apagaria a leitura. Sobe na
+     Fase 2, com verba própria, e o ângulo dele é o que a I4 já mede barato.
+  3. A3. Fora. Ela imita interface da plataforma, que é o risco que queima conta, e o
+     ângulo "imita conteúdo" continua coberto por A1, A2 e A4. O anúncio está
+     DELETED e renomeado para [FORA DA RODADA, NAO LIGAR]. A rodada virou 9 peças.
+  4. PREÇO. Passou para o texto primário das nove, como parágrafo próprio logo antes
+     do fecho: "São R$ 67, pagamento único, com 7 dias de garantia." Motivo: o feed
+     do Instagram não mostra título nem descrição, e o feed do Facebook em celular
+     esconde a descrição. O texto primário é o único campo que os dois posicionamentos
+     mostram. O fecho continua intacto, então a regra 121 segue cumprida. Feito pelo
+     preco_no_texto.py, que recria o criativo preservando mídia, identidade e UTM.
+  5. BUG ACHADO NO CAMINHO, E CORRIGIDO. As três M2 tinham subido com a INSTRUÇÃO do
+     COPY-DOS-ANUNCIOS.md colada no texto primário: vinha o "(trocar só a primeira
+     linha por área)" e as três áreas juntas, iguais nas três peças. O conjunto 3 é
+     teste de público e estava com o mesmo texto nos três, ou seja, não testava nada.
+     As três foram reescritas com a linha da própria área.
+
+  6. O ids-da-subida.json ESTAVA MENTINDO, e isso quase custou a rodada. Quando os
+     conjuntos foram recriados em 25/08 por causa da atribuição, os ANÚNCIOS também
+     nasceram de novo, e o arquivo só teve os conjuntos atualizados. Os dez ids de
+     anúncio nele eram os da primeira subida, hoje DELETED junto do conjunto velho.
+     A primeira aplicação da copy foi toda para esses dez mortos, e os vivos seguiam
+     com o texto antigo. Já corrigido: o arquivo agora tem os ids vivos, conferidos
+     conjunto por conjunto, e a copy foi reaplicada neles.
+     COMO NÃO CAIR NISSO DE NOVO: o id de verdade é o que /adsets/<id>/ads devolve,
+     nunca o que está no arquivo. Conferir antes de qualquer escrita em massa.
+     Um efeito colateral bom: os criativos eram compartilhados entre os anúncios
+     mortos e os vivos, e por isso o DELETE do criativo antigo falhava com "em uso".
+     Nenhum criativo vivo se perdeu, e o script não apaga mais criativo nenhum.
+
+  Estado conferido às 15h: campanha, 3 conjuntos e 10 anúncios todos PAUSED, os 9 com
+  o preço no texto, as 3 M2 com a linha da própria área, imagem e UTM certas em todos.
+  Os criativos ficam em IN_PROCESS por um tempo, que é a revisão do criativo novo.
+
+  7. A A1 ESTAVA COM O HANDLE ERRADO NA CONTA, e era a trava que este arquivo já
+     avisava. A arte do criativo dizia @alisonaraujo, com um "a", enquanto quem publica
+     o anúncio é o @aalisonaraujo, com dois. Numa peça que imita print de post, o @ da
+     imagem contradizia o @ do remetente na mesma tela. O A1.png do disco já tinha sido
+     corrigido às 12:43 de 25/08, mas a correção nunca subiu: o criativo seguia com a
+     versão velha. Subida a arte certa e conferida baixando a imagem do criativo.
+     LIÇÃO: comparar md5 do arquivo com o image_hash NÃO serve de conferência, porque a
+     Meta reprocessa a imagem no upload e o hash sempre diverge. A conferência é baixar
+     a imagem do criativo pela url de /adimages e olhar.
+  8. O PIXEL TEM SINAL, MAS POUCO. Nos últimos 7 dias: 253 PageView, 144 ViewContent,
+     46 InitiateCheckout, 7 Purchase e 2 pix_gerado. Os conjuntos otimizam por PURCHASE
+     com esse histórico, então a Meta não vai ter volume para otimizar de verdade em 3
+     dias. Para uma triagem isso não é defeito: menos otimização é distribuição mais
+     parelha entre as peças, e quem decide continua sendo a planilha por utm_content.
+     Vale de olho: o pix_gerado separado do Purchase é o sintoma de venda no Pix que a
+     campanha só enxerga se o CAPI mandar.
+  9. NENHUM VÍDEO NESTA LEVA, confirmado por API: os 10 anúncios da campanha de imagem
+     têm image_hash e video_id nulo, e a campanha [FASE 2, NAO LIGAR] segue PAUSED.
+
+  10. SELO CONFIRMADO pelo Alison em 25/08: o @aalisonaraujo tem verificado de verdade,
+     então o selo desenhado na arte da A1 representa um fato e a peça sobe como está.
+     Não confundir com a NSM, que é Meta Business Partner e NÃO tem Meta Verified.
+
+  11. A A3 SAIU POR DOIS MOTIVOS CONCRETOS, e vale anotar para não repetir na arte da
+     próxima leva: (a) ela desenha um botão azul falso, "Clique em Saiba Mais", com três
+     setas, dentro da imagem. Isso duplica o botão que a própria plataforma renderiza e
+     é imitação de funcionalidade da interface, das causas de reprovação mais comuns;
+     (b) ela usa "Regra das 3 IAs" NO LUGAR do mecanismo, que é o uso que o
+     COPY-DOS-ANUNCIOS.md proíbe na letra. Era a única das nove que fazia isso.
+  12. LIGADO EM 25/08 ÀS 15h, DE PROPÓSITO ANTES DO SALDO. Campanha, 3 conjuntos e as 9
+     peças em ACTIVE, A3 em PAUSED. Com saldo R$ 0,00 nada entrega e nada gasta: o que
+     isso compra é a revisão dos criativos começar hoje, e não no dia 26 comendo o
+     primeiro dos três dias. Assim que o saldo cair, ela arranca sozinha na janela.
+
+  Continua faltando só uma coisa: carregar o saldo. Nenhuma pendência de criativo.
+
+
 ORDEM DE SUBIDA, QUE NÃO É A ORDEM DA PASTA
 Primeiro as A e as M, que já vestem o destino. Depois as I, e só depois de ler as três
 travas delas mais abaixo. O vídeo 07 não espera nada: ele é o C4, tem o maior lastro
@@ -159,3 +237,154 @@ DE ONDE VEIO CADA COISA
   vídeos   ~/Desktop/Videos TikTok - Qual IA Usar/COM CTA/
   I1..I6   _private/criativos-imagem/
   A e M    _private/criativos-imagem/entrega/
+
+═══════════════════════════════════════════════════════════════════════
+26/08 11h40 · A RODADA FOI REFEITA PORQUE NÃO ENTREGAVA
+═══════════════════════════════════════════════════════════════════════
+
+O que a rodada de 26/08 fez em 11h30 no ar, medido por API:
+  84 impressões · 79 alcançados · ZERO clique · R$ 13,42 de R$ 500
+  CPM R$ 159,76, contra os R$ 20 a 40 normais no Brasil
+  pixel com zero evento no dia, ou seja nenhuma visita veio de anúncio
+
+A causa, confirmada e não suposta: os três conjuntos otimizavam PURCHASE e
+voltaram learning_stage_info {status: LEARNING, conversions: 0}. O pixel tem
+7 Purchase em 28 dias (contra 46 InitiateCheckout, 144 ViewContent e 257
+PageView), as últimas em 21/08. A Meta pede 50 conversões por semana POR
+CONJUNTO para sair do aprendizado: com 7 no mês inteiro é impossível. Sem
+exemplo de comprador a probabilidade estimada fica perto de zero, o lance
+efetivo desaba e o anúncio perde todo leilão bom. O CPM de R$ 160 é o preço
+do inventário residual que sobra, então ele é o sintoma, não a doença.
+
+Anúncio aprovado, ativo, sem issues_info e sem entrega é esse quadro.
+
+No ritmo medido (R$ 1,17/hora) a janela fecharia dia 29 com R$ 84 gastos e
+cerca de 526 impressões. Mesmo com CTR generoso de 1% isso dá 5 cliques em
+três dias: a rodada terminaria sem responder qual criativo, qual público nem
+qual nome. Os 0 cliques em 79 pessoas NÃO condenam criativo nenhum, amostra
+desse tamanho não prova nada sobre criativo, só sobre entrega.
+
+POR QUE CAMPANHA NOVA E NÃO UMA EDIÇÃO
+Em CBO com custo mais baixo a Meta exige o mesmo optimization_goal nos três
+conjuntos e valida objeto por objeto: a edição falha um a um, pausada e em
+batch (erro 1885760). Zerar o orçamento para virar ABO também é recusado
+("orçamento muito baixo", 1885650). A otimização é imutável depois de criada.
+Também não confundir: o campo é LANDING_PAGE_VIEWS, no plural.
+
+O QUE MUDOU, e só isso, para a rodada continuar comparável
+  otimização     PURCHASE            → LANDING_PAGE_VIEWS
+  posicionamento fb:feed + ig:stream → automático (entra Reels, Stories, Explore)
+  orçamento      R$ 500 vitalício    → R$ 150/dia até 29/08 00:00
+Igual de propósito: público (BR, 18-65, advantage_audience), os mesmos
+criativos reaproveitados por creative_id, e o mesmo utm_content por peça.
+
+A leitura continua sendo a planilha por utm_content, não o pixel. Otimização
+por compra volta na escala, quando houver InitiateCheckout acumulado.
+
+  antiga  120249018613980685  PAUSED
+  nova    120249034223980685  QIU | VENDAS | IMAGEM | CBO | 26-08 v2
+  script  corrigir_rodada.py (tem --dry-run) · ids em ids-da-correcao.json
+
+O A3 ficou de fora, como já estava marcado. Foram 9 anúncios, não 10.
+
+ATENÇÃO ao ids-da-subida.json: ele ENVELHECEU. O criativo do A1 lá é
+1543090610363246 e o vivo era 3154637754723510. Ler sempre de
+GET /{adset_id}/ads, nunca do arquivo.
+
+A folga do spend_cap é o teto real, e é apertada: R$ 496,09 contra os R$ 150
+por dia da campanha. Conta pré-paga, o teto sobe quando o saldo entra.
+
+═══════════════════════════════════════════════════════════════════════
+26/08 17h34 · A CORREÇÃO FUNCIONOU, E O GARGALO MUDOU DE LUGAR
+═══════════════════════════════════════════════════════════════════════
+
+A v2 com 5h54 no ar, medido por API:
+  R$ 50,19 · 6.784 impressões · CPM R$ 7,40 (era R$ 159,76)
+  188 cliques no link · CTR 2,77% · CPC R$ 0,24 · 162 landing page views
+
+A causa apontada de manhã estava certa: o conjunto A | imita conteudo voltou
+learning_stage_info SUCCESS, contra os três travados em LEARNING com
+conversions 0 na v1. 86% dos cliques viraram landing page view, então a página
+carrega e o clique não é acidental.
+
+O FUNIL QUEBRA NUMA ETAPA SÓ
+  landing page views     162
+  abriu o quiz             1   0,62%   <- aqui
+  concluiu                 0
+  checkout                 0
+  venda                    0
+IC95% da abertura: [0,11%; 3,41%]. Prova que é menor que 3,4% e nada além.
+Não separa "LP travada" de "tráfego frio de Reels convertendo dentro do normal".
+
+CUIDADO COM A ABA diagnosticos: ELA MENTE
+117 linhas, todas de 19 e 20/08. 113 escolheram a mesma área, 100 deram a mesma
+resposta na mesma pergunta, e 55 dos 116 intervalos entre linhas são menores que
+10 segundos. É a bateria de QA da construção do quiz, não amostra. Mesma
+armadilha das 13 linhas de 25/08 aqui na aba abandonos.
+
+QUEM DE VERDADE PASSOU PELO QUIZ: TRÊS PESSOAS
+  23/08 08:37  concluiu 19/19  Instagram orgânico, link da bio
+  25/08 08:59  concluiu 19/19  Instagram DM, recuperação (ein0vg)
+  26/08 15:01  parou 17/19     DM, carrossel dinheiro
+  26/08 16:14  parou  0/19     ANÚNCIO A4, primeira tela
+Nenhuma conclusão veio de anúncio, nunca.
+
+VENDAS: UMA NO TOTAL (confirmado pelo Alison na Cakto)
+A aba vendas tem só a linha de 20/08 21h03, R$ 66,01, marcada
+compra_controlada / homologacao. Ou seja NÃO EXISTE taxa de conversão final
+medível neste projeto. Todo CPA tirado do contador de Purchase do pixel é
+aritmética sobre número que não existe: dos 7 Purchase, 5 são falsos e
+permanentes, todos de SERVER (o /api/cakto), nenhum do navegador.
+
+A CONTA QUE DECIDE, JÁ QUE NÃO DÁ PARA ESTIMAR CPA
+Breakeven com front + upsell (R$ 197) e LPV a R$ 0,31: 0,157% dos LPV virando
+venda. Cruzando com a taxa de abertura do quiz:
+    abertura 0,62% (hoje) -> 25,4% de quem abre precisa comprar
+    abertura 1,24%        -> 12,7%
+    abertura 2%           ->  7,9%
+    abertura 3%           ->  5,2%
+    abertura 5%           ->  3,1%
+Com a taxa de hoje, um quarto de quem abre o quiz teria que comprar. Isso não
+acontece em low ticket. NÃO É A OFERTA QUE ESTÁ NO CAMINHO, É A TAXA DE ABERTURA.
+
+A ASSIMETRIA, que é o que define o que R$ 444 compra
+  condenar (régua front + upsell)  1.907 LPV  R$ 591
+  A RODADA v2 ENTREGA              1.595 LPV  já pago
+  condenar (régua só front R$ 67)    648 LPV  R$ 201  <- já passou
+  aprovar (10 vendas)         10k a 36,5k LPV  R$ 3.200 a R$ 11.300
+A v2 chega perto de condenar e não chega nem perto de aprovar. Zero venda em
+1.595 visitas põe o CPA acima de R$ 165, ainda abaixo dos R$ 197 de breakeven:
+a rodada termina sem veredito. É o backend que compra a paciência, e o upsell
+de R$ 130 também nunca vendeu.
+
+O gasto acumulado na oferta é R$ 64,51 (v1 R$ 14,32 + v2 R$ 50,19), ou seja
+12,9% dos R$ 500 que o playbook define por oferta testada, de sete previstas.
+A OFERTA NÃO ESTÁ MORTA, ELA ESTÁ NÃO-TESTADA.
+
+NÃO TROCAR O EVENTO DE OTIMIZAÇÃO, e o motivo é matemático
+O histórico do pixel não entra na conta do aprendizado: learning_stage_info
+conta o que AQUELE CONJUNTO gerou na janela de 7 dias. A prova é a v1 (pixel
+com 7 Purchase de histórico, conjuntos com conversions 0).
+    PageView/LPV      468 em 28d = 117,0/semana   passa
+    ViewContent       146        =  36,5/semana   abaixo de 50
+    InitiateCheckout   46        =  11,5/semana   abaixo de 50
+    Purchase            7        =   1,8/semana   abaixo de 50
+Otimizar por InitiateCheckout daria 2,8 eventos na rodada inteira, a R$ 158,73
+cada. O ViewContent hoje custa R$ 50,00: só fica viável DEPOIS que a taxa de
+abertura subir, não antes.
+
+A /materia NÃO TINHA O PIXEL DA META, só GA4
+landing_page_view da Meta é o PageView do pixel disparado no destino. Apontar
+anúncio para lá otimizando LANDING_PAGE_VIEWS devolveria conversions 0, o mesmo
+defeito determinístico da v1. A alteração de destino não é só trocar o link.
+Corrigido em _build/gerar_materia.py (guarda de host, só PageView), NÃO
+PUBLICADO. A ponte de UTM já funcionava: a /materia propaga utm_* e fbclid para
+o / nos dois CTAs.
+
+O DESTINO DA PRÓXIMA SESSÃO está em _docs/VIABILIDADE-TRAFEGO.md, seção 3.
+Resumo: a v2 roda até 29/08 sem ser tocada; o que ela entrega é a TAXA DE
+ABERTURA DO QUIZ, não veredito de oferta; ler pela planilha por utm_content.
+  acima de ~3%   -> recarregar e testar de verdade com a /materia
+  entre 1% e 3%  -> v3 com a /materia, medindo só a abertura outra vez
+  abaixo de 1%   -> funil tem fundo demais para o ticket: encurtar, não comprar
+                    mais tráfego. Olhar a DM, de onde saíram as 3 respostas reais
