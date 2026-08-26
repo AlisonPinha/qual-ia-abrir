@@ -123,6 +123,26 @@ function origemTrafego() {
   } catch (e) { return agora; }        // modo privado: vale só a visita atual
 }
 
+// Caminho único dos três POSTs anônimos deste arquivo. sendBeacon é o único envio que o
+// navegador promete entregar com a aba fechando; fetch keepalive fica de reserva para quem
+// não tem. Existe porque o `enviarAnalitico` usava fetch simples, sem keepalive: os dois
+// únicos diagnósticos de gente de fora, em 23 e 25/08, ficaram marcados como concluídos na
+// aba do funil (que já usava beacon) e não chegaram na aba de diagnósticos. Perda de 2 em 2.
+function postar(url, corpo) {
+  try {
+    if (navigator.sendBeacon
+        && navigator.sendBeacon(url, new Blob([corpo], { type: "text/plain;charset=utf-8" })))
+      return;
+  } catch (e) { /* cai no fetch abaixo */ }
+  try {
+    fetch(url, {
+      method: "POST", mode: "no-cors", keepalive: true,
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: corpo
+    }).catch(() => {});
+  } catch (e) { /* medição nunca quebra a página */ }
+}
+
 // Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:
 // o que importa é gravar, não ler a resposta. Falha em silêncio de propósito,
 // porque analytics não pode quebrar a entrega.
@@ -134,11 +154,7 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
       if (q.startsWith("break")) continue;          // o break não é resposta
       respostas[q] = MOTOR.rotulos[q][i];
     }
-    fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
+    postar(url, JSON.stringify({
         tipo: "diagnostico",
         origem,                                      // "site" ou "mapa"
         utm: origemTrafego(),                        // de onde a pessoa veio
@@ -149,8 +165,7 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
         stack: stack.map(s => s.nome),
         cortar: corta,
         ts: new Date().toISOString()
-      })
-    }).catch(() => {});
+    }));
   } catch (e) { /* nunca atrapalhar o resultado */ }
 }
 
@@ -166,10 +181,7 @@ function enviarLead(url, MOTOR, resp, stack, corta, livre, nome, whatsapp) {
       if (q.startsWith("break")) continue;
       respostas[q] = MOTOR.rotulos[q][i];
     }
-    fetch(url, {
-      method: "POST", mode: "no-cors", keepalive: true,
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
+    postar(url, JSON.stringify({
         tipo: "lead", nome, whatsapp,
         utm: origemTrafego(),
         respostas,
@@ -177,8 +189,7 @@ function enviarLead(url, MOTOR, resp, stack, corta, livre, nome, whatsapp) {
         stack: stack.map(s => s.nome),
         cortar: corta,
         ts: new Date().toISOString()
-      })
-    }).catch(() => {});
+    }));
   } catch (e) { /* o lead nunca pode travar a saída */ }
 }
 
@@ -226,20 +237,7 @@ function rastrearFunil(url, origem, estado) {
     const corpo = JSON.stringify(Object.assign(
       { tipo: "funil", sid: idVisita(), origem, utm: origemTrafego(),
         ts: new Date().toISOString() }, e));
-    // sendBeacon é o único envio que o navegador promete entregar com a aba fechando;
-    // fetch keepalive fica de reserva para quem não tem
-    try {
-      if (navigator.sendBeacon
-          && navigator.sendBeacon(url, new Blob([corpo], { type: "text/plain;charset=utf-8" })))
-        return;
-    } catch (err) { /* cai no fetch abaixo */ }
-    try {
-      fetch(url, {
-        method: "POST", mode: "no-cors", keepalive: true,
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: corpo
-      }).catch(() => {});
-    } catch (err) { /* medição nunca quebra a página */ }
+    postar(url, corpo);
   };
   // visibilitychange é o que dispara de verdade no celular: trocar de app, bloquear a
   // tela ou fechar a aba pelo gerenciador não passa por beforeunload nem por unload

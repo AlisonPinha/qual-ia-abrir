@@ -29,7 +29,7 @@ INSTA = "https://instagram.com/aalisonaraujo"
 # onde a mesma constante precisa ser colada.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from config import (CAPTURA_URL, ANALITICO_URL, CHECKOUT_URL, PRECO,  # noqa: E402
-                    PIXEL_META, GA4_ID)
+                    PIXEL_META, GA4_ID, DOMINIO_PRODUCAO)
 from config import VARIANTES  # noqa: E402
 import questionario  # noqa: E402
 
@@ -412,28 +412,41 @@ schema = json.dumps({
 # chaves e seria interpretado como campo de interpolação.
 PIXEL = ""
 if PIXEL_META:
+    # A guarda de host envolve o snippet inteiro: sem init, `window.fbq` nem existe, e o
+    # `px()` já não dispara nada. É o que impede QA local e preview de entrarem no
+    # histórico do pixel, que não tem como ser limpo depois.
     PIXEL = ("""<script>
+if (location.hostname === '__HOST__') {
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','__ID__');fbq('track','PageView');
+}
 </script>
 <noscript><img height="1" width="1" style="display:none" alt=""
 src="https://www.facebook.com/tr?id=__ID__&ev=PageView&noscript=1"></noscript>
-""").replace("__ID__", PIXEL_META)
+""").replace("__ID__", PIXEL_META).replace("__HOST__", DOMINIO_PRODUCAO)
 
 # gtag oficial do Google. Fora da f-string do template pelo mesmo motivo do pixel:
 # o snippet tem chaves e seria lido como campo de interpolação.
 GA4 = ""
 if GA4_ID:
-    GA4 = ("""<script async src="https://www.googletagmanager.com/gtag/js?id=__ID__"></script>
-<script>
-window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
-gtag('js',new Date());gtag('config','__ID__');
+    # Mesma guarda do pixel, e pelo mesmo motivo. A tag do gtag deixa de ser <script src>
+    # fixo e passa a ser injetada por JS, que é a única forma de condicionar o carregamento
+    # ao host. Fora de produção `window.gtag` não existe, e o `ga()` já testa isso.
+    GA4 = ("""<script>
+if (location.hostname === '__HOST__') {
+  var s=document.createElement('script');s.async=1;
+  s.src='https://www.googletagmanager.com/gtag/js?id=__ID__';
+  document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){dataLayer.push(arguments)};
+  gtag('js',new Date());gtag('config','__ID__');
+}
 </script>
-""").replace("__ID__", GA4_ID)
+""").replace("__ID__", GA4_ID).replace("__HOST__", DOMINIO_PRODUCAO)
 
 JS = """
   const el = id => document.getElementById(id);
@@ -481,9 +494,10 @@ JS = """
     const abrir = e => {
       e.preventDefault();
       modal.showModal();
+      // ViewContent uma vez por visita: fechar e reabrir o modal é a mesma pessoa olhando
+      // a mesma coisa, e três aberturas viravam três eventos no pixel
+      if (!abriuQuiz) { px("ViewContent"); ga("abriu_diagnostico"); }
       abriuQuiz = true;
-      px("ViewContent");
-      ga("abriu_diagnostico");
       document.body.classList.add("travado");
       if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();

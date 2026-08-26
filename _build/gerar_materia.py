@@ -30,6 +30,7 @@ import json
 import pathlib
 import re
 import shutil
+import sys
 
 AQUI = pathlib.Path(__file__).parent
 RAIZ = AQUI.parent
@@ -38,6 +39,9 @@ SAIDA = RAIZ / "public" / "materia"
 FOTO_FONTE = RAIZ / "_private" / "criativos-imagem" / "palco-alison-med.jpg"
 
 GA4 = "G-J1383RJMK8"
+# o host vem do config, que é onde ele já existe para as LPs
+sys.path.insert(0, str(AQUI))
+from config import DOMINIO_PRODUCAO as HOST  # noqa: E402
 
 problema = DADOS["problema"]
 diagnostico = DADOS["diagnostico"]
@@ -271,13 +275,18 @@ HTML = f"""<!doctype html>
     .env {{ padding: 0 24px; }}
   }}
 </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id={GA4}"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){{dataLayer.push(arguments);}}
-  gtag('js', new Date());
-  gtag('config', '{GA4}');
-  gtag('event', 'abriu_materia');
+  // mesma guarda de host das LPs: QA local não pode virar sessão no relatório
+  if (location.hostname === '{HOST}') {{
+    var s = document.createElement('script'); s.async = 1;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id={GA4}';
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){{dataLayer.push(arguments);}};
+    gtag('js', new Date());
+    gtag('config', '{GA4}');
+    gtag('event', 'abriu_materia');
+  }}
 </script>
 </head>
 <body>

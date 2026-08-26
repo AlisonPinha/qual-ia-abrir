@@ -29,19 +29,26 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Product","name":"Regra das 3 IAs","description":"Em 2 minutos você sabe quais ferramentas precisa, em que ordem começar e o prompt exato para usar cada uma.","brand":{"@type":"Brand","name":"Alison Araújo"},"offers":{"@type":"Offer","price":"67","priceCurrency":"BRL","availability":"https://schema.org/InStock","url":"https://diagnostico.noahai.com.br/#oferta"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"O que exatamente eu recebo por R$ 67?","acceptedAnswer":{"@type":"Answer","text":"O diagnóstico completo, a sua stack em três camadas (o que assinar agora, em 30 dias e depois), o prompt pronto de cada tarefa da sua área, o tutorial de cada ferramenta recomendada, os comparativos diretos e a lista do que cortar, com a conta do que isso devolve por mês."}},{"@type":"Question","name":"Não acho essa informação de graça na internet?","acceptedAnswer":{"@type":"Answer","text":"Você acha lista de ferramenta em qualquer lugar. O que não acha é qual delas serve para o SEU trabalho e orçamento, em que ordem assinar, o prompt exato de cada uma e o que cortar. Ferramenta certa com prompt errado devolve resposta genérica: é aí que a maioria desiste e conclui que IA não funciona."}},{"@type":"Question","name":"O ChatGPT não me daria essa mesma recomendação?","acceptedAnswer":{"@type":"Answer","text":"Ele te dá uma resposta plausível, sem saber quanto cada plano custa hoje, sem ter testado as ferramentas no seu tipo de trabalho e sem te dizer o que cortar. Os valores daqui foram conferidos um por um, e as escolhas vêm de uso em projeto de cliente, não de material de treinamento."}},{"@type":"Question","name":"Preciso assinar todas as ferramentas recomendadas?","acceptedAnswer":{"@type":"Answer","text":"Não, e o produto existe justamente para evitar isso. A stack vem em três camadas dentro do orçamento que você declarar, começando por uma única assinatura se for o caso."}},{"@type":"Question","name":"Quanto tempo leva para eu aplicar?","acceptedAnswer":{"@type":"Answer","text":"O diagnóstico leva menos de dois minutos. O plano é de 7 dias, uma tarefa por dia. Não é curso, não tem aula de uma hora para assistir."}},{"@type":"Question","name":"E se não servir pra mim?","acceptedAnswer":{"@type":"Answer","text":"Sete dias de garantia. Você pede o reembolso e recebe o valor integral, sem precisar justificar."}},{"@type":"Question","name":"Os links são de afiliado?","acceptedAnswer":{"@type":"Answer","text":"Não. Nenhum link, nem na lista pública nem dentro do produto. Se algum dia algum for, vai estar escrito ao lado dele."}},{"@type":"Question","name":"As atualizações são por quanto tempo?","acceptedAnswer":{"@type":"Answer","text":"Enquanto o produto existir. Não prometo prazo em meses porque não quero criar uma data de validade artificial: se eu trocar a ferramenta de uma tarefa, quem comprou fica sabendo."}}]}]}</script>
 <script>
+if (location.hostname === 'diagnostico.noahai.com.br') {
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','827402089420392');fbq('track','PageView');
+}
 </script>
 <noscript><img height="1" width="1" style="display:none" alt=""
 src="https://www.facebook.com/tr?id=827402089420392&ev=PageView&noscript=1"></noscript>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J1383RJMK8"></script>
 <script>
-window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
-gtag('js',new Date());gtag('config','G-J1383RJMK8');
+if (location.hostname === 'diagnostico.noahai.com.br') {
+  var s=document.createElement('script');s.async=1;
+  s.src='https://www.googletagmanager.com/gtag/js?id=G-J1383RJMK8';
+  document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){dataLayer.push(arguments)};
+  gtag('js',new Date());gtag('config','G-J1383RJMK8');
+}
 </script>
 <style>
 /* Qual IA abrir: sistema visual modelado na LP meuassessor.com
@@ -1854,6 +1861,26 @@ function origemTrafego() {
   } catch (e) { return agora; }        // modo privado: vale só a visita atual
 }
 
+// Caminho único dos três POSTs anônimos deste arquivo. sendBeacon é o único envio que o
+// navegador promete entregar com a aba fechando; fetch keepalive fica de reserva para quem
+// não tem. Existe porque o `enviarAnalitico` usava fetch simples, sem keepalive: os dois
+// únicos diagnósticos de gente de fora, em 23 e 25/08, ficaram marcados como concluídos na
+// aba do funil (que já usava beacon) e não chegaram na aba de diagnósticos. Perda de 2 em 2.
+function postar(url, corpo) {
+  try {
+    if (navigator.sendBeacon
+        && navigator.sendBeacon(url, new Blob([corpo], { type: "text/plain;charset=utf-8" })))
+      return;
+  } catch (e) { /* cai no fetch abaixo */ }
+  try {
+    fetch(url, {
+      method: "POST", mode: "no-cors", keepalive: true,
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: corpo
+    }).catch(() => {});
+  } catch (e) { /* medição nunca quebra a página */ }
+}
+
 // Envio anônimo. no-cors porque o Apps Script não devolve cabeçalho de CORS:
 // o que importa é gravar, não ler a resposta. Falha em silêncio de propósito,
 // porque analytics não pode quebrar a entrega.
@@ -1865,11 +1892,7 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
       if (q.startsWith("break")) continue;          // o break não é resposta
       respostas[q] = MOTOR.rotulos[q][i];
     }
-    fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
+    postar(url, JSON.stringify({
         tipo: "diagnostico",
         origem,                                      // "site" ou "mapa"
         utm: origemTrafego(),                        // de onde a pessoa veio
@@ -1880,8 +1903,7 @@ function enviarAnalitico(url, origem, MOTOR, resp, stack, corta, livre) {
         stack: stack.map(s => s.nome),
         cortar: corta,
         ts: new Date().toISOString()
-      })
-    }).catch(() => {});
+    }));
   } catch (e) { /* nunca atrapalhar o resultado */ }
 }
 
@@ -1897,10 +1919,7 @@ function enviarLead(url, MOTOR, resp, stack, corta, livre, nome, whatsapp) {
       if (q.startsWith("break")) continue;
       respostas[q] = MOTOR.rotulos[q][i];
     }
-    fetch(url, {
-      method: "POST", mode: "no-cors", keepalive: true,
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
+    postar(url, JSON.stringify({
         tipo: "lead", nome, whatsapp,
         utm: origemTrafego(),
         respostas,
@@ -1908,8 +1927,7 @@ function enviarLead(url, MOTOR, resp, stack, corta, livre, nome, whatsapp) {
         stack: stack.map(s => s.nome),
         cortar: corta,
         ts: new Date().toISOString()
-      })
-    }).catch(() => {});
+    }));
   } catch (e) { /* o lead nunca pode travar a saída */ }
 }
 
@@ -1957,20 +1975,7 @@ function rastrearFunil(url, origem, estado) {
     const corpo = JSON.stringify(Object.assign(
       { tipo: "funil", sid: idVisita(), origem, utm: origemTrafego(),
         ts: new Date().toISOString() }, e));
-    // sendBeacon é o único envio que o navegador promete entregar com a aba fechando;
-    // fetch keepalive fica de reserva para quem não tem
-    try {
-      if (navigator.sendBeacon
-          && navigator.sendBeacon(url, new Blob([corpo], { type: "text/plain;charset=utf-8" })))
-        return;
-    } catch (err) { /* cai no fetch abaixo */ }
-    try {
-      fetch(url, {
-        method: "POST", mode: "no-cors", keepalive: true,
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: corpo
-      }).catch(() => {});
-    } catch (err) { /* medição nunca quebra a página */ }
+    postar(url, corpo);
   };
   // visibilitychange é o que dispara de verdade no celular: trocar de app, bloquear a
   // tela ou fechar a aba pelo gerenciador não passa por beforeunload nem por unload
@@ -2025,9 +2030,10 @@ function rastrearFunil(url, origem, estado) {
     const abrir = e => {
       e.preventDefault();
       modal.showModal();
+      // ViewContent uma vez por visita: fechar e reabrir o modal é a mesma pessoa olhando
+      // a mesma coisa, e três aberturas viravam três eventos no pixel
+      if (!abriuQuiz) { px("ViewContent"); ga("abriu_diagnostico"); }
       abriuQuiz = true;
-      px("ViewContent");
-      ga("abriu_diagnostico");
       document.body.classList.add("travado");
       if (!noHistorico) { history.pushState({ diag: 1 }, "", location.href); noHistorico = true; }
       modal.querySelector(".passo:not([hidden]) .opc")?.focus();

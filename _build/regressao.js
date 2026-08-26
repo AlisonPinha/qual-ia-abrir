@@ -43,9 +43,21 @@ async function responderTudo(page, escopo) {
 
 (async () => {
   const browser = await chromium.launch({ headless: false, slowMo: 15 });
+
+  // A bateria roda contra PRODUÇÃO, então cada rodada disparava PageView, ViewContent e
+  // InitiateCheckout no pixel que otimiza a campanha, sessões no GA4 e linhas nas abas com
+  // utm_source=regressao. Nada disso se apaga depois. Todo contexto nasce mudo para os três.
+  const MUDOS = ['**connect.facebook.net**', '**facebook.com/tr**',
+                 '**googletagmanager.com**', '**script.google.com**'];
+  const novoContexto = async opcoes => {
+    const c = await browser.newContext(opcoes);
+    for (const padrao of MUDOS) await c.route(padrao, rota => rota.abort());
+    return c;
+  };
+
   const erros = [];
   const contexto = async viewport => {
-    const c = await browser.newContext({ viewport });
+    const c = await novoContexto({ viewport });
     if (SESSAO) await c.addCookies([{
       name: 'qia_sessao', value: SESSAO, domain: 'diagnostico.noahai.com.br', path: '/',
       httpOnly: true, secure: true, sameSite: 'Lax',
@@ -54,7 +66,7 @@ async function responderTudo(page, escopo) {
   };
 
   // ---------- 1. LP: quiz, teaser, código, checkout ----------
-  const c1 = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const c1 = await novoContexto({ viewport: { width: 390, height: 844 } });
   const p1 = await c1.newPage();
   p1.on('pageerror', e => erros.push('LP: ' + e.message));
   await p1.goto(BASE + '/?utm_source=regressao&desconto_antigo=IGNORAR', { waitUntil: 'domcontentloaded' });
@@ -88,7 +100,7 @@ async function responderTudo(page, escopo) {
   ok('LP: parâmetro estranho não viaja ao checkout', !checkoutLp.searchParams.has('desconto_antigo'));
 
   // ---------- 2. saída: a retenção guarda as respostas, não o acesso pago ----------
-  const c2 = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const c2 = await novoContexto({ viewport: { width: 390, height: 844 } });
   const p2 = await c2.newPage();
   p2.on('pageerror', e => erros.push('saída: ' + e.message));
   await p2.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
@@ -138,7 +150,7 @@ async function responderTudo(page, escopo) {
   // e o link que ela guarda tem que cumprir o que promete: abrir no resultado dela
   const link = (decodeURIComponent(contato.href).match(/https?:\/\/[^\s]+/g) || []).pop() || '';
   const codigo = new URL(link).searchParams.get('c') || '';
-  const c2b = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const c2b = await novoContexto({ viewport: { width: 390, height: 844 } });
   const p2b = await c2b.newPage();
   await p2b.goto(link, { waitUntil: 'domcontentloaded' });
   await p2b.waitForTimeout(1500);
@@ -150,7 +162,7 @@ async function responderTudo(page, escopo) {
      `${volta.silhueta} ocultos`);
 
   // ---------- 2b. paywall ----------
-  const semSessao = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const semSessao = await novoContexto({ viewport: { width: 390, height: 844 } });
   const bloqueada = await semSessao.newPage();
   await bloqueada.goto(BASE + '/mapa', { waitUntil: 'domcontentloaded' });
   ok('paywall: /mapa sem sessão vai para /acesso', /\/acesso(?:\?|$)/.test(bloqueada.url()), bloqueada.url());

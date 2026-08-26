@@ -297,6 +297,18 @@ export default {
     // o histórico. A Cakto não manda este campo, ele só existe no nosso curl de conferência
     if (corpo.test_event_code) payload.test_event_code = String(corpo.test_event_code);
 
+    // Fora de produção o evento NUNCA entra no histórico do pixel. Sem isto, qualquer
+    // conferência apontada para um deploy de preview vira venda de verdade no Events
+    // Manager, e evento do pixel não se apaga: em 19/08 quatro cliques no botão "Testar"
+    // da Cakto deixaram 4 Purchase permanentes para 2 vendas reais. O código de teste é
+    // fixo porque o valor não precisa ser secreto: ele só desvia o evento de aba.
+    if (!payload.test_event_code && process.env.VERCEL_ENV
+        && process.env.VERCEL_ENV !== "production") {
+      payload.test_event_code = "TEST_FORA_DE_PRODUCAO";
+      console.error("[capi] ambiente", process.env.VERCEL_ENV,
+                    "- Purchase desviado para Eventos de teste");
+    }
+
     if (!token) {
       await Promise.all([...entregas, ...vendas]);
       console.error("[capi] META_CAPI_TOKEN ausente; acesso entregue sem evento Meta");

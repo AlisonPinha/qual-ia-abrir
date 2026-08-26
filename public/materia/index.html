@@ -125,13 +125,18 @@
     .env { padding: 0 24px; }
   }
 </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J1383RJMK8"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-J1383RJMK8');
-  gtag('event', 'abriu_materia');
+  // mesma guarda de host das LPs: QA local não pode virar sessão no relatório
+  if (location.hostname === 'diagnostico.noahai.com.br') {
+    var s = document.createElement('script'); s.async = 1;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-J1383RJMK8';
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){dataLayer.push(arguments);};
+    gtag('js', new Date());
+    gtag('config', 'G-J1383RJMK8');
+    gtag('event', 'abriu_materia');
+  }
 </script>
 </head>
 <body>

@@ -28,6 +28,12 @@ PRECO = "R$ 67"
 # Vazio: a tela pós-compra e o CTA de ascensão não aparecem, e a entrega segue intacta.
 CHECKOUT_UPSELL = "https://pay.cakto.com.br/j79id6y_1051180"
 
+# Host onde o pixel e o GA4 podem disparar. Existe porque 147 dos 457 eventos do pixel
+# saíram de `http://localhost` e 7 do domínio de preview: QA local e deploy de preview
+# entravam no histórico do mesmo pixel que otimiza a campanha, e evento do pixel não se
+# apaga depois. Fora deste host os dois snippets simplesmente não são injetados.
+DOMINIO_PRODUCAO = "diagnostico.noahai.com.br"
+
 # Pixel do Meta das quatro LPs. É o mesmo nos quatro: um pixel só aprende junto,
 # quatro pixels separados fragmentam o aprendizado e não somam. O que separa as
 # variantes no Events Manager é a URL do evento e o content_name que vai em
