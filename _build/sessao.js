@@ -125,9 +125,10 @@ function origemTrafego() {
 
 // Caminho único dos três POSTs anônimos deste arquivo. sendBeacon é o único envio que o
 // navegador promete entregar com a aba fechando; fetch keepalive fica de reserva para quem
-// não tem. Existe porque o `enviarAnalitico` usava fetch simples, sem keepalive: os dois
-// únicos diagnósticos de gente de fora, em 23 e 25/08, ficaram marcados como concluídos na
-// aba do funil (que já usava beacon) e não chegaram na aba de diagnósticos. Perda de 2 em 2.
+// não tem. Só o funil usava beacon: o `enviarAnalitico` saía por fetch simples, que o
+// navegador cancela quando a aba fecha na sequência do resultado. Nenhum diagnóstico foi
+// perdido até aqui (137 linhas na aba, e as de 23 e 25/08 estão lá), mas o resultado é a
+// última tela do quiz, que é exatamente onde a pessoa fecha: é o envio mais exposto do site.
 function postar(url, corpo) {
   try {
     if (navigator.sendBeacon
