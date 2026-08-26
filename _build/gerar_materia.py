@@ -41,7 +41,7 @@ FOTO_FONTE = RAIZ / "_private" / "criativos-imagem" / "palco-alison-med.jpg"
 GA4 = "G-J1383RJMK8"
 # o host vem do config, que é onde ele já existe para as LPs
 sys.path.insert(0, str(AQUI))
-from config import DOMINIO_PRODUCAO as HOST  # noqa: E402
+from config import DOMINIO_PRODUCAO as HOST, PIXEL_META  # noqa: E402
 
 problema = DADOS["problema"]
 diagnostico = DADOS["diagnostico"]
@@ -147,6 +147,32 @@ CORPO = f"""
       abrir para cada tarefa, em que ordem começar e como pedir cada uma para a resposta não
       voltar genérica.</p>
 """
+
+# Snippet oficial do Meta, fora da f-string pelo mesmo motivo do gerar.py: o código do
+# Meta tem chaves e seria interpretado como campo de interpolação.
+#
+# A matéria PRECISA do pixel, e não é medição opcional: `landing_page_view` da Meta é o
+# PageView do pixel disparado no destino. Conjunto que otimiza LANDING_PAGE_VIEWS com o
+# anúncio apontado para uma página sem pixel volta `conversions: 0`, que é exatamente o
+# defeito que matou a rodada v1 otimizando PURCHASE.
+#
+# Só PageView. ViewContent na LP significa "abriu o quiz" e reusar o nome aqui misturaria
+# duas etapas diferentes do funil no mesmo evento.
+PIXEL = ""
+if PIXEL_META:
+    PIXEL = ("""<script>
+if (location.hostname === '__HOST__') {
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','__ID__');fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=__ID__&ev=PageView&noscript=1"></noscript>
+""").replace("__ID__", PIXEL_META).replace("__HOST__", HOST)
 
 HTML = f"""<!doctype html>
 <html lang="pt-BR">
@@ -288,6 +314,7 @@ HTML = f"""<!doctype html>
     gtag('event', 'abriu_materia');
   }}
 </script>
+{PIXEL}
 </head>
 <body>
   <header class="barra">
