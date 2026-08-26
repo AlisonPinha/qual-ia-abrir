@@ -20,7 +20,7 @@ Medições de 26/08/2026 às 17h34, pela Graph API e pela planilha
 | CPM | **R$ 159,76** | **R$ 7,40** |
 | cliques no link | **0** | 188 |
 | CTR | 0% | 2,77% |
-| CPC | — | R$ 0,24 |
+| CPC | (sem clique) | R$ 0,24 |
 | landing page views | 0 | 162 |
 
 A correção de otimização (`PURCHASE` → `LANDING_PAGE_VIEWS`) resolveu o que se propunha a
