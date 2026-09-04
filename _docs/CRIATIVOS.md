@@ -44,6 +44,14 @@ reescrita em 19/08 para escondê-las.
 uma só, e é a que o produto entrega: você sai sabendo **quais três abrir, em que ordem e o
 prompt de cada uma**.
 
+**A crença nomeia DUAS causas desde 23/08, e este documento ficou atrás até 24/08.** O
+`dados.json` diz hoje: *"quando a resposta volta genérica, quase nunca é a IA que é fraca: é a
+tarefa na ferramenta errada, **pedida do jeito errado**"*. A LP, o quiz, a `/materia` e as peças
+A1, A3, A4 e M3 já contam as duas; os beats abaixo acusavam só a escolha errada. **Onde isso
+muda a fala:** o beat 5 do C6 (corrigido), o G2 do C6 e a virada do C1, que é o beat 4. Não muda
+gancho nem voz: entra a segunda causa numa oração. Gravar sem isso é fazer o vídeo divergir da
+página que ele manda abrir.
+
 **Zero escassez e zero depoimento.** Não existe vaga limitada nem prova social real ainda.
 Inventar qualquer uma das duas é o art. 37 do CDC e é a primeira linha do "o que não fazer"
 do plano do projeto no vault (`Qual IA Usar - Plano Low Ticket.md`), **não do playbook**: o
@@ -75,9 +83,10 @@ queimada na altura do peito, nunca no rodapé.
   e ele é sobre uma assinatura só, não sobre a soma das três.
 - o motor tem **12 ferramentas** (conferido) e **66 opções de tarefa**, seis em cada uma das
   onze áreas (contado no `dados.json` em 23/08, sem contar o "nenhuma dessas")
-- **587.776 combinações** e **23 tarefas**: não consegui reproduzir nem refutar em 23/08. Não é
-  o mesmo caso dos dois acima, que são impossíveis; estes só não estão confirmados. Antes de
-  dizer qualquer um dos dois na câmera, recalcular.
+- **587.776 combinações: reproduzido em 24/08/2026**, rodando o `_private/conta_corte.mjs` contra
+  o `_lib/motor.mjs` de produção. Pode ser dito na câmera, junto com os **90,0%** da maior cortada.
+  **As "23 tarefas" não:** é herança de quando a página era diretório (`README.md`), e o número
+  vivo do diagnóstico é 66, em 11 áreas.
 - **R$ 67**, pagamento único, 7 dias de garantia, diagnóstico de **2 minutos**
 
 **Os dois fechos, e eles não se misturam:**
@@ -216,8 +225,10 @@ antigo e emendando. Não é só render.
 
 1. **O bloco a substituir tem 2,83s, não cinco.** Na `timeline.ts` o CTA abre no frame **591**
    ("e pra aprender") e vai até o fim, **676**, a 30fps. O `public/cta_r03.mp4` é esse recorte
-   já extraído, com 2,90s. Como o fecho de anúncio é uma frase mais longa que a antiga, a peça
-   nova fica com cerca de 27s em vez de 22,5s, o que segue dentro da régua de 20 a 45s.
+   já extraído, com 2,90s. **Os "cerca de 27s" que estavam escritos aqui eram chute, refeito em
+   24/08:** o bloco antigo tem 15 palavras em 2,82s, o que dá 5,3 palavras por segundo, e o fecho
+   de anúncio tem 16 palavras. No mesmo ritmo são 3,6s com as pausas, então a peça nova fica em
+   torno de **23,3s**, não 27s.
 2. **A peça TEM rosto, ao contrário do que este documento afirmava.** O `master.mp4` é talking
    head: o Alison falando, com os cards de ferramenta sobrepostos. Consequência prática que
    vale mais que a correção: **o take novo precisa do mesmo figurino do dia 10/08**, moletom
@@ -292,8 +303,8 @@ fez cancelar não foi o preço."`
    é prometer uma entrega que o produto não faz.
 4. O que isso resolve: você para de refazer o mesmo prompt cinco vezes até prestar.
 5. **A crença, dita inteira, porque é o One Belief do funil e ele precisa aparecer em todo
-   ponto de contato:** escolher a IA certa pra cada tarefa é o que faz a IA finalmente
-   devolver resposta útil.
+   ponto de contato:** quando a resposta volta genérica, quase nunca é a IA que é fraca; é a
+   tarefa na ferramenta errada, **pedida do jeito errado**. A Regra das 3 IAs resolve as duas.
 6. Fecho de anúncio.
 
 **G1 (o consenso é mentira):**
@@ -408,6 +419,15 @@ medido com link na abertura, então isto é decisão, não dado, e a primeira ro
 ---
 
 ## Triagem em imagem, antes da câmera
+
+**Leia antes, porque a triagem cresceu depois desta seção:** em 23/08 nasceram mais **dez peças em
+imagem**, em duas famílias novas, documentadas em [MODELAGEM-ALAN.md](MODELAGEM-ALAN.md) (A1 a A4,
+peças que **imitam conteúdo**) e [MODELAGEM-BRAVY.md](MODELAGEM-BRAVY.md) (M1 a M4, peças que
+**vestem a marca**). Elas estão prontas, com a copy de cada anúncio, em
+`_private/criativos-imagem/entrega/`. **As quatro famílias não vão no mesmo conjunto de anúncios:**
+as I isolam headline sobre fundo idêntico, as A e as M testam formato. A ordem de subida está no
+`entrega/LEIA.txt` e o que dá check em cada uma, no
+[CHECKLIST-GRAVACAO.md](CHECKLIST-GRAVACAO.md).
 
 **Decidido em 23/08/2026, seguindo a linha 238 do playbook.** A gravação dos takes deixou de
 ser o primeiro passo. Antes dela, cada um dos seis argumentos sobe como **uma imagem**, que é

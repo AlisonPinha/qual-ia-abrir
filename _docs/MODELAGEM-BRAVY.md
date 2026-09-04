@@ -58,7 +58,7 @@ geradas estão em `_private/criativos-imagem/`, por `gerar_modelo.py`.
 | 3 | **Número gigante em cor**: R$ 67.926 | **R$ 3.600** (`dados.json` → `conta.linhas[2]`) |
 | 4 | Fecho da frase: "por ano. Todo ano." | igual: a repetição é o que transforma número em dor |
 | 5 | Caixa com borda lateral, dizendo o que o número esconde | "Na semana cheia você abre uma. As outras duas cobram no mesmo dia, todo mês, e não fazem falta." |
-| 6 | Três micro-stats: R$ 5.660 / 41h / 27.530 | R$ 479 por mês das cortadas / 91,4% dos casos / 2 min de diagnóstico |
+| 6 | Três micro-stats: R$ 5.660 / 41h / 27.530 | **66** tarefas mapeadas / **12** ferramentas no mapa / **2 min** de diagnóstico. **Corrigido em 24/08:** eram "R$ 479 por mês das cortadas / 91,4% dos casos", números mortos desde a saída da Poppy AI. O `gerar_modelo.py` já produzia os novos; esta linha é que estava atrás |
 | 7 | Fonte citada no rodapé: "salario.com.br, 2026" | **cortado pelo Alison em 23/08.** Ver "A linha de fonte" abaixo |
 | 8 | Botão "Saiba mais" | pill "descobrir a minha stack" |
 

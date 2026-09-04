@@ -78,14 +78,19 @@ gravar nada.
 | # | Elemento dele | O nosso |
 |---|---|---|
 | 1 | Avatar, nome, selo azul, @handle | a headshot, Alison Araújo, selo, `@alisonaraujo` |
-| 2 | Pergunta hipotética que **descreve** o mecanismo sem nomear | "Imagine responder 16 perguntas sobre o seu trabalho e receber de volta as três IAs que você deve abrir, na ordem de assinar, com o primeiro prompt de cada uma já escrito." |
-| 3 | Parágrafo que **nomeia** o mecanismo e diz o que ele destrava | "É isso que eu chamo de **Regra das 3 IAs**. O problema quase nunca é a IA. É abrir a errada para aquela tarefa." |
-| 4 | Fecho curto de escopo | "São 12 no mapa. Você abre três." |
+| 2 | Pergunta hipotética que **descreve** o mecanismo sem nomear | "Imagine listar as tarefas que comem a sua semana e receber, para cada uma, a IA certa de usar e o prompt pronto para colar nela." |
+| 3 | Parágrafo que dá as **duas** causas | "O problema quase nunca é a IA. É **usar a errada para aquela tarefa**, e concluir que a ferramenta é fraca quando o pedido é que estava vago." |
+| 4 | Fecho curto de escopo | "Não é 'usa ChatGPT'. É qual usar em cada momento do seu dia." |
 | 5 | Foto ancorada na base | **o cartão da entrega**, não um retrato. Ver abaixo |
 
 **A ordem dele é a coisa toda:** descrever antes de nomear. Quando o nome do mecanismo aparece,
 a pessoa já concordou com a descrição. O parágrafo 3 é a `crencaCurta` do `dados.json`, palavra
 por palavra.
+
+**Os três elementos acima foram reescritos em 24/08 para bater com a peça que existe.** A tabela ainda
+descrevia a versão anterior à regeração de 23/08: ela pedia "responder 16 perguntas" (o quiz tem 19 no
+caminho mais longo) e liderava pelo nome do mecanismo, que é o rótulo e não o mecanismo. A peça no ar
+lidera pela tarefa e nomeia as duas causas.
 
 **A régua do layout não veio dele, veio de casa:** ADR-0002 do `carousel-generator`, o formato
 `tweet`. Fundo branco puro, conteúdo no topo, imagem ancorada na base entre 33% e 46% da altura,

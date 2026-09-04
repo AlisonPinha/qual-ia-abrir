@@ -388,3 +388,68 @@ ABERTURA DO QUIZ, não veredito de oferta; ler pela planilha por utm_content.
   entre 1% e 3%  -> v3 com a /materia, medindo só a abertura outra vez
   abaixo de 1%   -> funil tem fundo demais para o ticket: encurtar, não comprar
                     mais tráfego. Olhar a DM, de onde saíram as 3 respostas reais
+
+
+================================================================================
+MEDIÇÃO DE 27/08/2026, 09h40 (22h no ar) · O GATE DISPAROU DOIS DIAS ANTES
+================================================================================
+
+O TOPO DO FUNIL CONTINUA SADIO, E MELHOROU
+  gasto R$ 156,39 · 19.108 impressões · 17.343 alcançados (freq 1,10)
+  805 cliques no link · CTR 4,21% · CPC R$ 0,19 · CPM R$ 8,18
+  692 landing page views a R$ 0,226 (86% dos cliques)
+O custo por LPV caiu de R$ 0,31 (projeção de 26/08) para R$ 0,226, então a rodada
+entrega mais visita que o previsto: ~1.857 LPV no fim, não 1.595.
+O conjunto A | imita conteudo saiu do aprendizado de vez: learning_stage_info sem
+status, 672 conversões. Os outros dois seguem em LEARNING porque o CBO manda 99%
+da verba para o A (R$ 154,26 dos R$ 156,39) — de novo, isso não é veredito de peça.
+
+A TAXA DE ABERTURA DO QUIZ CONVERGIU, E É ABAIXO DE 1%
+  692 LPV  ->  1 abertura  =  0,145%   IC95% [0,03%; 0,81%]
+  ontem:   162 LPV -> 1     =  0,62%   IC95% [0,11%; 3,41%]
+A taxa não caiu: 1/162 era ruído e o IC de ontem já admitia isso. O que aconteceu é
+que 530 LPV novos entraram e nenhum abriu o quiz. O TETO do intervalo agora está
+abaixo de 1%, que é exatamente o gate escrito na seção anterior deste arquivo:
+"abaixo de 1% -> o funil tem fundo demais para o ticket: encurtar, não comprar mais
+tráfego. Olhar a DM, de onde saíram as 3 respostas reais."
+Zero conclusões de quiz, zero InitiateCheckout, zero venda de anúncio.
+Por peça: A4 1/481, A1 0/137, A2 0/65. A única abertura da história do tráfego pago
+continua sendo a de 26/08 16h14, no A4.
+
+DUAS FONTES INDEPENDENTES BATEM, DE NOVO
+  pixel:    1 ViewContent em toda a rodada (nenhum hoje)
+  planilha: nenhuma linha nova em NENHUMA aba desde 26/08 16:14:12
+  Neon:     qia_orders continua com 2 linhas, ambas de homologação (19 e 20/08)
+
+E NÃO É DEFEITO TÉCNICO, ISSO FOI TESTADO HOJE E NÃO SUPOSTO
+LP de produção em iPhone 13, com o UTM do A4, e com facebook/apps script/GA
+bloqueados na rota para o teste não sujar pixel nem planilha:
+HTTP 200, os DOIS CTAs (header e dobra) abrem o <dialog> do quiz na pergunta
+"Onde a IA entra primeiro pra você?", zero erro de JS.
+Os três últimos deploys de produção são de 26/08 (10h30, 12h30 e 13h35), ou seja
+todos ANTERIORES à abertura das 16h14: o código no ar é o mesmo que funcionou.
+
+O MIX DE POSICIONAMENTO NÃO EXPLICA NADA, PORQUE NÃO MUDOU
+  26/08: IG Reels 56,2% da verba · FB Stories 30,1% · FB Reels 5,1%
+  27/08: IG Reels 63,7%          · FB Stories 29,5% · FB Reels 5,6%
+Fica o registro de qualidade de clique: FB Stories tem CTR de 7,9% a 9,6% (contra
+3,3% do IG Reels), CPM de R$ 13,3 (quase o dobro) e só 79% dos cliques viram LPV,
+contra 90-95% do IG Reels. É swipe acidental levando 30% da verba.
+
+VERBA, SE DEIXAR RODAR ATÉ 29/08
+  folga do spend_cap R$ 338,59 (spend_cap R$ 16.812,76 - gasto R$ 16.474,17)
+  falta gastar hoje R$ 113,28 + R$ 150,00 em 28/08 = R$ 263,28, cabe com R$ 75 de sobra
+  esses R$ 263,28 compram ~1.165 LPV a mais
+E o que eles compram em informação: se a rodada terminar com 1 abertura em 1.857 LPV,
+o IC vira [0,01%; 0,30%]. Com 3 aberturas, [0,05%; 0,47%]. NENHUM DESSES CENÁRIOS
+MUDA A DECISÃO, porque todos caem na mesma faixa do gate. É precisão sem valor
+decisório: a direção já está fechada.
+
+O QUE ESTÁ CONDENADO E O QUE NÃO ESTÁ
+Condenado: o par criativo-de-topo -> página de venda direta, para tráfego frio de
+Reels e Stories. A OFERTA CONTINUA NÃO-TESTADA, e agora com prova mais forte do que
+ontem: ninguém chegou a VER a oferta. Zero conclusões de quiz em 692 visitas, e as
+3 únicas pessoas que responderam o quiz na história vieram de orgânico e de DM.
+
+O BUG DO utm_campaign=stack CONTINUA DE PÉ (path "/" recebendo o nome "stack").
+Não contamina a leitura por utm_content, mas contamina o teste de nome.
